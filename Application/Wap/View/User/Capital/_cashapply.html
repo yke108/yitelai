@@ -1,0 +1,22 @@
+<volist name="list" id="val">
+	<dl class="item">
+		<dt>
+			<h2>
+				<if condition="$val.apply_status eq 0">
+					<font class='green'>提现审核中</font>
+				<elseif condition="$val.apply_status eq 1" />
+					<font class='red'>审核不通过</font>
+				<elseif condition="$val.apply_status eq 2" />
+					<font class='green'>审核已通过,等待打款</font>
+				<elseif condition="$val.apply_status eq 3" />
+					<font class='green'>打款成功</font>
+				</if>
+			</h2>
+			<p>{$val.apply_remark}</p>
+			<p>{$val.add_time|date="Y-m-d H:i:s",###}</p>
+		</dt>
+		<dd>
+			<em>￥{$val.money}</em>
+		</dd>
+	</dl>
+</volist>

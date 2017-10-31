@@ -1,0 +1,259 @@
+<link href="__PUBLIC__/css/fsgallery.css" rel="stylesheet" />
+<script src="__PUBLIC__/js/fs_forse.js"></script>
+<style type="text/css">
+#gallery a {border:none; border-radius:inherit; padding:0; margin:0 5% 5% 0;}
+.user_wap_home_3 ul.process_list li p img{width:100%;}
+.user_wap_home_3 ul.process_list li p img{margin:0;}
+</style>
+
+<style>
+th.cur{cursor: pointer;}
+
+.mgr_divb {
+    background: #f2fafc none repeat scroll 0 0;
+    border-bottom: 1px solid #e3eff3;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+}
+.coolbg {
+    background: #eeeeee none repeat scroll 0 0;
+    border-bottom: 1px solid #acacac;
+    border-right: 1px solid #acacac;
+    color: #333333;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+</style>
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">方案设计列表
+			<a href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加方案设计</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form action="{:U('')}" method="get" class="cs_ajax_form">
+					关键词:
+					<input type="text" class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="方案设计名称" style="display:inline-block;width:auto;" />
+					分类：
+					<select class="form-control input-sm" name="cat_id">
+						<option value="0">全部分类</option>
+						{$categorys}
+					</select>
+					设计师：
+					<select class="form-control input-sm" name="designer_id">
+						<option value="">全部设计师</option>
+						<volist name="designer_list" id="vo">
+							<option value="{$vo.designer_id}" {:m_selected($vo[designer_id], $get[designer_id])}>{$vo.designer_name}</option>
+						</volist>
+					</select>
+					标签：
+					<select class="form-control input-sm" name="label_id">
+						<option value="">全部标签</option>
+						{$labels}
+					</select>
+					状态：
+					<select class="form-control input-sm" name="is_show">
+						<option value="all">全部状态</option>
+						<option <eq name="get.is_show" value="1">selected="selected"</eq> value="1">上架</option>
+						<option <eq name="get.is_show" value="0">selected="selected"</eq> value="0">下架</option>
+					</select>
+					<select class="form-control input-sm" name="is_recommend">
+						<option value="all">全部状态</option>
+						<option <eq name="get.is_recommend" value="1">selected="selected"</eq> value="1">推荐</option>
+						<option <eq name="get.is_recommend" value="0">selected="selected"</eq> value="0">不推荐</option>
+					</select>
+					<button class="btn btn-default btn-sm">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 dataTables_wrapper">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                        	<th width="35"></th>
+							<th width="50">图片</th>
+							<th width="90">编号</th>
+							<th width="370">方案设计名称</th>
+							<th width="100">分类</th>
+							<th width="100">设计师</th>
+							<th>标签</th>
+							<th width="50">排序</th>
+							<th width="120">状态</th>
+							<th width="150">添加时间</th>
+							<th width="80">方案设计预览</th>
+							<th width="80">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblc" class="gallery">
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><input type="checkbox" value="{$vo.material_id}" class="checkid" name="checkid[]"></td>
+								<td><notempty name="vo.material_image"><a href="__UPLOAD__/{$vo.material_image}" target="_blank"><img src="__UPLOAD__/thumbs/b90/{$vo.material_image}" height="32" /></a></notempty></td>
+								<td>{$vo.material_id}</td>
+								<td>{$vo.material_title}</td>
+								<td>{$vo.cat_name}</td>
+								<td>{$vo.designer_name}</td>
+								<td>
+									<volist name="vo.label_list" id="vo2">
+										<label class='label label-info' style="margin:0 5px">{$vo2.label_name}</label>	
+									</volist>
+								</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<if condition="$vo['is_show'] eq 1">
+										<a class='cs_ajax_link label label-success cs_flesh_page'  href="{:U('show',array('material_id'=>$vo[material_id]))}">上架</a>			
+									<else/>
+										<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('show',array('material_id'=>$vo[material_id]))}">下架</a>
+									</if>
+									<if condition="$vo['is_recommend'] eq 1">
+										<a class='cs_ajax_link label label-success cs_flesh_page'  href="{:U('recommend',array('material_id'=>$vo[material_id]))}">推荐</a>			
+									<else/>
+										<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('recommend',array('material_id'=>$vo[material_id]))}">不推荐</a>
+									</if>
+								</td>
+								<td>{:date('Y-m-d H:i:s', $vo[add_time])}</td>
+								<td><a href='{$vo.url}' target="_blank">点击查看</a></td>
+								<td>
+									<a href="{:U('edit', array('material_id'=>$vo[material_id]))}">编辑</a>
+									<a href="{:U('del', array('material_id'=>$vo[material_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+									<!--<a href="{:U('download',array('id'=>$vo['material_id']))}" target="_blank">下载</a>-->
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+                <div class="mgr_divb">
+				  <div class="selall">
+						<span>选择：</span> 
+								<a class="coolbg" href="javascript:CheckAll(true);">全选</a> - 
+								<a class="coolbg" href="javascript:CheckAll(false);">取消</a> 
+						<span>操作：</span>
+							<a class="coolbg active click_a" url="{:U('up')}" href="javascript:void(0);">批量上架</a> - 
+                            <a class="coolbg active click_a" url="{:U('down')}" href="javascript:void(0);">批量下架</a> - 
+							<a class="coolbg active click_a" url="{:U('delall')}" href="javascript:void(0);">批量删除</a>
+					</div>
+				</div>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//选择所有
+function CheckAll(value)
+{
+	$("input[type='checkbox'][name^='checkid'][disabled!='true']").attr("checked",value);
+}
+
+(function ($) {
+	$(document).ready(function(){
+		$.dthref = '';
+		$.dtholder = {};
+		function loadedc(){
+			$('.pager').children('a').each(
+				function(){$(this).bind('click',function(){
+					$.dthref = $(this).attr('href');
+					reAjaxLoad();
+					return false;
+				});
+			});
+		}
+		
+		$('#btn_search').bind('click',function(){
+			$.dtholder.keyword = $('#keyword').val();
+			$.dtholder.goods_sn = $('#goods_sn').val();
+			$.dtholder.cat_id = $('#cat_id').val();
+			$.dthref = $(this).attr('href');
+			reAjaxLoad();
+			return false;
+		});
+		
+		$('.click_a').bind('click',function(){
+			if(!confirm('你确定此操作吗？')) return;
+			 var checkedCustomer = [];
+			 
+			 $(".checkid:checked").each(function(){	
+				 checkedCustomer.push($(this).val());
+			 });
+			var material_ids = checkedCustomer.join(',');
+			$.ajax( {    
+		        url:$(this).attr('url'),
+		        data:{
+		        	material_ids:material_ids
+		        },
+		        type:'post',  
+		        cache:false,    
+		        dataType:'json',    
+		        success:function(data) {
+		            if(data.status == 1){	
+		            	//reAjaxLoad();
+						alert('操作成功');
+						window.location.href = data.url;
+		            }else{
+		            	 alert('操作失败');	
+		            }
+		         },    
+		         error : function() {
+		              //alert("系统错误！");
+		         }
+		    });
+			return false;
+		});
+		
+		$('.sort th.cur').addClass('sorting').bind('click',function(){
+			var fname = $(this).attr('attr');
+			var sort = $(this).attr('val');
+			if(sort.length < 1){
+				return;
+			}
+			$(this).parent().children('.cur').addClass('sorting')
+			.removeClass('sorting_asc').removeClass('sorting_desc');
+			
+			if(sort=='asc'){
+				$(this).addClass('sorting_asc').removeClass('sorting');
+				$(this).attr('val','desc');
+			}else{
+				$(this).addClass('sorting_desc').removeClass('sorting');
+				$(this).attr('val','asc');
+			}
+			if(fname){
+				$.dtholder.fname = fname;
+				$.dtholder.sort = sort;
+				$.dthref = $(this).attr('href');
+				reAjaxLoad();
+			}
+			return false;
+		});
+		
+		//根据各类参数，重新加载页面
+		function reAjaxLoad(){
+			var href = "{:U('')}";
+			$.post(href,$.dtholder,function(d){
+				if(d.error > 0){
+					alert(d.message);
+					return;
+				}
+				$.dtholder.page = 0;
+				if(d.overwrite > 0){
+					$('#tblc').html(d.clist);
+				} else {
+					var content = $('#tblc').html() + d.clist;
+					$('#tblc').html(content);
+				}
+				$("#pwrap").html(d.pager);
+				//loadedc();
+				location.hash="listtop";
+			},'json');
+		}
+		
+		//页面加载后，绑定点击事件
+        //loadedc();
+    });
+}(jQuery));
+
+</script>

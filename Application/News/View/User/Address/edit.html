@@ -1,0 +1,86 @@
+<div class="warp">
+	<style>
+		body{ background:#F3F3F3;}
+	</style>
+	<div class="back_bar"><a class="mui-icon mui-icon-left-nav"></a>添加地址<a href="javascript:;" class="save edit"></a></div>
+	<div class="add_address mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<form action="{:U('')}">
+				<input type="hidden" name="id" value="{$info.address_id}" />
+				<ul>
+					<li>
+						<span>联系人</span>
+						<input name="consignee" value="{$info.consignee}" type="text" class="text" placeholder="请输入">
+						<div class="mui-input-row mui-radio mui-left">
+							<label for="gender_01">先生</label>
+							<input name="sex" value="1" type="radio" id="gender_01" {:m_checked($info[sex], 1)}>
+						</div>
+						<div class="mui-input-row mui-radio mui-left">
+							<label for="gender_02">女士</label>
+							<input name="sex" value="2" type="radio" id="gender_02" {:m_checked($info[sex], 2)}>
+						</div>
+					</li>
+					<li>
+						<span>联系电话</span>
+						<input name="mobile" value="{$info.mobile}" type="number" class="text" placeholder="请输入">
+					</li>
+					<li class="right-after">
+						<span>收货地址</span>
+						<input value="{$info.zone}" type="text" class="text" readonly placeholder="省/市/区" id="city">
+						<input name="district" type='hidden' id='region_code' value='{$info.region_code}'>
+					</li>
+					<li><span>&nbsp;</span><textarea name="address" cols="" rows="" placeholder="详细地址（如小区/大厦/门牌号）">{$info.address}</textarea></li>
+				</ul>
+				<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block">确认</a></div>
+			</form>
+		</div>
+	</div>
+</div>
+<!---选择--->
+<link rel="stylesheet" href="__PUBLIC__/news/css/mui.picker.min.css">
+<script src="__PUBLIC__/news/js/mui.picker.min.js"></script>
+<script src="__PUBLIC__/news/js/mui.poppicker.js"></script>
+<script src="__PUBLIC__/news/js/city.data-3.js"></script>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+	
+	(function($, doc) {
+		$.init();
+		$.ready(function() {
+			var cityPicker = new $.PopPicker({
+				layer: 3
+			});
+			
+			cityPicker.setData(cityData3);
+			var cityPickerButton = doc.getElementById('city');
+			cityPickerButton.addEventListener('tap', function(event) {
+				cityPicker.show(function(items) {
+					cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+					doc.getElementById('region_code').value = (items[2] || {}).value;
+					//返回 false 可以阻止选择框的关闭
+					//return false;
+				});
+			}, false);
+		});
+	})(mui, document);
+	
+	mui(".btn").on('tap','a',function(){
+		var form = jQuery(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			mui.toast(d.info)
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	})
+</script>

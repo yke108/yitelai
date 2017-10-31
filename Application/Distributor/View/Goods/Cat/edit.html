@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <h3 class="heading"><gt name="info.cat_id" value="0">修改分组<else/>添加分组</gt></h3>
+			<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+				<fieldset>
+					<empty name="child_cat">
+						<div class="form-group">
+							<label for="u_email" class="control-label col-sm-2">上级分组</label>
+							<div class="col-sm-6 col-md-6">
+								<select class="form-control" name="parent_id">
+									<option value="0">顶级分组</option>
+									<!--{$categorys}-->
+									<volist name="cat_list" id="vo">
+										<option {:m_selected($vo[cat_id], $info[parent_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+									</volist>
+								</select>
+							</div>
+						</div>
+					</empty>
+                    
+                    <div class="form-group">
+						<label class="control-label col-sm-2">分组名称</label>
+						<div class="col-sm-8">
+							<input name="cat_name" class="input-xlarge form-control" type="text" value="{$info.cat_name}">
+						</div>
+					</div>
+					
+                    <!--<div class="form-group">
+						<label class="control-label col-sm-2">图片</label>
+						<div class="col-sm-8">
+							<input class="hy_upload_single" hy_field="cat_logo" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.cat_logo">{$info.cat_logo}</notempty>"/>
+						</div>
+					</div>-->
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2">排序</label>
+						<div class="col-sm-4">
+							<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2">是否显示</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input <gt name="info.cat_id" value="0">{:m_checked($info[is_show],1)}<else/>checked="checked"</gt> type="radio" name="is_show" value="1">
+								是
+							</label>
+							<label class="radio-inline">
+								<input <gt name="info.cat_id" value="0">{:m_checked($info[is_show],0)}</gt> type="radio" name="is_show" value="0">
+								否
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2">是否楼层显示</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input {:m_checked($info[is_floor],1)} type="radio" name="is_floor" value="1">
+								是
+							</label>
+							<label class="radio-inline">
+								<input {:m_checked($info[is_floor],0)} type="radio" name="is_floor" value="0">
+								否
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+							<input type="hidden" name="cat_id" value="{$info.cat_id}" />
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div>

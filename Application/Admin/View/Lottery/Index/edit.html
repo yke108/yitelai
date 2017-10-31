@@ -1,0 +1,120 @@
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">抽奖活动添加／修改
+		<p style="font-size:12px;"></p>
+		</h3>
+		<?php $action = $info['lottery_id'] > 0 ? U('',array('id'=>$info['lottery_id'])) : U(''); ?>
+		
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">抽奖活动名称</label>
+						<div class="col-sm-7 col-md-7">
+							<input name="title"  type="text" value="{$info.lottery_name}" 
+							class="input-xlarge form-control">
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-6">
+						<label class="control-label col-sm-4">开始时间</label>
+						<div class="col-sm-8">
+							<php>$tstr = $info['start_time'] > 0 ? date('Y-m-d', $info['start_time']) : ''; </php>
+							<input name="start_time" class="input-xlarge form-control hy_dp" type="text" value="{$tstr}">
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-6">
+						<label class="control-label col-sm-4">结束时间</label>
+						<div class="col-sm-8">
+							<php>$tstr = $info['end_time'] > 0 ? date('Y-m-d', $info['end_time']) : ''; </php>
+							<input name="end_time" class="input-xlarge form-control hy_dp" type="text" value="{$tstr}">
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-6">
+						<label class="control-label col-sm-4">是否开启</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input value="1" name="is_open"
+								 {:m_checked($info[is_open],1)}  type="radio">是
+							</label>
+							<label class="radio-inline">
+								<input value="2" name="is_open" 
+								{:m_checked($info[is_open],2)} type="radio">否
+							</label>
+						</div>
+					</div>
+					<div style="clear:both;"></div>
+					
+					<div class="form-group col-sm-6">
+						<label class="control-label col-sm-4">能否积分抽奖</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input value="1" name="can_use_point"
+								 {:m_checked($info[can_use_point],1)}  type="radio">是
+							</label>
+							<label class="radio-inline">
+								<input value="2" name="can_use_point" 
+								{:m_checked($info[can_use_point],2)} type="radio">否
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-6">
+						<label class="control-label col-sm-4">每日次数限制</label>
+						<div class="col-sm-8">
+							<input name="day_times" class="input-xlarge form-control" type="text" value="{:intval($info[day_times])}">
+							<span>0表示不限制使用积分抽奖的次数</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="control-label col-sm-4">抽奖消耗积分</label>
+						<div class="col-sm-8">
+							<input name="play_points" class="input-xlarge form-control" type="text" value="{:intval($info[play_points])}">
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">奖项设置</label>
+						<div class="col-sm-8">
+							<div style="text-align:center;">
+								<div style="width:100px;float:left;">奖品名称</div>
+								<div style="width:50px;float:left;">数量</div>
+								<div style="width:80px;float:left;">类型</div>
+								<div style="width:80px;float:left;">中奖比率</div>
+							</div>
+							<div style="clear:both;"></div>
+							<for start="0" end="10">
+								<php>$prize = $info['lottery_awards'][$i];</php>
+								<div class="form-inline">
+									<input style="width:100px;" name="awards[{$i}][prize_name]" value="{$prize.prize_name}"/>
+									<input style="width:50px;" name="awards[{$i}][prize_num]" value="{$prize.prize_num}"/>
+									<select style="width:80px;" name="awards[{$i}][prize_type]">
+										<option value="101" {:m_selected($prize['prize_type'], 101)}>未中奖</option>
+										<option value="1" {:m_selected($prize['prize_type'], 1)}>积分</option>
+										<option value="2" {:m_selected($prize['prize_type'], 2)}>现金</option>
+										<option value="100" {:m_selected($prize['prize_type'], 100)}>实物</option>
+									</select>
+									<input style="width:80px;" name="awards[{$i}][prize_ratio]" value="{$prize.prize_ratio}"/>
+								</div>
+							</for>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2">活动简介</label>
+						<div class="col-sm-8">
+							<textarea name="lottery_brief" class="input-xlarge form-control" style="height:150px">{$info.lottery_brief}</textarea>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-12">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div>
+	

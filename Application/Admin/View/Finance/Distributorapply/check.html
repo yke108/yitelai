@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">提现审核</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data" id="appp">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-3">提现金额</label>
+					<div class="col-sm-6 col-md-4">
+						<input class="input-xlarge form-control" type="text" value="{$info['money']}" readonly>
+					</div>
+				</div>
+                <div class="form-group">
+					<label class="control-label col-sm-3">申请时间</label>
+					<div class="col-sm-6 col-md-4">
+						<input class="input-xlarge form-control" type="text" value="{$info.add_time|date='Y-m-d H:i:s',###}" readonly>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-3">是否通过审核</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="2" name="status" type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="1" name="status" type="radio">
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group remark_pass" style="display:none">
+					<label class="control-label col-sm-3">凭证</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="remark" value="{$info['remark']}" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				
+				<div class="form-group remark_nopass" style="display:none">
+					<label class="control-label col-sm-3">审核不通过原因</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="remark" value="{$info['remark']}" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-3">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="apply_id" value="{$info.apply_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('input[name=status]').click(function(){
+		if($(this).val() == 2){
+			$('.remark_pass').css('display', 'block');
+			$('.remark_nopass').css('display', 'none');
+		}else{
+			$('.remark_pass').css('display', 'none');
+			$('.remark_nopass').css('display', 'block');
+		}
+	});
+});
+</script>

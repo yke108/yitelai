@@ -1,0 +1,89 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">秒杀设置</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+			<fieldset>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 开始时间</label>
+					<div class="col-sm-4">
+						<input name="seckill_start" class="input-xlarge form-control hy_dp" type="text"  value="<gt name="goods_info.seckill_start" value="0">{$goods_info.seckill_start|date="Y-m-d",###}</gt>" readonly="readonly" style="cursor:pointer">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 结束时间</label>
+					<div class="col-sm-4">
+						<input name="seckill_end" class="input-xlarge form-control hy_dp" type="text"  value="<gt name="goods_info.seckill_end" value="0">{$goods_info.seckill_end|date="Y-m-d",###}</gt>" readonly="readonly" style="cursor:pointer">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 秒杀价格</label>
+					<div class="col-sm-10">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>选择</th>
+									<th>货品图片</th>
+									<th>货品名称</th>
+									<th>货品价格</th>
+									<th>秒杀价格</th>
+									<th>货品重量</th>
+									<th>库存数量</th>
+									<th>预警数量</th>
+									<th>秒杀价格</th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist name="product_list" id="vo">
+									<tr class="rowlink">
+										<td><input <gt name="vo.seckill_price" value="0">checked="checked"</gt> type="checkbox" value="{$vo.id}" class="checkid" name="checkid[]"></td>
+										<td>
+											<notempty name="vo.product_image">
+												<img src="__UPLOAD__/{$vo.product_image}" height="40" border="0">
+											</notempty>
+										</td>
+										<td>{$vo.product_name}</td>
+										<td>{$vo.product_price}</td>
+										<td>{$vo.seckill_price}</td>
+										<td><gt name="vo.product_weight" value="0">{$vo.product_weight}kg</gt></td>
+										<td>{$vo.stock_num}</td>
+										<td>{$vo.notify_num}</td>
+										<td><input <eq name="vo.seckill_price" value="0">disabled="disabled"</eq> name="seckill_price[{$vo.id}]" class="input-xlarge form-control seckill_price" type="text" value="{$vo['seckill_price']}"></td>
+									</tr>
+								</volist>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input name="record_id" class="input-xlarge form-control" type="hidden"  value="{$goods_info['record_id']}">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload')}", '__UPLOAD__');
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.checkid').click(function(){
+		var is_checked = $(this).prop('checked');
+		if(is_checked){
+			$(this).parent().parent().find('.seckill_price').attr('disabled',false);
+		}else{
+			$(this).parent().parent().find('.seckill_price').attr('disabled',true);
+		}
+	});
+});
+</script>

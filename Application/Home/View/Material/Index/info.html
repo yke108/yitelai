@@ -1,0 +1,82 @@
+<div class="material_management_deta">
+	<div class="material_deta_hd">
+		<h1>{$info.material_title}</h1>
+		<p><span><img src="__UPLOAD__/thumbs/b90/{$designer_info.designer_image}">{$designer_info.designer_name}</span><em><i><img src="__PUBLIC__/home/images/icon13.png">55</i><i><img src="__PUBLIC__/home/images/icon14.png">55</i></em></p>
+		<ol>
+			<li>所需积分:<font>{$info.down_points}</font></li>
+			<li>文件名称:{$info.file_name}</li>
+			<li>文件格式:{$info.mime}</li>
+			<li>上传时间:{$info.add_time|date="Y-m-d H:i:s",###}</li>
+		</ol>
+	</div>
+	<div class="material_deta_bd">
+		<volist name="info.material_gallery" id="vo">
+			<p><img src="__UPLOAD__/{$vo}"></p>
+			<p><img src="__UPLOAD__/{$vo}" data-preview-src="__UPLOAD__/{$vo}" data-preview-group="1"></p>
+		</volist>
+	</div>
+	<div class="material_deta_btn">
+		<purview name="downcheck">
+		<a href="{:U('downcheck', array('id'=>$info[material_id]))}" class="down"><img src="__PUBLIC__/home/images/icon15.png">下载</a>
+		</purview>
+		<purview name="edit">
+		<a href="{:U('edit', array('id'=>$info[material_id]))}" class="edit"><img src="__PUBLIC__/home/images/icon16.png">修改</a>
+		</purview>
+		<purview name="del">
+		<a href="{:U('del', array('id'=>$info[material_id]))}" class="del"><img src="__PUBLIC__/home/images/icon8.png">删除</a>
+		</purview>
+	</div>
+</div>
+
+<script src="__PUBLIC__/home/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/home/js/mui.previewimage.js"></script>
+<script>
+	mui.previewImage();
+</script>
+
+<script>
+	mui('body').on('tap', 'a.edit', function() {
+		var href = this.getAttribute('href');
+		//非plus环境，直接走href跳转
+		if(!mui.os.plus){
+			location.href = href;
+			return;
+		}
+	});
+	
+	$(function(){
+		$(".down").click(function(){
+			var obj = $(this);
+			w = window.open("","")
+			$.post(obj.attr('href'), {}, function(d){
+				if(d.status == 1){
+					$('.down_count').html(d.down_count);
+					w.location = d.url;
+				}else{
+					w.close();
+					mui.toast(d.info);
+				}
+				/*if(d.url){
+					window.location.href = d.url;
+				}*/
+			}, 'json');
+			return false;
+		})
+		
+		$(".del").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('删除后不可恢复，确认删除吗？', '删除素材', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

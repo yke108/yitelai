@@ -1,0 +1,56 @@
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">区域消息
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加区域消息</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				关键词：
+				<input type="text" class="form-control input-sm" name="keyword" value="{$get.keyword}" style="display:inline-block;width:auto;" placeholder="消息主题" />
+				发送时间：
+				<input type='text' name='start_time' value="{$get.start_time}" class='form-control input-sm hy_dp' style='width:100px;display:inline;' placeholder="开始时间" /> - 
+				<input type='text' name='end_time' value="{$get.end_time}" class='form-control input-sm hy_dp' style='width:100px;display:inline;' placeholder="结束时间" />
+				<button class="btn btn-default btn-sm" style='margin-left:20px;'>搜索</button>
+			</form>
+			</div>
+		</div>
+		<div class="row sepH_c">
+			<div class="dataTables_wrapper col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="80">区域</th>
+							<th>消息主题</th>
+							<!--<th width="80">分类</th>-->
+							<th width="150" style="text-align:center">店铺</th>
+							<th width="80">发送人</th>
+							<th width="80">阅览次数</th>
+							<th width="150">发送时间</th>
+							<th width="80">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblc">
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.area_name}</td>
+								<td>{$vo.title}</td>
+								<!--<td>{$vo.cat_name}</td>-->
+								<td align="center">{$vo.distributor_name|default='---'}</td>
+								<td>{$vo.admin_name}</td>
+								<td>{$vo.read_count}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[msg_id]))}">编辑</a> 
+									<a href="{:U('del', array('id'=>$vo[msg_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

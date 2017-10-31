@@ -1,0 +1,63 @@
+<div class="warp">
+	<div class="login">
+		<form action="">
+			<h1><img src="__PUBLIC__/wap/images/icon61.png" width="100%"></h1>
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">账户</label></div>
+					<div class="weui-cell__bd">
+						<input id="mobile" name="mobile" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入手机号">
+					</div>
+				</div>
+			</div>
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+					<div class="weui-cell__bd">
+						<input id="pwd" name="pwd" class="weui-input" type="password" placeholder="请输入密码">
+					</div>
+				</div>
+			</div>
+			<h2><a href="{:U('index/site/reg')}">快速注册</a><a href="{:U('index/site/forget')}" class="fr">找回密码</a></h2>
+			<h3 class="btn"><a id="addlogin" href="javascript:;" class="weui-btn weui-btn_primary">确认</a></h3>
+		</form>
+	</div>
+</div>
+
+<script>
+$(function(){
+	$("#addlogin").click(function(){
+		var mobile = $('#mobile').val();
+		var pwd = $('#pwd').val();
+		if(mobile && pwd){		
+			$.post("{:U('login')}",{mobile:mobile,pwd:pwd},function(data){
+				layer.open({time:1,content:data.info});
+				if (data.status == 1){
+					window.location.href = data.url; 
+				}
+			},'json');	
+		}else{
+			layer.open({time:1,content:'请输入完整信息'});
+			return false;
+		}
+	});
+	
+	$("body").keydown(function(){
+		if(event.keyCode==13){
+			var mobile = $('#mobile').val();
+			var pwd = $('#pwd').val();
+			if(mobile && pwd){		
+				$.post("{:U('login')}",{mobile:mobile,pwd:pwd},function(data){
+					layer.open({time:1,content:data.info});
+					if (data.status == 1){
+						window.location.href = data.url; 
+					}
+				},'json');
+			}else{
+				layer.open({time:1,content:'请输入完整信息'});
+				return false;
+			}
+		}
+	});
+})
+</script>

@@ -1,0 +1,74 @@
+<div class="financial_management">
+    <div id="slider" class="mui-slider  mui-fullscreen">
+        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+            <a class="mui-control-item mui-active" href="#item1mobile">统计</a>
+            <a class="mui-control-item" href="#item2mobile">分析</a>
+        </div>
+        <div class="mui-slider-group">
+            <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+                <div id="scroll1" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <ul class="mui-table-view">
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">商品统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">会员统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">业务员统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">分销员统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Statistics/Order/index')}">订单统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">定制单统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Statistics/Sale/index')}">销售统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">财务统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">客服统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">店铺统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">安装师傅统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">品牌统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Statistics/Cart/index')}">购物车统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Statistics/Goods/index')}">收藏商品统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">合同统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Statistics/Designer/index')}">设计师统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">家装公司统计</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">家居服务个人统计</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item2mobile" class="mui-slider-item mui-control-content">
+                <div id="scroll2" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <ul class="mui-table-view">
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Analysis/Platform/index')}">平台分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Analysis/Shop/index')}">店铺分析</a></li>
+                            <!--<li class="mui-table-view-cell"><a class="right-after" href="#">代理商分析</a></li>--><!--业务逻辑不清楚-->
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Analysis/Platform/visitsanalysis')}">访客分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="{:U('/Analysis/Order/index')}">订单分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">商品分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">财务统计分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">设计师分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">业务员分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">分销员分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">佣金分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">品牌分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">购物车分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">收藏商品分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">合同分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">设计师分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">家装公司分析</a></li>
+                            <li class="mui-table-view-cell"><a class="right-after" href="#">家居服务个人分析</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    mui.init();
+    (function ($) {
+        //阻尼系数
+        var deceleration = mui.os.ios ? 0.003 : 0.0009;
+        $('.mui-scroll-wrapper').scroll({
+            bounce: false,
+            indicators: true, //是否显示滚动条
+            deceleration: deceleration
+        });
+    })(mui);
+</script>

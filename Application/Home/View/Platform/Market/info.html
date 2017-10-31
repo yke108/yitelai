@@ -1,0 +1,23 @@
+<div class="area_manager_detaild">
+	<div class="area_manager_detaild_hd">
+		<dl>
+			<dt><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$info.nick_name}</h2>
+				<time>会员号:{$info.user_id}</time>
+				<notempty name="parent"><time>岗位上级:{$parent.nick_name}</time></notempty>
+			</dd>
+			<dt>
+				<span>{$info.mobile}</span>
+				<p>{$user_type[$info[user_type]]}</p>
+			</dt>
+		</dl>
+	</div>
+	<div class="area_manager_detaild_bd">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('brand', array('user_id'=>$info[user_id]))}">负责品牌<span>{$info.brand_count}</span></a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('district', array('user_id'=>$info[user_id]))}">负责区域<span>{$info.district_count}</span></a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('store', array('user_id'=>$info[user_id]))}">负责店铺<span>{$info.store_count}</span></a></li>
+		</ul>
+	</div>
+</div>

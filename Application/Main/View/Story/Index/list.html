@@ -1,0 +1,293 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------粉丝故事会开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('story/index/index')}">粉丝故事会</a> <notempty name='$cat_info'><span>></span>{$cat_info.cat_name}</if> </div>
+	<div class="Fans">
+		<div class="Fans_sort clearfix">
+			<foreach name="fans_catlist" item="vo" key="k">
+				<lt name="k" value="4">
+					<dl class="clearfix fl">
+						<dt><img src="__PUBLIC__/main/images/icon33.png"><p>{$vo.cat_name}</p></dt>
+						<dd>
+							<foreach name='vo.children' item='val' key="k">
+								<lt name="k" value="9">
+									<a href="{:U('index',array('cat_id'=>$val[cat_id]))}">{$val.cat_name}</a>
+								</lt>
+							</foreach>
+						</dd>
+					</dl>
+				</lt>
+			</foreach>
+		</div>
+		<div class="Fans_main clearfix">
+			<div class="Fans_main_l fl">
+				<div class="Fans_main_l_2">
+					<h1>文章列表</h1>
+					<empty name="list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<volist name="list" id="vo">
+							<dl class="clearfix">
+								<dt><img src="__UPLOAD__/thumbs/w260h194/{$vo.story_image}" width="130" height="97"></dt>
+								<dd>
+									<h2>
+										<a href="{:U('info', array('id'=>$vo[story_id]))}">{$vo.story_title}
+											<switch name="vo.story_type">
+												<case value="0"></case>
+												<case value="1"><font color="green"><img src="__PUBLIC__/main/images/icon34.png"></font></case>
+												<case value="2"><font color="red"><img src="__PUBLIC__/main/images/icon35.png"></font></case>
+											</switch>
+										</a>
+										<span>
+											<a href="javascript:;" story_id="{$vo.story_id}" class="clap"><img src="__PUBLIC__/main/images/icon36.png"><c class="good_num">{$vo.view_num}</c></a>
+											<a href="javascript:;" story_id="{$vo.story_id}" class="like"><img src="__PUBLIC__/main/images/icon37.png"><c class="bad_num">{$vo.good_num}</c></a>
+										</span>
+									</h2>
+									<h3><span>{$vo.nick_name|default='平台'}</span>于{$vo.add_time|date="Y-m-d H:i",###}发表</h3>
+									<p>{$vo.story_intro|msubstr=0,94,'utf-8',true}</p>
+								</dd>
+							</dl>
+						</volist>
+						<div class="pages1">
+							{$pages}
+						</div>
+					</empty>
+				</div>
+			</div>
+			<div class="Fans_main_r fr">
+				<div class="Fans_main_r_1">
+					<h2><span>图看家具<i></i></span></h2>
+					<ul class="clearfix">
+						<volist name='ad_list.storyRightSamllBanner' id="val">
+						<li><a href="<if condition='$val.ad_value eq ""'>javascript:;<else/>{$val.ad_value}</if>"><img src="<if condition='$val.ad_picture eq ""'>__PUBLIC__/main/images/pic24.jpg<else/>__UPLOAD__/{$val.ad_picture}</if>"></a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="Fans_main_r_2">
+					<h2><span>需求提报<i></i></span><em>已有<font id="story_count">{$story_count}</font>人报名</em></h2>
+					<form action="{:U('index/index/inquiry')}" >
+						<p><input name="user_name" type="text" id='nick_name' placeholder="您的称呼"></p>
+						<p><input name="mobile" type="text" id='mobile' placeholder="您的电话"></p>
+						<p>
+							<input type="hidden" value="0" class="region_sel"/>
+							<select name="province" id='province_show' onchange='change_region(this,"city_show")'>
+								<option value='0'>省</option>
+								<foreach name='province' key='key' item='val'>
+								<option value='{$key}'>{$val}</option>
+								</foreach>
+							</select>
+							<select name="city" id='city_show' onchange='change_region(this,"district_show")'>
+								<option value='0'>市</option>
+							</select>
+							<select name="district_show" id='district_show'><option>区/县</option></select>
+						</p>
+						<p><textarea name="content" cols="" id='msg_content' rows="" placeholder="填写您的需求，如：屋形、风格、功能、时间等"></textarea></p>
+						<p><button type="button" id="add_design_msg">提  交</button></p>
+						<p><font>*您的信息我们严守秘密</font></p>
+					</form>
+					<script>
+						$("#add_design_msg").click(function(){
+							var nick_name=$('#nick_name').val();
+							var mobile=$('#mobile').val();
+							var re=/^1[1|3|5|7|8]\d{9}$/i;
+							var province=$('#province_show').val();
+							var city=$('#city_show').val();
+							var district=$('#district_show').val();
+							var msg_content=$("#msg_content").val();
+							
+							if(nick_name==''){
+								layer.open({time:1,content:'请输入您的昵称'});
+								$('#nick_name').focus();
+								return;
+							}
+							
+							if(mobile==''){
+								layer.open({time:1,content:'请输入手机号码'});
+								$('#mobile').focus();
+								return;
+							}else{
+								if(re.test(mobile)==false){
+									layer.open({time:1,content:'手机格式不正确'});
+									$('#mobile').focus();
+									return;
+								}
+							}
+							
+							$.ajax({
+								type:'POST',
+								url:"{:U('design/index/message')}",
+								data:{nick_name:nick_name,mobile:mobile,province:province,city:city,district:district,content:msg_content},
+								dataType:"json",
+								success:function(res){
+									layer.open({time:2,content:res.msg});
+									if(res.error==0){
+										$('#nick_name,#mobile').val('');
+										$('#story_count').html(res.message_count);
+									}else if(res.error==2){
+										window.location="{:U('Index/site/login')}";
+									}
+								}
+							})
+						})
+					
+					</script>
+					<script>
+					function change_region(obj,type){
+						var code=$(obj).val();
+						$.ajax({
+							type:'POST',
+							url:"{:U('Index/Site/get_region')}",
+							data:{code:code,type:type},
+							dataType:"json",
+							success:function(res){
+								//alert($("#"+'city').html())
+								$("#"+type).html(res.html)
+							}
+						})
+					}
+					</script>
+					<script type="text/javascript">
+					$(document).ready(function(){
+						var region_list = {:json_encode($region_list)};
+						<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+						var province = {$province};
+						<php>$city = intval($info[region_code] / 100) * 100;</php>
+						var city = {$city};
+						var district = {:intval($info[region_code])};
+						var cobj = $('.region_sel');
+						function build_sitem_select(thisobj){
+							var region_id = thisobj.val();
+							var obj = thisobj.next();
+							obj.html('<option value="">请选择</option>');
+							if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+								for(var i in region_list){
+									var bbc = region_list[i];
+									test_region_id = parseInt(bbc.region_code);
+									if(region_id == test_region_id){
+										continue;
+									}
+									if(region_id == 0){
+										if(test_region_id % 10000 > 0) continue;
+									} else if(region_id % 10000 == 0) {
+										if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+									} else if(region_id % 100 == 0) {
+										if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+									} else {
+										break;
+									}
+									var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+									if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+									opt.appendTo(obj);
+								}
+							}
+							if(obj.hasClass('region_sel')) build_sitem_select(obj);
+						}
+						cobj.bind('change', function(){
+							build_sitem_select($(this));
+						});
+						$('input.region_sel').each(function(){
+							build_sitem_select($(this));
+						});
+						
+						//提交咨询
+						
+					</script>
+					
+				</div>
+				<div class="Fans_main_r_3">
+					<h2>文章排行榜<span>Top Article</span></h2>
+					<ul>
+						<volist name='article_ranking_list' id='val'>
+						<li><span <if condition="$i elt 3">class="on"</if> >{$i}</span><a href="{:U('info',array('id'=>$val['story_id']))}">{$val.story_title}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="Fans_main_r_4">
+					<h2>作者排行榜<span>Top Author</span></h2>
+					<ul>
+						<volist name='user_ranking' id='val'>
+						<li>
+							<a href="javascript:;">
+								<img src="<if condition='$val.user_img eq ""'>__PUBLIC__/main/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b90/{$val.user_img}</if>">
+								{$val.nick_name}
+							</a>
+							<span <if condition="$i elt 3">class="on"</if> >{$i}</span>
+						</li>
+						</volist>
+					</ul>
+				</div>
+				<script>
+					$(".Fans_main_r_4 ul li:last").addClass("last")
+				</script>
+				<div class="Fans_main_r_5">
+					<h2>热门专题</h2>
+					<volist name="ad_list.pc_fans_index_hottopic" id="vo">
+						<p><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></p>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<div class="Fans_recommend">
+			<h2><a href="{:U('mall/category/like')}" class="change"><img src="__PUBLIC__/main/images/icon38.png">换一换</a>推荐品类</h2>
+			<ul class="clearfix like_list">
+				<include file="Mall/Category/guess_like"/>
+			</ul>
+		</div>
+		<script>
+			$(function(){
+				$(".Fans_recommend .change").click(function(){
+					var change_obj = $(this);
+					$.post(change_obj.attr('href'),{},function(d){
+						$('.Fans_recommend .like_list').html(d);
+					},'json');
+					return false;
+				})
+			})
+		</script>
+	</div>
+</div>
+<!-------粉丝故事会结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!--<script type="text/javascript">
+$(document).ready(function(){
+	$('.like').click(function(){
+		var like = $(this);
+		var story_id = $(this).attr('story_id');
+		$.post("{:U('like')}",{story_id:story_id},function(data){
+			layer.open({time:1,content:data.info});
+			if(data.status == 1){
+				like.find('.bad_num').html(data.good_num);
+			}
+			if(data.url){
+				window.location.href = data.url;
+			}
+		},'json');
+	});
+	$('.clap').click(function(){
+		var clap = $(this);
+		var story_id = $(this).attr('story_id');
+		$.post("{:U('clap')}",{story_id:story_id},function(data){
+			layer.open({time:1,content:data.info});
+			if(data.status == 1){
+				clap.find('.bad_num').html(data.bad_num);
+			}
+			if(data.url){
+				window.location.href = data.url;
+			}
+		},'json');
+	});
+});
+</script>-->

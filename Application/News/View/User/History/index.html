@@ -1,0 +1,77 @@
+<div class="warp">
+	<div class="back_bar"><a class="mui-icon mui-icon-left-nav"></a>浏览记录<a href="javascript:;" class="save edit">编辑</a></div>
+	<div class="browsing_history mui-scroll-wrapper" id="pullrefresh">
+		<div class="mui-scroll">
+			<ul>
+				<include file="User/History/_index"/>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+	
+	mui(".back_bar").on("tap",".edit",function(){
+		if($(this).hasClass("on")){
+			$(this).removeClass("on");
+			$(this).text("编辑");
+			$(".browsing_history ul li i").hide();
+		}else{
+			$(this).addClass("on");
+			$(this).text("完成");
+			$(".browsing_history ul li i").show();
+		}
+	})
+			
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/wap/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/wap/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page=2;
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll ul").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

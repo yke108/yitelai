@@ -1,0 +1,74 @@
+<div class="shop_case_form">
+	<h2>免费申请定制报价</h2>
+	<form action="" >
+		<ul>
+			<li><span>您的姓名：</span><input name="name" id='name' value='' type="text"></li>
+			<li><span>手机号码：</span><input name="" id='tel' type="text"></li>
+			<li><span>楼盘名称：</span><input name="" id='estate_name' type="text"></li>
+			<li><span>房屋面积：</span><input name="" id='house_area' type="text"></li>
+			<li><button type="button" class='add_custom'>立即免费申请</button></li>
+		</ul>
+	</form>
+</div>
+<script>
+$(function(){
+	$(".add_custom").click(function(){
+		var name=$("#name").val();
+		var tel=$("#tel").val();
+		var estate_name=$("#estate_name").val();
+		var house_area=$("#house_area").val();
+		var store_id="{$_GET['store_id']}";
+		var re=/^1[3|5|7|8][0-9]{9}$/;
+		
+		if(name==''){
+			layer.open({time:1,content:'请输入您的姓名'})
+			$("#name").focus()
+			return;
+		}
+		
+		if(tel==''){
+			layer.open({time:1,content:'请输入您的手机号码'})
+			$("#tel").focus()
+			return;
+		}else{
+			if(re.test(tel)==false){
+				layer.open({time:1,content:'请输入正确的手机号码'})
+				$("#tel").focus()
+				return;
+			}
+		}
+		
+		if(estate_name==''){
+			layer.open({time:1,content:'请输入楼盘名称'})
+			$("#estate_name").focus()
+			return;
+		}
+		
+		if(house_area==''){
+			layer.open({time:1,content:'请输入房屋面积'})
+			$("#house_area").focus()
+			return;
+		}
+		
+		$.ajax({
+			type:'POST',
+			url:"{:U('custom')}",
+			data:{name:name,tel:tel,estate_name:estate_name,house_area:house_area,store_id:store_id},
+			dataType:"json",
+			success:function(res){
+				
+				if(res.error==0){
+					layer.open({time:1,content:res.msg})
+					$("#name,#tel,#estate_name,#house_area").val('');
+				}else if(res.error==2){
+					if(window.confirm('请登陆,是否立即登陆')){
+						window.location="{:U('Index/Site/login')}";
+					}
+				}else{
+					layer.open({time:1,content:res.msg})
+				}
+			}
+		})
+	})
+})
+</script>

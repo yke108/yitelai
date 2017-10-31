@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <h3 class="heading"><gt name="info.rank_id" value="0">会员等级修改<else/>增加会员等级</gt></h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">名称</label>
+					<div class="col-sm-8">
+						<input name="rank_name" value="{$info.rank_name}" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">积分下限</label>
+					<div class="col-sm-8">
+						<input name="min_points" value="{$info.min_points}" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="control-label col-sm-2">积分上限</label>
+					<div class="col-sm-8">
+						<input name="max_points" value="{$info.max_points}" class="input-xlarge form-control" type="text">
+					</div>
+				</div>-->
+				<div class="form-group">
+					<label class="control-label col-sm-2">折扣</label>
+					<div class="col-sm-8">
+						<input name="discount" value="{$info.discount}" class="input-xlarge form-control" type="text">
+						<span class="help-block">会员折扣，1-100的整数</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="rank_id" value="{$info.rank_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

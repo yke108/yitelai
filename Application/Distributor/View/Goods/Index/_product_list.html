@@ -1,0 +1,17 @@
+<volist name="product_list" id="vo">
+	<tr class="rowlink">
+		<td><input class="hy_upload_single" hy_field="product_image[]" value="" style="width:50px;height:50px;" src=""/></td>
+		<td><input name="product_items[]" class="input-xlarge form-control" type="text"  value="{$vo}" readonly="readonly"></td>
+		<td><input name="product_name[]" class="input-xlarge form-control" type="text"  value=""></td>
+		<td><input name="product_price[]" class="input-xlarge form-control" type="text"  value=""></td>
+		<td><input name="market_price[]" class="input-xlarge form-control" type="text"  value=""></td>
+		<td><input name="stock_price[]" class="input-xlarge form-control" type="text"  value=""></td>
+		<td><input name="product_weight[]" class="input-xlarge form-control" type="text"  value=""></td>
+		<td><input name="stock_number[]" class="input-xlarge form-control" type="text"  value=""></td>
+	</tr>
+</volist>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+});
+</script>

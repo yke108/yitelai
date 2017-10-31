@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">库存不足列表
+			<!--<a href="javascript:history.back(-1)">返回商品列表</a>-->
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 cs_flesh_info" href="{$Think.server.request_uri}">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>商品名称</th>
+							<th>货品图片</th>
+							<th>货品规格</th>
+							<th>优惠价</th>
+							<th>原价</th>
+							<th>进货价</th>
+							<th>货品重量</th>
+							<th>库存数量</th>
+							<th>预警数量</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.goods_name}</td>
+								<td>
+									<notempty name="vo.product_image">
+										<img src="__UPLOAD__/{$vo.product_image}" height="40" border="0">
+									</notempty>
+								</td>
+								<td>{$vo.product_items_name}</td>
+								<td>{$vo.product_price}</td>
+								<td>{$vo.market_price}</td>
+								<td>{$vo.stock_price}</td>
+								<td><gt name="vo.product_weight" value="0">{$vo.product_weight}kg</gt></td>
+								<td>{$vo.stock_num}</td>
+								<td>{$vo.notify_num}</td>
+								<td class="center">
+									<a href="{:U('edit', array('id'=>$vo[id]))}" class="cs_ajax_link cs_show_modal" cs_id="product_edit">编辑</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+		<div id="pwrap">{$pager}</div>
+	</div>
+</div>
+
+<div class="modal" id="product_edit" href="{$Think.server.request_uri}">
+	<div class="modal-dialog" style="width:800px;">
+		<div class="modal-content" style="height:800px;overflow-y:scroll; padding:30px;">
+			
+		</div>
+	</div>
+</div>

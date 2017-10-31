@@ -1,0 +1,18 @@
+<volist name="list" id="vo">
+<dl>
+	<dt class='clearfix'>
+		<a href='{:U("design/index/info",array("id"=>$vo[designer_id]))}'>
+			<span class='fl'>
+				<img src="<if condition='$vo.designer_image eq ""'>__PUBLIC__/wap/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b120/{$vo.designer_image}</if>" />
+				<b>{$vo.designer_name}</b>
+			</span>
+		</a>
+		<font class='fr'>{$vo.status_lang}</font>
+	</dt>
+	<dd>
+		<p>预约时间：{$vo.add_time|date="Y-m-d H:i",###}</p>
+		<p>所在区域：{$vo.region_all}</p>
+		<p>联系电话：{$vo.designer_tel}</p>
+	</dd>
+</dl>
+</volist>

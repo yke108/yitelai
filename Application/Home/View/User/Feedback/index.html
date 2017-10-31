@@ -1,0 +1,103 @@
+<div class="client_detaild_complaintsadvicerecord">
+	<div id="slider" class="mui-slider mui-fullscreen">
+		<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			<a class="mui-control-item  mui-active" href="#item1mobile">投诉</a>
+			<a class="mui-control-item" href="#item2mobile">建议</a>
+		</div>
+		<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+		<div class="mui-slider-group">
+			<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+				<div id="scroll1" class="mui-scroll-wrapper">
+					<empty name="complain_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<div class="mui-scroll" type="1" p="2">
+							<ul class="mui-table-view">
+								<volist name="complain_list" id="vo">
+									<li>
+										<a href="#">
+											<h2><span><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$vo.user_name}</span><time>{:date('Y-m-d H:i', $vo[add_time])}</time></h2>
+											<p>{$vo.content}</p>
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</empty>
+				</div>
+			</div>
+			<div id="item2mobile" class="mui-slider-item mui-control-content">
+				<div class="mui-scroll-wrapper">
+					<empty name="suggest_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<div class="mui-scroll" type="2" p="2">
+							<ul class="mui-table-view">
+								<volist name="suggest_list" id="vo">
+									<li>
+										<a href="#">
+											<h2><span><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$vo.user_name}</span><time>{:date('Y-m-d H:i', $vo[add_time])}</time></h2>
+											<p>{$vo.content}</p>
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</empty>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+<script>
+
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+	mui.init();
+	
+	var user_id = "{$get.user_id}";
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+		$.ready(function() {
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					up: {
+						callback: function() {
+							var self = this;
+							var jqobj = jQuery(pullRefreshEl);
+							var type = jqobj.attr('type');
+							var p = jqobj.attr('p');
+							var data = {
+								user_id:user_id,
+								type:type,
+								p:p
+							};
+							mui.post("{:U('list')}",data,function(data){
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.html != ''){
+										jqobj.attr('p', data.p);
+										var list = jqobj.find('.mui-table-view');
+										list.append(data.html);
+										self.endPullUpToRefresh();
+									}else{
+										self.endPullUpToRefresh(true);
+									}
+								},'json'
+							);
+						}
+					}
+				});
+			});
+		});
+	})(mui);
+	
+</script>

@@ -1,0 +1,168 @@
+<div class="warp">
+	<empty name="list">
+		<p style="text-align:center;color:#999999;padding:20px; font-size:16px; position:absolute; bottom:100px; left:0; right:0; top:0; display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;"><a href="{:U('index/index/index')}" style=" display:block; text-align:center; width:100%;">购物车为空，<span style="color:red;">前去购物</span></a></p>
+	<else/>
+		<div class="pay">
+		
+			<div class="pay_1">
+				<empty name="address">
+					<!---如果没有选择收货地址---->
+					<div class="no_data "><a href="{:U('user/address/add')}">选择收货人</a></div>
+				<else/>
+					<!---如果已经选择收货地址---->
+					<div class="has_data">
+						<a href="{:U('user/address/selectaddress')}">
+							<p><span>{$address.consignee}</span><span>{$address.mobile}</span></p>
+							<p>{$address.zone} {$address.address}</p>
+						</a>
+					</div>
+				</empty>
+			</div>
+			
+			<div class="pay_2">
+				<volist name="list" id="vo">
+					<h1>{$vo.distributor.distributor_name}</h1>
+					<volist name="vo.goods_list" id="vo2">
+						<dl>
+							<dt><a href="{:U('mall/goods/info',array('id'=>$vo2[GoodsId]))}"><img src="__UPLOAD__/thumbs/b150/{$vo2.GoodsImage}"></a></dt>
+							<dd>
+								<h2><a href="{:U('mall/goods/info',array('id'=>$vo2[GoodsId]))}">{$vo2.GoodsName}</a></h2>
+								<p><span>￥{$vo2.GoodsPrice}<del style="font-size:12px; color:#999; margin-left:10px;">¥{$vo2.OriginalPrice}</del><eq name="vo2.IsSeckill" value="1"><font style="color:red">（秒杀）</font></eq></span></p>
+								<if condition="($vo2[IsSeckill] eq 0) AND ($user[rank][discount] gt 0)"><p style="color:red">（会员折扣：{$user[rank][discount]/10}折）</p></if>
+								<div class="type">
+									<volist name="vo2.Sku" id="vo3">
+										<em style="margin-left:15px"><!--{$vo3.sku_name}：-->{$vo3.sku_value}</em>
+									</volist>
+									<span>x{$vo2.CartNumber}</span>
+								</div>
+								<notempty name="vo2.DeliveryTime"><p><span style="color:#999999;">发货时间：付款后{$vo2.DeliveryTime}天内发货</span></p></notempty>
+								<notempty name="vo2.RepairTime"><p><span style="color:#999999;">维修时间：收货后{$vo2.RepairTime}天内可申请维修</span></p></notempty>
+								<notempty name="vo2.GoodsService"><p style="color:#646464;">【商品服务】{$vo2.GoodsService.name} ￥{$vo2.GoodsService.price}</p></notempty>
+							</dd>
+						</dl>
+					</volist>
+				</volist>
+			</div>
+			
+			<form action="{:U('')}">
+				<div class="pay_3">
+					<h2>支付方式</h2>
+					<div class="weui-cells weui-cells_checkbox">
+						<label class="weui-cell weui-check__label" for="s1">
+							<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon10.png" style="width:25px;margin-right:5px;display:block"></div>
+							<div class="weui-cell__bd">
+								<p>余额支付</p>
+							</div>
+							<div class="weui-cell__ft">
+								<span>账户余额<font>{$user.user_money}</font>元</span>
+								<input type="radio" class="weui-check" name="pay_id" value="1" id="s1" checked>
+								<i class="weui-icon-checked"></i>
+							</div>
+						</label>
+						<eq name="is_weixin" value="1">
+							<label class="weui-cell weui-check__label" for="s2">
+								<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon11.png" style="width:25px;margin-right:5px;display:block"></div>
+								<div class="weui-cell__bd">
+									<p>微信支付</p>
+								</div>
+								<div class="weui-cell__ft">
+									<input type="radio" class="weui-check" name="pay_id" value="2" id="s2">
+									<i class="weui-icon-checked"></i>
+								</div>
+							</label>
+						</eq>
+					</div>
+				</div>
+				<div class="pay_4">
+					<div class="pay_4_bd">
+						<h2><!--<span>积分抵扣</span>--><em>当前可用积分{$user.pay_points}<!--，可抵扣￥<c id="points_money"></c>--></em></h2>
+						<p>使用<input id="pay_points" name="pay_points" type="text">积分，抵扣<span class="deduction">￥0.00</span></p>
+					</div>
+				</div>
+				<div class="pay_4">
+					<div class="pay_4_bd">
+						<p>发票抬头<input name="invoice_title" type="text" placeholder="请填写发票抬头" style="width:78%"></p>
+					</div>
+				</div>
+				<div class="pay_4">
+					<div class="pay_4_bd">
+						<p>给卖家留言<input name="buyer_note" type="text" placeholder="选填：对本次交易的说明" style="width:75%"></p>
+					</div>
+				</div>
+				<div class="pay_5">
+					<p><em>合计</em><span>￥{$info.GoodsAmount}</span></p>
+					<p><em>运费</em><span>￥{$info.ShippingFee}</span></p>
+					<p><em>积分抵扣</em><span class="deduction">￥0.00</span></p>
+					<p><em><b>实际支付</b></em><span><font id="total_amount">￥{$info.TotalAmount}</font></span></p>
+					<p class="last clearfix"><a href="javascript:;" class="createordernow">立即支付</a></p>
+				</div>
+			</form>
+		</div>
+	</empty>
+</div>
+
+<div id="pay_page"></div>
+
+<script>
+$(document).ready(function(){
+	var total_amount = "{$info.TotalAmount}";
+	var user_pay_points = {$user.pay_points};
+	var point_exchange = {$sysconfig.point_exchange};
+	var deduction = 0.00;
+	var points_money = user_pay_points / point_exchange;
+	$('#points_money').html(points_money);
+	
+	
+	$('#use_pay_points').bind('click', function(){
+		if($(this).prop('checked') == true){
+			$('#pay_points').attr('disabled', false);
+		}else{
+			$('#pay_points').attr('disabled', true);
+			$('#pay_points').val('');
+			$('#deduction').html('0.00');
+		}
+	})
+	
+	$('#pay_points').bind('keyup', function(){
+		var user_pay_points = {$user.pay_points};
+		var point_exchange = {$sysconfig.point_exchange};
+		var total_amount = {$info.TotalAmount};
+		var total_amount_points = total_amount * point_exchange;
+		var deduction = 0.00;
+		var pay_points = $(this).val();
+		var min_points = Math.min(user_pay_points, total_amount_points);
+		min_points = parseInt(min_points);
+		
+		if(pay_points > min_points){
+			layer.open({time:1,content:'可用积分为'+min_points});
+			$(this).val(min_points);
+			deduction = min_points / point_exchange;
+		}else{
+			deduction = pay_points / point_exchange;
+		}
+		$('.deduction').html('￥'+deduction.toFixed(2));
+		var money = total_amount - deduction;
+		$('#total_amount').html('￥'+money.toFixed(2));
+	})
+	
+	$('.createordernow').bind('click', function(){
+		var user_pay_points = {$user.pay_points};
+		if($('#use_pay_points').prop('checked') == true && $('#pay_points').val() > user_pay_points){
+			layer.open({time:1,content:'可用积分为'+user_pay_points});return false;
+		}
+		
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			if(d.status == 0){
+				layer.open({time:1,content:d.info});
+			}else if(d.status == 1){
+				layer.open({time:1,content:d.info});
+				 window.location.href = d.url;
+			}else if(d.status == 2){
+				$('#pay_page').html(d.info);
+			}
+		}, 'json');
+		return false;
+	})
+});
+</script>

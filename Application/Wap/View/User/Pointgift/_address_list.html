@@ -1,0 +1,84 @@
+<style>
+.btn{text-align:center;font-size:0;}
+.btn a{display:inline-block;width:40%;margin:0 5%;}
+</style>
+<div class="warp">
+	<div class="user_address_list">
+
+		<empty name="list">
+			<!-----地址无数据时---->
+			<div class="no_data">
+				<p>您还没有填写收货地址</p>
+				<p><img src="__PUBLIC__/wap/images/icon57.png"></p>
+			</div>
+		<else/>
+		<!-----地址有数据时---->
+		<volist name="list" id="vo">
+			<div class="user_address_item">
+				<div class="address_item_hd">
+					<p><span>{$vo.consignee}</span><span>{$vo.mobile}</span></p>
+					<p>{$vo.zone} {$vo.address}</p>
+				</div>
+				<div class="address_item_bd clearfix">
+					<div class="weui-cells_checkbox fl">
+						<label class="weui-cell weui-check__label" for="s{$vo.address_id}">
+							<div class="weui-cell__hd">
+								<input type="radio" class="weui-check" name="radio1" id="s{$vo.address_id}" {:m_checked($vo[is_default], 1)} onClick="set_defaddr({$vo.address_id})">
+								<i class="weui-icon-checked"></i>
+							</div>
+							<div class="weui-cell__bd"><p>默认地址</p></div>
+						</label>
+					</div>
+					<span>
+						<a class='get_page' href="{:U('User/Address/edit', array('id'=>$vo['address_id']))}"><img src="__PUBLIC__/wap/images/icon55.png">编辑</a>
+						<a href="javascript:;" onClick="del_addr({$vo.address_id},this)"><img src="__PUBLIC__/wap/images/icon56.png">删除</a>
+					</span>
+				</div>
+			</div>
+		</volist>
+		</empty>
+		<div class="btn">
+			<a class="weui-btn weui-btn_primary" href="{:U('add')}">+添加地址</a>
+			<a class='get_page weui-btn weui-btn_primary' href="{$exchange_back_url}">返回上一页</a>
+		</div>
+	</div>
+</div>
+
+
+<script>
+function del_addr(address_id,obj){
+	var $this = address_id;
+	if(address_id<0){return;}
+	layer.open({
+		content: '确认要删除该地址吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){
+			var address_id = $this;
+			$.post("{:U('User/Address/del')}",{id:address_id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					$(obj).parents('.user_address_item').remove();
+				//	window.location.reload();
+					return;
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+
+
+function set_defaddr(id){
+	$.post("{:U('User/Address/addressDef')}",{id:id},function(d){
+		//layer.open({time:1,content:data.info});
+		if(d.url){
+		//	window.location.href = d.url;
+		}
+
+	},'json');
+}
+
+</script>

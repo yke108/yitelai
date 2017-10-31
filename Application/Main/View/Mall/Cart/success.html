@@ -1,0 +1,30 @@
+<!-------头部开始----->
+<include file="Public/cart_header"/>
+<!-------头部结束----->
+
+
+
+<!-------支付成功开始----->
+<div class="main w1200">
+	<div class="pay_result">
+		<h2><img src="__PUBLIC__/main/images/icon117.png">恭喜你，支付成功</h2>
+		<p>付款金额：<span>￥{$info.total_order_amount}</span></p>
+		<if condition="$info[orders][0][order_type] neq 1">
+		<p><a href="{:U('user/order/index')}" class="pay_result_1">查看订单</a><a href="{:U('index/index/index')}" class="pay_result_2">继续购物</a></p>
+		<else/>
+		<p><a href="{:U('user/order/team')}" class="pay_result_1">查看我的团购</a><a href="{:U('index/index/index')}" class="pay_result_2">去逛逛</a></p>
+		</if>
+	</div>
+</div>
+<!-------支付订单结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

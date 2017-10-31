@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12" style="overflow-y:scroll;height:450px;">
+        <h3 class="heading">会员详情</h3>
+		<form class="form-horizontal" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<table class="table table-striped table-bordered">
+					<tr>
+						<td style="width:100px;">序号</td>
+						<td>{$info.user_id}</td>
+						<td style="width:100px;">用户头像</td>
+						<td>
+							<notempty name="info.user_img">
+								<img src="{:picurl($info['user_img'])}" style="width:32px;">
+							<else/>
+								<notempty name="info.headimgurl">
+									<img src="{:picurl($info['headimgurl'])}" style="width:32px;">
+								</notempty>
+							</notempty>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>昵称</td>
+						<td>{$info.nick_name}</td>
+						<td>姓名</td>
+						<td>{$info.user_name}</td>
+					</tr>
+					
+					
+					<tr>
+						<td>出生日期</td>
+						<td>{$info.birthday}</td>
+						<td>手机号码</td>
+						<td>{$info.mobile}</td>
+					</tr>
+					
+					<tr>
+						<td>注册时间</td>
+						<td>{:date('Y-m-d H:i:s',$info['reg_time'])}</td>
+						<td>最后登录时间</td>
+						<td>{:date('Y-m-d H:i:s',$info['last_login'])}</td>
+					</tr>
+					
+					<tr>
+						<td>账户余额</td>
+						<td>{$info.user_money}</td>
+						<td>冻结金额</td>
+						<td>{$info.frozen_money}</td>
+					</tr>
+					
+					<tr>
+						<td>消费积分</td>
+						<td>{$info.pay_points}</td>
+						<td>等级</td>
+						<td>{$info.rank_name}</td>
+					</tr>
+				</table>
+                
+			</fieldset>
+		</form>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">添加会员</h3>
+		<?php $action = $info['user_id'] > 0 ? U('edit',array('id'=>$info['user_id'])) : U('add'); ?>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">头像</label>
+					<div class="col-sm-4">
+						<input class="hy_upload_single" hy_field="user_img" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.user_img">{$info.user_img}</notempty>"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">真实姓名</label>
+					<div class="col-sm-4">
+						<input name="real_name" class="input-xlarge form-control" type="text" value="{$info.real_name}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">昵称</label>
+					<div class="col-sm-4">
+						<input name="nick_name" class="input-xlarge form-control" type="text" value="{$info.nick_name}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">密码</label>
+					<div class="col-sm-4">
+						<input name="password" class="input-xlarge form-control" type="password" value="">
+					</div>
+					
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">确认密码</label>
+					<div class="col-sm-4">
+						<input name="re_password" class="input-xlarge form-control" type="password" value="">
+					</div>
+					
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">手机号</label>
+					<div class="col-sm-4">
+						<input name="mobile" class="input-xlarge form-control" type="text" value="{$info.mobile}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">会员类型</label>
+					<div class="col-sm-4">
+						<select class="form-control" name="user_type">
+                     	 	<option value="0">请选择会员类型</option>
+                     	 	<foreach name="user_type" item="vo" key="ko">
+								<option value="{$ko}" {:m_selected($ko, $info[user_type])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">负责品牌</label>
+					<div class="col-sm-8">
+						<div class="col-sm-12" id="brand_list">
+							<volist name="brand_list" id="vo">
+								<label class="checkbox-inline"><input {:m_checked($vo[brand_id], $info[brand_ids])} type="checkbox" name="brand_ids[]" value="{$vo.brand_id}">{$vo.brand_name}</label>
+							</volist>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">负责店铺</label>
+					<div class="col-sm-8">
+						<div class="col-sm-12" id="distributor_list">
+							<volist name="distributor_list" id="vo">
+								<label class="checkbox-inline"><input {:m_checked($vo[distributor_id], $info[distributor_ids])} type="checkbox" name="distributor_ids[]" value="{$vo.distributor_id}">{$vo.distributor_name}</label>
+							</volist>
+						</div>
+					</div>
+				</div>-->
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

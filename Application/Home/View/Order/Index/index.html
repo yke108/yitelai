@@ -1,0 +1,62 @@
+<div class="orders_management_list">
+	<if condition="($sys_id eq 1) OR ($sys_id eq 2)">
+		<div class="orders_management_list_menu">
+			<h2 class="right-after"><span>标准订单</span><a href="{:U('list')}">查看更多订单</a></h2>
+			<ul>
+				<li><a href="{:U('list', array('type'=>2))}"><span><img src="__PUBLIC__/home/images/icon26.png"><if condition="$uon[nopay] eq 0"><elseif condition="$uon[nopay] gt 100"/><i>99+</i><else/><i>{$uon.nopay}</i></if></span><p>待付款</p></a></li>
+				<li><a href="{:U('list', array('type'=>3))}"><span><img src="__PUBLIC__/home/images/icon27.png"><if condition="$uon[wait] eq 0"><elseif condition="$uon[wait] gt 100"/><i>99+</i><else/><i>{$uon.wait}</i></if></span><p>待发货</p></a></li>
+				<li><a href="{:U('list', array('type'=>4))}"><span><img src="__PUBLIC__/home/images/icon28.png"><if condition="$uon[finish] eq 0"><elseif condition="$uon[finish] gt 100"/><i>99+</i><else/><i>{$uon.finish}</i></if></span><p>已完成</p></a></li>
+				<li><a href="{:U('list', array('type'=>5))}"><span><img src="__PUBLIC__/home/images/icon29.png"><if condition="$uon[cancel] eq 0"><elseif condition="$uon[cancel] gt 100"/><i>99+</i><else/><i>{$uon.cancel}</i></if></span><p>已取消</p></a></li>
+				<li><a href="{:U('list', array('type'=>6))}"><span><img src="__PUBLIC__/home/images/icon30.png"><if condition="$uon[back] eq 0"><elseif condition="$uon[back] gt 100"/><i>99+</i><else/><i>{$uon.back}</i></if></span><p>退货</p></a></li>
+				<li><a href="{:U('list', array('type'=>7))}"><span><img src="__PUBLIC__/home/images/icon32.png"><if condition="$uon[comment] eq 0"><elseif condition="$uon[comment] gt 100"/><i>99+</i><else/><i>{$uon.comment}</i></if></span><p>已评价</p></a></li>
+			</ul>
+		</div>
+	</if>
+	<div class="orders_management_list_menu custom_menu">
+		<h2 class="right-after"><span>定制订单</span><a href="{:U('order/custom')}">查看更多订单</a></h2>
+		<ul>
+			<if condition="($sys_id eq 1) OR ($role_id eq 54) OR ($role_id eq 65) OR ($role_id eq 50)"><!--平台/店长/订单专员/财务人员-->
+				<li><a href="{:U('order/custom/design')}"><span><img src="__PUBLIC__/home/images/ico1.png"><if condition="$custom_uon[design] eq 0"><elseif condition="$custom_uon[design] gt 100"/><i>99+</i><else/><i>{$custom_uon.design}</i></if></span><p>待设计、测量</p></a></li>
+				<li><a href="{:U('order/custom/pendingcheck')}"><span><img src="__PUBLIC__/home/images/ico2.png"><if condition="$custom_uon[pendingcheck] eq 0"><elseif condition="$custom_uon[pendingcheck] gt 100"/><i>99+</i><else/><i>{$custom_uon.pendingcheck}</i></if></span><p>生产待审</p></a></li>
+				<li><a href="{:U('order/custom/checkpass')}"><span><img src="__PUBLIC__/home/images/ico3.png"><if condition="$custom_uon[checkpass] eq 0"><elseif condition="$custom_uon[checkpass] gt 100"/><i>99+</i><else/><i>{$custom_uon.checkpass}</i></if></span><p>成本待审</p></a></li>
+				<li><a href="{:U('order/custom/pendingproduce')}"><span><img src="__PUBLIC__/home/images/ico4.png"><if condition="$custom_uon[pendingproduce] eq 0"><elseif condition="$custom_uon[pendingproduce] gt 100"/><i>99+</i><else/><i>{$custom_uon.pendingproduce}</i></if></span><p>待生产</p></a></li>
+				<li><a href="{:U('order/custom/producing')}"><span><img src="__PUBLIC__/home/images/ico5.png"><if condition="$custom_uon[producing] eq 0"><elseif condition="$custom_uon[producing] gt 100"/><i>99+</i><else/><i>{$custom_uon.producing}</i></if></span><p>生产中</p></a></li>
+				<li><a href="{:U('order/custom/storage')}"><span><img src="__PUBLIC__/home/images/ico6.png"><if condition="$custom_uon[storage] eq 0"><elseif condition="$custom_uon[storage] gt 100"/><i>99+</i><else/><i>{$custom_uon.storage}</i></if></span><p>已入库</p></a></li>
+				<li><a href="{:U('order/custom/shipped')}"><span><img src="__PUBLIC__/home/images/ico7.png"><if condition="$custom_uon[shipped] eq 0"><elseif condition="$custom_uon[shipped] gt 100"/><i>99+</i><else/><i>{$custom_uon.shipped}</i></if></span><p>已发货</p></a></li>
+				<li><a href="{:U('order/custom/installed')}"><span><img src="__PUBLIC__/home/images/ico8.png"><if condition="$custom_uon[installed] eq 0"><elseif condition="$custom_uon[installed] gt 100"/><i>99+</i><else/><i>{$custom_uon.installed}</i></if></span><p>已安装</p></a></li>
+				<li><a href="{:U('order/custom/finish')}"><span><img src="__PUBLIC__/home/images/ico9.png"><if condition="$custom_uon[installed] eq 0"><elseif condition="$custom_uon[installed] gt 100"/><i>99+</i><else/><i>{$custom_uon.installed}</i></if></span><p>已完成</p></a></li>
+				<li><a href="{:U('order/custom/comment')}"><span><img src="__PUBLIC__/home/images/ico10.png"><if condition="$custom_uon[comment] eq 0"><elseif condition="$custom_uon[comment] gt 100"/><i>99+</i><else/><i>{$custom_uon.comment}</i></if></span><p>已评论</p></a></li>
+				<li><a href="{:U('order/custom/visit')}"><span><img src="__PUBLIC__/home/images/ico11.png"><if condition="$custom_uon[visit] eq 0"><elseif condition="$custom_uon[visit] gt 100"/><i>99+</i><else/><i>{$custom_uon.visit}</i></if></span><p>回访记录</p></a></li>
+				<li><a href="{:U('order/custom/keep')}"><span><img src="__PUBLIC__/home/images/ico12.png"><if condition="$custom_uon[keep] eq 0"><elseif condition="$custom_uon[keep] gt 100"/><i>99+</i><else/><i>{$custom_uon.keep}</i></if></span><p>保养记录</p></a></li>
+				<li><a href="{:U('order/custom/patch')}"><span><img src="__PUBLIC__/home/images/ico13.png"><if condition="$custom_uon[stockout] eq 0"><elseif condition="$custom_uon[stockout] gt 100"/><i>99+</i><else/><i>{$custom_uon.stockout}</i></if></span><p>缺补单</p></a></li>
+				<li><a href="{:U('order/custom/cancel')}"><span><img src="__PUBLIC__/home/images/ico14.png"><if condition="$custom_uon[cancel] eq 0"><elseif condition="$custom_uon[cancel] gt 100"/><i>99+</i><else/><i>{$custom_uon.cancel}</i></if></span><p>已取消</p></a></li>
+			<elseif condition="$sys_id eq 5"/><!--品牌商-->
+				<li><a href="{:U('order/custom/pendingcheck')}"><span><img src="__PUBLIC__/home/images/ico2.png"><if condition="$custom_uon[pendingcheck] eq 0"><elseif condition="$custom_uon[pendingcheck] gt 100"/><i>99+</i><else/><i>{$custom_uon.pendingcheck}</i></if></span><p>生产待审</p></a></li>
+				<li><a href="{:U('order/custom/checkpass')}"><span><img src="__PUBLIC__/home/images/ico3.png"><if condition="$custom_uon[checkpass] eq 0"><elseif condition="$custom_uon[checkpass] gt 100"/><i>99+</i><else/><i>{$custom_uon.checkpass}</i></if></span><p>成本待审</p></a></li>
+				<li><a href="{:U('order/custom/pendingproduce')}"><span><img src="__PUBLIC__/home/images/ico4.png"><if condition="$custom_uon[pendingproduce] eq 0"><elseif condition="$custom_uon[pendingproduce] gt 100"/><i>99+</i><else/><i>{$custom_uon.pendingproduce}</i></if></span><p>待生产</p></a></li>
+				<li><a href="{:U('order/custom/producing')}"><span><img src="__PUBLIC__/home/images/ico5.png"><if condition="$custom_uon[producing] eq 0"><elseif condition="$custom_uon[producing] gt 100"/><i>99+</i><else/><i>{$custom_uon.producing}</i></if></span><p>生产中</p></a></li>
+				<li><a href="{:U('order/custom/storage')}"><span><img src="__PUBLIC__/home/images/ico6.png"><if condition="$custom_uon[storage] eq 0"><elseif condition="$custom_uon[storage] gt 100"/><i>99+</i><else/><i>{$custom_uon.storage}</i></if></span><p>已入库</p></a></li>
+				<li><a href="{:U('order/custom/shipped')}"><span><img src="__PUBLIC__/home/images/ico7.png"><if condition="$custom_uon[shipped] eq 0"><elseif condition="$custom_uon[shipped] gt 100"/><i>99+</i><else/><i>{$custom_uon.shipped}</i></if></span><p>已发货</p></a></li>
+				<li><a href="{:U('order/custom/installed')}"><span><img src="__PUBLIC__/home/images/ico8.png"><if condition="$custom_uon[installed] eq 0"><elseif condition="$custom_uon[installed] gt 100"/><i>99+</i><else/><i>{$custom_uon.installed}</i></if></span><p>已安装</p></a></li>
+				<li><a href="{:U('order/custom/finish')}"><span><img src="__PUBLIC__/home/images/ico9.png"><if condition="$custom_uon[installed] eq 0"><elseif condition="$custom_uon[installed] gt 100"/><i>99+</i><else/><i>{$custom_uon.installed}</i></if></span><p>已完成</p></a></li>
+				<li><a href="{:U('order/custom/patch')}"><span><img src="__PUBLIC__/home/images/ico13.png"><if condition="$custom_uon[stockout] eq 0"><elseif condition="$custom_uon[stockout] gt 100"/><i>99+</i><else/><i>{$custom_uon.stockout}</i></if></span><p>缺补单</p></a></li>
+			<elseif condition="$sys_id eq 2"/><!--店铺-->
+				<switch name="role_id">
+					<case value="55"><!--安装人员-->
+						<li><a href="{:U('order/custom/shipped')}"><span><img src="__PUBLIC__/home/images/ico7.png"><if condition="$custom_uon[shipped] eq 0"><elseif condition="$custom_uon[shipped] gt 100"/><i>99+</i><else/><i>{$custom_uon.shipped}</i></if></span><p>等待收货</p></a></li>
+						<li><a href="{:U('order/custom/pendinginstall')}"><span><img src="__PUBLIC__/home/images/ico15.png"><if condition="$custom_uon[pendinginstall] eq 0"><elseif condition="$custom_uon[pendinginstall] gt 100"/><i>99+</i><else/><i>{$custom_uon.pendinginstall}</i></if></span><p>待安装</p></a></li>
+						<li><a href="{:U('order/custom/installed')}"><span><img src="__PUBLIC__/home/images/ico8.png"><if condition="$custom_uon[installed] eq 0"><elseif condition="$custom_uon[installed] gt 100"/><i>99+</i><else/><i>{$custom_uon.installed}</i></if></span><p>已安装</p></a></li>
+						<li><a href="{:U('order/custom/finish')}"><span><img src="__PUBLIC__/home/images/ico9.png"><if condition="$custom_uon[installed] eq 0"><elseif condition="$custom_uon[installed] gt 100"/><i>99+</i><else/><i>{$custom_uon.installed}</i></if></span><p>已完成</p></a></li>
+						<li><a href="{:U('order/custom/keep')}"><span><img src="__PUBLIC__/home/images/ico12.png"><if condition="$custom_uon[keep] eq 0"><elseif condition="$custom_uon[keep] gt 100"/><i>99+</i><else/><i>{$custom_uon.keep}</i></if></span><p>保养记录</p></a></li>
+					</case>
+				</switch>
+			</if>
+		</ul>
+	</div>
+</div>
+
+<style type="text/css">
+.custom_menu ul li span{height:44px; line-height:44px; width:44px; margin-bottom:0px;}
+.custom_menu ul li span img{max-height:44px; max-width:44px;}
+.custom_menu ul li span i{right:-2px; top:-2px;}
+</style>

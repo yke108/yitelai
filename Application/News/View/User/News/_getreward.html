@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<dl class="item">
+		<dt>
+			<h2><a href="{:U('story/index/info', array('id'=>$vo[story_id]))}">{$vo.story_title}</a></h2>
+			<p>{$vo.change_time|date="Y-m-d H:i:s",###}</p>
+		</dt>
+		<dd>{$vo.amount_change}</dd>
+	</dl>
+</volist>

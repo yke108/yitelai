@@ -1,0 +1,38 @@
+<div class="client_management_detaild">
+	<div class="client_detaild_hd">
+		<a href="{:U('edit', array('user_id'=>$info[user_id]))}">
+			<dl>
+				<dt><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+				<dd>
+					<h2><span>{$info.user_name}</span><time>{:date('Y-m-d H:i', $info[reg_time])}</time></h2>
+					<p><span>城市：{$info.city|default='无'}</span><span>来源：{$from_list[$info[from]]}</span></p>
+					<p>所属店铺：{$distributor_info.distributor_name|default='无'}</p>
+					<p><span>类型：{$info.user_typename}</span><span>等级：{$info.rank.rank_name|default='一星'}</span></p>
+					<p><span>积分：{$info.pay_points}</span><span>佣金：{$info.commission_money}</span></p>
+				</dd>
+			</dl>
+		</a>
+	</div>
+	<div class="client_detaild_bd">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/order/index', array('user_id'=>$info[user_id]))}">客户订单</a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/browse/index', array('user_id'=>$info[user_id]))}">客户浏览记录</a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/collect/index', array('user_id'=>$info[user_id]))}">客户收藏记录</a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/feedback/index', array('user_id'=>$info[user_id]))}">客户投诉建议</a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/feedback/ask', array('user_id'=>$info[user_id]))}">客户咨询日志</a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/comment/index', array('user_id'=>$info[user_id]))}">客户评价</a></li>
+			<!--<li class="mui-table-view-cell"><a class="right-after" href="#">客户关怀</a></li>-->
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/share/index', array('user_id'=>$info[user_id]))}">客户转发</a></li>
+			<!--<li class="mui-table-view-cell"><a class="right-after" href="#">客户跟进记录</a></li>-->
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/exchange/index', array('user_id'=>$info[user_id]))}">兑换记录</a></li>
+			<li class="mui-table-view-cell"><a class="right-after" href="{:U('user/publish/index', array('user_id'=>$info[user_id]))}">发布记录</a></li>
+		</ul>
+	</div>
+</div>
+<div class="customer_pool_detaild">
+	<purview name="move">
+		<div class="customer_pool_detaild_btn btn">
+			<a href="{:U('move',['user_id'=>$info['user_id']])}" class="mui-btn mui-btn-block mui-btn-primary">转移</a>
+		</div>
+	</purview>
+</div>

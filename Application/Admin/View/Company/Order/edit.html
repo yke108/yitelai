@@ -1,0 +1,162 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.order_id" value="0">订单查看<else/>增加订单</gt></h3>
+			<php>$action = $info['order_id'] > 0 ? U('edit', array('id'=>$info['order_id'])) : U('add');</php>
+		<form class="form-horizontal" action="{$action}" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="distributor_id" value="{$get.distributor_id}" />
+			<fieldset>
+			<gt name="info.order_id" value="0">
+			<div class="form-group">
+					<label for="u_email" class="control-label col-sm-2">设计师:</label>
+					<div style="margin-top:7px;">{$infoname[$info['designer_id']]}</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">客户姓名:</label>
+					<div style="margin-top:7px;">{$info['customer_name']}</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2">客户手机号:</label>
+					<div style="margin-top:7px;">{$info['customer_mobile']}</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">空间类型:</label>
+					<div style="margin-top:7px;">{$info['space_type']}</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">风格:</label>
+					<div style="margin-top:7px;">{$info['style']}</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">项目面积:</label>
+					<div style="margin-top:7px;">{$info['area']}平方米</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">预算:</label>
+					<div style="margin-top:7px;">{$info['budget']}万</div>
+				</div>
+				
+				
+
+				<div class="form-group">
+					<label for="u_email" class="control-label col-sm-2">预约状态:</label>
+					<div style="margin-top:7px;">{$statusname[$info['status_id']]}</div>
+				</div>
+
+				<!--<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">描述:</label>
+					<div style="margin-top:7px;">{$info['order_intro']}</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">订单日志:</label>
+					<div style="margin-top:7px;">
+						<style type="text/css">
+							table.gridtable {	
+								font-family: verdana,arial,sans-serif;	
+								font-size:11px;	color:#333333;	
+								border-width: 1px;	
+								border-color: #666666;	
+								border-collapse: collapse;
+							}
+							table.gridtable th {	
+								border-width: 1px;	
+								padding: 8px;	
+								border-style: solid;	
+								border-color: #666666;	
+								background-color: #dedede;
+							}
+							table.gridtable td {	
+								border-width: 1px;	
+								padding: 8px;	
+								border-style: solid;	
+								border-color: #666666;	
+								background-color: #ffffff;}
+						</style>
+						<table class="gridtable">
+							<tr>
+								<th>时间</th>
+								<th>操作</th>
+							</tr>
+							<foreach name="orderloglist" item="val">
+							<tr>
+								<td>{$val['add_time']|date="Y-m-d H:i:s",###}</td>
+								<td>{$val['log_content']}</td>
+							</tr>
+							</foreach>
+						</table>
+					</div>
+				</div>
+
+			<else/>
+
+				<div class="form-group">
+					<label for="u_email" class="control-label col-sm-2">设计师</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="designer_id">
+							<volist name="infolist" id="vo">
+								<option  {:m_selected($info[designer_id], $vo[designer_id])} value="{$vo.designer_id}">
+										{$vo.designer_name}
+								</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">客户姓名</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="customer_name" class="input-xlarge form-control" type="text" value="{$info.customer_name}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2">客户手机号</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="customer_mobile" class="input-xlarge form-control" type="text" value="{$info.customer_mobile}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="u_email" class="control-label col-sm-2">预约状态</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="status_id">
+							<volist name="statuslist" id="vo">
+								<option  {:m_selected($info[status_id], $vo[status_id])} value="{$vo.status_id}">
+										{$vo.status_name}
+								</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">描述</label>
+					<div class="col-sm-9">
+						<textarea name="order_intro" style="width:66%;height:100px;">{$info.order_intro}</textarea>
+					</div>
+				</div>
+			</gt>
+
+				<lt name="info.order_id" value="0">
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+				</lt>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script>
+        KindEditor.ready(function(K) {
+            window.editor = K.create('#editor_id', {uploadJson : '{:U("site/upload")}'});
+        });
+</script>

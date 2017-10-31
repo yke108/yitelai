@@ -1,0 +1,316 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.book_id" value="0">编辑菜谱<else/>添加菜谱</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">标题</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="name" class="input-xlarge form-control" type="text" value="{$info.name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">主图</label>
+					<div class="col-sm-8">
+						<input class="hy_upload_single" hy_field="picture" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.picture">{$info.picture}</notempty>"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">分类</label>
+					<div class="col-sm-4 col-md-4">
+						<select class="form-control" name="cat_id">
+							<option value="">选择分类</option>
+							<volist name="catlist" id="vo">
+								<option {:m_selected($info[cat_id], $vo[cat_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品标签</label>
+					<div class="col-sm-8" style="padding:0;">
+						<div class="col-sm-12" id="label_list">
+							<foreach name="label_list" item="vo" key="ko">
+								<label class="checkbox-inline"><input {:m_checked($ko, $info[label_ids])} type="checkbox" name="label_ids[]" value="{$ko}">{$vo}</label>
+							</foreach>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">属性</label>
+					<div class="col-sm-1 col-md-1">
+						<select class="form-control" name="tech">
+							<option value="">工艺</option>
+							<foreach name="cook_config.tech" item="vo" key="ko">
+								<option value="{$vo}" {:m_selected($vo, $info[tech])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+					<div class="col-sm-1 col-md-1">
+						<select class="form-control" name="difficulty">
+							<option value="">难度</option>
+							<foreach name="difficulty_list" item="vo" key="ko">
+								<option value="{$ko}" {:m_selected($ko, $info[difficulty])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+					<div class="col-sm-1 col-md-1">
+						<select class="form-control" name="number">
+							<option value="">人数</option>
+							<foreach name="number_list" item="vo" key="ko">
+								<option value="{$ko}" {:m_selected($ko, $info[number])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+					<div class="col-sm-1 col-md-1">
+						<select class="form-control" name="taste">
+							<option value="">口味</option>
+							<foreach name="cook_config.taste" item="vo" key="ko">
+								<option value="{$vo}" {:m_selected($vo, $info[taste])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+					<div class="col-sm-2 col-md-2">
+						<select class="form-control" name="prepare_time">
+							<option value="">准备时间</option>
+							<foreach name="preparetime_list" item="vo" key="ko">
+								<option value="{$ko}" {:m_selected($ko, $info[prepare_time])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+					<div class="col-sm-2 col-md-2">
+						<select class="form-control" name="cook_time">
+							<option value="">烹饪时间</option>
+							<foreach name="cooktime_list" item="vo" key="ko">
+								<option value="{$ko}" {:m_selected($ko, $info[cook_time])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">是否显示</label>
+					<div class="col-sm-8">
+						<label class="checkbox-inline">
+							<input type="checkbox" name="is_open" value="1" <gt name="info.book_id" value="0">{:m_checked($info[is_open], 1)}<else/>checked="checked"</gt>>显示
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" name="is_recommend" value="1" {:m_checked($info[is_recommend], 1)}>推荐
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">描述</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="description" class="input-xlarge form-control" type="text" value="{$info.description}">
+					</div>
+				</div>
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">内容</label>
+					<div class="col-sm-9">
+						<textarea id="ueditor" name="content" style="width:100%;height:300px;">
+							{$info.content}
+						</textarea>
+					</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">主料</label>
+					<div class="col-sm-4" style="padding:0;">
+						<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>用料名称</th>
+									<th>用量</th>
+									<th><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_main">添加主料</a></th>
+								</tr>
+							</thead>
+							<tbody id="main_material">
+								<empty name="info.material.main_material">
+									<tr>
+										<td><input class="hy_upload_single" hy_field="main_material[picture][]" src="" style="width:50px;height:50px;" /></td>
+										<td><input type="text" name="main_material[name][]" value="" class="form-control"></td>
+										<td><input type="text" name="main_material[dosage][]" value="" class="form-control"></td>
+										<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+									</tr>
+								<else/>
+									<volist name="info.material.main_material" id="vo">
+										<tr>
+											<td><input class="hy_upload_single" hy_field="main_material[picture][]" src="{$vo.picture}" style="width:50px;height:50px;" /></td>
+											<td><input type="text" name="main_material[name][]" value="{$vo.name}" class="form-control"></td>
+											<td><input type="text" name="main_material[dosage][]" value="{$vo.dosage}" class="form-control"></td>
+											<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+										</tr>
+									</volist>
+								</empty>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">辅料</label>
+					<div class="col-sm-4" style="padding:0;">
+						<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>图片</th>
+									<th>用料名称</th>
+									<th>用量</th>
+									<th><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_sub">添加辅料</a></th>
+								</tr>
+							</thead>
+							<tbody id="sub_material">
+								<empty name="info.material.sub_material">
+									<tr>
+										<td><input class="hy_upload_single" hy_field="sub_material[picture][]" src="" style="width:50px;height:50px;" /></td>
+										<td><input type="text" name="sub_material[name][]" value="" class="form-control"></td>
+										<td><input type="text" name="sub_material[dosage][]" value="" class="form-control"></td>
+										<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+									</tr>
+								<else/>
+									<volist name="info.material.sub_material" id="vo">
+										<tr>
+											<td><input class="hy_upload_single" hy_field="sub_material[picture][]" src="{$vo.picture}" style="width:50px;height:50px;" /></td>
+											<td><input type="text" name="sub_material[name][]" value="{$vo.name}" class="form-control"></td>
+											<td><input type="text" name="sub_material[dosage][]" value="{$vo.dosage}" class="form-control"></td>
+											<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+										</tr>
+									</volist>
+								</empty>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">步骤</label>
+					<div class="col-sm-10" style="padding:0;">
+						<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th width="60">图片</th>
+									<th>描述</th>
+									<th width="120"><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_step">添加步骤</a></th>
+								</tr>
+							</thead>
+							<tbody id="steps">
+								<empty name="info.steps">
+									<tr>
+										<td><input class="hy_upload_single" hy_field="steps[picture][]" src="" style="width:50px;height:50px;" /></td>
+										<td><input type="text" name="steps[description][]" value="" class="form-control"></td>
+										<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+									</tr>
+								<else/>
+									<volist name="info.steps" id="vo">
+										<tr>
+											<td><input class="hy_upload_single" hy_field="steps[picture][]" src="{$vo.picture}" style="width:50px;height:50px;" /></td>
+											<td><input type="text" name="steps[description][]" value="{$vo.description}" class="form-control"></td>
+											<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+										</tr>
+									</volist>
+								</empty>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="book_id" value="{$info.book_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.cs_row_add_main').unbind('click').bind('click', function(){
+		var row = '<tr>' +
+						'<td><input class="hy_upload_single" hy_field="main_material[picture][]" src="" style="width:50px;height:50px;" /></td>' +
+						'<td><input type="text" name="main_material[name][]" value="" class="form-control"></td>' +
+						'<td><input type="text" name="main_material[dosage][]" value="" class="form-control"></td>' +
+						'<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>' +
+					'</tr>';
+		$('#main_material').append(row);
+		$('#main_material tr td').children('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+		
+		//删除事件
+		$('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				obj.remove();
+			}else{
+				return false;
+			}
+		});
+	});
+	
+	$('.cs_row_add_sub').unbind('click').bind('click', function(){
+		var row = '<tr>' +
+						'<td><input class="hy_upload_single" hy_field="sub_material[picture][]" src="" style="width:50px;height:50px;" /></td>' +
+						'<td><input type="text" name="sub_material[name][]" value="" class="form-control"></td>' +
+						'<td><input type="text" name="sub_material[dosage][]" value="" class="form-control"></td>' +
+						'<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>' +
+					'</tr>';
+		$('#sub_material').append(row);
+		$('#sub_material tr td').children('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+		
+		//删除事件
+		$('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				obj.remove();
+			}else{
+				return false;
+			}
+		});
+	});
+	
+	$('.cs_row_add_step').unbind('click').bind('click', function(){
+		var row = '<tr>' +
+						'<td><input class="hy_upload_single" hy_field="steps[picture][]" src="" style="width:50px;height:50px;" /></td>' +
+						'<td><input type="text" name="steps[description][]" value="" class="form-control"></td>' +
+						'<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>' +
+					'</tr>';
+		$('#steps').append(row);
+		$('#steps tr td').children('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+		
+		//删除事件
+		$('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				obj.remove();
+			}else{
+				return false;
+			}
+		});
+	});
+	
+	$('.btn_row_del').unbind('click').bind('click', function(){
+		var obj = $(this).parent().parent();
+		if(obj.parent().children().length > 1){
+			obj.remove();
+		}else{
+			return false;
+		}
+	});
+});
+</script>

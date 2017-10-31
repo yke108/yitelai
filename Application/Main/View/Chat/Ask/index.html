@@ -1,0 +1,238 @@
+﻿<style>
+	body{ background:#000;}
+</style>
+
+<div class="service">
+	<div class="service_tit">
+		<dl class="clearfix">
+			<dt><img src="__UPLOAD__/thumbs/b90/{$distributor.distributor_image}" height="50"></dt>
+			<dd>
+				<h2>{$distributor.distributor_name}</h2>
+				<p>正在为您服务</p>
+			</dd>
+		</dl>
+		<div class="close"><a href="javascript:;"></a></div>
+	</div>
+	<div class="service_main">
+		<div class="service_main_l">
+			<div class="service_scroll_area">
+				<empty name="user"><div class="no_login">您还未登录，请点击<a href="{:U('index/site/login')}">登录</a></div></empty>
+				<div class="speak_window" id="scroll">
+					<div class="speak_box">
+						<div class="answer">
+							<div class="service_record_box">
+								<div class="heard_img"><img src="__PUBLIC__/main/images/pic107.jpg"></div>
+								<div class="answer_text">
+									<p>Hi 亲爱的用户，有什么能够问您服务？</p>
+									<i></i>
+								</div>
+							</div>
+						</div>
+						<!--<div class="question">
+							<div class="service_record_box">
+								<div class="question_text"><p>有人吗？</p><i></i></div>
+								<div class="heard_img"><img src="__PUBLIC__/main/images/pic107.jpg"></div>
+							</div>
+						</div>-->
+						<!--<div class="answer">
+							<div class="service_record_box">
+								<div class="heard_img"><img src="__PUBLIC__/main/images/pic107.jpg"></div>
+								<div class="answer_text">
+									<p>您好！需要了解什么内容，请简述您想要了解的问题，我们将尽快给您答复！定制家居三天内上门测量，制作周期10~15个工作日。</p>
+									<p><a href="#">转人工服务</a></p>
+									<i></i>
+								</div>
+							</div>
+						</div>-->
+					</div>
+				</div>
+			</div>
+			<div class="service_send_area">
+				<div class="service_bd write_box">
+					<textarea name="" cols="" rows="3" onKeyUp="keyup()" placeholder="请简要描述您的问题" ></textarea>
+					<p><button type="button" class="close_window">关闭</button><button class="send">发送</button></p>
+				</div>
+			</div>
+		</div>
+		<div class="service_main_r">
+			<notempty name="goods">
+				<div class="service_cookie">
+					<h2>商品信息</h2>
+					<dl class="clearfix">
+						<dt><a href="{:U('mall/goods/info', array('id'=>$goods[record_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b512/{$goods.goods_image}"></a></dt>
+						<dd>
+							<p><a href="{:U('mall/goods/info', array('id'=>$goods[record_id]))}" target="_blank">{$goods.goods_name}</a></p>
+							<p><span>{$goods.goods_title}</span></p>
+						</dd>
+					</dl>
+					<ul>
+						<li><b>售&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价:</b><span><font>￥{$goods.product.product_price}</font></span></li>
+						<!--<li><b>促销信息:</b><span>满2000元减300元</span></li>-->
+						<li><b>库&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;存:</b><span><c id="stock_num"><if condition="$goods[is_seckill] eq 1">{$goods.product.seckill_num}<else/>{$goods.product.stock_num}</if></c>件</span></li>
+						<li><b>商品评分:</b><span><em></em><em></em><em></em><em></em><em></em><a href="{:U('mall/goods/info', array('id'=>$goods[record_id]))}" target="_blank">({$comment_count}条评论)</a></span></li>
+						<li><b>服&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务:</b><span>由谷安居发货，并提供售后服务</span></li>
+						<li><a href="{:U('mall/cart/add')}" class="add_car">加入购物车</a></li>
+						<input type="hidden" name="product_id" value="{$product.id}" id="product_id" />
+					</ul>
+				</div>
+			</notempty>
+			<div class="service_recomment">
+				<h2><span>为您推荐</span><a href="{:U('recommend_list', array('id'=>$distributor[distributor_id]))}" class="change">换一组</a></h2>
+				<ul class="clearfix recommend_list">
+					<include file="Chat/Ask/recommend_list"/>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(function(){
+	if($.chat == undefined) $.chat = {};
+	$.chat.fmanual = "{$manual_flag}";
+	var ssay = function(){
+		if($.chat.fmanual != 1) return;
+		$.post("{:U('chat/ask/ssay')}", {}, function(d){
+			if(d.status == 2){
+				answer(d.info);
+			} else if(d.info == 'end') {
+				$.chat.fmanual = 0;
+			}
+		}, 'json');
+	}
+	$.chat.ftime = setInterval(ssay, 10000);
+});
+</script>
+<script>
+	function scroll(){
+		var Goscroll = document.getElementById('scroll');
+		Goscroll.scrollTop = Goscroll.scrollHeight;
+	}
+	$(".service_bd").on('click','.send',function(){
+		$('.write_list').remove();
+		var text = $('.write_box textarea').val(),
+			str  = '<div class="question"><div class="service_record_box">';
+			str += '<div class="question_text"><p>'+text+'</p><i></i></div>';
+			str += '<div class="heard_img"><img src="__PUBLIC__/main/images/pic107.jpg">';
+			str += '</div></div>';
+		if(text == ''){
+			alert('发送内容不能为空!请重新输入');
+			$('.write_box textarea').focus();
+		}else{
+			$('.speak_box').append(str);
+			$('.write_box textarea').val('');
+			$('.write_box textarea').focus();
+			var goods_id = "{$goods.record_id}";
+			var data = {'message':text, 'goods_id':goods_id};
+			$.post("{:U('chat/ask/question')}", data, function(d){
+				if(d.status == 2){
+					answer(d.info);
+				}
+			}, 'json');
+			scroll();
+		}
+	});
+	
+	function answer(strVar){
+		   $('.speak_box').append(strVar);
+		   $('.chat-qs').find('.q').bind('click', function(){
+			   $.post("{:U('chat/ask/detail')}", {'qid':$(this).attr('value')}, function(d){
+					if(d.status == 2){
+						answer(d.info);
+					}
+				}, 'json');
+		   });
+		   $('.chat-qs').find('.m').bind('click', function(){
+			   $.post("{:U('chat/ask/mbegin')}", {}, function(d){
+					if(d.status == 2){
+						$.chat.fmanual = 1;
+						answer(d.info);
+					}
+				}, 'json');
+		   });
+		   $('.chat-qs').removeClass('chat-qs');
+		   scroll();
+	 };
+	
+	$(".close_window,.service_tit .close a").click(function(){
+		function custom_close(){
+			if(confirm("您确定要结束对话，并离开本页面吗？")){
+				$.post("{:U('chat/ask/close')}", {}, function(d){
+					if(d.status == 1){
+						window.close();
+					}
+				}, 'json');
+			}
+		};
+		custom_close();
+	})
+	
+	function keyup(){
+		var footer_height = $('.wenwen-footer').outerHeight(),
+			text = $('.service_bd textarea').val(),
+			str = '<div class="write_list">'+text+'</div>';
+		if (text == '' || text == undefined){
+			$('.write_list').remove();
+		}else{
+			$('.wenwen-footer').append(str);
+			$('.write_list').css('bottom',footer_height);
+		}
+	}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var user_id = "{$user.user_id}";
+	//加入购物车
+	$('.add_car').bind('click',function(){
+		if(!user_id){
+			layer.open({time:1,content:'请先登录'});
+			window.location.href = "{:U('index/site/login')}";
+			return false;
+		}
+		
+		var stock_num = $('#stock_num').html();
+		stock_num = parseInt(stock_num);
+		if(stock_num == 0){
+			layer.open({time:1,content:'库存不足'});return false;
+		}
+		
+		var product_id = $('#product_id').val();
+		var number = 1;
+		var service_id = $('#service_id').val();
+		
+		if(!product_id){
+			layer.open({time:1,content:'请选择规格'});return false;
+		}
+		if(!number){
+			layer.open({time:1,content:'请输入购物数量'});return false;
+		}
+		
+		var data = {
+			'id':product_id,
+			'number':number,
+			'service_id':service_id
+		};
+		$.post($(this).attr('href'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+			if(d.cart_num){
+				$('#cart_num').html(d.cart_num);
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(".service_recomment .change").click(function(){
+			var change_obj = $(this);
+			$.post(change_obj.attr('href'),{},function(d){
+				$('.service_recomment .recommend_list').html(d);
+			},'json');
+			return false;
+		})
+	})
+</script>

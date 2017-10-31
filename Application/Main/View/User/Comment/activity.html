@@ -1,0 +1,82 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的评论开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我的评论</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_comment">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li <if condition="$Think.const.ACTION_NAME eq 'index'">class="on"</if>><a href="{:U('user/comment/index')}">交易评价/晒单</a></li>
+						<li <if condition="$Think.const.ACTION_NAME eq 'activity'">class="on"</if>><a href="{:U('user/comment/activity')}">活动评价</a></li>
+						<li <if condition="$Think.const.ACTION_NAME eq 'cook'">class="on"</if>><a href="{:U('user/comment/cook')}">菜谱评价</a></li>
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<th align="left">活动名称</th>
+								<th width="640">评价</th>
+								<th width="90">操作</th>
+							</tr>
+							<volist name="list" id="vo">
+								<tr>
+									<td>{$vo.title}</td>
+									<td align="center">
+										<p style="word-wrap:break-word; width:640px; text-align:left;">{$vo.content}</p>
+									</td>
+									<td align="center"><a href="{:U('activity/index/info', array('id'=>$vo[activity_id]))}" target="_blank">查看</a></td>
+								</tr>
+							</volist>
+						</table>
+					
+					<div class="pages1">{$pages}</div>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的评论结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(document).ready(function(){
+	$(".commentdel").click(function(){
+		var url = $(this).attr('href');
+		layer.open({
+			content: '确定删除吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(url, {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						window.location.reload();
+					}
+				}, 'json');
+				return false;
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+});
+</script>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+<style>
+.case_deta_btn{max-width:720px;margin:0 auto;padding:0;display:flex;}
+.case_deta_btn a{width:auto;padding:5px 20px;border-radius:0;}
+.case_deta_btn a.call{float:left;color:#666;background:none;}
+.case_deta_btn a{float:right;flex:1 0;}
+.case_deta_btn a.apply{ vertical-align:middle;line-height:47px;font-size:14px;}
+
+</style>
+<body>
+
+	<div class="warp">
+        
+        <div class="designer_case_deta">
+        	<div class="case_deta_hd"><img src="<if condition='$info.picture eq ""'>__PUBLIC__/wap/images/pic31.jpg<else/>__UPLOAD__/thumbs/b660/{$info.picture}</if>"></div>
+            <div class="case_deta_bd">
+            	<h2><span>{$info.case_name}</span><!--<a href="javascript:;"><i></i>收藏</a>--></h2>
+                <ul class="clearfix">
+                	<li>风格：{$case_config[$info[decorate_type]]}</li>
+                    <li>城市：{$designer_info.city}</li>
+                    <li>户型：{$case_config[$info[layout_type]]}</li>
+                    <li>面积：{$info.area}</li>
+                    <li>预算：{$info.budget}</li>
+                </ul>
+                <div class="case_deta_info">
+                	{$info.intro}
+                </div>
+            </div>
+            <div class="case_deta_pic">
+            	<volist name='info.gallery_array' id='val'>
+				<p><img src="<if condition='$val.pic eq ""'>__PUBLIC__/wap/images/pic32.jpg<else/>__UPLOAD__/thumbs/w760h610/{$val.pic}</if>"></p>
+                </volist>
+            </div>
+            <div class="case_deta_recommend">
+            	<h2>精选推荐</h2>
+                <ul class="clearfix">
+					<volist name='other_list' id='val'>
+                	<li><a href="{:U('case_info',array('id'=>$val[case_id]))}"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic6.jpg<else/>__UPLOAD__/thumbs/b660/{$val.picture}</if>"></a></li>
+                    </volist>
+                </ul>
+            </div>
+            <div class="case_deta_btn">
+				<a class='call' href='tel:{$designer_info[tel]}'>
+					<p><img src="__PUBLIC__/wap/images/icon66.png"></p>
+					<p>打电话</p>
+				</a>
+				<a class='apply' href="{:U('bespeak',array('id'=>$info['designer_id']))}">装修设计免费申请</a>
+			</div>
+        </div>
+        
+    </div>
+</body>
+</html>

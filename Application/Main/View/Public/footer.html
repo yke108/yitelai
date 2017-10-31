@@ -1,0 +1,273 @@
+<div class="footer">
+	<h2><p class="w1200"><span>友情链接</span><!--<a href="#" class="fr">友链合作></a>--></p></h2>
+	<div class="footer_main w1200">
+		<dl class="clearfix">
+			<dt>
+				<volist name="friendlink_list" id="vo">
+					<a href="{$vo.friendlink_url}" target="_blank">{$vo.friendlink_name}</a>
+				</volist>
+			</dt>
+			<dd>
+				<p><img src="__PUBLIC__/main/images/qrcode.jpg" style="width:105px"></p>
+				<p>关注我们</p>
+			</dd>
+		</dl>
+	</div>
+	<div class="copyright">{$sysconfig.copyright}</div>
+</div>
+<!---客服---->
+<div class="slide-help">
+    <a href="javascript:;" class="ico-service"><i class="icon1"></i><p>在线咨询</p></a>
+    <a href="#"><i class="icon2"></i><p>意见反馈</p></a>
+    <a href="javascript:;" class="ico-help"><i class="icon3"></i><p>关注有礼</p></a>
+    <div class="slide-help-code">
+        <div class="slide-help-img">
+            <img src="__PUBLIC__/main/images/qrcode.jpg" class="float-loadapp">
+            <p>扫微信</p>
+            <p>获10000套家居设计案例</p>
+        </div>
+    </div>
+</div>
+
+<div class="service_pop">
+    <div class="service_before">
+        <div class="service_pop_tit">
+            <i><img src="__PUBLIC__/main/images/icon144.png"></i>
+            <span>选择要咨询的内容</span>
+        </div>
+        <ul class="clearfix">
+        	<volist name="question_cat_list" id="vo">
+            <li><a href="javascript:;" class="ask_item" value="{$vo.cat_id}">{$vo.cat_name}</a></li>
+            </volist>
+        </ul>
+        <div class="btn"><a href="javascript:;" id="start_ask" value="" class="disabled">开始咨询</a></div>
+    </div>
+    <div class="service_after">
+        <div class="service_pop_tit">
+            <i><img src="__PUBLIC__/main/images/icon145.png"></i>
+            <dl class="clearfix">
+                <dt><img src="__PUBLIC__/main/images/pic106.png"></dt>
+                <dd>
+                    <p>谷安居</p>
+                    <p>一站式美家</p>
+                </dd>
+            </dl>
+        </div>
+        <div class="speak_window">
+            <div class="speak_box">
+                <time>今天16:43</time>
+                <!-- 
+                <div class="answer">
+                    <div class="kf_name">谷安居</div>
+                    
+                    <div class="answer_text">
+                        <i><img src="__PUBLIC__/main/images/icon146.png"></i>
+                        <p>您好，这是关于谷安居介绍问题，请选择您要了解的内容。</p>
+                        <p><a href="#">1.谷安居介绍</a></p>
+                        <p><a href="#">2.申请装修流程</a></p>
+                        <p><a href="#">3.装修公司，建材商入驻</a></p>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="service_bd write_box">
+            <textarea name="" cols="" rows="4" onKeyUp="keyup()" placeholder="请输入发送内容" ></textarea>
+            <button class="right">发送</button>
+        </div>
+    </div>
+</div>
+<style>
+	.slide-help{ position:fixed; bottom:170px; right:30px; background:#FFF; width:60px; background:#FFF; z-index:10000;}
+	.slide-help a{ display:block; border:solid 1px #ededed; text-align:center; height:60px;}
+	.slide-help a i{ display:inline-block; width:24px; height:24px; margin:7px 0; vertical-align:top;}
+	.slide-help a i.icon1{background:url(__PUBLIC__/main/images/icon141.png) no-repeat; }
+	.slide-help a i.icon2{background:url(__PUBLIC__/main/images/icon142.png) no-repeat; }
+	.slide-help a i.icon3{background:url(__PUBLIC__/main/images/icon143.png) no-repeat; }
+	.slide-help a:hover{ background-color:#ff3451; color:#FFF;}
+	.slide-help a:hover i.icon1{background:url(__PUBLIC__/main/images/icon141_01.png) no-repeat; }
+	.slide-help a:hover i.icon2{background:url(__PUBLIC__/main/images/icon142_01.png) no-repeat; }
+	.slide-help a:hover i.icon3{background:url(__PUBLIC__/main/images/icon143_01.png) no-repeat; }
+	
+	.slide-help-code{ position:absolute; top:25px; width:0; right:62px; bottom:0; overflow:hidden;}
+	.slide-help-img{ position:relative; margin-right:6px; border:solid 1px #EEE; background:#FFF; padding:5px; white-space:nowrap; line-height:22px; font-size:13px; text-align:center; }
+	.slide-help-img:after{ content:''; position:absolute; border-top:6px solid transparent; border-bottom:6px solid transparent;border-left:6px solid #FFF; width:0; height:0; bottom:25px; right:-6px;}
+	.slide-help-code p{ color:#e7691e;}
+	.slide-help-code img{ width:100px; height:100px; margin:5px 0;}
+	.slide-help-code img.float-loadapp{ margin-top:0;}
+	
+	.service_pop{ position:fixed; bottom:0; right:102px; border-radius:8px 8px 0 0; background:#FFF; box-shadow:0 0 20px #999; width:390px; height:590px; overflow:hidden; z-index:10000; transition:all .5s; -webkit-transition:all .5s; -moz-transition:all .5s; -ms-transition:all .5s; -o-transition:all .5s; transform:translateY(100%); -webkit-transform:translateY(100%); -moz-transform:translateY(100%); -ms-transform:translateY(100%); }
+	.service_pop.on{ transform:translateY(0); -webkit-transform:translateY(0); -moz-transform:translateY(0); -ms-transform:translateY(0);}
+	.service_before{ position:absolute; top:0; left:20px; right:0; bottom:0; background:#FFF; transition:all .5s; -webkit-transition:all .5s; -moz-transition:all .5s; -ms-transition:all .5s; -o-transition:all .5s; transform:translateX(100%); -webkit-transform:translateX(100%); -moz-transform:translateX(100%); -ms-transform:translateX(100%); z-index:20;}
+	.service_before.on{ transform:translateX(0); -webkit-transform:translateX(0); -moz-transform:translateX(0); -ms-transform:translateX(0); box-shadow:0 0 10px #999;}
+	.service_before .service_pop_tit{ border-bottom:solid 1px #f5f9fa; font-size:16px; padding:15px 10px;}
+	.service_before .service_pop_tit i{ float:right; cursor:pointer;}
+	.service_before ul{ position:absolute; left:0; right:0; top:62px; bottom:70px; overflow-y:auto;}
+	.service_before ul li{ float:left; width:147px; margin:0 0 20px 23px; text-align:center;}
+	.service_before ul li a{ display:block; border-radius:5px; border:solid 1px #e6e6e6; font-size:14px; padding:10px 0;}
+	.service_before ul li a.on{ color:#ff3451; border-color:#ff3451;}
+	.service_before .btn{ position:absolute; left:0; right:0; height:60px; background:#f5f9fa; text-align:center; bottom:0;}
+	.service_before .btn a{ display:inline-block; background:#ff3451; color:#FFF; width:50%; height:36px; line-height:36px; margin-top:12px; border-radius:3px; font-size:16px;}
+	.service_before .btn a.disabled{ background-color:#d9d9d9;}
+	
+	.service_after .service_pop_tit{ background:#ff3451; font-size:14px; padding:15px 10px;}
+	.service_after .service_pop_tit i{ float:right; line-height:44px; cursor:pointer;}
+	.service_after .service_pop_tit dl dt,.service_after .service_pop_tit dl dd{ display:inline-block; vertical-align:middle; color:#FFF;}
+	.service_after .service_pop_tit dl dt img{ border-radius:50%; width:44px; height:44px; border:solid 2px #FFF; margin:-2px 5px 0 0;}
+	.service_bd{ position:absolute; bottom:0; left:0; right:0; border-top:solid 1px #e6e6e6;}
+	.service_bd textarea{ width:100%; box-sizing:border-box; padding:10px; line-height:24px; resize:none;}
+	.service_bd button{ position:absolute; right:10px; bottom:10px; z-index:5; cursor:pointer; background:#ff3451; cursor: pointer; border-radius:5px; padding:5px 15px; color:#FFF; font-size:14px;}
+	
+	.speak_window{ position:absolute; top:76px; left:0; right:0; bottom:117px; overflow-y:auto;}
+	.speak_box time{ display:block; text-align:center; padding:15px 0; font-size:12px; color:#999;}
+	.speak_box .answer{ margin-bottom:15px; padding:0 10px;}
+	.speak_box .answer:after{ content:"."; display:block; height:0; overflow:hidden; clear:both;}
+	.speak_box .answer .kf_name{ margin-bottom:5px; padding-left:13px;}
+	.speak_box .answer .answer_text{ float:left; max-width:300px; position:relative; background:#e9f0ef; margin-left:13px; border-radius:2px; padding:10px; font-size:13px; line-height:24px;}
+	.speak_box .answer .answer_text i{ position:absolute; left:-13px; top:2px;}
+	.speak_box .answer .answer_text a{ color:#51a0bf;}
+	
+	.question{ padding:0 10px; margin-bottom:15px;}
+	.question:after{ content:"."; display:block; height:0; overflow:hidden; clear:both;}
+	.question .me{ text-align:right; padding-right:20px;}
+	.question .question_text{ float:right; max-width:300px; position:relative; background:#ff3451;  margin-right:15px; border-radius:3px; padding:10px; font-size:13px; color:#FFF;}
+	.question .question_text i{ position:absolute; right:-10px; top:2px;}
+</style>
+<!---客服---->
+<script>
+$(function(){
+	if($.chat == undefined) $.chat = {};
+	$.chat.fmanual = "{$manual_flag}";
+	$('.ask_item').bind('click', function(){
+		$('#start_ask').attr('value', $(this).attr('value'));
+	});
+	$('#start_ask').bind('click', function(){
+		var cat_id = $(this).attr('value');
+		$.post("{:U('chat/ask/start')}", {'cat_id':cat_id}, function(d){
+			if(d.status == 2){
+				answer(d.info);
+			}
+		}, 'json');
+	});
+	var ssay = function(){
+		if($.chat.fmanual != 1) return;
+		$.post("{:U('chat/ask/ssay')}", {}, function(d){
+			if(d.status == 2){
+				answer(d.info);
+			} else if(d.info == 'end') {
+				$.chat.fmanual = 0;
+			}
+		}, 'json');
+	}
+	$.chat.ftime = setInterval(ssay, 10000);
+});
+</script>
+<script>
+	$(function(){
+		$("a.ico-help").hover(function(){
+			$(".slide-help-code").animate({width:"165px",right:54})
+		},function(){
+			$(".slide-help-code").animate({width:"0",right:62})	
+		})
+		$(".service_before ul li a").click(function(){
+			$(this).addClass("on").parent().siblings().find("a").removeClass("on")
+			$(".service_before ul li").each(function(index, element) {
+                if($(this).find("a").hasClass("on")){
+					$(".service_before .btn a").removeClass("disabled")
+				}
+            });
+		})
+		$("a.ico-service").click(function(){
+			if($.chat.fmanual != 1){
+				$('.speak_box').html('');
+				$(".service_before").addClass("on")
+			}
+			$(".service_pop").addClass("on")
+		})
+		$(".service_before .btn a").click(function(){
+			if($(this).hasClass("disabled")){
+				return false;	
+			}else{
+				$(".service_before").removeClass("on")	
+			}
+		})
+		$(".service_before .service_pop_tit i").click(function(){
+			$(".service_before").removeClass("on")
+		})
+		$(".service_after .service_pop_tit i").click(function(){
+			$(".service_pop").removeClass("on")
+		})
+	})
+	
+	function answer(strVar){
+	   $('.speak_box').append(strVar);
+	   $('.chat-qs').find('.q').bind('click', function(){
+		   $.post("{:U('chat/ask/detail')}", {'qid':$(this).attr('value')}, function(d){
+				if(d.status == 2){
+					answer(d.info);
+				}
+			}, 'json');
+	   });
+	   $('.chat-qs').find('.m').bind('click', function(){
+		   $.post("{:U('chat/ask/mbegin')}", {}, function(d){
+				if(d.status == 2){
+					$.chat.fmanual = 1;
+					answer(d.info);
+				}
+			}, 'json');
+	   });
+	   $('.chat-qs').removeClass('chat-qs');
+	   for_bottom();
+	};
+
+	
+	function to_write(){
+	    $('.wenwen_btn img').attr('src','images/yy_btn.png');
+	    $('.wenwen_btn').attr('onclick','to_say()');
+	    $('.write_box,.wenwen_help button').show();
+	    $('.circle-button,.wenwen_help a').hide();
+	    $('.write_box input').focus();
+	    for_bottom();
+	}
+	$(function(){
+		$(".service_bd").on('click','button',function(){
+			$('.write_list').remove();
+			var text = $('.write_box textarea').val(),
+				str  = '<div class="question">';
+				str += '<div class="me">我';
+				str += '</div><div class="question_text"><p>'+text+'</p><i><img src="__PUBLIC__/main/images/icon147.png"></i></div>';
+				str += '</div>';
+			if(text == ''){
+				alert('发送内容不能为空!请重新输入');
+				$('.write_box input').focus();
+			}else{
+				$('.speak_box').append(str);
+				$('.write_box textarea').val('');
+				$('.write_box textarea').focus();
+				$.post("{:U('chat/ask/question')}", {'message':text}, function(d){
+					if(d.status == 2){
+						answer(d.info);
+					}
+				}, 'json');
+				for_bottom();
+			}
+		})
+	})
+	
+	function keyup(){
+		var footer_height = $('.wenwen-footer').outerHeight(),
+			text = $('.service_bd input').val(),
+			str = '<div class="write_list">'+text+'</div>';
+		if (text == '' || text == undefined){
+			$('.write_list').remove();
+		}else{
+			$('.wenwen-footer').append(str);
+			$('.write_list').css('bottom',footer_height);
+		}
+	}
+	
+    function for_bottom(){
+		var speak_height = $('.speak_box').height();
+		$('.speak_box,.speak_window').animate({scrollTop:speak_height},500);
+	}
+</script>

@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.serve_id" value="0">家居服务修改<else/>家居服务增加</gt></h3>
+			<php>$action = $info['serve_id'] > 0 ? U('edit', array('id'=>$info['serve_id'])) : U('add');</php>
+		<form class="form-horizontal cs_ajax_form" action="{$action}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">封面图片</label>
+					<div class="col-sm-8">
+						<!-- *请上传280*220的图片 -->
+						<input class="hy_upload_single" hy_field="serve_image" value="上传图片" style="width:200px;height:150px;" src="__UPLOAD__/{$info.serve_image}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="serve_name" class="input-xlarge form-control" type="text" value="{$info.serve_name}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="u_email" class="control-label col-sm-2">分类</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="cat_id">
+							<volist name="catlist" id="vo">
+								<option  {:m_selected($info[cat_id], $vo[cat_id])} value="{$vo.cat_id}">
+										{$vo.cat_name}
+								</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">电话</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="serve_tel" class="input-xlarge form-control" type="text" value="{$info.serve_tel}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2">链接</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="serve_url" class="input-xlarge form-control" type="text" value="{$info.serve_url}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">简介</label>
+					<div class="col-sm-9">
+						<textarea id="serve_content" name="serve_content" style="width:66%;height:200px;">{$info.serve_content}</textarea>
+						<!--<span class="help-block" style="color:red">最多不超过150个字数</span>-->
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<!--<script type="text/javascript">
+$(function(){
+	$("#serve_content").keyup(function(){
+		var len = $(this).val().length;
+		if(len > 150){
+			$(this).val($(this).val().substring(0,150));
+		}
+	});
+});
+</script>-->
+
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script charset="utf-8" src="__PUBLIC__/editor/lang/zh_CN.js"></script>
+<script>
+        KindEditor.ready(function(K) {
+            window.editor = K.create('#editor_id', {uploadJson : '{:U("site/upload")}'});
+        });
+</script>
+
+<script type="text/javascript">
+	window.editor2 = KindEditor.editor({
+		uploadJson : '{:U("site/upload")}',
+		allowFileManager : true
+	});
+	$('#J_selectImage').unbind('click').bind('click',function(){
+		window.editor2.loadPlugin('multiimage', function() {
+			window.editor2.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					KindEditor.each(urlList, function(i, data) {
+						listPicShow(data.short_url);
+					});
+					window.editor2.hideDialog();
+				}
+			});
+		});
+	});
+
+	function gresize(obj){
+		var w = $(obj).width();
+		var h = $(obj).height();
+		if(w > h){
+			$(obj).css({'height':'100%'});
+		} else {
+			$(obj).css({'width':'100%'});
+		}
+	}
+
+	function listPicShow(file){
+		var fp_input = $('#flashpic');
+		var t = fp_input.val() + ',' + file;
+		fp_input.val(t);
+
+		var ref_obj = $('#file_flash');
+		var obj_new = $('<div></div>').css({'width':'130px','height':'130px','border':'1px solid #CCC','padding':'5px','overflow':'hidden','float':'left','margin-right':'15px','position':'relative'}).insertBefore(ref_obj)
+		.append('<img src="__UPLOAD__/'+file+'" onload="gresize(this)"/>');
+		
+		$('<a class="btn btn-danger" ci=",'+file+'" href="#">X</a>')
+		.css({'position':'absolute', 'bottom':'1px', 'right':'1px', 'font-size':'12px', 'padding':'3px 5px'})
+		.appendTo(obj_new).bind('click',function(){
+			var pobj = $(this).parent().remove();
+	        var flashpic = $('#flashpic'); 
+	        var a = flashpic.val().replace($(this).attr('ci'),'');
+			flashpic.val(a);
+		});
+	}
+	<php>$gallery=explode(',', $info['product_duo']);</php>
+	<volist name="gallery" id="vo">
+		<notempty name="vo">listPicShow('{$vo}');</notempty>
+	</volist>
+</script>	

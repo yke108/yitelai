@@ -1,0 +1,63 @@
+<div class="warp">
+	<div class="user_recharge">
+		<div class="user_recharge_hd">
+			<form action="">
+				<input name="" type="text" class='charge_money' placeholder="请输入充值金额">
+				<button class='charge_value' type="button">充值</button>
+			</form>
+			<p><a href="{:U('log')}"><img src="__PUBLIC__/wap/images/icon48.png">查看充值记录</a></p>
+		</div>
+		<notempty name='list'>
+		<div class="user_recharge_bd">
+			<h2><span>充值增值</span></h2>
+			<ul>
+				<volist name='list' id='val'>
+				<li>
+					<h3><span>￥<font>{$val.limit_money}</font></span><a href="javascript:;" class='activity' val='{$val.activity_id}'>充值</a></h3>
+					<p>说明:{$val.description}</p>
+				</li>
+				</volist>
+			</ul>
+		</div>
+		</notempty>
+	</div>        
+</div>
+
+<script>
+var activity_id=0;
+var amount=0;
+var recharge_sn_str='';
+var url="{:U('pay',array('recharge_sn'=>'recharge_sn_str'))}";
+$(function(){
+	$(".charge_value").click(function(){
+		amount=$(".charge_money").val();
+		
+		if(amount=='' || isNaN(amount)==true){
+			alert('请输入一个正确的金额')
+			return;
+		}
+		
+		add_recharge();
+	})
+	$(".activity").click(function(){
+		activity_id=$(this).attr('val');
+		add_recharge();
+	})
+})
+function add_recharge(){
+	$.ajax({
+		type:'POST',
+		url:"{:U('index')}",
+		data:{amount:amount,activity_id:activity_id},
+		dataType:"json",
+		success:function(res){
+			if(res.error==0){
+				url=url.replace('recharge_sn_str',res.recharge_sn);
+				window.location=url;
+			}else{
+				alert(res.msg);
+			}
+		}
+	})
+}
+</script>

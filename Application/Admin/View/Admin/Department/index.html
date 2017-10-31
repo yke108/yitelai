@@ -1,0 +1,36 @@
+<div class="row hy_page_content" href="{:U('', $get)}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">部门列表
+			<a href="{:U('add')}" hy_w="800" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal {:CheckPurview('admin_department_add')}">添加部门</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>部门名称</th>
+							<th>部门图标</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.department_name}</td>
+								<td><img src="__UPLOAD__/thumbs/b48/{$vo.department_image}"></td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[department_id]))}" hy_w="800" class="cs_ajax_link hy_show_modal {:CheckPurview('admin_department_edit')}">编辑</a>
+									<notin name="vo.department_id" value="24">
+										<a href="{:U('del', array('id'=>$vo[department_id]))}" class="cs_del_confirm {:CheckPurview('admin_department_del')}" cs_tip="确定删除？">删除</a>
+									</notin>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div>{$page}</div>
+			</div>
+		</div>
+	</div>
+</div>

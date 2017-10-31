@@ -1,0 +1,147 @@
+<div class="material_management_change">
+	<form action="{:U('')}" id="form">
+		<input type="hidden" name="id" value="{$info.material_id}" />
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>文件标题</label>
+				<input type="text" name="material_title" value="{$info.material_title}" class="mui-input-clear" placeholder="请输入文件标题" />
+			</div>
+		</div>
+		
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>文件名称</label>
+				<input type="text" name="file_name" value="{$info.file_name}" class="mui-input-clear" placeholder="请输入文件名称" />
+			</div>
+		</div>
+		
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>所需积分</label>
+				<font>{$info.down_points}</font>
+			</div>
+		</div>
+		
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>选择分类</label>
+				<select name="" id="cat_id">
+					<option value="">一级分类</option>
+					<volist name="cat_list" id="vo">
+						<option value="{$vo.cat_id}" {:m_selected($vo[cat_id], $cat[parent_id])}>{$vo.cat_name}</option>
+					</volist>
+				</select>
+				<select name="cat_id" id="children">
+					<option value="">二级分类</option>
+					<volist name="children" id="vo">
+						<option value="{$vo.cat_id}" {:m_selected($vo[cat_id], $cat[cat_id])}>{$vo.cat_name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		
+		<div class="flie_box">
+			<label>下载文件</label>
+			<div class="default">
+				<ul class="mui-clearfix">
+					<notempty name="info.upload_path">
+						<li>
+							<i></i>
+							<input type="hidden" name="upload_path" value="{$info.upload_path}" />
+						</li>
+					</notempty>
+				</ul>
+			</div>
+			<div id="fileUploadContent_1" class="fileUploadContent mui-clearfix flie"></div>
+		</div>
+		
+		<div class="picture_box">
+			<label>图片</label>
+			<div class="default">
+				<ul class="mui-clearfix">
+					<volist name="info.material_gallery" id="vo">
+						<li>
+							<img src="__UPLOAD__/{$vo}"><i></i>
+							<input type="hidden" name="material_gallery[]" value="{$vo}" />
+						</li>
+					</volist>
+				</ul>
+			</div>
+			<div id="fileUploadContent" class="fileUploadContent mui-clearfix picture"></div>
+		</div>
+		
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block" id="btn_submit">保存</a></div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/home/js/fileUpload.js"></script>
+<script type="text/javascript">
+    $("#fileUploadContent").initUpload({
+        "uploadUrl":"{:U('index/upload/index')}",//上传文件信息地址
+        //"progressUrl":"#",获取进度信息地址，可选，注意需要返回的data格式如下（{bytesRead: 102516060, contentLength: 102516060, items: 1, percent: 100, startTime: 1489223136317, useTime: 2767}）
+        "showSummerProgress":false,//总进度条，默认限制
+        //"size":350,//文件大小限制，单位kb,默认不限制
+        //"maxFileNumber":1,//文件个数限制，为整数
+        //"filelSavePath":"",//文件上传地址，后台设置的根目录
+        //"beforeUpload":beforeUploadFun,//在上传前执行的函数
+        "onUpload":onUploadFun,//在上传后执行的函数
+        autoCommit:true,//文件是否自动上传
+        "fileType":['png','jpg','gif'] //文件类型限制，默认不限制，注意写的是文件后缀
+    })
+	
+	$("#fileUploadContent_1").initUpload({
+        "uploadUrl":"{:U('index/upload/index')}",//上传文件信息地址
+        //"progressUrl":"#",获取进度信息地址，可选，注意需要返回的data格式如下（{bytesRead: 102516060, contentLength: 102516060, items: 1, percent: 100, startTime: 1489223136317, useTime: 2767}）
+        "showSummerProgress":false,//总进度条，默认限制
+        //"size":350,//文件大小限制，单位kb,默认不限制
+        "maxFileNumber":1,//文件个数限制，为整数
+        //"filelSavePath":"",//文件上传地址，后台设置的根目录
+        //"beforeUpload":beforeUploadFun,//在上传前执行的函数
+        "onUpload":onUploadFun1,//在上传后执行的函数
+        autoCommit:true,//文件是否自动上传
+        //"fileType":['png','jpg','docx','doc']，//文件类型限制，默认不限制，注意写的是文件后缀
+    })
+	
+    function beforeUploadFun(opt){
+        opt.otherData =[{"name":"你要上传的参数","value":"你要上传的值"}];
+    }
+    function onUploadFun(opt,data){
+        //alert(data);
+		$('#form').append('<input type="hidden" name="material_gallery[]" value="'+data.short_url+'" />');
+        uploadTools.uploadError(opt);//显示上传错误
+    }
+	function onUploadFun1(opt,data){
+        //alert(data);
+		$('#form').append('<input type="hidden" name="upload_path" value="'+data.short_url+'" />');
+        uploadTools.uploadError(opt);//显示上传错误
+    }
+</script>
+
+<script type="text/javascript">
+    var cat_list = {:json_encode($cat_list)};
+	$('#cat_id').change(function(){
+		var cat_id = $(this).val();
+		var cat = cat_list[cat_id];
+		var children = cat.children;
+		var option = '<option value="">二级分类</option>';
+		$(children).each(function(index,value){
+			option += '<option value="'+value.cat_id+'">'+value.cat_name+'</option>';
+		})
+		$('#children').html(option);
+	});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

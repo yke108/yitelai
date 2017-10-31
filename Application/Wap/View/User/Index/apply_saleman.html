@@ -1,0 +1,72 @@
+<style>
+.color1{color:green;}
+.apply_saleman{}
+.apply_saleman dl{margin-bottom:12px;font-size:14px;}
+.apply_saleman dl dt{padding:12px;background:#fff;}
+.apply_saleman dl dt span{float:left;}
+.apply_saleman dl dt font{float:right;}
+.apply_saleman dl dd{background:#fff;padding:12px;}
+.apply_saleman dl dd span{display:block;margin-bottom:5px;}
+.apply_saleman dl dd p{min-height:100px;background:#ededed	;padding:5px;color:#ff0000;}
+.re_apply{text-align:center;}
+.re_apply a{display:inline-block;background:#e30029;padding:8px 0;width:90%;border-radius:5px;color:#fff;font-size:16px;}
+</style>
+<div class="warp">
+	<div class="apply_saleman">
+		<dl>
+			<dt class='clearfix'><span>申请时间</span><font>{$apply_info.add_time|date="Y-m-d H:i",###}</font></dt>
+		</dl>
+		<dl>
+			<dt class='clearfix'>
+				<span>审核状态</span>
+				<font class='color1'>
+					<if condition='$apply_info.type eq 2'>
+						<switch name="apply_info.status">
+							<case value="0">未审核</case>
+							<case value="1"><font color="green">店铺审核通过，等待平台审核</font></case>
+							<case value="2"><font color="red">店铺审核不通过</font></case>
+							<case value="3"><font color="red">平台审核通过</font></case>
+							<case value="4"><font color="red">平台审核不通过</font></case>
+						</switch>
+						<elseif condition='$apply_info.type eq 1' />
+						<switch name="apply_info.status">
+							<case value="1"><font color="green">等待平台审核</font></case>
+							<case value="3"><font color="red">平台审核通过</font></case>
+							<case value="4"><font color="red">平台审核不通过</font></case>
+						</switch>
+					</if>
+				</font>
+			</dt>
+		</dl>
+		<dl>
+			<dd class='clearfix'>
+				<span>审核反馈信息</span>
+				<p>{$apply_info.feedback}</p>
+			</dd>
+		</dl>
+		<if condition='$info[status] eq 2 or $info[status] eq 4'>	
+		<div class='re_apply'><a id='apply_saleman' href='javascript:;' >重新提交审核</a></div>
+		</if>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#apply_saleman").click(function(){
+		$.ajax({
+			type:'POST',
+			url:"{:U('apply_saleman')}",
+			data:{},
+			dataType:"json",
+			success:function(res){
+				if(res.status==1){
+					layer.open({time:1,content:res.info});
+					window.setTimeout(function(){window.location="{:U('user/index/index')}"},1000)
+				}else{
+					layer.open({time:1,content:res.info});
+				}
+			}
+		})
+	})
+});
+</script>

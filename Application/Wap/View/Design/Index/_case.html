@@ -1,0 +1,10 @@
+<volist name='case_list' id='val'>
+<li>
+	<a href="{:U('case_info',array('id'=>$val[case_id]))}">
+		<img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic15.jpg<else/>__UPLOAD__/thumbs/w316h211/{$val.picture}</if>" class="item_pic">
+		<h2><span>{$val.case_name}</span><em>{$config_value_list[$val[decorate_type]]}</em></h2>
+		<p><span><img src="__PUBLIC__/wap/images/icon16.png">{$val.region_name}</span></p>
+		<p><em>参考价: {$val.budget}</em></p>
+	</a>
+</li>
+</volist>

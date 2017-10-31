@@ -1,0 +1,45 @@
+<foreach name='list' item='val'>
+<div class="design_item">
+	<dl class="clearfix">
+		<dt>
+			<a href="{:U('info',array('id'=>$val['designer_id']))}">
+			<img src="<if condition='$val.designer_image eq ""'>__PUBLIC__/main/images/pic74.jpg<else/>__UPLOAD__/thumbs/b200/{$val[designer_image]}</if>" width="120" height="120"></a>
+		</dt>
+		<dd>
+			<h2>
+				<b><a href="{:U('info',array('id'=>$val['designer_id']))}">{$val[designer_name]}</a></b>
+				<if condition="$val.is_famous eq 1">
+				<span class="color1"><img src="__PUBLIC__/main/images/icon101.png">知名</span>
+				</if>
+				<if condition="$val.is_authentication eq 1">
+				<span class="color2"><img src="__PUBLIC__/main/images/icon102.png">认证</span>
+				</if>
+			</h2>
+			<p><span>所在城市<em>{$val.region}</em></span><span>作品<em>{$val.case_count}套</em></span></p>
+			<p><span>擅长空间：<em>{$val.space_name}</em></span></p>
+			<p><span>预约数：<em>{$val.bespoke_count|default=0}</em></span></p>
+			<p><span>所属店铺或公司：<em>{$val.distributor_name}</em></span></p>
+		</dd>
+		<dd class="item_right">
+			<!--<h3><span>100-600</span>元/㎡</h3>-->
+			<h3><span>{$val.charge_name}</span></h3>
+			<if condition="($val.tel neq '')">
+				<empty name="user">
+					<a href="javascript:;" title="手机号登录后可查看"><img src="__PUBLIC__/main/images/icon100.png">{$val.tel_hide}</a>
+				<else/>
+					<a href="javascript:;"><img src="__PUBLIC__/main/images/icon100.png">{$val.tel}</a>
+				</empty>
+			</if>
+		</dd>
+	</dl>
+	<ul class="clearfix">
+		<volist name='val.case_list' id='val2'>
+		<li <if condition="$i eq 4">class='mr'</if> >
+			<a href="{:U('case_info',array('id'=>$val2['case_id']))}"><img src="<if condition='$val2.picture eq ""'>__PUBLIC__/main/images/pic60.jpg<else/>__UPLOAD__/thumbs/b400/{$val2.picture}</if>" width="210" height="210">
+			</a>
+		</li>
+		</volist>
+		
+	</ul>
+</div>
+</foreach>

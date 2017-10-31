@@ -1,0 +1,13 @@
+<div class="blank66"></div>
+<footer>
+	<ul class="clearfix">
+		<php>$cls=$controller_name=='index/index'?'on':'';</php>
+		<li><a href="{:U('index/index/index')}" class="{$cls}"><i class="i1"></i>首页</a></li>
+		<php>$cls=$controller_name=='mall/category'?'on':'';</php>
+		 <li><a href="{:U('mall/category/index')}" class="{$cls}"><i class="i2"></i>分类</a></li>
+		 <php>$cls=$controller_name=='mall/cart'?'on':'';</php>
+		 <li><a href="{:U('mall/cart/index')}" class="{$cls}"><i class="i3"><em id="cart_num">{$cart_num|default=0}</em></i>购物车</a></li>
+		 <php>$cls=$croot=='user'?'on':'';</php>
+		 <li><a href="{:U('user/index/index')}" class="{$cls}"><i class="i4"></i>我的</a></li>
+	</ul>
+</footer>

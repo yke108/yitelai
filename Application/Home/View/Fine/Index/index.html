@@ -1,0 +1,128 @@
+<div class="fine_statistics">
+	<div id="slider" class="mui-slider mui-fullscreen">
+		<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			<a class="mui-control-item  mui-active" href="#item1mobile">全部</a>
+			<a class="mui-control-item" href="#item2mobile">未处理</a>
+			<a class="mui-control-item" href="#item3mobile">已批准</a>
+		</div>
+		<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+		<div class="mui-slider-group">
+			<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+				<div id="scroll1" class="mui-scroll-wrapper">
+					<empty name="list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<div class="mui-scroll" status="" p="2">
+							<div class="fine_statistics_search">
+								<div class="mui-input-row mui-search">
+									<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="输入罚单号查找">
+								</div>
+							</div>
+							<div class="div">
+								<include file="Fine/Index/_index"/>
+							</div>
+						</div>
+					</empty>
+				</div>
+			</div>
+			<div id="item2mobile" class="mui-slider-item mui-control-content">
+				<div id="scroll2" class="mui-scroll-wrapper">
+					<php>$list = $appeal_list;</php>
+					<empty name="list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<div class="mui-scroll" status="0" p="2">
+							<div class="fine_statistics_search">
+								<div class="mui-input-row mui-search">
+									<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="输入罚单号查找">
+								</div>
+							</div>
+							<div class="div">
+								<include file="Fine/Index/_index"/>
+							</div>
+						</div>
+					</empty>
+				</div>
+			</div>
+			<div id="item3mobile" class="mui-slider-item mui-control-content">
+				<div id="scroll3" class="mui-scroll-wrapper">
+					<php>$list = $agree_list;</php>
+					<empty name="list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<div class="mui-scroll" status="3" p="2">
+							<div class="fine_statistics_search">
+								<div class="mui-input-row mui-search">
+									<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="输入罚单号查找">
+								</div>
+							</div>
+							<div class="div">
+								<include file="Fine/Index/_index"/>
+							</div>
+						</div>
+					</empty>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<purview name="add">
+	<div class="client_management_btn btn"><a href="{:U('add')}" class="mui-btn mui-btn-block mui-btn-primary">添加罚款</a></div>
+</purview>
+
+<style type="text/css">
+.fine_statistics .mui-input-row form{width:100%;}
+.client_management_btn{z-index:1;}
+</style>
+
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+<script>
+	mui.init();
+	
+	var keyword = "{$get.keyword}";
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+		$.ready(function(){
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					up: {
+						callback: function() {
+							var self = this;
+							var jqobj = jQuery(pullRefreshEl);
+							
+							var status = jqobj.attr('status');
+							var p = jqobj.attr('p');
+							var data = {
+								keyword:keyword,
+								status:status,
+								p:p
+							};
+							
+							mui.post("{:U('list')}",data,function(data){
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.html != ''){
+										jqobj.attr('p', data.p);
+										var list = jqobj.find('.div');
+										list.append(data.html);
+										self.endPullUpToRefresh();
+									}else{
+										self.endPullUpToRefresh(true);
+									}
+								},'json'
+							);
+						}
+					}
+				});
+			});
+		});
+	})(mui);
+</script>

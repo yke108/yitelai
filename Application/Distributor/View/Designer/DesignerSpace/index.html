@@ -1,0 +1,47 @@
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">空间列表
+			<a id="rec_add"  href="{:U('add',array('designer_id'=>$info['designer_id']))}" hy_w='800' hy_h='300' class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal">添加空间</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<!--<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>-->
+		<!-- end搜索 -->
+		
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>名称</th>
+							<th>排序</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.space_name}</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<a class='cs_ajax_link hy_show_modal' href="{:U('edit', array('id'=>$vo[space_id]))}">编辑</a>
+									<a href="{:U('del', array('id'=>$vo['space_id']))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

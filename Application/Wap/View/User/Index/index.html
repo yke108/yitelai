@@ -1,0 +1,146 @@
+<style type="text/css">
+.weui_btn {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 14px;
+    padding-right: 14px;
+    box-sizing: border-box;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    line-height: 2.33333333;
+    border-radius: 5px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    overflow: hidden;
+}
+.others_login {
+    position: relative;
+    width: 100%;
+    padding: 15px;
+    left: 0;
+    bottom: inherit;
+}
+.others_login a {
+    background: #FFF;
+    font-size: 14px;
+    padding: 5px 0;
+}
+.weui_btn_plain_default {
+    color: #5a5a5a;
+    border: 1px solid #5a5a5a;
+}
+</style>
+<div class="warp">
+	<div class="user_vipcenter">
+		<div class="vipcenter_1">
+			<div class="vipcenter_1_nav">
+				<if condition='empty($apply_agent_info) eq true and $user.user_type lt 2 and $user.distributor_id gt 0'>
+					<!--<div class="share fl">
+						<a href="javascript:;" id='apply_saleman' style='color:#fff;border:1px solid #dedede;border-radius:3px;padding:3px 10px;'>申请分销员
+						<!--<img src="__PUBLIC__/wap/images/icon32.png">-->
+						<!--</a>
+						
+					</div>-->
+				<elseif condition="empty($apply_agent_info) eq false and $apply_agent_info['status'] neq 3" />
+					<div class="share fl">
+						<a href="{:U('apply_saleman')}" style='color:#fff;border:1px solid #dedede;border-radius:3px;padding:3px 10px;'>查看审核情况<!--<img src="__PUBLIC__/wap/images/icon32.png">--></a>
+					</div>
+				</if>
+				<div class="news_box fr"><a href="{:U('user/message/index')}"><img src="__PUBLIC__/wap/images/icon33.png"><i>{$noread|default=0}</i></a></div>
+			</div>
+			<a href="{:U('user/info/index')}">
+				<dl>
+					<dt><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+					<dd>
+						<p>{$user.nick_name}</p>
+						<p>{$user.user_typename}&nbsp;&nbsp;&nbsp;&nbsp;会员等级：{$user.rank.rank_name|default='无等级'}</p>
+					</dd>
+				</dl>
+			</a>
+			<span><font>余额：{$user.user_money}</font><a href="{:U('user/recharge/index')}">充值</a></span>
+		</div>
+		<div class="vipcenter_2">
+			<h1 class="after"><a href="{:U('user/order/index')}">查看全部订单</a><span><img src="__PUBLIC__/wap/images/icon34.png">订单管理</span></h1>
+			<div class="vipcenter_2_list">
+				<ul class="clearfix">
+					<li><a href="{:U('user/order/nopay')}"><i><img src="__PUBLIC__/wap/images/icon35.png"><gt name="uon.nopay" value="0"><em>{$uon.nopay}</em></gt></i><p>待付款</p></a></li>
+					<li><a href="{:U('user/order/wait')}"><i><img src="__PUBLIC__/wap/images/icon36.png"><gt name="uon.wait" value="0"><em>{$uon.wait}</em></gt></i><p>待发货</p></a></li>
+					<li><a href="{:U('user/order/shipping')}"><i><img src="__PUBLIC__/wap/images/icon37.png"><gt name="uon.shipping" value="0"><em>{$uon.shipping}</em></gt></i><p>待收货</p></a></li>
+					<li><a href="{:U('user/order/finish')}"><i><img src="__PUBLIC__/wap/images/icon38.png"><!--<gt name="uon.finish" value="0"><em>{$uon.finish}</em></gt>--></i><p>退款/退货</p></a></li>
+					<li><a href="{:U('user/order/backlist')}"><i><img src="__PUBLIC__/wap/images/icon69.png"></i><p>退货列表</p></a></li>
+				</ul>
+			</div>
+			<style type="text/css">
+				.vipcenter_2_list ul li{width:20%;}
+				.vipcenter_2_list ul li i{ position:relative; display:inline-block;}
+				.vipcenter_2_list ul li em{ position:absolute; color:#FFF; border-radius:50%; background:#ff3451; width:15px; height:15px; line-height:15px; text-align:center; font-size:12px; right:-5px;}
+			</style>
+		</div>
+		<div class="vipcenter_4">
+			<div class="vipcenter_4_list">
+				<ul class="clearfix">
+					<li><a href="{:U('user/designer/index')}"><img src="__PUBLIC__/wap/images/icon39.png"><p>预约设计师</p></a></li>
+					<li><a href="{:U('user/capital/index')}"><img src="__PUBLIC__/wap/images/icon40.png"><p>我的资产</p></a></li>
+					<li><a href="{:U('user/capital/point')}"><img src="__PUBLIC__/wap/images/icon41.png"><p>我的积分</p></a></li>
+					<li><a href="{:U('user/collect/index')}"><img src="__PUBLIC__/wap/images/icon42.png"><p>我的收藏</p></a></li>
+					<li><a href="{:U('user/story/reward')}"><img src="__PUBLIC__/main/images/icon31.png"><p>我的打赏</p></a></li>
+					<li><a href="{:U('user/recommend/index')}"><img src="__PUBLIC__/wap/images/icon43.png"><p>我的团队</p></a></li>
+					
+					<li><a href="{:U('user/invite/index')}"><img src="__PUBLIC__/wap/images/icon44.png"><p>我的邀请码</p></a></li>
+					<li><a href="{:U('user/story/index')}"><img src="__PUBLIC__/wap/images/icon45.png"><p>文章发表</p></a></li>
+					<li><a href="{:U('user/address/index')}"><img src="__PUBLIC__/wap/images/icon46.png"><p>收货地址</p></a></li>
+					<li><a href="{:U('user/order/commentlist')}"><img src="__PUBLIC__/wap/images/icon47.png"><p>我的评论</p></a></li>
+					<li><a href="{:U('user/order/team')}"><img src="__PUBLIC__/wap/images/team_icon.png"><p>我的拼团</p></a></li>
+					<li><a href="{:U('index/cooperate/info')}"><img src="__PUBLIC__/wap/images/woshou.png"><p>申请合作</p></a></li>
+					<li><a href="{:U('game/index/index')}"><img src="__PUBLIC__/wap/images/youxi.png"><p>小游戏</p></a></li>
+                    
+                    <li><a href="{:U('user/feedback/index')}"><img src="__PUBLIC__/wap/images/icon73.png"><p>投诉建议</p></a></li>
+                    <li><a href="{:U('game/index/turn_table')}"><img src="__PUBLIC__/wap/images/icon74.png"><p>我要抽奖</p></a></li>
+					<if condition='$user.distributor_id eq 0 and empty($apply_agent_info) eq true and $user.user_type lt 2'>
+					<li><a href="{:U('saleman/index/index')}"><img src="__PUBLIC__/wap/images/icon1_1.png"><p>申请分销员</p></a></li>
+					<elseif condition='empty($apply_agent_info) eq true and $user.user_type lt 2 and $user.distributor_id gt 0' />
+					<li><a href="javascript:;" id='apply_saleman'><img src="__PUBLIC__/wap/images/icon1_1.png"><p>申请分销员</p></a></li>
+					</if>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="others_login"><a href="{:U('index/site/logout')}" class="weui_btn weui_btn_plain_default ajaxlink">退出</a></div>
+	
+	<include file="Public/footer"/>
+	
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.ajaxlink').bind('click',function(){
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+	$("#apply_saleman").click(function(){
+		$.ajax({
+			type:'POST',
+			url:"{:U('apply_saleman')}",
+			data:{},
+			dataType:"json",
+			success:function(res){
+				if(res.status==1){
+					layer.open({time:1,content:res.info});
+					window.setTimeout(function(){window.location="{:U('')}"},1000)
+				}else{
+					layer.open({time:1,content:res.info});
+				}
+			}
+		})
+	})
+});
+</script>

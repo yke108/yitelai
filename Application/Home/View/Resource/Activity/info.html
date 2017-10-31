@@ -1,0 +1,55 @@
+<div class="store_activities_detaild mui-scroll-wrapper" id="pullrefresh">
+	<div class="mui-scroll">
+		<div class="store_activities_detaild_1">
+			<h2>{$info.title}</h2>
+			<p>活动时间：{:date('Y-m-d', $info[start_time])}至{:date('Y-m-d', $info[end_time])}</p>
+			<p><span>推广渠道：电话销售</span><span>负责人：李达康</span></p>
+		</div>
+		<div class="store_activities_detaild_2">
+			<div class="mui-input-group">
+				<div class="mui-input-row">
+					<label>活动费用</label>
+					<span>{$info.cost}</span>
+				</div>
+				<div class="mui-input-row">
+					<label>销售目标</label>
+					<span>{$info.target}</span>
+				</div>
+				<div class="mui-input-row right-after">
+					<label>活动销售额</label>
+					<input name="sales_amount" value="{$info.sales_amount}" type="text" placeholder="请填写">
+				</div>
+				<div class="mui-input-row right-after">
+					<label>活动利润</label>
+					<input name="commission" value="{$info.commission}" type="text" placeholder="请填写">
+				</div>
+			</div>
+		</div>
+		<div class="store_activities_detaild_3">
+			<h2>优惠活动</h2>
+			<ul>
+				<li><span><img src="__PUBLIC__/home/images/icon21.png"></span><em>{$info.description1}</em></li>
+				<li><span><img src="__PUBLIC__/home/images/icon21.png"></span><em>{$info.description2}</em></li>
+			</ul>
+		</div>
+		<div class="store_activities_detaild_4">
+			<h2>主推系列</h2>
+			<ul>
+				<volist name="cat_list" id="vo">
+					<li>{$vo.cat_name}</li>
+				</volist>
+			</ul>
+		</div>
+		<div class="store_activities_detaild_5">
+			<h2>主推产品</h2>
+			<volist name="goods_list" id="vo">
+				<a href="#">
+					<dl>
+						<dt><img src="__UPLOAD__/thumbs/b120/{$vo.goods_image}"></dt>
+						<dd>{$vo.goods_name}</dd>
+					</dl>
+				</a>
+			</volist>
+		</div>
+	</div>
+</div>

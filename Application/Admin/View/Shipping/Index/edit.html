@@ -1,0 +1,59 @@
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.shipping_id" value="0">编辑配送方式<else/>添加配送方式</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 配送方式名称</label>
+					<div class="col-sm-4 col-md-4">
+						<input name="shipping_name" class="input-xlarge form-control" type="text" value="{$info.shipping_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2"><font color="red">*</font> 快递公司</label>
+					<div class="col-sm-2 col-md-2">
+						<select name="shipping_code" class="form-control">
+							<option value="">选择快递公司</option>
+							<foreach name="shipping_code_list" key="ko" item="vo">
+								<option value="{$ko}" {:m_selected($ko, $info['shipping_code'])}>{$vo}</option>
+							</foreach>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">配送方式描述</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="shipping_desc" class="input-xlarge form-control" type="text" value="{$info.shipping_desc}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">配送方式状态</label>
+					<div class="col-sm-2 col-md-2">
+						<select class="form-control" name="enabled">
+							<option <gt name="info.shipping_id" value="0">{:m_selected($info[enabled],1)}<else/>selected="selected"</gt> value="1">启用</option>
+							<option <gt name="info.shipping_id" value="0">{:m_selected($info[enabled],0)}</gt> value="0">禁用</option>							
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="shipping_id" value="{$info.shipping_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

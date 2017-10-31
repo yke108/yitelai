@@ -1,0 +1,11 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('collect_id'=>$vo[collect_id]))}" class="link">
+		<dl>
+			<dt><img src="__UPLOAD__/thumbs/b660/{$vo.image}"></dt>
+			<dd>
+				<h2>{$vo.name}</h2>
+				<p class="right-after"><span><img src="{$vo.avatar|default='__PUBLIC__/home/images/icon24.png'}">{$vo.user_name}</span><span><img src="__PUBLIC__/home/images/icon25.png">{:date('Y-m-d H:i', $vo[add_time])}</span></p>
+			</dd>
+		</dl>
+	</a>
+</volist>

@@ -1,0 +1,118 @@
+<div class="other_work_target_detaild">
+    <div class="other_target_detaild">
+        <div class="other_target_detaild_hd">
+            <h1><span>{$admin.admin_name|default='用户不存在'}</span><a href="tel:{$info.mobile}">{$admin.mobile}</a></h1>
+            <p>所属店铺:{$distributor.distributor_name}</p>
+            <p>{$distributor.region_name}  {$admin.role_name} 综合完成率{:round($info[sum_percent] / 6, 2)}%</p>
+        </div>
+        <div class="other_target_detaild_bd">
+            <ol>
+                <li><span>名称</span><span>计划数</span><span>完成数</span><span>完成率</span></li>
+            </ol>
+            <ul class="mui-table-view">
+            
+                <li class="mui-table-view-cell"><span>会员增量</span><em>{$info.plan_user_add}</em><b><input name="" type="text" value="{$info.true_user_add}" disabled></b><i><?=floor($info['true_user_add'] / $info['plan_user_add'] * 100)?>%</i></li>
+                
+                <li class="mui-table-view-cell"><span>准客户增量</span><em>{$info.plan_consumer_add}</em><b><input name="" type="text" value="{$info.true_consumer_add}" disabled></b><i><?=floor($info['true_consumer_add'] / $info['plan_consumer_add'] * 100)?>%</i></li>
+                
+                <li class="mui-table-view-cell"><span>邀约数</span><em>{$info.plan_invitation}</em><b><input name="" type="text" value="{$info.true_invitation}" disabled></b><i><?=floor($info['true_invitation'] / $info['plan_invitation'] * 100)?>%</i></li>
+                
+                <li class="mui-table-view-cell"><span>报名数</span><em>{$info.plan_sign_up}</em><b><input name="" type="text" value="{$info.true_sign_up}" disabled></b><i><?=floor($info['true_sign_up'] / $info['plan_sign_up'] * 100)?>%</i></li>
+                
+                <li class="mui-table-view-cell"><span>成交客户量</span><em>{$info.plan_deal}</em><b><input name="" type="text" value="{$info.true_deal}" disabled></b><i><?=floor($info['true_deal'] / $info['plan_deal'] * 100)?>%</i></li>
+                
+                <li class="mui-table-view-cell"><span>销售额</span><em>{$info.plan_sales}</em><b><input name="" type="text" value="{$info.true_sales}" disabled></b><i><?=floor($info['true_sales'] / $info['plan_sales'] * 100)?>%</i></li> 
+            </ul>
+        </div>
+        <div class="other_target_detaild_bt">
+            <h2>总结报告</h2>
+            <p><notempty name="info.summary">{:nl2br($info[summary])}<else/>暂无内容</notempty></p>
+        </div>
+		<if condition="($info[admin_id] eq $parent[admin_id]) AND ($info[check_status] eq 1)">
+			<div class="other_target_detaild_btn">
+				<a href="javascript:check()"><img src="__PUBLIC__/target/images/icon1.png">{$info.check_status_label}</a>
+				<a href="javascript:note()"><img src="__PUBLIC__/target/images/icon2.png">备注</a>
+			</div>
+		</if>
+    </div>
+</div>
+<script>
+// 审核
+function check()
+{
+	if('{$info.check_status}' == '0')
+	{
+		mui.toast('待用户提交审核');
+		return;
+	}
+	if('{$info.check_status}' == '2')
+	{
+		mui.toast('已审核失败');
+		return;
+	}
+	if('{$info.check_status}' == '3')
+	{
+		mui.toast('已审核通过');
+		return;
+	}
+	<?php
+	if($info['check_status'] == '1')
+	{
+	?>
+	var btnArray = ['失败','通过'];	
+	mui.confirm('','工作目标审核',btnArray,function(e){
+		$.post('{:U("check")}','id={$info.id}&check_status='+e.index,function(data){ 
+			if(data == 1)
+			{ 
+				mui.toast('审核成功');
+				window.location.reload();
+			}
+			else
+			{ 
+				mui.toast('审核失败');
+				window.location.reload();
+			}
+		});
+	});
+	<?php
+	}
+	?>
+}
+// 备注
+function note()
+{ 
+	if('{$info.check_note}')
+	{ 
+		mui.toast('{$info.check_note}');
+		return;
+	}
+	<?php
+	if($info['check_note'] == '')
+	{
+	?>
+	var btnArray = ['取消', '确定'];
+	mui.prompt('','', '工作目标备注', btnArray, function(e) {
+		if(e.index == 1)
+		{
+			if(e.value)
+			{
+				$.post('{:U("note")}','id={$info.id}&check_note='+e.value,function (data){ 
+					if(data == 1)
+					{ 
+						mui.toast('备注成功');
+						window.location.reload();
+					}
+					else
+					{ 
+						mui.toast('备注失败');
+						window.location.reload();
+					}
+				});
+			}
+		}
+	});
+	<?php
+	}
+	?>
+}
+</script>

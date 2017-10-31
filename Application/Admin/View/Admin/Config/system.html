@@ -1,0 +1,107 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">系统设置</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('update')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab1" data-toggle="tab">基础信息</a></li>
+						<li><a href="#tab2" data-toggle="tab">商品设置</a></li>
+						<li><a href="#tab3" data-toggle="tab">其它设置</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-group">
+								<label class="control-label col-sm-2">系统名称</label>
+								<div class="col-sm-4">
+									<input name="c[name]" class="input-xlarge form-control" value="{$info.name}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">400电话</label>
+								<div class="col-sm-4">
+									<input name="c[tel]" class="input-xlarge form-control" value="{$info.tel}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">客服QQ</label>
+								<div class="col-sm-4">
+									<input name="c[qq]" class="input-xlarge form-control" value="{$info.qq}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">投诉建议说明</label>
+								<div class="col-sm-4">
+									<textarea name="c[feedback]" class="input-xlarge form-control" style="height:150px">{$info.feedback}</textarea>
+								</div>
+							</div>
+						</div><!--end tab1-->
+						
+						<div class="tab-pane" id="tab2">
+							<div class="form-group">
+								<label class="control-label col-sm-2">积分兑换</label>
+								<div class="col-sm-8">
+									<input name="c[point_exchange]" class="input-xlarge form-control" value="{$info.point_exchange}"/>
+									<span class="help-block">1元兑换多少积分</span>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">服务承诺</label>
+								<div class="col-sm-8">
+									<input name="c[service_promise]" class="input-xlarge form-control" value="{$info.service_promise}"/>
+									<span class="help-block">用逗号分隔开</span>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">自动确认收货</label>
+								<div class="col-sm-8">
+									<input name="c[auto_confirm]" class="input-xlarge form-control" value="{$info.auto_confirm}"/>
+									<span class="help-block">发货后，多少天自动确认收货</span>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">退货期限</label>
+								<div class="col-sm-8">
+									<input name="c[return_deadline]" class="input-xlarge form-control" value="{$info.return_deadline}"/>
+									<span class="help-block">确认收货多少天内可退货</span>
+								</div>
+							</div>
+						</div><!--end tab2-->
+						
+						<div class="tab-pane" id="tab3">
+							<div class="form-group">
+								<label class="control-label col-sm-2">版权信息</label>
+								<div class="col-sm-8">
+									<input name="c[copyright]" class="input-xlarge form-control" value="{$info.copyright}"/>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">SEO关键词</label>
+								<div class="col-sm-8">
+									<input name="c[keywords]" class="input-xlarge form-control" value="{$info.keywords}"/>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">SEO描述</label>
+								<div class="col-sm-8">
+									<input name="c[description]" class="input-xlarge form-control" value="{$info.description}"/>
+								</div>
+							</div>
+						</div><!--end tab2-->
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="type" value="system">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

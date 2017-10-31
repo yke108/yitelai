@@ -1,0 +1,143 @@
+<form action="{:U('')}">
+<notempty name="list">
+<div class="shop_car_bd">
+	<div class="weui_cells weui_cells_checkbox">
+		<volist name="list" key="ko" id="vo">
+        <label class="weui_check_label" for="s{$ko}">
+            <div class="weui_cell_hd">
+                <input type="checkbox" class="weui_check gsel" name="gsel[]" id="s{$ko}" value="{$vo.CartId}" val="{$vo.GoodsPrice}" {:m_checked($vo[IsChecked],1)}>
+                <i class="weui_icon_checked"></i>
+            </div>
+            <div class="weui_cell_bd">
+                <dl>
+                	<dt>
+                	<notempty name="vo.GoodsImage">
+	                 	<img src="__UPLOAD__/thumbs/b120/{$vo.GoodsImage}">
+	               <else/>
+	                 	<img src="__PUBLIC__/v8/pic3.jpg">
+	               </notempty>
+                	</dt>
+                    <dd>
+                    	<p><a href="#">{$vo.GoodsName}</a></p>
+                        <div class="number"><span>{$vo.GoodsPrice}元</span></div>
+                        <div class="number"><del><a href="{:U('mall/cart/del', array('id'=>$vo['CartId']))}"><img src="__PUBLIC__/v8/images/icon38.png"></a></del><div class="spinner" value="{$vo.CartNumber}"></div></div>
+                    </dd>
+                </dl>
+            </div>
+        </label>
+        </volist>
+    </div>
+</div>
+</notempty>
+
+<empty name="list">
+<div class="no_login">
+	<p><img src="__PUBLIC__/v8/images/icon41.png" width="100"></p>
+    <p>您的购物车空空如也</p>
+    <p><a href="{:U('mall/category/index')}" class="weui_btn weui_btn_primary">去逛逛</a></p>
+</div>
+    
+<script>
+$(function(){
+	$(".no_login").height($(window).height()).width($(window).width())
+})
+window.onresize=function(){
+	$(function(){
+		$(".no_login").height($(window).height()).width($(window).width())
+	})	
+}
+</script>
+</empty>
+
+<div class="shop_car_all">
+	<a href="javascript:void(0);" class="paycartnow">结算（<b id="total_number"></b>）</a>
+    <span><font>合计 <b id="total_amount">0</b>元</font><p>不包含运费</p></span>
+    <div class="weui_cells weui_cells_checkbox">
+        <label class="weui_cell weui_check_label" for="sall">
+            <div class="weui_cell_hd">
+                <input type="checkbox" class="weui_check" name="checkbox1" id="sall">
+                <i class="weui_icon_checked"></i>
+            </div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>全选</p>
+            </div>
+        </label>
+    </div>
+</div>
+</form>
+        
+        <script>
+        	$(function(){
+				$(".spinner").each(function(){
+					$(this).Spinner({value:$(this).attr('value'), min:1, len:3, max:99});
+				});
+			})
+        </script>
+        <script>
+			$(document).ready(function(){
+				function total(){
+					var money = num = 0;
+					$(".gsel:checked").each(function(){
+						var price = parseFloat($(this).attr('val'));
+						var amount = $(this).parent().parent().find('.Amount').val();
+						money += parseFloat(amount*price);
+					});
+					$('#total_amount').text(money.toFixed(0));
+					num = $('.gsel:checked').length;
+					$('#total_number').text(num);
+					$('#sall')[0].checked = gsel_inputs.length == num;
+				}
+				var gsel_inputs = $('.gsel');
+				$('#sall').bind('click', function(){
+					gsel_inputs.prop("checked", $(this).prop("checked"));
+					total();
+				});
+				gsel_inputs.bind('click',function(){
+					total();
+				});
+				total();
+
+				$('.paycartnow').bind('click', function(){
+					if($('.gsel:checked').length < 1){
+						layer.open({time:1,content:'请选择需要购买的商品'});
+						return false;
+					}
+					var form = $(this).parents('form');
+					$.post(form.attr('action'), form.serialize(), function(d){
+						if(d.status == 2){
+							 $('#hycwrap').html(d.info);
+							 return false;
+						}
+						layer.open({time:1,content:d.info});
+					}, 'json');
+					return false;
+				})
+			});
+        </script>
+
+        <script>
+        	$(function(){
+				$(".number del a").click(function(){
+					var href = $(this).attr('href');
+					layer.open({
+						content: '删除后无法恢复，确认删除？',
+						btn: ['确认', '取消'],
+						shadeClose: false,
+						yes: function(index){
+							$.post(href, {}, function(d){
+								if(d.status == 2){
+									$('#hycwrap').html(d.info);
+									return;
+								}
+								layer.open({time:1,content:d.info});
+							}, 'json');
+							layer.close(index)
+						}, no: function(index){
+							layer.close(index)
+						}
+					});
+					return false;
+				})
+			})
+        </script>
+        <include file="Public/footer"/>

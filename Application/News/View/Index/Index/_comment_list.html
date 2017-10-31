@@ -1,0 +1,10 @@
+<volist name="comment_list" id="vo">
+	<dl>
+		<dt><img src="{$vo.avatar}"></dt>
+		<dd>
+			<h2>{$vo.nick_name}<span url="{:U('comment_like', array('id'=>$vo[comment_id]))}"><em></em><c class="like_count">{$vo.like_count}</c></span></h2>
+			<time>{$vo.add_time|date="Y-m-d H:i",###}</time>
+			<p>{$vo.content}</p>
+		</dd>
+	</dl>
+</volist>

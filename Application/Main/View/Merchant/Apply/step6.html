@@ -1,0 +1,158 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">店铺上线</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="pass">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li class="pass">
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li class="pass">
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li class="pass">
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last on">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_5">
+	<div class="w1200">
+		<div class="task">
+			<h1>恭喜您，所有资料信息已通过审核，请完成以下内容：</h1>
+			<ul>
+				<eq name="info.deposit_pay" value="1">
+					<li><a href="javascript:;" style="color:#F00">已缴纳保证金</a></li>
+				<else/>
+					<li><a href="{:U('pay_deposit')}">缴纳保证金</a></li>
+				</eq>
+				<eq name="info.service_charge_pay" value="1">
+					<li><a href="javascript:;" style="color:#F00">已缴纳技术服务费</a></li>
+				<else/>
+					<li><a href="{:U('pay_service')}">缴纳技术服务费</a></li>
+				</eq>
+				<if condition="($info[deposit_pay] eq 1) AND ($info[service_charge_pay] eq 1)">
+					<li><a href="{$background_url}" target="_blank">发布产品</a></li>
+					<li><a href="{$background_url}" target="_blank">装修店铺</a></li>
+					<li><a href="{$background_url}" target="_blank">正式开店</a></li>
+				</if>
+			</ul>
+			<h2>如有疑问：请拨打{$merchant_config.tel.0} <span>在线咨询<a href="tencent://message/?uin={$merchant_config.qq.0}&Site={$merchant_config.qq.0}&Menu=yes" target="_blank"><img src="__PUBLIC__/main/images/icon138.png"></a></span></h2>
+		</div>
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[region_code] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[region_code])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+	
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>
+
+<script src="__PUBLIC__/singleupload.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+});
+</script>

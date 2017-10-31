@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="login_page">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{$sysconfig.name} - 资讯管理系统登录</title>
+    
+        <!-- Bootstrap framework -->
+            <link rel="stylesheet" href="__PUBLIC__/bootstrap/css/bootstrap.min.css" />
+        
+        <!-- tooltip -->    
+			<link rel="stylesheet" href="__PUBLIC__/lib/qtip2/jquery.qtip.min.css" />
+        <!-- main styles -->
+            <link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+        <!-- theme color-->
+            <link rel="stylesheet" href="__PUBLIC__/css/blue.css" />
+    
+        <!--[if lt IE 9]>
+            <script src="js/ie/html5.js"></script>
+			<script src="js/ie/respond.min.js"></script>
+        <![endif]-->
+		
+    </head>
+    <body>
+		
+		<div class="login_box">
+			
+			<form action="{:U('')}" method="post" id="login_form">
+				<div class="top_b">资讯管理系统登录</div>
+				<div class="cnt_b">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-user"></i></span>
+							<input class="form-control input-sm" type="text" id="username" name="username" placeholder="用户名/手机号" value="{$info[username]}"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-lock"></i></span>
+							<input class="form-control input-sm" type="password" id="password" name="password" placeholder="密码" value="{$info[password]}"/>
+						</div>
+					</div>
+				</div>
+				<div class="btm_b clearfix">
+					<button class="btn btn-default btn-sm pull-right" type="submit">登录</button>
+				</div>  
+			</form>
+			
+			<form action="{:U('forget')}" method="post" id="pass_form" style="display:none">
+				<div class="top_b">无法登录?</div>    
+					<div class="alert alert-info alert-login">
+					请输入你注册过的手机号码，收到验证码后并验证成功后即可设置新密码
+				</div>
+				<div class="cnt_b">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-phone"></i></span>
+							<input class="form-control input-sm" id="phone" name="phone" placeholder="手机号码" value="" type="text">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-barcode"></i></span>
+							<input class="form-control input-sm" id="code" name="code" placeholder="验证码" value="" type="text">
+							<a href='javascript:;' class='input-group-addon input-sm click_code get_code'>验证码</a>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-lock"></i></span>
+							<input class="form-control input-sm" id="password" name="password" placeholder="新密码" value="" type="password">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><i class="glyphicon glyphicon-lock"></i></span>
+							<input class="form-control input-sm" id="password2" name="password2" placeholder="确认密码" value="" type="password">
+						</div>
+					</div>
+				</div>
+				<div class="btm_b tac">
+					<button class="btn btn-default" type="button" id="forget_btn">重设密码</button>
+					<input type="hidden" name="sms_id" id="sms_id"/>
+				</div>
+			</form>
+			
+			<div class="links_b links_btm clearfix">
+				<span class="linkform"><a href="#pass_form">忘记密码?</a></span>
+				<span class="linkform" style="display:none"><a href="#login_form">回到登录界面</a></span>
+			</div>
+			
+		</div>
+		 
+        <script src="__PUBLIC__/js/jquery.min.js"></script>
+        <script src="__PUBLIC__/js/jquery.actual.min.js"></script>
+        <script src="__PUBLIC__/lib/validation/jquery.validate.js"></script>
+		<script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                
+				//* boxes animation
+				form_wrapper = $('.login_box');
+				function boxHeight() {
+					form_wrapper.animate({ marginTop : ( - ( form_wrapper.height() / 2) - 24) },400);	
+				};
+				form_wrapper.css({ marginTop : ( - ( form_wrapper.height() / 2) - 24) });
+                $('.linkform a,.link_reg a').on('click',function(e){
+					var target	= $(this).attr('href'),
+						target_height = $(target).actual('height');
+					$(form_wrapper).css({
+						'height'		: form_wrapper.height()
+					});	
+					$(form_wrapper.find('form:visible')).fadeOut(400,function(){
+						form_wrapper.stop().animate({
+                            height	 : target_height,
+							marginTop: ( - (target_height/2) - 24)
+                        },500,function(){
+                            $(target).fadeIn(400);
+                            $('.links_btm .linkform').toggle();
+							$(form_wrapper).css({
+								'height'		: ''
+							});	
+                        });
+					});
+					e.preventDefault();
+				});
+				
+				//* validation
+				$('#login_form').validate({
+					onkeyup: false,
+					errorClass: 'error',
+					validClass: 'valid',
+					rules: {
+						username: { required: true, minlength: 3 },
+						password: { required: true, minlength: 3 }
+					},
+					highlight: function(element) {
+						$(element).closest('.form-group').addClass("f_error");
+						setTimeout(function() {
+							boxHeight()
+						}, 200)
+					},
+					unhighlight: function(element) {
+						$(element).closest('.form-group').removeClass("f_error");
+						setTimeout(function() {
+							boxHeight()
+						}, 200)
+					},
+					errorPlacement: function(error, element) {
+						$(element).closest('.form-group').append(error);
+					}
+				});
+            });
+        </script>
+    </body>
+</html>
+
+<script>
+	var second=60;
+	var init_second=60;
+	var not_send_sms=false;
+	
+	$(".click_code").bind("click",function(e){
+		var stop_count='';
+		
+		if(not_send_sms==false){
+		//发送短信的程序↓
+		//alert('发送短信')
+		var phone = $('#phone').val();
+		var obj = $(this);
+		$.post('{:U("getForgetCode")}',{phone:phone},function(d){
+			//layer.open({time:1,content:d.info});
+			alert(d.info);
+			if(d.status == 0){
+				not_send_sms=false
+				window.clearInterval(stop_count);
+				$(".get_code").removeClass('active').addClass('click_code').html('验证码');
+				second=init_second;
+			}
+			$('#sms_id').val(d.sms_id);
+			console.log(d);
+		},'json');
+		//发送短信的程序↑
+		}else{
+			return ;
+		}
+		
+		not_send_sms=true;
+		stop_count=window.setInterval(function(){
+			$(".get_code").addClass('active').removeClass('click_code').html(second+"S");
+			second--;
+			if(second<0){
+				not_send_sms=false
+				window.clearInterval(stop_count);
+				$(".get_code").removeClass('active').addClass('click_code').html('验证码');
+				second=init_second;
+			}
+			},1000)
+			
+	})
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#forget_btn').bind('click',function(){
+		var form = $(this).parents('form');
+        $.post(form.attr('action'),form.serialize(),function(d){
+			//layer.open({time:1,content:d.info});
+			alert(d.info);
+            if(d.status == 1){    
+                window.location.href = d.url;
+            }
+        },'json');
+        return false;
+    });
+});
+</script>

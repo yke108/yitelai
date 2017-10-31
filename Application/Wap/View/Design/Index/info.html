@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+
+<body>
+
+	<div class="warp">
+        
+        <div class="designer_deta">
+            <div class="designer_deta_hd">
+            	<dl>
+                	<dt>
+						<img width='120' height='120' src="<if condition='$info.designer_image eq ""'>__PUBLIC__/wap/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b120/{$info.designer_image}</if>">
+						<i>
+							<if condition="$info.is_famous eq 1">
+							<span>F知名</span>
+							</if>
+							<if condition="$val.is_authentication eq 1">
+							<em>V认证</em>
+							</if>
+						</i>
+					</dt>
+                    <dd>
+                    	<h2>{$info.designer_name}</h2>
+                        <p>{$info.region}</p>
+                    </dd>
+                </dl>
+                <ul class="clearfix">
+                	<li>预约数 {$info.bespoke_count|default=0}</li>
+                    <li>案例 {$info.case_count|default=0}</li>
+                    <li><a href="javascript:;" style='color:#fff;' onclick="add_follow({$info.designer_id})">关注 {$info.follow_count|default=0}</a></li>
+                </ul>
+            </div>
+            <div class="designer_deta_cd">
+            	<p>设计收费：<span>{$info.charge_name}</span></p>
+                <p><a href="{:U('bespeak',array('id'=>$info['designer_id']))}"><img src="__PUBLIC__/wap/images/icon21.png">在线预约</a><a href="<if condition='$info.tel neq ""'>tel:{$info.tel}<else/>javascript:;</if>"><img src="__PUBLIC__/wap/images/icon22.png">电话咨询</a></p>
+            </div>
+            <div class="designer_deta_bd">
+            	<h2>TA的资料</h2>
+                <h3>{$info.designer_intro}</h3>
+                <a href="javascript:;">展开<i><span></span><span></span></i></a>
+            </div>
+            <script>
+            	$(".designer_deta_bd a").click(function(){
+					if($(this).hasClass("on")){
+						$(this).removeClass("on")
+						$(this).siblings("h3").removeClass("on")
+						$(this).html("展开<i><span></span><span></span></i>")		
+					}else{
+						$(this).addClass("on")
+						$(this).siblings("h3").addClass("on")
+						$(this).html("收起<i><span></span><span></span></i>")		
+					}
+				})
+            </script>
+            <div class="designer_deta_user">
+            	<h2>预约用户</h2>
+                <div class="deta_user_list">
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <volist name='order_list' id='val'>
+							<div class="swiper-slide">
+								<img src="<if condition='$val.user_img neq ""'>__UPLOAD__/thumbs/b120/{$val.user_img}<elseif condition='$val.headimgurl neq ""' />{$val.headimgurl}<else/>__PUBLIC__/wap/images/user_default_img.jpg</if>">
+								<h3>{$val.user_nick_name|msubstr=0,3}&nbsp;</h3>
+								<p><span>{$val.city}</span></p>
+							</div>
+							</volist>
+                        </div>
+                    </div>
+                </div>
+                <script>
+					var swiper = new Swiper('.designer_deta_user .swiper-container', {
+						slidesPerView:4,
+						paginationClickable: true,
+						spaceBetween:10,
+						freeMode:true
+					});
+				</script>
+            </div>
+            <div class="designer_deta_case">
+            	<h2>设计案例 ({$info.case_count|default=0})</h2>
+                <ul class="clearfix">
+					<volist name='case_list' id='val'>
+                	<li>
+						<a href="{:U('case_info',array('id'=>$val[case_id]))}">
+							<span>
+								<img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic28.jpg<else/>__UPLOAD__/thumbs/b400/{$val.picture}</if>">
+								<i>{:count($val[gallery_array])}</i>
+							</span>
+							<p>{$val.case_name}</p>
+						</a>
+					</li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mask"></div>
+        
+    </div>
+</body>
+</html>
+<script>
+function add_follow(designer_id){
+	$.ajax({
+		type:'POST',
+		url:"{:U('Design/Index/add_follow')}",
+		data:{designer_id:designer_id},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.msg});
+			if(res.error==0){
+				window.location.reload();			
+			}else if(res.error==2){
+				window.location="{:U('Index/Site/login')}";
+			}
+		}
+	})
+}
+</script>

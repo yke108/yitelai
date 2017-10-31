@@ -1,0 +1,187 @@
+<div class="warp">
+	<style>body{ background:#eee;}</style>
+	<div class="user_orders_application">
+		<div class="application_hd">
+			<a href="{:U('mall/goods/info', array('id'=>$info[goods_id]))}" class="dl_box">
+				<dl>
+					<dt><img src="__UPLOAD__/{$info.goods_img}"></dt>
+					<dd>
+						<h2>{$info.goods_name}</h2>
+						<h3>
+							<p>￥{$info.goods_price}</p>
+							<p>数量：{$info.goods_number}</p>
+						</h3>
+					</dd>
+				</dl>
+			</a>
+		</div>
+		<form action="{:U('')}" method="post" enctype="multipart/form-data" onSubmit="">
+			<div class="application_bd">
+				<ul>
+					<li>
+						<label>售后类型</label>
+						<p><a href="javascript:;" class="on">申请退货</a><!--<a href="javascript:;">申请换货</a>--></p>
+						
+					</li>
+					<li>
+						<label>申请数量</label>
+						<div class="spinner"></div>
+						<script src="__PUBLIC__/js/jquery.Spinner.js"></script>
+						<script>
+							$(function(){
+								var number = "{$info.goods_number}";
+								$(".spinner").Spinner({name:'number', value:1, min:1, len:3, max:number})	
+							})
+						</script>
+					</li>
+					<!--<li class="after"><select name=""><option>请选择退换原因</option></select></li>-->
+					<li>
+						<label>补充说明</label>
+						<p><textarea name="content" cols="" rows="4" placeholder="请填写说明"></textarea></p>
+					</li>
+					<li class="clearfix">
+											
+						<div class="weui-uploader__hd">
+							<p class="weui-uploader__title">上传图片</p>
+						</div>
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files upload_preview" id="preview">
+								
+							</ul>
+							<div class="weui-uploader__input-box">
+								<input id="fileImage" class="weui-uploader__input" type="file" accept="image/*" multiple>
+							</div>
+						</div>
+					</li>
+					<li class="tgli">
+						<label>有无发票</label>
+						<p><a href="javascript:;">有发票</a></p>
+						<script>
+							$(function(){
+								$(".application_bd ul li.tgli p a").click(function(){
+									$(this).toggleClass("on")
+									
+									if($(this).hasClass('on')){
+										$('#invoice').val(1);
+									}else{
+										$('#invoice').val('');
+									}
+								})
+							})
+						</script>
+					</li>
+				</ul>
+			</div>
+			<div class="application_btn btn">
+				<a href="javascript:;" class="weui-btn weui-btn_primary" id="btn_submit">提交</a>
+				<input type="hidden" name="id" value="{$info.id}" />
+				<input type="hidden" name="invoice" value="" id="invoice" />
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/wap/js/zxxFile.js"></script>
+	<script>
+		var params = {
+			fileInput: $("#fileImage").get(0),
+			dragDrop: $("#fileDragArea").get(0),
+			upButton: $("#fileSubmit").get(0),
+			filter: function(files){
+				var arrFiles = [];
+				for (var i = 0, file; file = files[i]; i++) {
+					if (file.type.indexOf("image") == 0) {
+						if (file.size >= 512000) {
+							alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+						} else {
+							arrFiles.push(file);	
+						}
+					} else {
+						alert('文件"' + file.name + '"不是图片。');
+					}
+				}
+				return arrFiles;
+			},
+			onSelect: function(files) {
+				var html = '', i = 0;
+				$("#preview").html('<div class="upload_loading"></div>');
+				var funAppendImage = function() {
+					file = files[i];
+					if (file) {
+						var reader = new FileReader()
+						reader.onload = function(e){
+							html = html + '<li id="uploadList_'+ i +'" class="weui-uploader__file">'+ 
+								'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'"><img src="__PUBLIC__/wap/images/icon51.png"></a>' +
+								'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" />'+ 
+							'</li>';
+							i++;
+							funAppendImage();
+						}
+						reader.readAsDataURL(file);
+					} else {
+						$("#preview").html(html);
+						if (html) {
+							//删除方法
+							$(".upload_delete").click(function() {
+								ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+								return false;	
+							});
+							//提交按钮显示
+							$("#fileSubmit").show();	
+						} else {
+							//提交按钮隐藏
+							$("#fileSubmit").hide();	
+						}
+					}
+				};
+				funAppendImage();		
+			},
+			onDelete: function(file) {
+				$("#uploadList_" + file.index).remove();
+				$("#fileImage").val("")
+			}
+		};
+		ZXXFILE = $.extend(ZXXFILE, params);
+		ZXXFILE.init();
+	</script>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').click(function(){
+		var number = $("input[name='number']").val();
+		var content = $(":input[name='content']").val();
+		var invoice = $("input[name='invoice']").val();
+		var id = $("input[name='id']").val();
+		var _image_datas = new Array();
+		$('.upload_image').each(function(){
+			_image_datas.push($(this).attr('src'));
+		});
+		
+		if(!content){
+			layer.open({time:1,content:'问题描述不能为空'});return false;
+		}
+		if(_image_datas.length > 5){
+			layer.open({time:1,content:'最多可上传5张图片'});return false;
+		}
+		
+		var data = {
+			number:number,
+			content:content,
+			invoice:invoice,
+			image_datas:_image_datas,
+			id:id,
+		};
+		
+		var btn_submit = $(this);
+		btn_submit.attr('disabled',true);
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				btn_submit.attr('disabled',false);
+			}
+		}, 'json');
+	});
+});
+</script>

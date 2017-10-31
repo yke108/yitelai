@@ -1,0 +1,80 @@
+<div class="fine_statistics_deta">
+	<div class="fine_statistics_deta_1">
+		<dl>
+			<dt><img src="__UPLOAD__/thumbs/b120/{$info.distributor_image}"></dt>
+			<dd>
+				<p>{$info.distributor_name}</p>
+				<p>违规类型:{$info.type_name}</p>
+				<p><span>扣分:{$info.point}</span><span>罚款：{$info.money}</span></p>
+			</dd>
+			<dt><span>{$info.status_label}</span></dt>
+		</dl>
+		<time><span>罚单号:{$info.fine_id}</span><em>{:date('Y-m-d H:i', $info[add_time])}</em></time>
+	</div>
+	<div class="fine_statistics_deta_2">
+		<h2>{$vo.remark}</h2>
+		<p>
+			<volist name="info.pictures" id="vo">
+				<img src="__UPLOAD__/thumbs/w618h455/{$vo}" data-preview-src="__UPLOAD__/{$vo}" data-preview-group="1">
+			</volist>
+		</p>
+	</div>
+	<div class="fine_statistics_deta_3">
+		<div class="mui-input-group">
+			<a href="javascript:;" class="mui-input-row right-after">
+				<label>申诉</label>
+				<input name="appeal" type="text" value="{$info.appeal}" disabled>
+			</a>
+		</div>
+	</div>
+	<div class="fine_statistics_deta_4">
+		<h2>审核流程</h2>
+		<ul>
+			<volist name="log_list" id="vo">
+				<li>
+					<span><img src="__PUBLIC__/home/images/icon21.png"></span>
+					<dl>
+						<dt><img src="<notempty name="vo.avatar">__UPLOAD__/thumbs/b90/{$vo.avatar}<else/>__PUBLIC__/main/images/user_default_img.jpg</notempty>"></dt>
+						<dd>
+							<p>{$vo.admin_name}</p>
+							<time>{:date('Y-m-d H:i', $vo[add_time])}</time>
+						</dd>
+						<dt>{$vo.content}</dt>
+					</dl>
+				</li>
+			</volist>
+		</ul>
+	</div>
+	<eq name="info.status" value="1">
+		<div class="fine_statistics_deta_5 btn">
+			<a href="{:U('check', array('fine_id'=>$info[fine_id], 'status'=>2))}" class="mui-btn mui-btn-block mui-btn-primary check">无异议(终审)</a>
+			<a href="{:U('check', array('fine_id'=>$info[fine_id], 'status'=>3))}" class="mui-btn mui-btn-block mui-btn-warning check">撤销罚款(终审)</a>
+		</div>
+	</eq>
+</div>
+
+<script src="__PUBLIC__/home/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/home/js/mui.previewimage.js"></script>
+<script>
+	mui.previewImage();
+</script>
+
+<script>
+	$(function(){
+		$(".check").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认审核吗？', '确认审核（终审）', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

@@ -1,0 +1,71 @@
+<!-------头部开始----->
+<include file="Public/store_header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------店铺品牌介绍开始----->
+<div class="main w1200">
+	<div class="shop_about clearfix">
+		<div class="shop_about_l fl">
+			<div class="shop_about_l_1">
+				<dl class="clearfix">
+					<dt><notempty name="brand.brand_logo"><img src="__UPLOAD__/thumbs/b300/{$brand.brand_logo}"></notempty></dt>
+					<dd>
+						<h2>公司简介</h2>
+						<empty name="brand.company_profile">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关内容</p>
+						<else/>
+							<p>{$brand.company_profile}</p>
+						</empty>
+					</dd>
+				</dl>
+			</div>
+			<div class="shop_about_l_2">
+				<h2>公司文化</h2>
+				<div class="culture">
+					<empty name="brand.company_culture">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关内容</p>
+					<else/>
+						{:htmlspecialchars_decode($brand[company_culture])}
+					</empty>
+				</div>
+			</div>
+			<div class="shop_about_l_3">
+				<h2>品牌历史</h2>
+				<div class="history">
+					<empty name="brand.brand_history">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关内容</p>
+					<else/>
+						{:htmlspecialchars_decode($brand[brand_history])}
+					</empty>
+				</div>
+			</div>
+		</div>
+		<div class="shop_about_r fr">
+			<foreach name="store_ad_list.pc_store_brand_right" item="vo" key="k">
+				<lt name="k" value="3">
+					<div class="shop_about_r_item">
+						<!--<h2>业务领域</h2>
+						<h3>Our Business</h3>-->
+						<p><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></p>
+					</div>
+				</lt>
+			</foreach>
+		</div>
+	</div>
+</div>
+<!-------店铺品牌介绍结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.shop_about_l_2 .culture img{max-width:900px;}
+.shop_about_l_3 .history img{max-width:900px;}
+</style>

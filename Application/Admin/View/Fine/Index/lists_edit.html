@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><?php if($info['id']){?>编辑<?php }else{?>添加<?php }?></h3>
+			<form class="form-horizontal" method="post" action="{:U('lists_edit')}">
+				<fieldset>
+					<input type="hidden" name="id" value="{$info.id}">
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">违规类型</label>
+						<div class="col-sm-8">
+							<select name='fine_type' class='form-control' style="height:30px;padding-top:0;padding-bottom:0">
+                                <option value=''>全部类型</option>
+                                <foreach name='fine_type' item='val'>
+                                <option <if condition='$get[fine_type] eq $val[id]'>selected='selected'</if> value='{$val.id}'>{$val['fine_name']}</option>
+                                </foreach>
+                            </select>
+						</div>
+					</div>
+ 					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">违规品牌</label>
+						<div class="col-sm-8">
+							<input name="brand_id" class="input-xlarge form-control" type="text" value="{$info.brand_id}">
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">违规店铺</label>
+						<div class="col-sm-8">
+							<input name="shop_id" class="input-xlarge form-control" type="text" value="{$info.shop_id}">
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">罚款细则</label>
+						<div class="col-sm-8">
+							<input name="fine_rules" class="input-xlarge form-control" type="text" value="{$info.fine_rules}">
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">罚款凭证</label>
+						<div class="col-sm-8">
+							<input class="hy_upload_single" hy_field="fine_pic" value="上传图片" style="width:100px;height:60px;" src="{$info.fine_pic}"/>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">违规次数</label>
+						<div class="col-sm-8">
+							<input name="fine_count" class="input-xlarge form-control" type="text" value="{$info.fine_count}">
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">违规扣分</label>
+						<div class="col-sm-8">
+							<input name="fine_score" class="input-xlarge form-control" type="text" value="{$info.fine_score}">
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">违规罚款</label>
+						<div class="col-sm-8">
+							<input name="fine_money_sum" class="input-xlarge form-control" type="text" value="{$info.fine_money_sum}">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-3">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 

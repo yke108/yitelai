@@ -1,0 +1,102 @@
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">分销员列表
+			
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form" method="get" action="{:U('')}">
+					手机号：
+					<input name="mobile" value="{$get.mobile}" type="text" class="form-control input-sm" placeholder="手机号" style="display:inline-block;width:auto;" />
+					添加时间：
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start_time}" name='start_time' class='form-control input-sm hy_dp' /> - <input value="{$get.end_time}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end_time' />
+					<button class="btn btn-default btn-sm" type="submit" style='margin-left:20px;'>搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 dataTables_wrapper cs_flesh_info" href="{$Think.server.request_uri}">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>头像</th>
+							<th>姓名</th>
+							<th>手机号</th>
+							<th>所在城市</th>
+							<th>微信号</th>
+							<th>分销品牌</th>
+							<th>申请理由</th>
+							<th>建议</th>
+							<th>申请时间</th>
+							<th>申请状态</th>
+							<th>申请类型</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td>
+									<if condition="$users[$vo[user_id]][user_img] neq ''">
+										<img src="__UPLOAD__/{$users[$vo[user_id]][user_img]}" height='40' />
+									<elseif condition='$users[$vo[user_id]][headimgurl] neq ""'/>
+										<img src="__UPLOAD__/{$users[$vo[user_id]][headimgurl]}" height='40' />
+									<else/>
+										<img height='40' src="__PUBLIC__/admin/images/user_default_img.jpg" />
+									</if>
+								</td>
+								<td><if condition='$vo.name neq ""'>{$vo.name}<else/>{$users[$vo[user_id]][nick_name]}</if></td>
+								<td><if condition='$vo.tel neq ""'>{$vo[tel]}<else/>{$users[$vo[user_id]]['mobile']}</if></td>
+								<td>{$vo.region_name}</td>
+								<td>{$vo.weixin_account}</td>
+								<td>{$vo.brand}</td>
+								<td>{$vo.reason}</td>
+								<td>{$vo.proposal}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td>
+									<if condition='$vo.type eq 2'>
+									<switch name="vo.status">
+										<case value="0">未审核</case>
+										<case value="1"><font color="green">店铺审核通过，等待平台审核</font></case>
+										<case value="2"><font color="red">店铺审核不通过</font></case>
+										<case value="3"><font color="red">平台审核通过</font></case>
+										<case value="4"><font color="red">平台审核不通过</font></case>
+									</switch>
+									<elseif condition='$vo.type eq 1' />
+									<switch name="vo.status">
+										<case value="1"><font color="green">等待平台审核</font></case>
+										<case value="3"><font color="red">平台审核通过</font></case>
+										<case value="4"><font color="red">平台审核不通过</font></case>
+									</switch>
+									</if>
+								</td>
+								<td>
+									<if condition='$vo.type eq 1'>
+										主动申请
+									<else/>
+										填邀请码
+									</if>
+								</td>
+								<td>
+									<eq name="vo.status" value="0">
+										<a class="cs_ajax_link cs_show_modal" cs_id="check" href="{:U('check', array('apply_id'=>$vo[apply_id]))}">审核</a>
+									</eq>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="check" style="width:100%;">
+	<div class="modal-dialog" style="width:30%;height:auto;">
+		<div class="modal-content" id="order_content" style="padding:20px;height:480px;overflow:scroll;">
+			
+		</div>
+	</div>
+</div>

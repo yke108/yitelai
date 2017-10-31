@@ -1,0 +1,10 @@
+<volist name='list' id='val'>
+<li>
+	<a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w250h165/{$val.picture}</if>" width="250" height="165"></a>
+	<h2><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}">{$val.case_name}</a></h2>
+	<p>
+		<span><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}" class="color_btn">查看详情</a></span>
+		<span><a href="{:U('design/index/info',array('id'=>$val['designer_id'],'store_id'=>$get[store_id]))}" class="gay_btn">预约设计</a></span>
+	</p>
+</li>
+</volist>

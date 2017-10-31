@@ -1,0 +1,27 @@
+<div class="warp">
+        
+        <div class="pro_list">
+            <div class="pro_box">
+            	<ul class="clearfix">
+					<notempty name='team_list'>
+					<volist name="team_list" id="vo">
+                	<li>
+                    	<a href="{:U('mall/goods/groupbuy', array('act_id'=>$vo[act_id]))}">
+                        	<div class="pro_pic"><img src="__UPLOAD__/thumbs/b300/{$vo.act_img}"><p class="yomibox" data="{$vo[end_time]|date='Y-m-d H:i',###}"></p></div>
+                            <div class="pro_price clearfix">
+								<span>¥<font>{$vo[min_price]}</font></span><em style='color:#333;font-size:14px;'>已成团<b style='color:#ff0000;font-weight:normal;'>{$vo[post_count]}</b></em></div>
+                            <div class="pro_name">{$vo.act_name|msubstr=0,28,'utf-8',true}</div>
+                            <div class="pro_shop">{$vo.distributor_name}</div>
+                            <div class="pro_button"><button type="button">去开团</button></div>
+                        </a>
+                    </li>
+					</volist>
+					<else/>
+					<div style='text-align:center;background:#fff;padding:15px 0;font-size:16px;'>暂时没有拼团活动</div>
+					</notempty>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+<script src="__PUBLIC__/wap/js/jquery.yomi.js"></script>

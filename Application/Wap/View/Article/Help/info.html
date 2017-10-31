@@ -1,0 +1,69 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+<script>
+	$(function(){
+		//内页分类
+		$(".sort_list").hide()
+		$(".hd_menu_l").hover(function(){
+			$(this).find(".sort_list").toggle()	
+		})
+	})
+</script>
+
+
+
+<!-------帮助中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('article/help/index')}">帮助中心</a><span>></span><a href="{:U('article/help/index', array('cat_id'=>$news_cat[cat_id]))}">{$news_cat.cat_name}</a><span>></span>{$info.title}</div>
+	<div class="help clearfix">
+		<div class="help_l fl">
+			<ul>
+				<volist name="newscatlist" id="vo">
+					<li <if condition="$vo[cat_id] eq $news_cat[parent_id]">class="on"</if>>
+						<h2><a href="javascript:;"><i></i>{$vo.cat_name|msubstr=0,4,'utf-8',false}</a></h2>
+						<div class="help_subnav">
+							<volist name="vo.children" id="vo2">
+								<p><a <if condition="$vo2[cat_id] eq $news_cat[cat_id]">class="on"</if> href="{:U('article/help/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name|msubstr=0,4,'utf-8',false}</a></p>
+							</volist>
+						</div>
+					</li>
+				</volist>
+			</ul>
+		</div>
+		<script>
+			$(function(){
+				$(".help_l ul li:last").addClass("last")
+				//$(".help_l ul li:first-child").addClass("on")
+				$(".help_l ul li.on").find(".help_subnav").show()
+				$(".help_l ul li h2").click(function(){
+					$(this).parent().toggleClass("on")
+					$(this).siblings(".help_subnav").slideToggle()
+					$(this).parent().siblings().removeClass("on")
+					$(this).parent().siblings().find(".help_subnav").slideUp()
+				})
+			})
+		</script>
+		<div class="help_r fr">
+			<div class="help_r_deta">
+				<h2>{$cat_info.cat_name}</h2>
+				<h3>{$info.title}</h3>
+				<div class="deta_text">
+					{:htmlspecialchars_decode($info[content])}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------帮助中心结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>

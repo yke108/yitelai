@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">编辑短信模板</h3>
+		<?php $action = U('edit',array('id'=>$info['template_id'])); ?>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}" enctype="multipart/form-data">
+				<fieldset>
+					<div class="form-group">
+						<label class="control-label col-sm-2" style="width:100px;">模板说明</label>
+						<div class="col-sm-8">
+							<textarea name="template_intro" class="form-control"
+							style="width:100%;height:60px;" >{$info['template_intro']}</textarea>
+						</div>
+                    </div>
+                    
+                    <div class="form-group">
+						<label class="control-label col-sm-2" style="width:100px;">模板内容</label>
+						<div class="col-sm-8">
+							<textarea name="template_sms" class="form-control"
+							style="width:100%;height:100px;" >{$info['template_sms']}</textarea>
+						</div>
+                    </div>
+                    
+                     <div class="form-group">
+						<label class="control-label col-sm-2" style="width:100px;">参数介绍</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline" style="padding:7px 0;"> {$info['template_remarks']}</label><br>
+							<div style='color:#ff0000;'>这里的参数可加进模板内容中，比如模板内容是 <font style='color:#337ab7;'>{Name}你好</font>，当短信发送到手机的时候就会显示 <font style='color:#337ab7;'>小明你好。</font></div>
+						</div>
+                    </div>
+                    
+                    <div class="form-group">
+						<label class="control-label col-sm-2" style="width:100px;">通知开关</label>
+						<div class="col-sm-8">
+							<label class="checkbox-inline" style='padding-left:0;'> 
+							 	<input value="1" name="template_sms_status" type="radio" {:m_checked($info[template_sms_status], 1)}><font style='position:relative;top:2px;margin-left:5px;'>是</font>
+							</label>
+							<label class="checkbox-inline" style='padding-left:0;'> 
+							 	<input value="0" name="template_sms_status" type="radio" {:m_checked($info[template_sms_status], 0)}><font style='position:relative;top:2px;margin-left:5px;'>否</font>
+							</label>
+						</div>
+                    </div>
+ 
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并修改</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+
+

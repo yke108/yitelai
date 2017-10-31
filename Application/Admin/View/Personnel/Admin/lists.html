@@ -1,0 +1,183 @@
+<style type="text/css">
+	.pull-left a {
+		background: #ebebeb;
+		padding: 10px 20px;
+		margin-right: 10px;
+	}
+
+	.pull-left a.selected {
+		background: #85888c;
+		color: #ffffff;
+	}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">店铺人员<div style="clear:both"></div></h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal" method="post" action="{:U('')}">
+					<p>城市筛选：
+						<input type="hidden" value="0" class="region_sel"/>
+						<select class="region_sel form-control input-xlarge" name="province" style="width:200px; display:inline-block;"></select>
+						<select class="region_sel form-control input-xlarge" name="city" style="width:200px; display:inline-block;"></select>
+						<select class="form-control input-xlarge" value='{$region_code}' name="region_code" style="width:200px; display:inline-block;" ></select>
+					</p>
+					<p>店铺筛选：
+						<select name="distributor_id" id="distributor_id" class="region_sel form-control input-xlarge" style="display: inline-block !important; width: 50%">
+							<option value="">请选择店铺</option>
+							<volist name="distributorInfoList" id="vo">
+								<option <if condition="$shop_id eq $vo[distributor_id]">selected</if> value="{$vo[distributor_id]}">{$vo[distributor_name]}</option>
+							</volist>
+						</select>
+					</p>
+					<p>职位选择：
+						<select name="department_id" class="region_sel form-control input-xlarge" style="display: inline-block !important; width: 50%">
+							<option value="">全部</option>
+							<volist name="department" id="vo">
+								<option <if condition="$department_id eq $vo[department_id]">selected</if> value="{$vo[department_id]}">{$vo[department_name]}</option>
+							</volist>
+						</select>
+					</p>
+					<p>
+						<button class="btn btn-default btn-sm" type="submit">搜索</button>
+					</p>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="20%">头像</th>
+							<th width="20%">姓名</th>
+							<th width="20%">职位</th>
+							<th width="20%">手机号码</th>
+							<th width="20%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="department_list" id="vo">
+							<tr class="rowlink top_action">
+								<td><img src="{:picurl($vo['avatar'])}" height="40"></td>
+								<td>{$vo.admin_name}</td>
+								<td>{$vo.role_name}</td>
+								<td>{$vo.mobile}</td>
+								<td><a href="{:U('Personnel/Admin/wagelists', array('admin_id' => $vo['admin_id']))}">看查历史工资</a></td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="__PUBLIC__/home/js/public.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var region_list = {:json_encode($region_list)};
+		<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+		var province = "{$provinces}";
+		<php>$city = intval($info[region_code] / 100) * 100;</php>
+		var city = "{$citys}";
+		var district = "{$region_code}";
+		var cobj = $('.region_sel');
+		function build_sitem_select(thisobj){
+			var region_id = thisobj.val();
+			var obj = thisobj.next();
+			obj.html('<option value="0">请选择</option>');
+			if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+				for(var i in region_list){
+					var bbc = region_list[i];
+					test_region_id = parseInt(bbc.region_code);
+					if(region_id == test_region_id){
+						continue;
+					}
+					if(region_id == 0){
+						if(test_region_id % 10000 > 0) continue;
+					} else if(region_id % 10000 == 0) {
+						if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+					} else if(region_id % 100 == 0) {
+						if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+					} else {
+						break;
+					}
+					var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+					if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+					opt.appendTo(obj);
+				}
+			}
+			if(obj.hasClass('region_sel')) build_sitem_select(obj);
+		}
+		cobj.bind('change', function(){
+			build_sitem_select($(this));
+		});
+		$('input.region_sel').each(function(){
+			build_sitem_select($(this));
+		});
+	});
+
+
+
+	$(function(){
+
+		$('.btn-sm').click(function(){
+			var distributor_id = $('select[name=distributor_id]').find("option:selected").val();
+			if (distributor_id == "") {
+				alert("请先选择店铺");
+				return false;
+			}
+			return true;
+		});
+
+		var region_code = $('select[name=region_code]').find("option:selected").val();
+		var distributor_id = "{$distributor_id}";
+		if (region_code) {
+			$.ajax({
+				url: '{$distributorListUrl}',
+				type: 'POST',
+				data: {region_code: region_code,distributor_id:distributor_id},
+				dataType: 'json',
+				success: function (data) {
+					try {
+						$('#distributor_id').html(data.html);
+						return false;
+					} catch (e) {
+						$('#distributor_id').html('<option value="">请选择店铺</option>');
+						return false;
+					}
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					$('#distributor_id').html('<option value="">请选择店铺</option>');
+					return false;
+				}
+			});
+		}
+		$('select[name=region_code]').change(function(){
+			var region_code = $(this).val();
+			if (region_code) {
+				$.ajax({
+					url: '{$distributorListUrl}',
+					type: 'POST',
+					data: {region_code: region_code,distributor_id:distributor_id},
+					dataType: 'json',
+					success: function (data) {
+						try {
+							$('#distributor_id').html(data.html);
+							return false;
+						} catch (e) {
+							$('#distributor_id').html('<option value="">请选择店铺</option>');
+							return false;
+						}
+					},
+					error: function (XMLHttpRequest, textStatus, errorThrown) {
+						$('#distributor_id').html('<option value="">请选择店铺</option>');
+						return false;
+					}
+				});
+			}
+		});
+	});
+
+</script>

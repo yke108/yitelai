@@ -1,0 +1,49 @@
+<foreach name='list' item='val'>
+<div class="design_item">
+	<dl class="clearfix">
+		<dt>
+			<a href="{:U('info',array('id'=>$val['distributor_id']))}">
+			<img src="__UPLOAD__/thumbs/b200/{$val[distributor_image]}" width="120" height="120"></a>
+		</dt>
+		<dd>
+			<h2>
+				<b><a href="{:U('info',array('id'=>$val['distributor_id']))}">{$val[distributor_name]}</a></b>
+				<if condition="$val.is_famous eq 1">
+				<span class="color1"><img src="__PUBLIC__/main/images/icon101.png">知名</span>
+				</if>
+				<if condition="$val.is_authentication eq 1">
+				<span class="color2"><img src="__PUBLIC__/main/images/icon102.png">认证</span>
+				</if>
+			</h2>
+			<p><span>所在城市<em>{$val.region_name}</em></span><span>设计师<em>{$val.designer_count}人</em></span></p>
+			<p><span>服务范围：<em>{$val.service_area|default=$val[region_name]}</em></span></p>
+			<!--<p><span>预约数：<em>{$val.bespoke_count|default=0}</em></span></p>-->
+		</dd>
+		<dd class="item_right">
+			<!--<h3><span>100-600</span>元/㎡</h3>-->
+			<!--<h3><span>{$val.distributor_title}</span></h3>-->
+			<if condition="($val.distributor_tel neq '')">
+				<empty name="user">
+					<a href="javascript:;" title="手机号登录后可查看"><img src="__PUBLIC__/main/images/icon100.png">{$val.distributor_tel_hide}</a>
+				<else/>
+					<a href="javascript:;"><img src="__PUBLIC__/main/images/icon100.png">{$val.distributor_tel}</a>
+				</empty>
+			</if>
+		</dd>
+	</dl>
+	<ul class="clearfix">
+		<volist name='val.case_list' id='val2'>
+			<li <if condition="$i eq 4">class='mr'</if>>
+				<a href="{:U('design/index/case_info',array('id'=>$val2['case_id']))}">
+					<img src="__UPLOAD__/thumbs/b400/{$val2.picture}" width="210" height="210">
+				</a>
+                <div style="text-align:right; margin-top:10px; font-size:14px;">
+					<div style=" display:inline-block; vertical-align:top; float:left; text-align:left;"><div style="color:#CCC">{$val2.case_name}</div><div style="font-size:15px; margin-top:5px;">{$val2.houses}</div></div>
+					<div style=" display:inline-block; vertical-align:top; line-height:40px;">{$val2.designer_name}</div>
+					<img src="__UPLOAD__/thumbs/b90/{$val2.designer_image}" width="40" height="40" style="border-radius:50%; margin-left:10px;" />
+				</div>
+			</li>
+		</volist>
+	</ul>
+</div>
+</foreach>

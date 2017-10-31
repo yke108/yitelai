@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">浏览列表
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form form-inline" method="get" action="{:U('')}">
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start}" name='start' class='form-control input-sm hy_dp' /> - <input value="{$get.end}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end' />
+					<button class="btn btn-default btn-sm" type="submit">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="11%">会员昵称</th>
+							<th width="11%">手机号码</th>
+                            <th width="11%">IP地址</th>
+   	  	  	  	  	  	  	<th width="11%">浏览地址</th>
+                            <th width="11%">页面类型</th>
+                            <th width="11%">浏览时间</th>
+                            <th width="11%">停留时间</th>
+                            <th width="11%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="11%">{$vo.nick_name}</td>
+								<td width="11%">{$vo.mobile}</td>
+                                <td width="11%">{$vo.ip}</td>
+                                <td width="11%">{$vo.url}</td>
+                                <td width="11%">{$vo.url_type}</td>
+                                <td width="11%">{$vo.in_time}<br/>{$vo.out_time}</td>
+                              	<td width="11%">
+                                <?php
+                                echo strtotime($vo['out_time']) - strtotime($vo['in_time']).' 秒';
+                                ?>
+                                </td>
+                              	<td width="11%">
+                                <a class="cs_ajax_link hy_show_modal" href="{:U('',array('id'=>$vo['id'],'step' => 1))}" hy_w="600" hy_h="250">提醒</a>
+                                <a class="cs_ajax_link hy_show_modal" href="{:U('',array('id'=>$vo['id'],'step' => 1))}" hy_w="600" hy_h="250">发送信息</a>
+                              </td>
+						  </tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+<script src="__PUBLIC__/wap/js/dropload/dropload.min.js"></script>
+<link href='__PUBLIC__/wap/js/dropload/dropload.css' rel="stylesheet" type="text/css">
+<div class="warp">
+    	<div class="user_orders">
+			<div class='user_team_box'>
+			<include file='User/Order/_team' />
+			</div>
+        </div>
+    </div>
+	<script>
+	var page=2;
+	var dropload = $('.user_orders').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+			
+			$.ajax({
+				type: 'POST',
+				url: "{:U('')}",
+				data:{p:page},
+				dataType: 'json',
+				success: function(data){
+					
+					// 为了测试，延迟1秒加载
+					setTimeout(function(){
+						if(data.html!=''){
+							$('.user_team_box').append(data.html);
+							page++;
+						}else{
+							me.lock();
+							// 无数据
+							me.noData();
+						}
+						// 每次数据加载完，必须重置
+						me.resetload();
+					},1000);
+				},
+				error: function(xhr, type){
+					alert('Ajax error!');
+					// 即使加载出错，也得重置
+					me.resetload();
+				}
+			});
+		}})
+	</script>

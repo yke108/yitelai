@@ -1,0 +1,44 @@
+<style>
+.user_assets_hd span{display:block;}
+.user_assets_hd p a{font-size:18px;padding:2px 15px;margin-top:5px;}
+.user_assets_hd p a.cash{background:#1ba100;margin-left:5px;}
+.assets_bd_hd ul li{width:33%;}
+</style>
+<div class="warp">
+	<div class="user_assets">
+		<div class="user_assets_hd clearfix">
+			<form action="{:U('user/recharge/pay')}" onSubmit="">
+				<div class='fl'>
+					<span>可用金额：<font>{$user.user_money|default=0}</font>元</span>
+					<span>冻结金额：<em>{$user.frozen_money|default=0}</em>元</span>
+				</div>
+				<div class='fr'>
+					<p>
+						<a href="{:U('user/recharge/index')}">充值</a>
+						<a class='cash' href="{:U('user/capital/cash')}">提现</a>
+					</p>
+				</div>
+			</form>
+		</div>
+		<div class="user_assets_bd">
+			<div class="assets_bd_hd">
+				<ul class="clearfix">
+					<li><a href="{:U('user/capital/index')}">资金明细</a></li>
+					<li><a href="{:U('user/capital/commission')}" class="on">获得分利</a></li>
+					<li><a href="{:U('user/capital/cashapply')}">提现记录</a></li>
+				</ul>
+			</div>
+			<div class="assets_bd_bd">
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<div class="more_content">
+						<include file="User/Capital/_commission"/>
+					</div>
+					<div id="pages" class="more"><a id="load_more" href="javascript:;"><img src="__PUBLIC__/editor/themes/common/loading.gif"></a></div>
+					<div class="loading"></div>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>

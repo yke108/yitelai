@@ -1,0 +1,110 @@
+<!-------头部开始----->
+<include file="Public/reward_header"/>
+<!-------头部结束----->
+
+
+
+<!-------支付订单开始----->
+<div class="main w1200">
+	<form action="{:U('')}" method="post">
+		<div class="pay_order">
+			<h1>支付保证金</h1>
+			
+			
+			<h1>选择支付方式</h1>
+			<div class="pay_way">
+				<ul>
+					<li>
+						<label><input type="radio" class="pay_id" name="pay_id" id="RadioGroup1_0" checked value="1">账户余额支付：当前账户余额 <span>{$user.user_money}</span> 元</label>
+					</li>
+					<li>
+						<label><input type="radio" class="pay_id" name="pay_id" id="RadioGroup1_1" value="2">支付宝/微信</label>
+						<div class="pay_list">
+							<ol class="clearfix">
+								<!--<li pay_id="3"><a href="javascript:;"><img src="__PUBLIC__/main/images/pic79.jpg"></a></li>-->
+								<li class="on" pay_id="2"><a href="javascript:;"><img src="__PUBLIC__/main/images/pic80.jpg"></a></li>
+							</ol>
+						</div>
+					</li>
+					<!--<li class="last">
+						<label><input type="radio" class="pay_id" name="pay_id" id="RadioGroup1_2" value="">网上银行</label>
+						<div class="pay_list">
+							<ol class="clearfix">
+								<li pay_id="3"><a href="javascript:;"><img src="__PUBLIC__/main/images/pic81.jpg"></a></li>
+							</ol>
+						</div>
+					</li>-->
+				</ul>
+			</div>
+			<script>
+				//支付方式切换
+				$(function(){
+					$(".pay_list ol li").click(function(){
+						$(this).addClass("on").siblings().removeClass("on")
+						$(this).parent().parent().parent().siblings().find(".pay_list ol li").removeClass("on")
+						
+						var pay_id = $(this).attr('pay_id');
+						$(this).parents('li').find('.pay_id').val(pay_id);
+					})
+				})
+				
+				$(function(){
+					$(".pay_way ul li label").click(function(){
+						$(this).siblings().show()
+						$(this).parent().siblings().find(".pay_list").hide()
+						//$(this).parent().siblings().find(".pay_list ol li").removeClass("on")
+					})
+				})
+			</script>
+			
+			<div class="pay_order_btn">
+				<p>保证金：<span>¥{$info.deposit}</span></p>
+				<p>
+					<a href="javascript:;" class="payordernow">确认付款</a>
+				</p>
+			</div>
+		</div>
+	</form>
+</div>
+<!-------支付订单结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(document).ready(function(){
+	$('.payordernow').bind('click', function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				 window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+	
+	var pay_id = $('.pay_id:checked').val();
+	if(pay_id == 1 || pay_id == 2){
+		$('.pay_list').css('display', 'block');
+	}
+});
+</script>
+
+<script language="JavaScript" type="text/javascript">
+function clearNoNum(obj){
+obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字而不是
+obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+}
+</script>

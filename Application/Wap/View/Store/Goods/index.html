@@ -1,0 +1,102 @@
+<div class="warp">
+	
+	<div class="shop_pro_list">
+		<div class="shop_home_header">
+			<form action="{:U('', array('store_id'=>$get[store_id]))}" method="post">
+				<input name="keyword" value="{$keyword}" type="search" placeholder="搜索商品关键词">
+			</form>
+			<a href="{:U('store/category/index', array('store_id'=>$get[store_id]))}"><img src="__PUBLIC__/wap/images/icon19.png">分类</a>
+		</div>
+		<div class="shop_pro_list_sort">
+			<ul class="clearfix">
+				<li><a <eq name="get.order" value="view">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'view', 'sort'=>$sort_view))}">人气</a></li>
+				<li><a <eq name="get.order" value="sale">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'sale', 'sort'=>$sort_sale))}">销量</a></li>
+				<li><a <eq name="get.order" value="new">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'new', 'sort'=>$sort_new))}">新品</a></li>
+				<li><a <eq name="get.order" value="price">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'price', 'sort'=>$sort_price))}">价格</a></li>
+				<!--<li><a <eq name="get.order" value="collect">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'collect', 'sort'=>$sort_collect))}">收藏</a></li>-->
+			</ul>
+		</div>
+		<style type="text/css">
+		.shop_pro_list_sort ul li{width:25%;}
+		</style>
+		<div class="shop_pro_list_item">
+			<empty name="goods_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<ul class="clearfix more_content">
+					<include file="Store/Goods/_index"/>
+				</ul>
+				<div id="pages" class="more"><a id="load_more" href="javascript:;"><img src="__PUBLIC__/editor/themes/common/loading.gif"></a></div>
+				<div class="loading"></div>
+			</empty>
+		</div>
+	</div>
+		
+</div>
+
+<style type="text/css">
+	#pages{display:none; text-align:center;}
+	.loading{text-align: center;font-size: 14px;padding:20px 0}
+</style>
+<script src="__PUBLIC__/js/debug.js"></script>
+<script src="__PUBLIC__/js/jquery.infinitescroll.js"></script>
+<script type="text/javascript">
+	var cat_id = "{$get.cat_id}";
+	var keyword = "{$keyword}";
+	
+	var order = "{$get.order}";
+	var sort = "{$get.sort}";
+	
+	$('.more_content').infinitescroll({
+		loading: {
+			msgText: "",
+			img: "__PUBLIC__/editor/themes/common/loading.gif",
+			finishedMsg: '没有新数据了哦...',
+			selector: '.loading' //loading选择器
+		},
+		navSelector: "#pages", //导航的选择器，会被隐藏
+		nextSelector: "#load_more", //包含下一页链接的选择器
+		itemSelector: ".item", //你将要取回的选项(内容块)
+		debug: false, //启用调试信息，若启用必须引入debug.js
+		dataType: 'html', //格式要和itemSelector保持一致
+		maxPage: 10, //最大加载的页数
+			//animate: true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
+		extraScrollPx: 150, //滚动条距离底部多少像素的时候开始加载，默认150
+			//bufferPx: 40, //载入信息的显示时间，时间越大，载入信息显示时间越短
+		errorCallback: function() { //加载完数据后的回调函数
+			
+		},
+		path: function(index) { //获取下一页方法
+			
+			var url = "{:U('',array('store_id'=>$get[store_id],'p'=>'sp','cat_id'=>'scat_id','keyword'=>'skeyword','order'=>'sorder','sort'=>'ssort'))}";
+			url = url.replace('sp', index);
+			
+			if(cat_id){
+				url = url.replace('scat_id', cat_id);
+			}else{
+				url = url.replace('/cat_id/scat_id', '');
+			}
+			if(keyword){
+				url = url.replace('skeyword', keyword);
+			}else{
+				url = url.replace('/keyword/skeyword', '');
+			}
+			
+			if(order){
+				url = url.replace('sorder', order);
+			}else{
+				url = url.replace('/order/sorder', '');
+			}
+			if(sort){
+				url = url.replace('ssort', sort);
+			}else{
+				url = url.replace('/sort/ssort', '');
+			}
+			
+			return url;
+		},
+	}, function(newElements, data, url) { //回调函数
+		//console.log(data);
+		//alert(url);
+	});
+</script>

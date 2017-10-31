@@ -1,0 +1,64 @@
+<form name="form" method="post" class="cs_ajax_form" action="{:U('send', array('id'=>$info[order_id]))}">
+	<div class="row">
+		<h1 class="invoice_heading" style="font-size:14px;">商品发货</h1>
+	</div>
+	<div class="row">
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>商品图片</th>
+						<th>商品名称</th>
+						<th>单价</th>
+						<th>商品服务</th>
+						<th>数量</th>
+						<th class="invoice_tar">小计</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="list" id="vo">
+						<tr>
+							<td><img src="__UPLOAD__/{$vo.goods_img}" height="40" /></td>
+							<td>
+								<input type="hidden" value="{$vo.id}" name="og_list[]">
+								{$vo.goods_name}
+								<span style="color:red;margin-left:12px;">{$vo.goods_attr}</span>
+							</td>
+							<td>￥{$vo.goods_price}</td>
+							<td><gt name="vo.service_id" value="0">{$vo.service_name} ￥{$vo.service_price}</gt></td>
+							<td>{$vo.goods_number}</td>
+							<td class="invoice_tar">￥{$vo[goods_number] * $vo[goods_price] + $vo[service_price]}</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">	
+		<div class="col-sm-12 col-md-12">
+			<div  style="padding:5px;">
+				<div>收货人：<strong>{$info.consignee}</strong>&nbsp;&nbsp; {$info.mobile}</div>
+			</div>
+			<div style="padding:5px;">
+				<div>收货地址：{$regions[$info[province]]} {$regions[$info[city]]} {$regions[$info[district]]} {$info.address}</div>
+			</div>
+			<div style="padding:5px;">
+				<input type="hidden" name="status" value="1"/>
+				物流公司：
+				<select name="shipping_id" style="width:130px;">
+					<option value="">请选择物流公司</option>
+					<foreach name="shipping_list" key="ko" item="vo">
+						<option value="{$ko}">{$vo}</option>
+					</foreach>
+				</select>&nbsp;&nbsp;&nbsp;&nbsp;
+				快递单号：
+				<input type="text" name="kd_no" style="border:1px solid #CCC;">
+				<button type="submit" class="btn btn-info btn-sm">立即发货</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+ 
+
+

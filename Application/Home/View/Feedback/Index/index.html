@@ -1,0 +1,29 @@
+<div class="customer_service_management">
+	<div class="customer_service_management_hd">
+		<dl>
+			<dt><img src="{$admin.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$admin.admin_name}<notempty name="distributor">（{$distributor.distributor_name}）</notempty></h2>
+				<span>{$admin.role_name}</span>
+			</dd>
+			<dt>
+				<a href="tal:{$admin.mobile}">{$admin.mobile}</a>
+			</dt>
+		</dl>
+	</div>
+	<div class="customer_service_management_bd">
+		<ul class="mui-clearfix">
+			<li><a href="{:U('list', array('type'=>1))}"><i><img src="__PUBLIC__/home/images/icon56.png"></i><p>待解答</p><span>{$feedback_stat.none_count}</span></a></li>
+			<li><a href="{:U('list', array('type'=>2))}"><i><img src="__PUBLIC__/home/images/icon57.png"></i><p>解答中</p><span>{$feedback_stat.on_count}</span></a></li>
+			<li><a href="{:U('list', array('type'=>3))}"><i><img src="__PUBLIC__/home/images/icon58.png"></i><p>已解答</p><span>{$feedback_stat.done_count}</span></a></li>
+			<li><a href="javascript:;"><i><img src="__PUBLIC__/home/images/icon59.png"></i><p>投诉建议</p><span>56</span></a></li>
+			<if condition="$admin[sys_id] eq 1">
+				<li><a href="{:U('feedback/admin')}"><i><img src="__PUBLIC__/home/images/icon60.png"></i><p>所有客服</p><span>{$admin_count}</span></a></li>
+				<li><a href="{:U('feedback/admin/add')}" class="add"><i><img src="__PUBLIC__/home/images/icon61.png"></i><p>添加客服</p></a></li>
+			<elseif condition="($admin[sys_id] eq 2) AND ($admin[role_id] eq 54)"/><!--店长-->
+				<li><a href="{:U('feedback/admin')}"><i><img src="__PUBLIC__/home/images/icon60.png"></i><p>所有客服</p><span>{$admin_count}</span></a></li>
+				<li><a href="{:U('feedback/admin/add')}" class="add"><i><img src="__PUBLIC__/home/images/icon61.png"></i><p>添加客服</p></a></li>
+			</if>
+		</ul>
+	</div>
+</div>

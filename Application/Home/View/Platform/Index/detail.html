@@ -1,0 +1,85 @@
+<div class="platform_staff_management_deta mui-scroll-wrapper"  id="pullrefresh">
+    <div class="mui-scroll">
+        <div class="platform_staff_management_deta_hd">
+            <dl>
+                <dt><img src="{$adminFind[avatar]}"></dt>
+                <dd>
+                    <h2><b>{$adminFind[admin_name]}</b><span>{$adminFind[role_name]}</span></h2>
+                    <p><a href="javascript:void(0);">{$adminFind[mobile]}</a></p>
+                </dd>
+            </dl>
+        </div>
+        <if condition="$wageList neq ''">
+            <div class="platform_staff_management_deta_bd load-data">
+                <volist name="wageList" id="vo">
+                    <h2><span>{$key}年<img src="__PUBLIC__/home/images/icon18.png"></span><em>薪酬情况</em></h2>
+                    <ul>
+                        <volist name="vo" id="v">
+                            <li>
+                                <h3><i><img src="__PUBLIC__/home/images/{$v[status_image]}"></i><span>{$v[month]}月</span><em>{$v[total_wages]}元</em></h3>
+                                <div class="platform_staff_management_deta_sub">
+                                    <p><span>岗位工资</span><em>{$v[post_salary]}元</em></p>
+                                    <p><span>法定工资</span><em>{$v[legal_wage]}元</em></p>
+                                    <p><span>考核工资</span><em>{$v[assessment_wage]}元</em></p>
+                                    <p><span>差旅费</span><em>{$v[travel_expenses]}元</em></p>
+                                    <p><span>办公费</span><em>{$v[office_expenses]}元</em></p>
+                                    <p><span>奖励</span><em>{$v[reward]}元</em></p>
+                                    <p><span>提成</span><em>{$v[commission]}元</em></p>
+                                </div>
+                            </li>
+                        </volist>
+                    </ul>
+                </volist>
+            </div>
+        <else/>
+            <p style="text-align:center;color:#999999;padding:20px;">暂无工资记录</p>
+        </if>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            $(".platform_staff_management_deta_bd ul li h3").on("tap",function(){
+                $(this).siblings().slideToggle()
+            })
+        })
+    </script>
+</div>
+<if condition='$count gt count($list)'>
+    <script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+    <script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+    <script type="text/javascript">
+        var page = 2;
+        var admin_id = "{$admin_id}";
+        mui.init({
+            pullRefresh: {
+                container: '#pullrefresh',
+                up: {
+                    contentrefresh: '正在加载...',
+                    contentnomore: '没有更多数据了',
+                    callback: pullupRefresh
+                }
+            }
+        });
+
+        function pullupRefresh() {
+            var $this = this;
+            mui.ajax("{:U('')}", {
+                type: 'post',
+                data: {p: page,admin_id: admin_id},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.html != '') {
+                        $(".load-data").append(res.html);
+                        page++;
+                        $this.endPullupToRefresh();
+                    } else {
+                        $this.endPullupToRefresh(true);
+                    }
+                }
+            })
+        }
+    </script>
+    <else/>
+    <script type="text/javascript">
+        mui('.mui-scroll-wrapper').scroll({});
+    </script>
+</if>

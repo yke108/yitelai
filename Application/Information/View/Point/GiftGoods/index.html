@@ -1,0 +1,181 @@
+<style type="text/css">
+td a.goodst{display:inline-block;width:16px;height:16px;border-radius:50%;}
+td a.goodst0{background:#DDD;}
+td a.goodst1{background:green;}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">兑换商品列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加兑换商品</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="50">图片</th>
+							<th>兑换商品名称</th>
+							<th width="120">兑换所需积分</th>
+                            <th width="50">库存</th>
+                            <th width="50">排序</th>
+							<th width="150">添加时间</th>
+							<th width="150">开始时间</th>
+							<th width="150">结束时间</th>
+							<th width="80" style="text-align:center;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id='tblc'>
+						<include file="Point/GiftGoods/_index"/>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+
+
+<script type="text/javascript">
+(function ($) {
+	$(document).ready(function(){
+		cs_rof_btn();
+    });
+}(jQuery));
+function cs_rof_btn(){
+	$('.cs_tip_b').each(function(){
+		var obj = $(this);
+		var a = obj.attr('v');
+		a = a > 0 ? 1 : 0;
+		obj.addClass(obj.attr('c')+a).parent().css({'text-align':'center'});
+		obj.bind('click',function(){
+			var obj = $(this);
+			$.post(obj.attr('href'),{},function(d){
+				if(d.status == 1){
+					var a = obj.attr('v');
+					var b;
+					if(a > 0){
+						a = 1; b = 0;
+					} else {
+						a = 0; b = 1;
+					}
+					var c = obj.attr('c');
+					obj.attr('v', b).removeClass(c+a).addClass(c+b);
+				} else {
+					alert(d.info);
+				}
+			},'json');
+			return false;
+		});
+	});
+}
+</script>
+<script type="text/javascript">
+//选择所有
+function CheckAll(value)
+{
+	$("input[type='checkbox'][name^='checkid'][disabled!='true']").attr("checked",value);
+}
+
+(function ($) {
+	$(document).ready(function(){
+		$.dthref = '';
+		$.dtholder = {};
+		function loadedc(){
+			$('.pager').children('a').each(
+				function(){$(this).bind('click',function(){
+					$.dthref = $(this).attr('href');
+					reAjaxLoad();
+					return false;
+				});
+			});
+		}
+		
+		$('#btn_search').bind('click',function(){
+			$.dtholder.keyword = $('#keyword').val();
+			$.dtholder.goods_sn = $('#goods_sn').val();
+			$.dtholder.cat_id = $('#cat_id').val();
+			$.dthref = $(this).attr('href');
+			reAjaxLoad();
+			return false;
+		});
+		
+		$('.click_a').bind('click',function(){
+			 if($(".checkid:checked").length==0){
+			 	alert('请选择任意评论记录');
+				return ;
+			 }
+			 if(!confirm('你确定此操作吗？')) return;
+			 var checkedCustomer = [];
+			 
+			 $(".checkid:checked").each(function(){	
+				 checkedCustomer.push($(this).val());
+			 });
+			var goods_id = checkedCustomer.join(',');
+			$.ajax( {    
+		        url:$(this).attr('url'),
+		        data:{
+		        	checkid:goods_id		            
+		        },
+		        type:'post',  
+		        cache:false,    
+		        dataType:'json',    
+		        success:function(data) {
+		            if(data){	
+		            	reAjaxLoad();
+		            }else{
+		            	 alert('操作失败');	
+		            }
+		         },    
+		         error : function() {
+		              alert("系统错误！");   
+		         }
+		    });
+			return false;
+		});
+		
+		$('.sort th').bind('click',function(){
+			var fname = $(this).attr('attr');//alert(sort);
+			var sort = $(this).attr('val');
+			if(sort=='asc'){
+				$(this).attr('val','desc');
+			}else{
+				$(this).attr('val','asc');
+			}
+			if(fname){
+				$.dtholder.fname = fname;
+				$.dtholder.sort = sort;
+				$.dthref = $(this).attr('href');
+				reAjaxLoad();
+			}
+			return false;
+		});
+		
+		//根据各类参数，重新加载页面
+		function reAjaxLoad(){
+			var href = $.dthref == '' ? location.href : $.dthref;
+			$.post(href,$.dtholder,function(d){
+				if(d.error > 0){
+					alert(d.message);
+					return;
+				}
+				$.dtholder.page = 0;
+				if(d.overwrite > 0){
+					$('#tblc').html(d.clist);
+				} else {
+					var content = $('#tblc').html() + d.clist;
+					$('#tblc').html(content);
+				}
+				$("#pwrap").html(d.pager);
+				loadedc();
+				location.hash="listtop";
+			},'json');
+		}
+		
+		//页面加载后，绑定点击事件
+        loadedc();
+    });
+}(jQuery));
+
+</script>

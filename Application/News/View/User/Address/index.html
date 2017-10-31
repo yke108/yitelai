@@ -1,0 +1,66 @@
+<div class="warp">
+	<style>
+		body{ background:#f3f3f3;}
+	</style>
+	<div class="back_bar"><a class="mui-icon mui-icon-left-nav"></a>地址管理<a href="javascript:;" class="save">保存</a></div>
+	<div class="user_address mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无地址</p>
+			<else/>
+				<include file="User/Address/_index"/>
+			</empty>
+			<div class="btn"><a class="mui-btn mui-btn-primary mui-btn-block" href="{:U('add')}">+添加新地址</a></div>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+	
+	mui(".address_item_bd .mui-input-row").on("tap","label",function(){
+		var obj = $(this);
+		var id = obj.find('input').val();
+		$.post("{:U('addressDef')}", {id:id}, function(d){
+			mui.toast(d.info)
+			if(d.status == 1){
+				obj.parents(".user_address_item").siblings().find("input").prop('checked', false)
+				obj.find('input').prop('checked', true)
+				obj.find('.label_text').html("默认地址")
+				obj.parents(".user_address_item").siblings().find("label .label_text").html("设为默认")
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	})
+	
+	mui(".user_address_item").on("tap",".del",function(){
+		var obj = $(this);
+		var btnArray = ['否', '是'];
+		mui.confirm('确认删除吗吗？', '删除收货地址', btnArray, function(e) {
+			if (e.index == 1) {
+				$.post(obj.attr('href'), {}, function(d){
+					mui.toast(d.info)
+					if(d.status == 1){
+						obj.parents('.user_address_item').remove()
+					}
+				}, 'json');
+			} else {
+				
+			}
+			return false;
+		})
+		return false;
+	})
+</script>

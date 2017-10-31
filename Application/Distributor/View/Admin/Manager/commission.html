@@ -1,0 +1,23 @@
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">设置提成比率</h3>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+				<input type="hidden" name="admin_id" value="{$info.admin_id}"/>
+				<fieldset>
+					<div class="form-group">
+						<label class="control-label col-sm-2">提成比率</label>
+						<div class="col-sm-8">
+							<input style="display: inline-block; width: 80%" name="commission_rate" class="input-xlarge form-control" type="text" value="{$info.commission_rate}" placeholder="请输入提成比率">
+							<span style="display: inline-block;"> %</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+	

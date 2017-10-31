@@ -1,0 +1,17 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+	    <td>
+			<notempty name="vo.brand_logo">
+				<a href='__UPLOAD__/{$vo.brand_logo}' target="_blank"><img src="__UPLOAD__/{$vo.brand_logo}"  height="40" border="0"></a>
+			</notempty>
+		</td>
+		<td>{$vo.brand_name}</td>
+		<td>{$vo.sort_order}</td>
+		<td><eq name="vo.is_show" value="0">不显示<else/>显示</eq></td>
+		<td>{:date('Y-m-d H:i:s', $vo[add_time])}</td>
+		<td>
+			<a class="cs_ajax_link" href="{:U('edit', array('id'=>$vo[brand_id]))}">编辑</a>
+			<a href="{:U('del', array('id'=>$vo[brand_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+		</td>
+	</tr>
+</volist>

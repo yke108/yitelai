@@ -1,0 +1,260 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+<style type="text/css">
+.Fans_deta_info img{max-width:100%;}
+</style>
+
+<!-------粉丝故事会开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('index')}">粉丝故事会</a><span>></span>{$info.story_title}</div>
+	<div class="Fans_deta clearfix">
+		<div class="Fans_deta_l fl">
+			<h1>{$info.story_title}</h1>
+			<h2>
+				<span>{$info.nick_name} 于{$info.add_time|date="Y-m-d H:i",###}发表</span>
+				<span>
+					<a href="javascript:;"><img src="__PUBLIC__/main/images/icon36.png">{$info.view_num}</a>
+					<a href="javascript:;"><img src="__PUBLIC__/main/images/icon37.png">{$info.good_num}</a>
+				</span>
+			</h2>
+			<div class="Fans_deta_info" style="word-wrap:break-word;">
+				{:htmlspecialchars_decode($info[story_content])}
+			</div>
+			<div class="Thumbs">
+				<a href="javascript:;" story_id="{$info.story_id}" class="up like"><img src="__PUBLIC__/main/images/icon39.png">点赞（<c class="good_num">{$info.good_num}</c>）</a>
+				<a href="javascript:;" story_id="{$info.story_id}" class="down clap"><img src="__PUBLIC__/main/images/icon40.png">踩踏（<c class="bad_num">{$info.bad_num}</c>）</a>
+				<notempty name="story_user">
+					<a href="{:U('reward', array('id'=>$info[story_id]))}" class="down"><img src="__PUBLIC__/main/images/icon31.png">打赏（<c class="reward_num">{$info.reward_num}</c>）</a>
+				</notempty>
+			</div>
+			<div class="article_page">
+				<p>上一篇：<empty name="pre">没有了<else/><a href="{:U('', array('id'=>$pre[story_id]))}">{$pre.story_title}</a></empty></p>
+				<p>下一篇：<empty name="next">没有了<else/><a href="{:U('', array('id'=>$next[story_id]))}">{$next.story_title}</a></empty></p>
+			</div>
+		</div>
+		<div class="Fans_deta_r fr">
+			<div class="Fans_deta_r_1">
+				<h2><span></span><i>试试手气</i><span></span></h2>
+				<div class="turntable-bg">
+					<div class="turnplate">
+						<canvas class="item" id="wheelcanvas" width="304" height="304"></canvas>
+						<img class="pointer" src="__PUBLIC__/main/images/pointer.png" style="cursor:pointer">
+					</div>
+				</div>
+				<div class="shadow"><img src="__PUBLIC__/main/images/icon42.png"></div>
+				<script src="__PUBLIC__/main/js/awardRotate.js"></script>
+				<script>
+					$.lottery = {:json_encode($lottery['lottery_awards'])};
+					$.lottery_url ="{:U('lottery/index/log', array('lottery_id'=>$lottery['lottery_id']))}";
+				</script>
+				<script src="__PUBLIC__/main/js/canvas.js?v=1"></script>
+				<ul class=line>
+					<volist name="log_list" id="vo">
+					<php>$user = $user_list[$vo['user_id']];</php>
+					<li><a href="#">恭喜 {$user['nick_name']} 获得了<span>{$vo.prize_name}</span></a></li>
+					</volist>
+				</ul>
+				<script>
+					$(function(){
+						//单行应用@Mr.Think
+						var wrap=$('ul.line');//定义滚动区域
+						var interval=4000;//定义滚动间隙时间
+						var moving;//需要清除的动画
+						wrap.hover(function(){
+							clearInterval(moving);//当鼠标在滚动区域中时,停止滚动
+						},function(){
+						moving=setInterval(function(){
+						  var field=wrap.find('li:first');//此变量不可放置于函数起始处,li:first取值是变化的
+						  var h=field.height();//取得每次滚动高度
+						  field.animate({marginTop:-h+'px'},600,function(){
+							  //通过取负margin值,隐藏第一行
+							  field.css('marginTop',0).appendTo(wrap);//隐藏后,将该行的margin值置零,并插入到最后,实现无缝滚动
+						  })
+						},interval)//滚动间隔时间取决于_interval 
+						}).trigger('mouseleave');//函数载入时,模拟执行mouseleave,即自动滚动
+					})
+				</script>
+			</div>
+			<!--<div class="Fans_deta_r_2">
+				<h2>热门频道</h2>
+				<ul class="clearfix">
+					<li><a href="#">欧式家具</a></li>
+					<li><a href="#">欧式家具</a></li>
+					<li><a href="#">欧式家具</a></li>
+					<li><a href="#">欧式家具</a></li>
+					<li><a href="#">欧式家具</a></li>
+					<li><a href="#">欧式家具</a></li>
+				</ul>
+			</div>-->
+			<div class="Fans_deta_r_3">
+				<div class="Fans_deta_r_3_hd">
+					<ul class="clearfix">
+						<li><a href="javascript:;" name="#tab1">作者排行榜</a></li>
+						<li><a href="javascript:;" name="#tab2">文章排行榜</a></li>
+					</ul>
+				</div>
+				<div class="Fans_deta_r_3_bd">
+					<div class="con" id="tab1">
+						<ul>
+							<volist name='user_ranking' id='val'>
+							<li>
+								<a href="javascript:;">
+								<img src="<if condition='$val[user_img] eq ""'>__PUBLIC__/main/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b200/{$val[user_img]}</if>">{$val.nick_name}</a>
+								<span <if condition='$i lt 4'>class="on"</if>>{$i}</span>
+							</li>
+							</volist>
+						</ul>
+					</div>
+					<div class="con" id="tab2">
+						<ul>
+							<volist name='article_ranking_list' id='val'>
+							<li>
+								<a href="{:U('info',array('id'=>$val['story_id']))}">
+								<img src="<if condition='$val.story_image eq ""'>__PUBLIC__/main/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b200/{$val.story_image}</if>">{$val.story_title|msubstr=0,15}</a>
+								<span <if condition="$i lt 4">class="on"</if> >{$i}</span>
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+				<script>
+					
+					$(".Fans_deta_r_3_bd #tab1 ul li:last").addClass("last")
+					
+					$(".Fans_deta_r_3_bd #tab2 ul li:last").addClass("last")
+					
+					function resetTabs(){
+						$(".Fans_deta_r_3_bd > div.con").hide();
+						$(".Fans_deta_r_3_hd a").attr("class","");
+					}
+					
+					var myUrl = window.location.href;
+					var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+					var myUrlTabName = myUrlTab.substring(0,4);
+					
+					(function(){
+						$(".Fans_deta_r_3_hd li:first a").attr("class","on");
+						$(".Fans_deta_r_3_bd > div.con:first").fadeIn();
+					
+						$(".Fans_deta_r_3_hd a").on("click",function(e) {
+							e.preventDefault();
+							if ($(this).attr("class") == "on"){
+								return       
+							}else{             
+								resetTabs();
+								$(this).attr("class","on");
+								$($(this).attr('name')).fadeIn();
+							}
+						});
+					
+						for (i = 1; i <= $(".Fans_deta_r_3_hd a").length; i++){
+							if(myUrlTab == myUrlTabName + i){
+								resetTabs();
+								$("a[name='"+myUrlTab+"']").attr("class","on");
+								$(myUrlTab).fadeIn();
+							}
+						}
+					})()
+				</script>
+			</div>
+			<div class="Fans_deta_r_4">
+				<h2>热门频道</h2>
+				<div class="gg clearfix" id="gg">
+					<div class="ggb">
+						<div class="ggBtns" id="ggBtns">
+							<foreach name="ad_list.pc_fans_index_hotchannel" item="vo" key="k">
+								<a href='javascript:void(0)' <eq name="k" value="0">class="on"</eq>><em>{$vo.ad_name}</em></a>
+							</foreach>
+						</div>
+					</div>
+					<div class="ggs">
+						<div class="ggBox" id="ggBox">
+							<foreach name="ad_list.pc_fans_index_hotchannel" item="vo" key="k">
+								<a href="{$vo.ad_value}" <eq name="k" value="0">style="z-index:3;opacity:4;"</eq>><img src="__UPLOAD__/{$vo.ad_picture}"></a>
+							</foreach>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+					$(function () {	
+						var $con = $('#gg'), $box = $con.find('#ggBox'), $btns = $con.find('#ggBtns'), i = 0, autoChange = function () {
+							i += 1;
+							if (i === 4) { i = 0; }
+							$btns.find('a:eq(' + i + ')').addClass('on').siblings().removeClass('on');
+							var curr = $box.find('a:eq(' + i + ')'), prev = curr.siblings();
+							prev.css('z-index', 2);
+							curr.css('z-index', 3).animate({
+								'opacity': 1
+							}, 150, function () {
+								prev.css({
+									'z-index': 1, 'opacity': 0.1
+								});
+							});
+						}, loop = setInterval(autoChange, 5000);
+						
+						$con.hover(function () {
+							clearInterval(loop);
+						}, function () {
+							loop = setInterval(autoChange, 5000);
+						});
+						
+						$btns.find('a').click(function () {
+							i = $(this).index() - 1;
+							autoChange();
+						});
+					});
+				</script>
+			</div>
+			<div class="Fans_deta_r_5">
+				<h2>推荐品牌</h2>
+				<ul class="clearfix">
+					<volist name='brand_list' id='val'>
+					<li><a href="javascript:;"><img src="<if condition='$val.brand_logo eq ""'>__PUBLIC__/main/images/pic57.jpg<else/>__UPLOAD__/thumbs/w165h80/{$val.brand_logo}</if>"></a></li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------粉丝故事会结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.like').click(function(){
+		var like = $(this);
+		var story_id = $(this).attr('story_id');
+		$.post("{:U('like')}",{story_id:story_id},function(data){
+			layer.open({time:1,content:data.info});
+			if(data.status == 1){
+				like.find('.good_num').html(data.good_num);
+			}
+			if(data.url){
+				window.location.href = data.url;
+			}
+		},'json');
+	});
+	$('.clap').click(function(){
+		var clap = $(this);
+		var story_id = $(this).attr('story_id');
+		$.post("{:U('clap')}",{story_id:story_id},function(data){
+			layer.open({time:1,content:data.info});
+			if(data.status == 1){
+				clap.find('.bad_num').html(data.bad_num);
+			}
+			if(data.url){
+				window.location.href = data.url;
+			}
+		},'json');
+	});
+});
+</script>

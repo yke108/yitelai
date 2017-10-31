@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+	<a href="{:U('detail', array('id'=>$vo[id]))}" class="right-after">
+		<dl>
+			<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$vo.admin_name|default='用户不存在'}</h2>
+				<p>{$vo.role_name}</p>
+			</dd>
+			<dt><span class="status_2">{$vo.finish_status_label}</span></dt>
+		</dl>
+	</a>
+</volist>

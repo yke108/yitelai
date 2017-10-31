@@ -1,0 +1,56 @@
+<style>
+.modal-content{padding:10px;}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">下级分销员
+			<div style="clear:both"></div>
+		</h3>
+		<!--<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form form-inline" method="get" action="{:U('')}">
+					所属店铺
+					<select class='form-control' name='store_id' style='margin-right:10px;'>
+						<option value=''>全部</option>
+						<volist name='store_list' id='val'>
+						<option <if condition='$get[store_id] eq $val[distributor_id]'>selected='selected'</if> value='{$val.distributor_id}'>{$val.distributor_name}</option>
+						</volist>
+					</select>
+					关键字：
+					<input name="keyword" value="{$get.keyword}" type="text" class="form-control input-sm" placeholder="输入昵称或手机号" style="display:inline-block;width:auto;margin-right:10px;" />
+					注册时间：
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start_time}" name='start_time' class='form-control input-sm hy_dp' /> - <input value="{$get.end_time}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end_time' />
+					<button class="btn btn-default btn-sm" type="submit" style='margin-left:20px;'>搜索</button>
+				</form>
+			</div>
+        </div>-->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>头像</th>
+							<th>昵称</th>
+							<th>真实姓名</th>
+							<th>手机号</th>
+							<!--<th>操作</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td><if condition="$vo.user_img neq ''"><img src="__UPLOAD__/{$vo.user_img}" height='40' /><elseif condition="$vo.headimgurl neq ''" /><img src="{$vo.headimgurl}" height='40' /></if></td>
+								<td>{$vo.nick_name}</td>
+								<td>{$vo.real_name}</td>
+								<td>{$vo.mobile}</td>
+								<!--<td>{$vo.email}</td>-->
+								
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<a class="weui-cell weui-cell_access item <if condition='$vo[is_read] eq 1'>on</if>" href="{:U('info',array('id'=>$vo[msg_id]))}">
+		<div class="weui-cell__bd weui-cell_primary">
+			<h2><span></span><eq name="vo.type" value="0">系统通知<else/>私信</eq></h2>
+			<time>{$vo.add_time|date="Y-m-d H:i:s",###}</time>
+			<p>{$vo.title}</p>
+		</div>
+	</a>
+</volist>

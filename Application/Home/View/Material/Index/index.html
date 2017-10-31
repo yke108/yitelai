@@ -1,0 +1,161 @@
+<div class="material_management mui-scroll-wrapper" id="pullrefresh">
+	<div class="mui-scroll">
+		<div class="material_management_hd">
+			<!--<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px;">筛选</a>-->
+			<form action="{:U('')}">
+				<div class="mui-input-row mui-search">
+					<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="搜索">
+				</div>
+			</form>
+		</div>
+		<div class="material_management_list">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无素材</p>
+			<else/>
+				<div class="mui-table-view">
+					<include file="Material/Index/_index"/>
+				</div>
+			</empty>
+		</div>
+	</div>
+</div>
+<div class="filter_pop">
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<ul>
+				<volist name="cat_list" id="vo">
+					<li>
+						<h2><a href="{:U('', array('id'=>$vo[cat_id]))}" class="right-after">{$vo.cat_name}</a></h2>
+						<div class="material_sort_list">
+							<volist name="vo.children" id="vo2">
+								<a href="{:U('', array('id'=>$vo2[cat_id]))}">{$vo2.cat_name}<span class="mui-badge mui-badge-primary">{$vo2.material_count}</span></a>
+							</volist>
+						</div>
+					</li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="mask" id="cloase_pop"></div>
+<script>
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+	
+	mui(".filter_pop ul li h2").on("tap","a",function(){
+		if($(this).hasClass("on")){
+			$(this).removeClass("on")
+			$(this).parent().siblings(".material_sort_list").css({"display":"none"})
+		}else{
+			$(this).addClass("on")
+			$(this).parent().siblings(".material_sort_list").css({"display":"flex"})
+		}
+	})
+	
+	/*document.getElementById("click").addEventListener("tap",function(event){
+	   $(".filter_pop").addClass("show")
+	   $(".mask").fadeIn()
+	})*/
+	
+	document.getElementById("cloase_pop").addEventListener("tap",function(event){
+	   $(".filter_pop").removeClass("show")
+	   $(".mask").fadeOut()
+	})
+	
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page=2;
+		var cat_id="{$get.id}";
+		var keyword="{$get.keyword}";
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, cat_id:cat_id, keyword:keyword},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .mui-table-view").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>
+
+<script>
+	$(function(){
+		$(".mui-btn-default").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('删除后不可恢复，确认删除吗？', '删除素材', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+		
+		$(".mui-btn-success").click(function(){
+			var obj = $(this);
+			w = window.open("","")
+			$.post(obj.attr('href'), {}, function(d){
+				if(d.status == 1){
+					obj.parents('dl').find('.down_count').html(d.down_count);
+					w.location = d.url;
+				}else{
+					w.close();
+					mui.toast(d.info);
+				}
+			}, 'json');
+			return false;
+		})
+	})
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+app.setTitleRight('筛选', 'show');
+function show(){
+	//$(".filter_pop").addClass("show")
+	//$(".mask").fadeIn()
+	$(".filter_pop").toggleClass("show")	
+	$(".mask").fadeToggle()
+}
+</script>

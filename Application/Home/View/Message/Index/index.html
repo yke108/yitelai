@@ -1,0 +1,25 @@
+<div class="infomation_sort">
+	<ul class="mui-table-view">
+		<volist name="msg_type_list" id="vo" key="ko">
+			<li class="mui-table-view-cell">
+				<a href="{:U('list', array('type'=>$vo[type_id]))}">
+					<dl>
+						<dt><img src="__PUBLIC__/home/images/icon1{$ko-1}.png"><notempty name="vo.message"><i></i></notempty></dt>
+						<dd>
+							<h2><span>{$vo.type_name}</span><notempty name="vo.message"><time>{$vo.message.add_time|date="Y-m-d H:i",###}</time></notempty></h2>
+							<eq name="sys_id" value="1">
+								<p>{$vo.message.title|default='暂无消息'}</p>
+							<else/>
+								<p>{$vo.message.title|default='暂无未读消息'}</p>
+							</eq>
+						</dd>
+					</dl>
+				</a>
+			</li>
+		</volist>
+	</ul>
+</div>
+
+<purview name="add">
+	<div class="client_management_btn btn"><a href="{:U('add')}" class="mui-btn mui-btn-block mui-btn-primary">添加消息</a></div>
+</purview>

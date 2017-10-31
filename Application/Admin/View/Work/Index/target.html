@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">工作目标管理
+        	<!--<a id="rec_add" href="{:U('edit')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal" hy_w="800" hy_h="700">添加</a>-->
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form form-inline" method="get" action="{:U('')}">
+					<input name="keyword" value="{$get.keyword}" type="text" class="form-control input-sm" placeholder="请输入姓名或者电话"/>
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start}" name='start' class='form-control input-sm hy_dp' /> - <input value="{$get.end}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end' />
+					<button class="btn btn-default btn-sm" type="submit">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="6%">姓名</th>
+                            <th width="6%">电话</th>
+							<th width="6%">所属品牌</th>
+							<th width="6%">所属店铺</th>
+                            <th width="6%">岗位</th>
+							<th width="6%">计划会员增量</th>
+                            <th width="6%">计划准客户增量</th>
+                            <th width="6%">计划邀约数</th>
+                            <th width="6%">计划报名数</th>
+                            <th width="6%">计划成交客户量</th>
+                            <th width="6%">计划销售额</th>
+       	  	  	  	  	  <th width="6%">时间</th>
+							<th width="6%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="6%">{$vo.fullname}</td>
+                                <td width="6%">{$vo.mobile}</td>
+								<td width="6%">{$vo.brand_id}</td>
+                                <td width="6%">{$vo.shop_id}</td>
+								<td width="6%">{$vo.station_id}</td>
+                                <td width="6%">{$vo.plan_user_add}</td>
+                                <td width="6%">{$vo.plan_consumer_add}</td>
+                                <td width="6%">{$vo.plan_invitation}</td>
+                                <td width="6%">{$vo.plan_sign_up}</td>
+                                <td width="6%">{$vo.plan_deal}</td>
+                                <td width="6%">{$vo.plan_sales}</td>
+                                <td width="6%">{$vo.time}</td>
+			  	  	  	  	  <td width="6%">
+                              		<a class="cs_ajax_link hy_show_modal" hy_w="800" hy_h="900" href="{:U('detail',array('id'=>$vo['id']))}">详情</a>　                        
+						  	  </td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

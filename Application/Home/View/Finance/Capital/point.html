@@ -1,0 +1,52 @@
+<div class="account_details_list mui-scroll-wrapper" id="pullrefresh">
+	<empty name="list">
+		<p style="text-align:center;color:#999999;padding:20px;">暂无记录</p>
+	<else/>
+		<div class="mui-scroll">
+			<div class="div">
+				<include file="Finance/Capital/_point"/>
+			</div>
+		</div>
+	</empty>
+</div>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var user_id = "{$get.user_id}";
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, user_id:user_id},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .div").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

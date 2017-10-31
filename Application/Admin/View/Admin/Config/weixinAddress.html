@@ -1,0 +1,15 @@
+<div class="col-sm-12 col-md-12">
+    <h3 class="heading">微信端常用地址</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('update')}">
+			<fieldset>
+				<volist name="weixinaddress" id="vo">
+					<div class="form-group">
+						<label class="control-label col-sm-1">{$vo.label}</label>
+						<label class="control-label" style="float:left">
+							<a href="{$vo.url}" target="_blank">{$vo.url}</a>
+						</label>
+					</div>
+				</volist>
+			</fieldset>
+		</form>
+</div>

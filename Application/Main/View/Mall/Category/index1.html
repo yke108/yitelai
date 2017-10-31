@@ -1,0 +1,317 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------产品列表开始----->
+<div class="main w1200">
+	<div class="pro">
+		<div class="pro_sort">
+			<div class="pro_sort_selected clearfix">
+				<div class="fl">
+					所有分类<em> > </em>
+					<span>品牌名：<a href="#">谷安居健康家居</a><i></i></span>
+				</div>
+				<div class="fr"><a href="javascript:;">收起筛选<i></i></a></div>
+			</div>
+			<neq name="pc_goods_list_top" value="close">
+				<notempty name="ad_list.pc_goods_list_top">
+					<div class="pro_banner">
+						<a href="{$ad_list.pc_goods_list_top.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_goods_list_top.0.ad_picture}" width="100%"></a>
+						<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_goods_list_top')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+					</div>
+				</notempty>
+			</neq>
+			<div class="pro_sort_list">
+				<ul>
+					<notempty name="cat.brand_list">
+						<li class="clearfix">
+							<span class="fl">品牌：</span>
+							<em class="fl">
+								<volist name="cat.brand_list" id="vo">
+									<a href="{:U('', array('brand_id'=>$vo[brand_id]))}" class="on">{$vo.brand_name}</a>
+								</volist>
+							</em>
+							<div class="pro_sort_btn"><a href="javascript:;" class="more_choice">多选</a><a href="javascript:;" class="more">更多<i></i></a></div>
+							<div class="sort_btn"><a href='javascript:;' class='sure'>确定</a><a href='javascript:;' class='cancel'>取消</a></div>
+						</li>
+					</notempty>
+					<notempty name="shipping_area_list">
+						<li class="clearfix">
+							<span class="fl">配送安装地区：</span>
+							<em class="fl">
+								<volist name="shipping_area_list" id="vo">
+									<a href="{:U('', array('shipping_area_id'=>$vo[shipping_area_id]))}" class="on">{$vo.shipping_area_name}</a>
+								</volist>
+							</em>
+							<div class="pro_sort_btn"><a href="javascript:;" class="more_choice">多选</a><a href="javascript:;" class="more">更多<i></i></a></div>
+							<div class="sort_btn"><a href='javascript:;' class='sure'>确定</a><a href='javascript:;' class='cancel'>取消</a></div>
+						</li>
+					</notempty>
+					<li class="clearfix">
+						<span class="fl">定制家居：</span>
+						<em class="fl"><a href="#" class="on">衣柜</a><a href="#">整体衣帽间</a><a href="#">餐边柜</a><a href="#">简易衣柜</a></em>
+						<div class="pro_sort_btn"><a href="javascript:;" class="more_choice">多选</a><a href="javascript:;" class="more">更多<i></i></a></div>
+						<div class="sort_btn"><a href='javascript:;' class='sure'>确定</a><a href='javascript:;' class='cancel'>取消</a></div>
+					</li>
+					<li class="clearfix slide_down">
+						<span class="fl">筛选条件：</span>
+						<em class="fl"><a href="javascript:;" class="on" name="#tab1">全屋定制<i></i></a><a href="javascript:;" name="#tab2">选购热点<i></i></a><a href="javascript:;" name="#tab3">保修时长<i></i></a></a></em>
+					</li>
+					<li class="filter">
+						<div class="con" id="tab1"><a href="#">简约现代1</a><a href="#">现代中式1</a><a href="#">田园1</a><a href="#">韩式1</a><a href="#">新古典1</a><a href="#">明清古典1</a><a href="#">东南亚1</a><a href="#">北欧风格1</a></div>
+						<div class="con" id="tab2"><a href="#">简约现代2</a><a href="#">现代中式2</a><a href="#">田园2</a><a href="#">韩式2</a><a href="#">新古典2</a><a href="#">明清古典2</a><a href="#">东南亚2</a><a href="#">北欧风格2</a></div>
+						<div class="con" id="tab3"><a href="#">简约现代3</a><a href="#">现代中式3</a><a href="#">田园3</a><a href="#">韩式3</a><a href="#">新古典3</a><a href="#">明清古典3</a><a href="#">东南亚3</a><a href="#">北欧风格3</a></div>
+					</li>
+				</ul>
+				<script>
+					function resetTabs(){
+						$(".filter > div.con").hide();
+						$(".slide_down a").attr("class","");
+					}
+					var myUrl = window.location.href;
+					var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+					var myUrlTabName = myUrlTab.substring(0,4);
+					(function(){
+						$(".filter > div.con").hide();
+						$(".slide_down a:first").attr("class","on");
+						$(".filter > div.con:first").fadeIn();
+					
+						$(".slide_down a").on("click",function(e) {
+							e.preventDefault();
+							if ($(this).attr("class") == "on"){
+								return       
+							}else{             
+								resetTabs();
+								$(this).attr("class","on");
+								$($(this).attr('name')).fadeIn();
+							}
+						});
+					
+						for (i = 1; i <= $(".slide_down a").length; i++) {
+							if(myUrlTab == myUrlTabName + i){
+								resetTabs();
+								$("a[name='"+myUrlTab+"']").attr("class","on");
+								$(myUrlTab).fadeIn();
+							}
+						}
+					})()
+					$(function(){
+						$(".pro_sort_list ul li a.more").click(function(){
+							if($(this).hasClass("on")){
+								$(this).parent().siblings("em").height("30px")
+								$(this).removeClass("on")
+								$(this).html("更多<i></i>")
+							}else{
+								$(this).parent().siblings("em").height("auto")
+								$(this).addClass("on")
+								$(this).html("收起<i></i>")
+							}
+						})
+						$(".pro_sort_list ul li a.more_choice").click(function(){
+							$(this).parent().siblings("em").height("auto").addClass("check")
+							$(this).parent().hide()
+							$(this).parent().siblings(".sort_btn").show()
+							$(".pro_sort_list ul li em.check a").click(function(){
+								$(this).addClass("on")	
+							})
+						})
+						$(".pro_sort_list ul li .sort_btn a").click(function(){
+							$(this).parent().siblings("em").height("30px").removeClass("check")
+							$(this).parent().siblings(".pro_sort_btn").show()
+							$(this).parent().hide()
+							$(this).parent().siblings(".pro_sort_btn").find("a.more").html("更多<i></i>")
+							$(this).parent().siblings(".pro_sort_btn").find("a.more").removeClass("on")
+						})
+					})
+				</script>
+			</div>
+		</div>
+		
+		<div class="pro_list clearfix">
+			<div class="pro_list_l fl">
+				<div class="pro_list_l_pro">
+					<ul>
+						<li>
+							<div class="pro_list_l_item_pic">
+								<a href="#">
+									<img src="__PUBLIC__/main/images/pic66.jpg">
+									<div class="pro_list_l_item_name">
+										<p>订定做衣橱带顶柜定制收纳储物</p>
+										<p><span>品牌：谷安居</span><span>风格：现代</span></p>
+									</div>
+								</a>
+							</div>
+							<div class="pro_list_l_item_price">
+								<span>￥<font>99.00</font></span>
+								<em class="fr">销量：100</em>
+							</div>
+						</li>
+						<li>
+							<div class="pro_list_l_item_pic">
+								<a href="#">
+									<img src="__PUBLIC__/main/images/pic66.jpg">
+									<div class="pro_list_l_item_name">
+										<p>订定做衣橱带顶柜定制收纳储物</p>
+										<p><span>品牌：谷安居</span><span>风格：现代</span></p>
+									</div>
+								</a>
+							</div>
+							<div class="pro_list_l_item_price">
+								<span>￥<font>99.00</font></span>
+								<em class="fr">销量：100</em>
+							</div>
+						</li>
+						<li>
+							<div class="pro_list_l_item_pic">
+								<a href="#">
+									<img src="__PUBLIC__/main/images/pic66.jpg">
+									<div class="pro_list_l_item_name">
+										<p>订定做衣橱带顶柜定制收纳储物</p>
+										<p><span>品牌：谷安居</span><span>风格：现代</span></p>
+									</div>
+								</a>
+							</div>
+							<div class="pro_list_l_item_price">
+								<span>￥<font>99.00</font></span>
+								<em class="fr">销量：100</em>
+							</div>
+						</li>
+						<li>
+							<div class="pro_list_l_item_pic">
+								<a href="#">
+									<img src="__PUBLIC__/main/images/pic66.jpg">
+									<div class="pro_list_l_item_name">
+										<p>订定做衣橱带顶柜定制收纳储物</p>
+										<p><span>品牌：谷安居</span><span>风格：现代</span></p>
+									</div>
+								</a>
+							</div>
+							<div class="pro_list_l_item_price">
+								<span>￥<font></font>99.00</span>
+								<em class="fr">销量：100</em>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="pro_list_l_shop">
+					<h2>商家精选<span>广告</span></h2>
+					<ul>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic67.jpg"></a>
+							<div class="shop_name">
+								<p><a href="#" class="name">实木衣柜四门五门六门大衣橱白橡木收纳</a></p>
+								<p><a href="#"><em>谷安居健康家居</em></a><span class="sc fr"></span></p>
+							</div>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic67.jpg"></a>
+							<div class="shop_name">
+								<p><a href="#" class="name">实木衣柜四门五门六门大衣橱白橡木收纳</a></p>
+								<p><a href="#"><em>谷安居健康家居</em></a><span class="sc fr"></span></p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="pro_list_r fr">
+				<empty name="goods_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<div class="pro_list_box">
+						<ul class="clearfix">
+							<volist name="goods_list" id="vo">
+								<li>
+									<div class="pro_pic"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/thumbs/b512/{$vo.goods_image}" width="212" height="212"></a></div>
+									<div class="pro_price"><span>￥<font>{$vo.product.product_price}</font></span><em class="fr">销量：{$vo.total_sale_count}</em></div>
+									<div class="pro_name"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">{$vo.goods_name}</a></div>
+									<div class="pro_position"><a href="#">{$vo.distributor.distributor_name}</a><span>{$vo.distributor.region}</span></div>
+									<div class="pro_offers"><i><img src="__PUBLIC__/main/images/icon74.png"></i><span>券 1000-3000</span><em>可选用优惠券</em></div>
+								</li>
+							</volist>
+						</ul>
+					</div>
+					<notempty name="pages"><div class="pages1">{$pages}</div><notempty>
+				</empty>
+			</div>
+			<script>
+				$(function(){
+					$(".pro_list_l_pro ul li").hover(function(){
+						$(this).toggleClass("on")	
+					})
+					$(".pro_list_l_shop ul li").hover(function(){
+						$(this).toggleClass("on")	
+					})
+					$(".pro_list_box ul li").hover(function(){
+						$(this).toggleClass("on")	
+					})
+					$(".pro_list_l_shop ul li .shop_name p span.sc").click(function(){
+						$(this).toggleClass("on")	
+					})
+				})
+			</script>
+		</div>
+		
+		<neq name="pc_goods_list_bottom" value="close">
+			<notempty name="ad_list.pc_goods_list_bottom">
+				<div class="pro_banner">
+					<a href="{$ad_list.pc_goods_list_bottom.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_goods_list_bottom.0.ad_picture}" width="100%"></a>
+					<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_goods_list_bottom')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+				</div>
+			</notempty>
+		</neq>
+		<script>
+			$(function(){
+				$(".pro_banner .close a").click(function(){
+					$(this).parent().parent().slideUp()
+				})
+			})
+		</script>
+		
+		<div class="guess_like">
+			<h2><a href="#"><img src="__PUBLIC__/main/images/icon38.png">换一换</a><i></i>我猜你喜欢</h2>
+			<ul class="clearfix">
+				<li>
+					<a href="#"><img src="__PUBLIC__/main/images/pic38.jpg"></a>
+					<p><span>￥<font>1028.00</font></span><em>销量：569</em></p>
+					<p><a href="#">新柜尔 鞋柜大容量超薄玄关柜玻璃面简约现代鞋架712 柚木色</a></p>
+					<p><ins>谷安居衣柜旗舰店</ins><em>销量：569</em></p>
+				</li>
+				<li>
+					<a href="#"><img src="__PUBLIC__/main/images/pic38.jpg"></a>
+					<p><span>￥<font>1028.00</font></span><em>销量：569</em></p>
+					<p><a href="#">新柜尔 鞋柜大容量超薄玄关柜玻璃面简约现代鞋架712 柚木色</a></p>
+					<p><ins>谷安居衣柜旗舰店</ins><em>销量：569</em></p>
+				</li>
+				<li>
+					<a href="#"><img src="__PUBLIC__/main/images/pic38.jpg"></a>
+					<p><span>￥<font>1028.00</font></span><em>销量：569</em></p>
+					<p><a href="#">新柜尔 鞋柜大容量超薄玄关柜玻璃面简约现代鞋架712 柚木色</a></p>
+					<p><ins>谷安居衣柜旗舰店</ins><em>销量：569</em></p>
+				</li>
+				<li>
+					<a href="#"><img src="__PUBLIC__/main/images/pic38.jpg"></a>
+					<p><span>￥<font>1028.00</font></span><em>销量：569</em></p>
+					<p><a href="#">新柜尔 鞋柜大容量超薄玄关柜玻璃面简约现代鞋架712 柚木色</a></p>
+					<p><ins>谷安居衣柜旗舰店</ins><em>销量：569</em></p>
+				</li>
+			</ul>
+		</div>
+		
+	</div>
+</div>
+<!-------产品列表结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

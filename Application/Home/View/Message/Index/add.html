@@ -1,0 +1,126 @@
+<div class="infomation_form">
+	<form action="{:U('')}">
+		<input type="hidden" name="distributor_id" value="{$distributor.distributor_id}" />
+		<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>发布类型<font>*</font></label>
+				<select name="msg_type" id="msg_type">
+					<option value="">请选择</option>
+					<foreach name="msg_type_list" item="vo" key="ko">
+						<lt name="ko" value="3">
+							<option value="{$ko}" {:m_selected($ko, $get[msg_type])}>{$vo}</option>
+						</lt>
+					</foreach>
+				</select>
+			</div>
+			<!--<div class="mui-input-row right-after">
+				<label>发送对象<font>*</font></label>
+				<notempty name="distributor_list">
+					<select name="distributor_id">
+						<option value="">全部店铺</option>
+						<volist name="distributor_list" id="vo">
+							<option value="{$vo.distributor_id}" {:m_selected($vo[distributor_id], $info[distributor_id])}>{$vo.distributor_name}</option>
+						</volist>
+					</select>
+				</notempty>
+			</div>-->
+			<div class="mui-input-row right-after" id="msg_type_0">
+				<label>发送对象<font>*</font></label>
+				<input type="text" name="" value="全部店铺" disabled="disabled" />
+			</div>
+			<a href="{:U('distributor_list')}" class="mui-input-row right-after" id="msg_type_1" style="display:none">
+				<label>发送对象<font>*</font></label>
+				<input type="text" name="" value="{$distributor.distributor_name|default='全部店铺'}" readonly="readonly" />
+			</a>
+			<div class="mui-input-row right-after" id="msg_type_2" style="display:none">
+				<label>发送对象<font>*</font></label>
+				<input type="text" value="" class="text" readonly placeholder="省/市" id="city">
+				<input type="hidden" name="province" value="" id="province" />
+				<input type="hidden" name="city" value="" id="city2" />
+				<!--<input type="hidden" name="region_code" value="" id="region_code" />-->
+			</div>
+		</div>
+		<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>公告标题<font>*</font></label>
+				<input type="text" name="title" value="{$info.title}" placeholder="请输入">
+			</div>
+		</div>
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<textarea name="content" cols="" rows="5" placeholder="请输入公告详细内容">{$info.content}</textarea>
+			</div>
+		</div>
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block" id="btn_submit">提交</a></div>
+	</form>
+</div>
+
+<!---选择--->
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script src="__PUBLIC__/home/js/city.data-3.js"></script>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($, doc) {
+		$.init();
+		$.ready(function() {
+			var cityPicker = new $.PopPicker({
+				layer: 2
+			});
+			
+			cityPicker.setData(cityData3);
+			var cityPickerButton = doc.getElementById('city');
+			cityPickerButton.addEventListener('tap', function(event) {
+				cityPicker.show(function(items) {
+					//cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+					cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text;
+					doc.getElementById('province').value = (items[0] || {}).value;
+					doc.getElementById('city2').value = (items[1] || {}).value;
+					//doc.getElementById('region_code').value = (items[2] || {}).value;
+					//返回 false 可以阻止选择框的关闭
+					//return false;
+				});
+			}, false);
+		});
+	})(mui, document);
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var msg_type = $('#msg_type').val()
+	msg_type_show(msg_type)
+	
+	$('#msg_type').bind('change', function(){
+		var msg_type = $(this).val()
+		msg_type_show(msg_type)
+	})
+	
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+
+function msg_type_show(msg_type){
+	if(msg_type == 0){
+		$('#msg_type_0').show();
+		$('#msg_type_1').hide();
+		$('#msg_type_2').hide();
+	}else if(msg_type == 1){
+		$('#msg_type_0').hide();
+		$('#msg_type_1').show();
+		$('#msg_type_2').hide();
+	}else if(msg_type == 2){
+		$('#msg_type_0').hide();
+		$('#msg_type_1').hide();
+		$('#msg_type_2').show();
+	}
+}
+</script>

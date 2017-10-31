@@ -1,0 +1,35 @@
+<div class="warp">
+	
+	<div class="sort">
+		<div class="sort_l">
+			<ul>
+				<volist name="cat_list" id="vo">
+					<li><a href="{:U('', array('cat_id'=>$vo[cat_id]))}" <if condition="$vo[cat_id] eq $cat[cat_id]">class="on"</if>>{$vo.cat_name}</a></li>
+				</volist>
+			</ul>
+		</div>
+		<div class="sort_r">
+			<volist name="children" id="vo">
+				<volist name="vo.children" id="vo2">
+					<div class="sort_item">
+						<h2><a href="{:U('mall/goods/index', array('cat_id'=>$vo3[cat_id]))}">{$vo2.cat_name}</a></h2>
+						<notempty name="vo2.children">
+							<ul class="clearfix">
+								<volist name="vo2.children" id="vo3">
+									<li>
+										<a href="{:U('mall/goods/index', array('cat_id'=>$vo3[cat_id]))}">
+											<notempty name="vo3.picture"><img src="__UPLOAD__/thumbs/w732h636/{$vo3.picture}"></notempty>
+											<p>{$vo3.cat_name}</p>
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</notempty>
+					</div>
+				</volist>
+			</volist>
+		</div>
+	</div>
+	
+	<include file="Public/footer"/>
+</div>

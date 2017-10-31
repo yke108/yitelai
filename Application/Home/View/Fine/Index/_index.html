@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('fine_id'=>$vo[fine_id]))}">
+		<dl>
+			<dt><img src="__UPLOAD__/thumbs/b120/{$vo.distributor_image}"></dt>
+			<dd>
+				<h2><span>{$vo.distributor_name}</span><em>{$vo.status_label}</em></h2>
+				<p><span>罚单号:{$vo.fine_id}</span></p>
+				<p><span>扣分:{$vo.point}</span><span>罚款:{$vo.money}</span></p>
+			</dd>
+		</dl>
+	</a>
+</volist>

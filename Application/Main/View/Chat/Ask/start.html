@@ -1,0 +1,16 @@
+﻿<div class="answer chat-qs">
+    <div class="kf_name">谷安居</div>
+    <div class="answer_text">
+        <i><img src="__PUBLIC__/main/images/icon146.png"></i>
+        <empty name="list">
+        	<p>您好，没有找到 {$message} 相关的问题。</p>
+        	<p><a class="m" href="javascript:;">点击这里转人工服务</a></p>
+        <else/>
+        	<p>您好，这是关于 {$message} 的问题，请选择您要了解的内容。</p>
+        	<volist name="list" key="key" id="vo">
+        		<p><a class="q" href="javascript:;" value="{$vo.question_id}">{$key}.{$vo.title}</a></p>
+       		 </volist>
+        	<p><a class="m" href="javascript:;">没有您要问的问题？转人工服务</a></p>
+        </empty>
+    </div>
+</div>

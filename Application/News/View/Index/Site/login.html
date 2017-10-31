@@ -1,0 +1,60 @@
+<div class="warp">
+	<style>
+		body{ background:#f3f3f3 url(__PUBLIC__/news/images/icon11.png) top center no-repeat; background-size:cover;}
+	</style>
+	<div class="reg mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<h2><img src="__PUBLIC__/news/images/icon16.png"><br>请登录</h2>
+			<div class="reg_box">
+				<form action="{:U('')}">
+					<ul>
+						<li><span><img src="__PUBLIC__/news/images/icon12.png"></span><input name="mobile" type="number" pattern="[0-9]" placeholder="请输入账号"></li>
+						<li><span><img src="__PUBLIC__/news/images/icon15.png"></span><input name="pwd" type="password" placeholder="请输入密码"><a href="{:U('forget')}">忘记密码？</a></li>
+					</ul>
+					<div class="btn"><button type="button" class="mui-btn mui-btn-primary mui-btn-block">确认</button></div>
+					<p><a href="{:U('reg')}">注册账户</a></p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+</script>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+</script>
+
+<script>
+	mui(".btn").on('tap','button',function(){
+		var form = jQuery(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			mui.toast(d.info)
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+</script>

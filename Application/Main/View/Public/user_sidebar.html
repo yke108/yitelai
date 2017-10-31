@@ -1,0 +1,162 @@
+<style>
+.ncm-user-info .name{font-size:13px;}
+</style>
+<div class="vip_l fl">
+	<div class="vip_l_1">
+		<h2>会员中心</h2>
+		<div class="ncm-user-info">
+			<div class="avatar"><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+			<div class="handle">
+				<!--<a href="{:U('user/info/index')}" title="修改头像"><img src="__PUBLIC__/main/images/icon44.png">修改头像</a>-->
+				<if condition='empty($apply_agent_info) eq true and $user.user_type lt 2 and $user.distributor_id gt 0'>
+				<a style='height:14px;' href='javascript:;'></a>
+				<!--<a id='apply_saleman' href="javascript:;" ><img width='13' src="__PUBLIC__/main/images/icon25_2.png">申请分销员</a>-->
+				<elseif condition="empty($apply_agent_info) eq false and $apply_agent_info['status'] neq 3" />
+				<a href="{:U('user/index/apply_saleman')}" ><img width='13' src="__PUBLIC__/main/images/icon25_2.png">审核情况</a>
+				<else/>
+				<a style='height:14px;' href='javascript:;'></a>
+				</if>
+				<a href="{:U('user/info/index')}" title="修改资料"><img src="__PUBLIC__/main/images/icon45.png">修改资料</a>
+				<a href="{:U('index/site/logout')}" title="安全退出"><img src="__PUBLIC__/main/images/icon46.png">安全退出</a>
+			</div>
+			<div class="name">{$user.nick_name}</div>
+			<div class="name"><!--<a href="{:U('article/page/info', array('id'=>32))}" style="color:#FFF">{$user.user_typename}</a>&nbsp;&nbsp;-->会员等级：<a href="{:U('article/page/info', array('id'=>32))}" style="color:#FFF">{$user.rank.rank_name|default='普通会员'}</a></div>
+		</div>
+	</div>
+	<div class="vip_l_2">
+		<ul>
+			<li>
+				<h3>账户管理</h3>
+				<div class="vip_l_2_sub">
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/order' and $Think.const.ACTION_NAME eq 'index'">class='on'</if> >
+						<a href="{:U('user/order/index')}">订单中心</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/order' and $Think.const.ACTION_NAME eq 'backlist'">class='on'</if> >
+						<a href="{:U('user/order/backlist')}">退货列表</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/order' and $Think.const.ACTION_NAME eq 'repairlist'">class='on'</if> >
+						<a href="{:U('user/order/repairlist')}">维修列表</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/designer'">class='on'</if> >
+						<a href="{:U('user/designer/index')}">预约设计师</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/capital' and $Think.const.ACTION_NAME neq 'point'">class='on'</if> >
+						<a href="{:U('user/capital/index')}">我的资产</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/capital' and $Think.const.ACTION_NAME eq 'point'">class='on'</if> >
+						<a href="{:U('user/capital/point')}">我的积分</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/collect' ">class='on'</if> >
+						<a href="{:U('user/collect/index')}">我的收藏</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/order' and $Think.const.ACTION_NAME eq 'team'">class='on'</if> >
+						<a href="{:U('user/order/team')}">我的拼团</a>
+					</p>
+					
+				</div>
+			</li>
+			<li>
+				<h3>我的分销</h3>
+				<div class="vip_l_2_sub">
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/recommend' and $Think.const.ACTION_NAME eq 'index'">class='on'</if> >
+						<a href="{:U('user/recommend/index')}">分销团队</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/recommend' and $Think.const.ACTION_NAME eq 'commission'">class='on'</if> >
+						<a href="{:U('user/recommend/commission')}">我的分利</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/invite' ">class='on'</if> >
+						<a href="{:U('user/invite/index')}">我的邀请码</a>
+					</p>
+					<if condition='$user.distributor_id eq 0 and empty($apply_agent_info) eq true and $user.user_type lt 2'>
+					<p>
+						<a href="{:U('saleman/index/index')}">申请分销员</a>
+					</p>
+					<elseif condition='empty($apply_agent_info) eq true and $user.user_type lt 2 and $user.distributor_id gt 0' />
+					<p>
+						<a id='apply_saleman' href="javascript:;" >申请分销员</a>
+					</p>
+					</if>
+
+				</div>
+			</li>
+			<li>
+				<h3>资料管理</h3>
+				<div class="vip_l_2_sub">
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/story' and $Think.const.ACTION_NAME eq 'index'">class='on'</if> >
+						<a href="{:U('user/story/index')}">文章发表</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/story' and $Think.const.ACTION_NAME eq 'reward'">class='on'</if> >
+						<a href="{:U('user/story/reward')}">我的打赏</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/address' ">class='on'</if> >
+						<a href="{:U('user/address/index')}">收货地址</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/message' ">class='on'</if> >
+						<a href="{:U('user/message/index')}">我的消息</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/comment'">class='on'</if>>
+						<a href="{:U('user/comment/index')}">我的评论</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/account' ">class='on'</if>>
+						<a href="{:U('user/account/chpwd')}">密码安全</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/feedback' ">class='on'</if>>
+						<a href="{:U('user/feedback/index')}">投诉建议</a>
+					</p>
+				</div>
+			</li>
+			<li>
+				<h3>操作记录</h3>
+				<div class="vip_l_2_sub">
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'browse' or $Think.const.ACTION_NAME eq 'story'">class='on'</if> >
+						<a href="{:U('user/history/browse')}">浏览记录</a>
+					</p>
+					<!--<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'inquiry'">class='on'</if> >
+						<a href="{:U('user/history/inquiry')}">我的咨询</a>
+					</p>-->
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'feedback' or $Think.const.ACTION_NAME eq 'feedbackdetail'">class='on'</if> >
+						<a href="{:U('user/history/feedback')}">建议投诉</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'activityrecord'">class='on'</if> >
+						<a href="{:U('user/history/activityrecord')}">活动报名记录</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'download'">class='on'</if> >
+						<a href="{:U('user/history/download')}">下载记录</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'menurelease'">class='on'</if> >
+						<a href="{:U('user/history/menurelease')}">菜谱发布记录</a>
+					</p>
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'vote'">class='on'</if> >
+						<a href="{:U('user/history/vote')}">投票记录</a>
+					</p>
+					<!--<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'bespeak'">class='on'</if> >
+						<a href="{:U('user/history/bespeak')}">申请记录</a>
+					</p>-->
+					<p <if condition="$Think.const.CONTROLLER_NAME eq 'User/history' and $Think.const.ACTION_NAME eq 'design_message'">class='on'</if> >
+						<a href="{:U('user/history/design_message')}">预约记录</a>
+					</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	$("#apply_saleman").click(function(){
+		$.ajax({
+			type:'POST',
+			url:"{:U('user/index/apply_saleman')}",
+			data:{},
+			dataType:"json",
+			success:function(res){
+				if(res.status==1){
+					layer.open({time:1,content:res.info});
+					window.setTimeout(function(){window.location="{:U('user/index/index')}"},1000)
+				}else{
+					layer.open({time:1,content:res.info});
+				}
+			}
+		})
+	})
+});
+</script>

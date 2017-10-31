@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">家居服务列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加家居服务</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="serve_name" value="{$get.serve_name}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<span class="sepV_c">分类：
+			<select class="form-control input-sm" name="cat_id">
+				<option value="0">全部分类</option>
+				<volist name="catlist" id="vo">
+					<option {:m_selected($get[cat_id], $vo[cat_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+				</volist>
+			</select>
+			</span><button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>图片</th>
+							<th>名称</th>
+							<th>分类</th>
+							<th>电话</th>
+							<th>链接</th>
+							<!--<th>详情</th>-->
+							<th>排序(*从小到大排列)</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><if condition="$vo[serve_image] neq null"><img src="__UPLOAD__/{$vo.serve_image}" height="40"></if></td>
+								<td>{$vo.serve_name}</td>
+								<td>{$catlist[$vo[cat_id]][cat_name]}</td>
+							    <td>{$vo.serve_tel}</td>
+								<td>{$vo.serve_url}</td>
+								<!--<td>{$vo.serve_content}</td>-->
+								<td>{$vo.sort_order}</td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[serve_id]))}">编辑</a>
+									<a href="{:U('del', array('id'=>$vo[serve_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

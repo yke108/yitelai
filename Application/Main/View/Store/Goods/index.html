@@ -1,0 +1,90 @@
+<!-------头部开始----->
+<include file="Public/store_header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------店铺所有产品开始----->
+<div class="main w1200">
+	<div class="shop_all_pro clearfix">
+		<div class="shop_all_pro_l fl">
+			<h1>宝贝分类</h1>
+			<empty name="self_cat_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<ul>
+					<volist name="self_cat_list" id="vo">
+						<li class="on">
+							<h2><i></i><a href="{:U('store/goods/index', array('store_id'=>$get[store_id], 'cat_id'=>$vo[cat_id]))}">{$vo.cat_name}</a></h2>
+							<div class="all_pro_subnav">
+								<volist name="vo.children" id="vo2">
+									<p><a <if condition="$vo2[cat_id] eq $cat[cat_id]">class="on"</if> href="{:U('store/goods/index', array('store_id'=>$get[store_id], 'cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></p>
+								</volist>
+							</div>
+						</li>
+					</volist>
+				</ul>
+			</empty>
+			<script>
+				$(function(){
+					$(".shop_all_pro_l ul li:last-child").addClass("last")
+					//$(".shop_all_pro_l ul li:first-child").addClass("on")
+					//$(".shop_all_pro_l ul li:first-child").find(".all_pro_subnav").show()
+					$(".shop_all_pro_l ul li.on").find(".all_pro_subnav").show()
+					$(".shop_all_pro_l ul li h2 i").click(function(){
+						$(this).parent().parent().toggleClass("on")
+						$(this).parent().siblings(".all_pro_subnav").slideToggle()
+						//$(this).parent().parent().siblings().removeClass("on")
+						//$(this).parent().parent().siblings().find(".all_pro_subnav").slideUp()
+					})
+				})
+			</script>
+		</div>
+		<div class="shop_all_pro_r fr">
+			<div class="all_pro_sort clearfix">
+				<ul class="clearfix fl">
+					<li>排序:</li>
+					<li><a <eq name="get.order" value="view">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'view', 'sort'=>$sort_view))}">人气<eq name="get.order" value="view"><i class="{$get.sort}"></i></eq></a></li>
+					<li><a <eq name="get.order" value="sale">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'sale', 'sort'=>$sort_sale))}">销量<eq name="get.order" value="sale"><i class="{$get.sort}"></i></eq></a></li>
+					<li><a <eq name="get.order" value="new">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'new', 'sort'=>$sort_new))}">新品<eq name="get.order" value="new"><i class="{$get.sort}"></i></eq></a></li>
+					<li><a <eq name="get.order" value="price">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'price', 'sort'=>$sort_price))}">价格<eq name="get.order" value="price"><i class="{$get.sort}"></i></eq></a></li>
+					<!--<li><a <eq name="get.order" value="collect">class="on"</eq> href="{:U('', array('store_id'=>$get[store_id], 'cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'label_id'=>$get[label_id], 'order'=>'collect', 'sort'=>$sort_collect))}">收藏<eq name="get.order" value="collect"><i class="{$get.sort}"></i></eq></a></li>-->
+				</ul>
+				<gt name="total_page" value="0"><div class="all_pro_sort_page fr"><span>{$page}/{$total_page}</span>{$pages_turn}</div></gt>
+			</div>
+			<div class="all_pro_list">
+				<empty name="goods_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="goods_list" id="vo">
+							<li>
+								<div class="pro_pic"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b512/{$vo.goods_image}" width="212" height="212"></a></div>
+								<div class="pro_price"><span>￥<font>{$vo.product.product_price}</font></span><em class="fr">销量：{$vo.total_sale_count}</em></div>
+								<div class="pro_name"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$vo.goods_name|msubstr=0,12,'utf-8',true}</a></div>
+								<div class="pro_position"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$vo.distributor.distributor_name}</a><span>{$vo.distributor.region}</span></div>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+				<script>
+					$(function(){
+						$(".all_pro_list ul li").hover(function(){
+							$(this).toggleClass("on")	
+						})	
+					})
+				</script>
+			</div>
+			<div class="pages1">{$pages}</div>
+		</div>
+	</div>
+</div>
+<!-------店铺所有产品结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

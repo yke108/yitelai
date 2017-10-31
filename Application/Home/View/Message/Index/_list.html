@@ -1,0 +1,11 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('id'=>$vo[msg_id]))}" class="read link">
+		<dl>
+			<if condition="($vo[is_read] eq 0) AND ($sys_id eq 2)"><dt></dt></if>
+			<dd>
+				<h2><span>{$vo.title}</span><time>{$vo.add_time|date="Y-m-d H:i",###}</time></h2>
+				<p>{$vo.description|msubstr=0,50,'utf-8',true}</p>
+			</dd>
+		</dl>
+	</a>
+</volist>

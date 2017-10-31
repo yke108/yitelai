@@ -1,0 +1,56 @@
+<div class="col-sm-12 col-md-12">
+    <h3 class="heading">微信接口参数</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('update')}">
+			<fieldset>
+				<!--<div class="form-group">
+					<label class="control-label col-sm-2">微信号</label>
+					<div class="col-sm-4">
+						<input name="c[weixin_name]" class="input-xlarge form-control" value="{$info.weixin_name}"/>
+					</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">AppId</label>
+					<div class="col-sm-4">
+						<input name="c[js_app_id]" class="input-xlarge form-control" value="{$info.js_app_id}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">AppSecret</label>
+					<div class="col-sm-4">
+						<input name="c[js_app_secret]" class="input-xlarge form-control" value="{$info.js_app_secret}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">消息Token</label>
+					<div class="col-sm-4">
+						<input name="c[token]" class="input-xlarge form-control" value="{$info.token}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">商户号</label>
+					<div class="col-sm-4">
+						<input name="c[mchid]" class="input-xlarge form-control" value="{$info.mchid}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">支付密钥</label>
+					<div class="col-sm-4">
+						<input name="c[key]" class="input-xlarge form-control" value="{$info.key}"/>
+					</div>
+				</div>
+				
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<input type="hidden" name="type" value="weixin">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+</div>

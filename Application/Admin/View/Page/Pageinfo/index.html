@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">独立页面列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r ">添加独立页面</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="标题" style="display:inline-block;width:auto;" type="text">
+				<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>标题</th>
+							<th>页面类型</th>
+							<th>添加时间</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td>{$vo.page_title}</td>
+								<td class="center">
+									<if condition="$vo[page_type] eq 1">
+										<span style="color:green">普通页面</span>
+									<elseif condition="$vo[page_type] eq 2"/>
+										<span style="color:red">系统页面</span>
+									<elseif condition="$vo[page_type] eq 3"/>
+										<span style="color:red">商家入驻</span>
+									</if>
+								</td>
+								<td>{$vo.add_time|date="Y-m-d",###}</td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[page_id]))}" class="">编辑</a>
+									<eq name="vo.page_type" value="1"><a href="{:U('del', array('id'=>$vo[page_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a></eq>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

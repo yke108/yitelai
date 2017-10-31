@@ -1,0 +1,54 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">
+			<gt name="info.label_id">修改材料<else/>添加材料</gt>
+		</h3>
+		<form action="{:U('')}" class="form-horizontal cs_ajax_form" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">材料名称</label>
+					<div class="col-sm-2">
+						<input name="name" class="input-xlarge form-control" type="text" value="{$info.name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">材料图片</label>
+					<div class="col-sm-8">
+						<input class="hy_upload_single" hy_field="picture" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.picture">{$info.picture}</notempty>"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">排序</label>
+					<div class="col-sm-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline"> <input value="1" name="is_open" type="radio" 
+							<gt name="info.label_id">{:m_checked(1, $info[is_open])}
+								<else/>
+								checked="checked"</gt>
+							/>
+							是 </label>
+						<label class="radio-inline"> <input value="0" name="is_open" type="radio" 
+							<gt name="info.label_id">{:m_checked(0, $info[is_open])}</gt>
+							/>
+							否 </label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并修改</button>
+						<input type="hidden" name="label_id" value="{$info.label_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

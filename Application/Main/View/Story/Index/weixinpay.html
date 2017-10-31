@@ -1,0 +1,60 @@
+<style>
+.wechat_pay{ margin:15px; padding-bottom:15px;}
+.wechat_pay li label{ border-bottom:solid 1px #e70012; color:#666; font-size:16px; padding:0 10px 10px;}
+.wechat_pay h3{ margin-top:20px; color:#666;}
+.wechat_pay dl{ margin-top:30px;}
+.wechat_pay dl dt{ float:left; width:510px; text-align:center; color:#ea6a6a; margin-top:60px;}
+.wechat_pay dl dt p{ margin-bottom:30px;}
+.wechat_pay dl dt p img{ margin-right:30px; vertical-align:middle;}
+.wechat_pay dl dt a{ color:#ea6a6a;}
+.wechat_pay dl dd{ float:left;}
+
+/*确认订单页面*/
+.confirm_order{ padding:30px 0;}
+.confirm_order h1{ font-weight:normal; font-size:18px;}
+
+.confirm_order_2{ padding:25px; border-radius:5px; border:solid 1px #DDD; margin-bottom:5px;}
+.confirm_order_2_list{ border:solid 1px #e6e6e6; padding:20px; margin-top:15px;}
+.confirm_order_2_list ul li{ border-bottom:dashed 1px #eaeaea; margin-bottom:20px;}
+.confirm_order_2_list ul li label{ font-size:18px; display:block; padding-bottom:20px;}
+.confirm_order_2_list ul li label input{ margin:-2px 5px 0 0;}
+.confirm_order_2_list ul li label span{ color:#f60702;}
+
+.w1025{  width:1025px; margin:0 auto; }
+body{background:#fff;}
+</style>
+<div class="main w1025">
+	<div class="confirm_order">
+		<div class="confirm_order_2 ">
+			<h1>打赏文章</h1>
+			<ul class="wechat_pay">
+				<li><label>应付金额：<span>{$info.reward_amount}</span> 元</label></li>
+				   <li>
+					<dl class="clearfix">
+						<dt>
+							<p><img src="{$info.code_url}" width="200" height="200"></p>
+							<p><img src="__PUBLIC__/main/images/icon31.jpg">请使用微信二维码扫一扫支付</p>
+						</dt>
+						<dd><img src="__PUBLIC__/main/images/phone.jpg"></dd>
+					</dl>
+				   </li>
+			   </ul>
+		   </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	setInterval("ajaxstatus()", 3000);    
+});
+
+function ajaxstatus() {
+	var data = {
+		id:"{$info.reward_id}"
+	};
+	$.get("{:U('paychk')}", data, function(d){
+		if(d.status != 1) return false;
+		if(d.url != undefined && d.url.length > 0) window.location.href = d.url; //页面跳转
+	}, 'json');
+} 
+</script>

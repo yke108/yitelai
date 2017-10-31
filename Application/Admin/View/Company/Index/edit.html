@@ -1,0 +1,132 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.distributor_id" value="0">编辑家装公司<else/>添加家装公司</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">家装公司名称</label>
+					<div class="col-sm-2 col-md-4">
+                    <input type="text" class='input-xlarge form-control' name="distributor_name" value="{$info.distributor_name}" />
+                    </div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">家装公司LOGO</label>
+					<div class="col-sm-2">
+						<input class="hy_upload_single" hy_field="distributor_image" value="上传图片" style="width:200px;height:200px;" src="<notempty name='info.distributor_image'>{$info.distributor_image}</notempty>"/>
+					</div>
+					<label class="control-label" style="float:left">LOGO尺寸：600px * 600px</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">所在省市</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="hidden" value="0" class="region_sel"/>
+                        <select class="region_sel form-control input-xlarge" style="width:200px; display:inline-block;"></select>
+                        <select class="region_sel form-control input-xlarge" style="width:200px; display:inline-block;"></select>
+						<select class="form-control input-xlarge" style="width:200px; display:inline-block;" name="region_code"></select>
+					</div>
+				</div>
+				<div class="form-group">
+                	<label class="control-label col-sm-2">服务范围</label>
+					<div class="col-sm-2 col-md-4">
+                    <input type="text" class='input-xlarge form-control' name="service_area" value="{$info.service_area}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                	<label class="control-label col-sm-2">公司客服电话</label>
+					<div class="col-sm-2 col-md-4">
+                    <input type="text" class='input-xlarge form-control' name="distributor_tel" value="{$info.distributor_tel}" />
+                    </div>
+                </div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">状态</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="is_show" <gt name="info.distributor_id" value="0">{:m_checked($info[is_show],1)}<else/>checked="checked"</gt> type="radio">
+							显示
+						</label>
+						<label class="radio-inline">
+							<input value="2" name="is_show" <gt name="info.distributor_id" value="0">{:m_checked($info[is_show],2)}</gt> type="radio">
+							隐藏
+						</label>
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="control-label col-sm-2">是否顶置</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="is_top" {:m_checked($info[is_top],1)} type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="0" name="is_top" {:m_checked($info[is_top],0)} type="radio">
+							否
+						</label>
+					</div>
+				</div>-->
+				<div class="form-group">
+					<label class="control-label col-sm-2">家装公司简介</label>
+					<div class="col-sm-8">
+						<textarea id="ueditor" name="distributor_intro" style="width:100%;height:300px;">{$info.distributor_intro}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+                    	<input type='hidden' name='distributor_id' value="{$info.distributor_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[region_code] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[region_code])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="0">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var ue1 = UE.getEditor('ueditor',{maximumWords:15000,initialFrameWidth:1000,elementPathEnabled :false});
+});
+</script>

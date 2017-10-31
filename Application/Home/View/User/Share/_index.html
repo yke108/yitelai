@@ -1,0 +1,27 @@
+<volist name="list" id="vo">
+	<div class="item_type">
+		<eq name="vo.collect_type" value="6">
+			<dl>
+				<dt><a href="#"><img src="__UPLOAD__/thumbs/b120/{$vo.story_image}"></a></dt>
+				<dd>
+					<h2><a href="#">{$vo.story_title}</a></h2>
+					<p>
+						<span><eq name="vo.is_top" value="1"><time>推荐信息</time></eq><time>{:date('Y-m-d H:i', $vo[add_time])}</time><!--<time>{$vo.comment_count}评论</time>--></span>
+						<!--<em class="mui-icon mui-icon-closeempty"></em>-->
+					</p>
+				</dd>
+			</dl>
+		<else/>
+			<dl>
+				<dt><a href="#"><img src="__UPLOAD__/thumbs/b120/{$vo.goods_image}"></a></dt>
+				<dd>
+					<h2><a href="#">{$vo.goods_name}</a></h2>
+					<p>
+						<span><eq name="vo.is_recommend" value="1"><time>推荐信息</time></eq><time>{:date('Y-m-d H:i', $vo[add_time])}</time><!--<time>{$vo.comment_count}评论</time>--></span>
+						<!--<em class="mui-icon mui-icon-closeempty"></em>-->
+					</p>
+				</dd>
+			</dl>
+		</eq>
+	</div>
+</volist>

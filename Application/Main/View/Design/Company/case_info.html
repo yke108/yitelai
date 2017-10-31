@@ -1,0 +1,174 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+    
+<!-------装修公司设计师开始----->
+<div class="main w1200">
+	<div class="site_position w1200"><a href="{:U('Index/index/index')}">首页</a><span>></span>设计师案例详情</div>
+	<div class="design_deta">
+		<div class="design_deta_tit">
+			<h2>{$info.case_name}</h2>
+			<p>
+				<span><img src="__PUBLIC__/main/images/icon110.png">图片（{:count($info[gallery_array])}）</span>
+				<!--<span><img src="__PUBLIC__/main/images/icon112.png" height="14">关注（0）</span>-->
+			</p>
+			<!--<a href="#" class="gz_btn"><img src="__PUBLIC__/main/images/icon112.png">关注本案例</a>-->
+			<div class="share">
+				<span>分享到：</span>
+				<!-- JiaThis Button BEGIN -->
+				<div class="jiathis_style" style="display:inline-block; vertical-align:middle;">
+					<a class="jiathis_button_qzone"></a>
+					<a class="jiathis_button_tsina"></a>
+					<a class="jiathis_button_tqq"></a>
+					<a class="jiathis_button_renren"></a>
+					<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+				</div>
+				<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+			</div>
+		</div>
+		<div class="clearfix">
+			<div class="design_deta_l fl">
+				<div class="case_info">
+					<dl class="clearfix">
+						<dt><img src="<if condition='$info.picture eq ""'>__PUBLIC__/main/images/pic69.jpg<else/>__UPLOAD__/thumbs/b300/{$info.picture}</if>" width="240" height="240"></dt>
+						<dd>
+							<ul class="clearfix">
+								<li><span>装修风格</span><em>{$case_config[$info[decorate_type]]}</em></li>
+								<li><span>城 市</span><em>{$designer_info.city}</em></li>
+								<li><span>户 型</span><em>{$case_config[$info[layout_type]]}</em></li>
+								<li><span>面 积</span><em>{$info.area} ㎡</em></li>
+								<li><span>预 算</span><em>{$info.budget}</em></li>
+							</ul>
+							<p>{$info.intro}</p>
+						</dd>
+					</dl>
+				</div>
+				<div class="case_album">
+					<span class="Counter"><span class="CounterCurrent">0</span>/ <span id="number">0</span></span>
+					<div id="OriginalPic">
+						<div id="aPrev" class="CursorL"></div>
+						<div id="aNext" class="CursorR"></div>
+						<empty name='info.gallery_array'>
+						<p class="Hidden clearfix">
+							<span class="SliderPicBorder fl"><img src="__PUBLIC__/main/images/pic76.jpg"></span>
+							<span class="Summary fr">暂无标题</span>
+						</p>
+						<else/>
+						<volist name='info.gallery_array' id='val'>
+						<p class="Hidden clearfix">
+							<span class="SliderPicBorder fl"><img src="<if condition='$val.pic eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w760h610/{$val.pic}</if>"></span>
+							<span class="Summary fr">{$val.title|default='暂无标题'}</span>
+						</p>
+						</volist>
+						</empty>
+						
+					</div>
+					<script src="__PUBLIC__/main/js/case.js"></script>
+					<script>
+						$(function(){
+							var length = $("#OriginalPic p").length
+							$("#number").html(length)	
+						})
+					</script>
+				</div>
+			</div>
+			<div class="design_deta_r fr">
+				<div class="designer_info">
+					<dl class="clearfix">
+						<dt><img src="<if condition='$designer_info.designer_image eq ""'>__PUBLIC__/main/images/pic72.jpg<else/>__UPLOAD__/thumbs/b120/{$designer_info.designer_image}</if>" width="70" height="70"></dt>
+						<dd>
+							<p><b>{$designer_info.designer_name}</b></p>
+							<p><img src="__PUBLIC__/main/images/icon79.png">{$designer_info.city_district}</p>
+						</dd>
+					</dl>
+					<div class="number">案例数量：<span>{$designer_info.case_count|default=0}</span></div>
+					<if condition="$designer_info.is_authentication eq 1">
+					<div class="renz">设计师已通过认证<span class="color2"><img src="__PUBLIC__/main/images/icon102.png">认证</span></div>
+					</if>
+					<h2><a href="{:U('bespeak',array('id'=>$designer_info['designer_id']))}">找TA设计</a></h2>
+					<h3>
+						<if condition="$designer_info.is_follow eq 1">
+						<a href="javascript:;" >已关注</a>
+						<else/>
+						<a href="javascript:;" onclick='add_follow({$info.designer_id})'>+加关注</a>
+						</if>
+					</h3>
+				</div>
+				<div class="design_other_case">
+					<h2>TA的其他案例</h2>
+					<ul>
+						<volist name='other_list' id='val'>
+						<li>
+							<a href="{:U('case_info',array('id'=>$val[case_id]))}">
+								<img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic69.jpg<else/>__UPLOAD__/thumbs/b200/{$val.picture}</if>" width="240" height="200">
+								<p>{$val.case_name}</p>
+							</a>
+						</li>
+						</volist>
+					</ul>
+					<h3><a href="{:U('info',array('id'=>$designer_info['designer_id']))}">查看更多>></a></h3>
+				</div>
+			</div>
+		</div>
+		<div class="look_case">
+			<h2><span>看了又看</span></h2>
+			<div class="clearfix">
+				<foreach name='case_record_list' item='val'>
+				<div class="look_case_item">
+					<h3><a href="{:U('info',array('id'=>$val['designer_id']))}" class="fr">更多“{$val.designer_name}”案例 <img src="__PUBLIC__/main/images/icon109.png"></a><b>{$val.designer_name}</b></h3>
+					<dl class="clearfix">
+						<dt><a href="{:U('case_info',array('id'=>$val['case_id']))}"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/b420/{$val.picture}</if>" width="420" height="290"><p>{$val.case_name}</p></a></dt>
+						<dd>
+							<notempty name='val.gallery_array'>
+							<volist name='val.gallery_array' id='val2'>
+								<if condition="$i elt 2">
+								<p>
+									<a href="{:U('case_info',array('id'=>$val['case_id']))}">
+										<img src="<if condition='$val2.pic eq ""'>__PUBLIC__/main/images/pic69.jpg<else/>__UPLOAD__/thumbs/b200/{$val2.pic}</if>" width="144" height="144">
+									</a>
+								</p>
+								</if>
+								<if condition="count($val[gallery_array]) eq 1">
+								<p>
+									<a href="{:U('case_info',array('id'=>$val['case_id']))}">
+										<img src="__PUBLIC__/main/images/pic69.jpg" width="144" height="144">
+									</a>
+								</p>
+								</if>
+							</volist>
+							<else/>
+							<p>
+								<a href="{:U('case_info',array('id'=>$val['case_id']))}">
+									<img src="__PUBLIC__/main/images/pic69.jpg" width="144" height="144">
+								</a>
+							</p>
+							<p>
+								<a href="{:U('case_info',array('id'=>$val['case_id']))}">
+									<img src="__PUBLIC__/main/images/pic69.jpg" width="144" height="144">
+								</a>
+							</p>
+							</notempty>
+							
+						</dd>
+					</dl>
+				</div>
+				</foreach>
+			</div>
+		</div>
+	</div>
+</div>
+<include file='Design/Index/_follow' />
+<!-------装修公司设计师结束----->    
+    
+<!-------底部开始----->
+<include file='Public/footer' />
+<!-------底部结束----->
+
+<style type="text/css">
+.case_album .Counter{left:27px; bottom:40px; top:inherit;}
+.SliderPicBorder{float:none;}
+.case_album .Summary{float:none; display:block; width:auto; text-align:left; text-indent:24px;}
+.case_album .SliderPicBorder img{width:100%; height:auto;}
+</style>

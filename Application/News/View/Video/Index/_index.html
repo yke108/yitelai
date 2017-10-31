@@ -1,0 +1,16 @@
+<volist name="news_list" id="vo">
+	<div class="item_type_4">
+		<eq name="vo.content_type" value="1">
+			{$vo.content}
+		<else/>
+			<video src="{:picurl($vo[content])}" controls width="100%" poster="__UPLOAD__/thumbs/w666h330/{$vo.picture}"></video>
+		</eq>
+		<a href="{:U('info', array('id'=>$vo[news_id]))}">
+			<h2>{$vo.title}</h2>
+		</a>
+		<p>
+			<span><img src="__UPLOAD__/thumbs/b90/{$vo.author_img}">{$vo.author_name}</span>
+			<em><time>{$vo.read_count}播放</time><time>{$vo.comment_count}评论</time><time>···</time></em>
+		</p>
+	</div>
+</volist>

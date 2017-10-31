@@ -1,0 +1,99 @@
+<div class="work_target_content">
+    <form method="post" action="{:U('')}">
+		<div class="work_target_content_hd">
+			<ol>
+				<li><span>名称</span><span>计划数</span><span>完成数</span><span>完成率</span></li>
+			</ol>
+				<?php
+				if($info['finish_status'] != '0')
+				{ 
+					$disabled = '';
+				}
+				?>
+				<input type="hidden" name="id" value="{$info.id}">
+				<input type="hidden" name="type" value="{$info.type}">
+			<ul class="mui-table-view">
+				
+				<li class="mui-table-view-cell">
+					<span>会员增量</span>
+					<em>{$info.plan_user_add}</em>
+					<input type="hidden" name="plan_user_add" value="{$info.plan_user_add}">
+					<b>{$info.true_user_add|default='0'}</b>
+					<i><?=floor(($info['true_user_add'] / $info['plan_user_add'])*100)?>%</i>
+				</li>
+				
+				<li class="mui-table-view-cell">
+					<span>准客户增量</span>
+					<em>{$info.plan_consumer_add}</em>
+					<input type="hidden" name="plan_consumer_add" value="{$info.plan_consumer_add}">
+					<b>{$info.true_consumer_add|default='0'}</b>
+					<i><?=floor(($info['true_consumer_add'] / $info['plan_consumer_add'])*100)?>%</i>
+				</li>
+				
+				<li class="mui-table-view-cell">
+					<span>邀约数</span>
+					<em>{$info.plan_invitation}</em>
+					<input type="hidden" name="plan_invitation" value="{$info.plan_invitation}">
+					<b>{$info.true_invitation|default='0'}</b>
+					<i><?=floor(($info['true_invitation'] / $info['plan_invitation'])*100)?>%</i>
+				 </li>
+				
+				<li class="mui-table-view-cell">
+					<span>报名数</span>
+					<em>{$info.plan_sign_up}</em>
+					<input type="hidden" name="plan_sign_up" value="{$info.plan_sign_up}">
+					<b>{$info.true_sign_up|default='0'}</b>
+					<i><?=floor(($info['true_sign_up'] / $info['plan_sign_up'])*100)?>%</i>
+				</li>
+				
+				<li class="mui-table-view-cell">
+					<span>成交客户量</span>
+					<em>{$info.plan_deal}</em>
+					<input type="hidden" name="plan_deal" value="{$info.plan_deal}">
+					<b>{$info.true_deal|default='0'}</b>
+					<i><?=floor(($info['true_deal'] / $info['plan_deal'])*100)?>%</i>
+				</li>
+				
+				<li class="mui-table-view-cell">
+					<span>销售额</span>
+					<em>{$info.plan_sales}</em>
+					<input type="hidden" name="plan_sales" value="{$info.plan_sales}">
+					<b>{$info.true_sales|default='0'}</b>
+					<i><?=floor(($info['true_sales'] / $info['plan_sales'])*100)?>%</i>
+				</li>
+			</ul>
+		</div>
+		<in name="info.check_status" value="0,2">
+			<div class="work_target_content_checkbox">
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>提交到目标审核</label>
+					<input name="check_status" value="1" type="checkbox" >
+				</div>
+			</div>
+			<div class="work_target_content_bd"><textarea name="summary" cols="" rows="4" placeholder="总结报告">{$info.summary}</textarea></div>
+			<div class="btn">
+				<a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block" id="btn_submit">保存</a>
+			</div>
+		<else/>
+			<div class="other_target_detaild_bt">
+				<h2>总结报告</h2>
+				<p><notempty name="info.summary">{:nl2br($info[summary])}<else/>暂无内容</notempty></p>
+			</div>
+		</in>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

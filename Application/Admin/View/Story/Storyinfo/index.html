@@ -1,0 +1,247 @@
+<style>
+input.states,.check_all{margin:0!important;position:static!important;}
+.label_checkAll{margin:0!important;}
+</style>
+<style type="text/css">
+td a.goodst{display:inline-block;width:16px;height:16px;border-radius:50%;}
+td a.goodst0{background:#DDD;}
+td a.goodst1{background:green;}
+th.cur{cursor: pointer;}
+
+.mgr_divb {
+    background: #f2fafc none repeat scroll 0 0;
+    border-bottom: 1px solid #e3eff3;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+}
+.coolbg {
+    background: #eeeeee none repeat scroll 0 0;
+    border-bottom: 1px solid #acacac;
+    border-right: 1px solid #acacac;
+    color: #333333;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+</style>
+<div class="row hy_page_content" href="{:U('',$get)}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">故事会列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加故事会</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="标题" style="display:inline-block;width:auto;" type="text">
+			<span class="sepV_c">分类：
+			<select class="form-control input-sm" name="cat_id">
+				<option value="0">全部分类</option>
+				<volist name="catlist" id="vo">
+					<option {:m_selected($vo[cat_id], $get[cat_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+					<volist name="vo.children" id="vo2">
+						<option {:m_selected($vo2[cat_id], $get[cat_id])} value="{$vo2.cat_id}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ {$vo2.cat_name}</option>
+					</volist>
+				</volist>			
+			</select>
+			</span>
+            <span class="sepV_c">审核状态：
+			<select class="form-control input-sm" name="status">
+				<option <if condition='$get.status eq "all"'>selected='selected'</if> value="all">全部</option>
+                <option <if condition='$get.status eq 2'>selected='selected'</if> value="2">待审核</option>
+				<option <if condition='$get.status eq "0"'>selected='selected'</if> value="0">审核不通过</option>
+                <option <if condition='$get.status eq 1'>selected='selected'</if> value="1">审核通过</option>
+			</select>
+			</span>
+            <button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                        	<th width='30'>
+                            <label class="checkbox label_checkAll">
+                                <div class="checker">
+                                    <span>
+                                    <input class='check_all' type='checkbox' id='checkAll' onclick="invertSelect()" name='checkAll' value='2' />
+                                    </span>
+                                </div>
+                            </label>
+                            </th>
+							<th>图片</th>
+							<th width='160'>标题</th>
+							<th>发布者</th>
+							<!--<th>是否发布</th>-->
+							<th>分类</th>
+							<th>发布时间</th>
+							<th>最新修改时间</th>
+							<th>访问量</th>
+							<th>点赞数</th>
+							<th>拍砖数</th>
+							<th>排序(*从小到大排列)</th>
+							<th>是否推荐首页</th>
+							<th>是否置顶</th>
+							<th>审核状态</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+                            	<td>
+                                	<label class="checkbox">
+                                        <div class="checker">
+                                            <span>
+                                                <input class="states" type="checkbox" name="story_id" value="{$vo[story_id]}" />
+                                            </span>
+                                        </div>
+                                    </label>
+                                </td>
+								<td><if condition="$vo[story_image] neq null"><img src="__UPLOAD__/{$vo.story_image}" height="40"></if></td>
+							    <td>{$vo.story_title}</td>
+								<td><if condition="$vo.nick_name neq ''">{$vo.nick_name}<else/>{$admins[$vo[admin_id]][admin_name]|default='管理员'}</if></td>
+								<!--<td class="center">
+									<eq name="vo.is_show" value="1">
+										<span class='label label-success'>是</span>
+										<else/>
+										<span class='label label-danger'>否</span>
+									</eq>
+								</td>-->
+								<td>{$vo.cat_name}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td>{$vo.update_time|date="Y-m-d H:i",###}</td>
+								<td>{$vo.view_num}</td>
+								<td>{$vo.good_num}</td>
+								<td>{$vo.bad_num}</td>
+								<td><input type='text' value='{$vo.sort_order}' key='{$vo.story_id}' style='width:60px;border:1px solid #ccc;' name='sort_order' class='sort_order' /></td>
+								<td>
+									<if condition="$vo.status eq 1">
+										<if condition="$vo.is_index  eq 1">
+											<a class='cs_ajax_link label label-success cs_flesh_page' href="{:U('set_show_index',array('id'=>$vo['story_id']))}">是</a>
+										<else/>
+											<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('set_show_index',array('id'=>$vo['story_id']))}">否</a>
+										</if>
+									</if>
+								</td>
+								<td>
+									<if condition="$vo.status eq 1">
+										<if condition="$vo.is_top  eq 1">
+											<a class='cs_ajax_link label label-success cs_flesh_page' href="{:U('change_status',array('id'=>$vo['story_id']))}">是</a>
+										<else/>
+											<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('change_status',array('id'=>$vo['story_id']))}">否</a>
+										</if>
+									</if>
+								</td>
+								<td>
+									<if condition="$vo.status eq 0">
+										<span class='label label-danger'>审核不通过</span>
+									<elseif condition="$vo.status eq 1" />
+										<span class='label label-success'>审核通过</span>
+									<else/>
+										<span class='label label-success'>待审核</span>
+									</if>
+								</td>
+								<td>
+									
+									<a href="{:U('edit', array('id'=>$vo[story_id]))}">
+										<if condition="$vo.status eq 2">	
+										审核
+										<else/>
+										重新审核
+										</if>
+									</a>
+									<if condition='$vo.admin_id gt 0'>
+									<a href='{:U("modify",array("id"=>$vo[story_id]))}'>编辑</a>
+									</if>
+									<a href="{:U('del', array('id'=>$vo[story_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a> 
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+                <div class="mgr_divb">
+					<div class="selall">
+						<!--<span>选择：</span> 
+								<a class="coolbg" href="javascript:CheckAll(true);">全选</a> - 
+								<a class="coolbg" href="javascript:CheckAll(false);">取消</a>  -->
+						<span>操作：</span>
+							<a class="coolbg active click_a" url="{:U('modify_status',array('status'=>1))}" href="javascript:void(0);">批量审核通过</a> 
+                            <!--<a class="coolbg active click_a" url="{:U('checkstatus',array('status'=>2))}" href="javascript:void(0);">批量审核失败</a> -->
+                           
+					</div>
+				</div>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+<script>
+ var checkedCustomer = [];
+	 
+	
+$(".click_a").bind("click",function(){
+	$(".states:checked").each(function(){	
+		 checkedCustomer.push($(this).val());
+	 });
+	if(checkedCustomer.length==0){
+		alert("请选择文章！");
+		return;
+	}
+	var goods_id = checkedCustomer.join(',');
+	
+	$.ajax( {    
+		url:$(this).attr('url'),
+		data:{
+			story_id:goods_id		            
+		},
+		type:'post',  
+		cache:false,    
+		dataType:'json',    
+		success:function(data) {
+			
+			layer.msg(data.info);
+			if(data.status==1){
+				window.setTimeout(function(){	
+					window.location="{:U('',array('status'=>2))}"
+				},600);
+			}
+		 },    
+		 error : function() {
+			  alert("系统错误！");   
+		 }
+	});
+})
+$(".sort_order").live('blur',function(e){
+	e.stopPropagation();
+	e.stopImmediatePropagation();
+	var story_id=$(this).attr('key');
+	var sort_order=$(this).val();
+	$.ajax({
+		type:'POST',
+		url:"{:U('change_order')}",
+		data:{story_id:story_id,sort_order:sort_order},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1000,content:res.msg});
+		}
+	})
+})
+function invertSelect(){
+    $(".states").each( function() {
+	if($(this).attr('checked')) {
+		$(this).attr('checked', false);
+		$(this).parents('.checkbox').find('span').removeClass('checked');
+	} else {
+		$(this).attr('checked', true);
+	        $(this).parents('.checkbox').find('span').addClass('checked');
+	}
+    });
+}
+</script>

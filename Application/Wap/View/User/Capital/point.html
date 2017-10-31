@@ -1,0 +1,167 @@
+<script src="__PUBLIC__/wap/js/dropload/dropload.js"></script>
+<link href="__PUBLIC__/wap/js/dropload/dropload.css" rel="stylesheet" type="text/css" />
+<style>
+.integral_bd_bd dl::before{top:auto;bottom:0px;}
+.integral_bd_bd dl:first-child::before{left:10px;}
+.user_integral_hd em.exchange_goods{margin-left:10px;}
+.user_integral_hd em.exchange_goods a{background:#1BA201;}
+</style>
+<div class="warp">
+	<div class="user_integral">
+		<div class="user_integral_hd">
+			<span>
+				<p>剩余积分：<font>{$user.pay_points}</font>分</p>
+				<p><a href="{:U('point_info')}">积分常见问题？</a></p>
+			</span>
+			<em><a href="{:U('User/Pointgift/index')}">积分商城</a></em>
+			<em class='exchange_goods'><a href="{:U('User/Pointgift/order')}">兑换记录</a></em>
+		</div>
+		<div class="user_integral_bd">
+			<div class="integral_bd_hd">
+				<ul class="clearfix">
+					<li><a <if condition="$type eq 1">class='on'</if> href="{:U('',array('type'=>1))}" >积分明细</a></li>
+					<li><a <if condition="$type eq 2">class='on'</if> href="{:U('',array('type'=>2))}" >获得积分</a></li>
+					<li><a <if condition="$type eq 3">class='on'</if> href="{:U('',array('type'=>3))}" >支出积分</a></li>
+				</ul>
+			</div>
+			<div class="integral_bd_bd">
+				<div class="point_list">
+					<include file='User/Capital/_point' />
+				</div>
+				<!--<div id="tab2" class="con">
+					<dl>
+						<dt>
+							<h2>获得分利</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><span>+100.00</span></dd>
+					</dl>
+					<dl>
+						<dt>
+							<h2>获得分利</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><span>+100.00</span></dd>
+					</dl>
+					<dl>
+						<dt>
+							<h2>获得分利</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><span>+100.00</span></dd>
+					</dl>
+					<dl>
+						<dt>
+							<h2>获得分利</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><span>+100.00</span></dd>
+					</dl>
+				</div>
+				<div id="tab3" class="con">
+					<dl>
+						<dt>
+							<h2>兑换商品</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><em>-100.00</em></dd>
+					</dl>
+					<dl>
+						<dt>
+							<h2>兑换商品</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><em>-100.00</em></dd>
+					</dl>
+					<dl>
+						<dt>
+							<h2>兑换商品</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><em>-100.00</em></dd>
+					</dl>
+					<dl>
+						<dt>
+							<h2>兑换商品</h2>
+							<p>2016-04-16  18:56:26</p>
+						</dt>
+						<dd><em>-100.00</em></dd>
+					</dl>
+				</div>-->
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+//function resetTabs(){
+//	$(".integral_bd_bd > div.con").hide();
+//	$(".integral_bd_hd a").attr("class","");
+//}
+//
+//var myUrl = window.location.href;
+//var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+//var myUrlTabName = myUrlTab.substring(0,4);
+//
+//(function(){
+//	$(".integral_bd_bd > div.con").hide();
+//	$(".integral_bd_hd li:first a").attr("class","on");
+//	$(".integral_bd_bd > div.con:first").fadeIn();
+//
+//	$(".integral_bd_hd a").on("click",function(e) {
+//		e.preventDefault();
+//		if ($(this).attr("class") == "on"){
+//			return       
+//		}else{             
+//			resetTabs();
+//			$(this).attr("class","on");
+//			$($(this).attr('name')).fadeIn();
+//		}
+//	});
+//
+//	for (i = 1; i <= $(".integral_bd_hd a").length; i++) {
+//		if(myUrlTab == myUrlTabName + i){
+//			resetTabs();
+//			$("a[name='"+myUrlTab+"']").attr("class","on");
+//			$(myUrlTab).fadeIn();
+//		}
+//	}
+//})()
+</script>
+<script>
+var page=2;
+var type="{$type}";
+var dropload = $('.integral_bd_bd').dropload({
+	scrollArea : window,
+	loadDownFn : function(me){
+			$.ajax({
+				type:'POST',
+				url:"{:U('')}",
+				data:{p:page,type:type},
+				dataType:"json",
+				success:function(res){
+					if(res.html!=''){
+						setTimeout(function(){
+							$(".point_list").append(res.html);
+							// 每次数据加载完，必须重置
+							me.resetload();
+						},1000);
+						page++;
+					}else{
+						
+						// 数据加载完
+						//tab1LoadEnd = true;
+						// 锁定
+						me.lock('down');
+						// 无数据
+						me.noData();
+						me.resetload();
+						//dropload.lock('down');
+						//dropload.noData();
+						
+					}
+				}
+			})
+		}
+	})
+</script>
+

@@ -1,0 +1,83 @@
+<style>
+	 body{background:#FFF;}
+</style>
+<div class="header">
+	<div class="hd_bar">
+		<div class="w1200">
+			<div class="position fl">送至：<input id="cityChoice" value="广州市"><i></i></div>
+			<link rel="stylesheet" type="text/css" href="__PUBLIC__/main/css/hzw-city-picker.css">
+			<script type="text/javascript" src="__PUBLIC__/main/js/city-data.js"></script>
+			<script type="text/javascript" src="__PUBLIC__/main/js/hzw-city-picker.min.js"></script>
+			<script>
+				var cityPicker = new HzwCityPicker({
+					data: data,
+					target: 'cityChoice',
+					valType: 'k-v',
+					hideCityInput: {
+						name: 'city',
+						id: 'city'
+					},
+					hideProvinceInput: {
+						name: 'province',
+						id: 'province'
+					},
+					//选择后执行
+					callback: function(){
+						$(function(){
+							var Val = $("#cityChoice").val().length
+							$("#cityChoice").width(Val+"em")
+						})
+					}
+				});
+				
+				cityPicker.init();
+			</script>
+			<div class="hd_map fr clearfix">
+				<span class="fl">欢迎光临{$sysconfig.name}：
+					<empty name="user">
+						<a href="{:U('index/site/login')}">请登录</a><a href="{:U('index/site/reg')}">注册</a>
+					<else/>
+						<a href="{:U('user/index/index')}">{$user.nick_name}</a><a href="{:U('index/site/logout')}" class="go_out">退出</a>
+					</empty>
+				</span>
+				<ul class="fl">
+					<li><a href="{:U('user/order/index')}">我的订单</a></li>
+					<li><a href="{:U('user/index/index')}">个人中心</a></li>
+					<li><a href="{:U('article/help/index')}">帮助中心</a></li>
+					<li class="last">
+						<a href="javascript:;"><img src="__PUBLIC__/main/images/icon3.png">手机在线<i></i></a>
+						<div class="code"><img src="__PUBLIC__/main/images/pic8.jpg"></div>
+					</li>
+				</ul>
+				<script>
+					$(function(){
+						$(".hd_map ul li.last").hover(function(){
+							$(this).find(".code").toggle()	
+						})
+					})
+				</script>
+			</div>
+		</div>
+	</div>
+	<div class="hd_banner">
+		<neq name="pc_top" value="close">
+			<notempty name="ad_list.pc_top">
+				<a href="{$ad_list.pc_top.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_top.0.ad_picture}" width="100%"></a>
+				<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_top')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+			</notempty>
+		</neq>
+	</div>
+	<script>
+		$(function(){
+			$(".hd_banner .close a").click(function(){
+				$(".hd_banner").slideUp()	
+			})	
+		})
+	</script>
+	<div class="hd_search" style='background:#fff;'>
+		<div class="w1200 clearfix">
+			<div class="logo fl"><a href="{:U('index/index/index')}"><img style='max-height:120px;' src="__PUBLIC__/main/images/logo_2.jpg"></a></div>
+			
+		</div>
+	</div>
+</div>

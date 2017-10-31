@@ -1,0 +1,23 @@
+<volist name="list" id="vo">
+	<li>
+		<a href="{:U('check', array('id'=>$vo[id]))}" class="right-after"><h2><span>订单号 {$vo.order_id}</span><!--<time>{:date('Y-m-d H:i', $vo[add_time])}</time>--><strong>{$vo.status_show}</strong></h2></a>
+		<a href="{:U('check', array('id'=>$vo[id]))}">
+			<dl>
+				<dt><img src="__UPLOAD__/thumbs/b300/{$vo.item.goods_img}"></dt>
+				<dd>
+					<h3>{$vo.item.goods_name}</h3>
+					<p>￥{$vo.item.goods_price}</p>
+					<p>数量：{$vo.item.goods_number}</p>
+				</dd>
+			</dl>
+		</a>
+		<h4>共{$vo.amount}件退货商品，退款金额：<span>￥{$vo.back_money}</span></h4>
+		<eq name="sys_id" value="2">
+			<switch name="vo.status" >
+				<case value="0">
+					<h5><a href="{:U('check', array('id'=>$vo[id], 'status'=>1))}" class="mui-btn mui-btn-primary check">同意</a><a href="{:U('check', array('id'=>$vo[id], 'status'=>2))}" class="mui-btn check">不同意</a></h5>
+				</case>
+			</switch>
+		</eq>
+	</li>
+</volist>

@@ -1,0 +1,113 @@
+<form action="{:U('')}">
+	<div class="pay">
+		<empty name="user.address_id">
+			<div class="pay_1 no_address">
+				<a href="{:U('user/address/add')}">当前没有收货地址，请添加收货地址</a>
+			</div>
+		<else/>
+			<div class="pay_1">
+				<a href="javascript:;">
+					<p><b>{$address.consignee}</b><span>{$address.mobile}</span></p>
+					<p>{$address.zone}{$address.address}</p>
+				</a>
+			</div>
+			<input type="hidden" name="address_id" value="{$address.address_id}" id="address_id" />
+		</empty>
+		<div class="pay_2">
+			<div class="pay_2_hd">
+				<volist name="list" id="vo">
+					<a href="{:U('mall/goods/info',array('id'=>$vo[GoodsId]))}">
+						<dl>
+							<dt>
+							<notempty name="vo.GoodsImage">
+								<img src="__UPLOAD__/thumbs/b120/{$vo.GoodsImage}">
+						   <else/>
+								<img src="__PUBLIC__/v8/pic3.jpg">
+						   </notempty>
+							</dt>
+							<dd>
+								<p>{$vo.GoodsName}</p>
+								<p><em>&nbsp;</em></p>
+								<p class="price"><span>X{$vo.CartNumber}</span>{$vo.CartPrice}</p>
+							</dd>
+						</dl>
+					</a>
+				</volist>
+			</div>
+			<div class="pay_2_bd">
+				<span>商品金额：<font>{$info.GoodsAmount}元</font></span>
+				<em>共<b>{$info.TotalNumber}</b>件商品</em>                                 
+			</div>
+		</div>
+		<div class="pay_3">
+			<p><span>快递</span>配送方式</p>
+			<p><span><gt name="info.ShippingFee" value="0">{$info.ShippingFee} 元<else/>免邮</gt></span>运费：</p>
+			<h2><textarea name="intro" placeholder="请填写买家留言信息"></textarea></h2>
+		</div>
+		<div class="pay_4">
+			<h2>支付方式</h2>
+			<div class="weui_cells weui_cells_checkbox">
+				<label class="weui_cell weui_check_label" for="x1">
+					<div class="weui_cell_bd weui_cell_primary">
+						<dl>
+							<dt><img src="__PUBLIC__/v8/images/icon42.png"></dt>
+							<dd>
+								<p>余额支付</p>
+								<p><span>余额：{$user.user_money|default=0}元</span></p>
+							</dd>
+						</dl>
+					</div>
+					<div class="weui_cell_ft">
+						<input type="radio" class="weui_check hy_payid" name="pay_id" value="0" id="x1" />
+						<i class="weui_icon_checked"></i>
+					</div>
+				</label>
+				<eq name="is_weixin" value="1">
+					<label class="weui_cell weui_check_label" for="x2">
+						<div class="weui_cell_bd weui_cell_primary">
+							<dl>
+								<dt><img src="__PUBLIC__/v8/images/icon42.png"></dt>
+								<dd>
+									<p>微信支付</p>
+								</dd>
+							</dl>
+						</div>
+						<div class="weui_cell_ft">
+							<input type="radio" class="weui_check hy_payid" name="pay_id" value="2" id="x2" />
+							<i class="weui_icon_checked"></i>
+						</div>
+					</label>
+				</eq>
+			</div>
+		</div>
+		<div class="pay_5">
+			<p><span>{$info.GoodsAmount} 元</span>商品金额：</p>
+			<p><span>{$info.ShippingFee} 元</span>运费：</p>
+			<h2><span>{$info[GoodsAmount] + $info[ShippingFee]}元</span>支付总金额：</h2>
+		</div>
+		<div class="btn">
+			<a href="javascript:;" class="weui_btn weui_btn_primary createordernow">确定支付</a>
+			<input type="hidden" name="act_type" value="{$get.act_type}" />
+		</div>
+	</div>
+</form>
+ 
+<script>
+$(document).ready(function(){
+	$('.createordernow').bind('click', function(){
+		if($('.hy_payid:checked').length != 1){
+			layer.open({time:1,content:'请选择支付方式'});
+			return false;
+		}
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			if(d.status == 2){
+				 $('#hycwrap').html(d.info);
+				 return false;
+			}
+			layer.open({time:1,content:d.info});
+		}, 'json');
+		return false;
+	})
+});
+</script>

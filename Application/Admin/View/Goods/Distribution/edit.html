@@ -1,0 +1,49 @@
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading"><gt name="info.distribution_id" value="0">编辑<else/>添加</gt>分成方案</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-group">
+								<label class="control-label col-sm-4">方案名称</label>
+								<div class="col-sm-6">
+									<input name="distribution_name" value="{$info.distribution_name}" class="input-xlarge form-control" type="text" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4">订单成交业务员获得积分比例</label>
+								<div class="col-sm-6">
+									<input name="salesman_ratio" value="{$info.salesman_ratio}" class="input-xlarge form-control" type="text" />
+								</div>
+								<label class="control-label" style="float:left">%</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4">订单成交分销员获得佣金比例</label>
+								<div class="col-sm-6">
+									<input name="distributor_ratio" value="{$info.distributor_ratio}" class="input-xlarge form-control" type="text" />
+								</div>
+								<label class="control-label" style="float:left">%</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4">订单成交会员获得积分比例</label>
+								<div class="col-sm-6">
+									<input name="user_ratio" value="{$info.user_ratio}" class="input-xlarge form-control" type="text" />
+								</div>
+								<label class="control-label" style="float:left">%</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-4">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="distribution_id" value="{$info.distribution_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

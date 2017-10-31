@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">最美谷安居人
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加会员</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				关键词：
+				<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="姓名" style="display:inline-block;width:auto;" type="text">
+				<span class="sepV_c">分类：
+					<select class="form-control input-sm" name="cat_id">
+						<option value="">全部分类</option>
+						<volist name="catlist" id="vo">
+							<option {:m_selected($get[cat_id], $vo[cat_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+						</volist>
+					</select>
+				</span>
+				<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                        	<th>图片</th>
+							<th>姓名</th>
+							<th>年龄</th>
+							<th>星座</th>
+							<th>职业</th>
+							<th>分类</th>
+							<th>显示</th>
+							<th>推荐</th>
+							<th>浏览数</th>
+							<th>投票数</th>
+							<th>添加时间</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td><notempty name="vo.picture"><img src="__UPLOAD__/thumbs/b90/{$vo.picture}" height="32"></notempty></td>
+								<td>{$vo.name}</td>
+								<td>{$vo.age}</td>
+								<td>{$vo.sign}</td>
+								<td>{$vo.career}</td>
+								<td>{$vo.cat_name}</td>
+								<td class="center">
+									<eq name="vo.is_open" value="1">
+										<a class='cs_ajax_link label label-success' href="{:U('open',array('beauty_id'=>$vo['beauty_id']))}">是</a>
+									<else/>
+										<a class='cs_ajax_link label label-danger' href="{:U('open',array('beauty_id'=>$vo['beauty_id']))}">否</a>
+									</eq>
+								</td>
+								<td>
+									<eq name="vo.is_recommend" value="1">
+										<a class='cs_ajax_link label label-success cs_flesh_page' href="{:U('recommend',array('beauty_id'=>$vo['beauty_id']))}">是</a>
+									<else/>
+										<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('recommend',array('beauty_id'=>$vo['beauty_id']))}">否</a>
+									</eq>
+								</td>
+								<td><a href="{:U('read_list', array('beauty_id'=>$vo['beauty_id']))}" class="cs_ajax_link hy_show_modal">{$vo.read_count}</a></td>
+								<td><a href="{:U('vote_list', array('beauty_id'=>$vo['beauty_id']))}" class="cs_ajax_link hy_show_modal">{$vo.vote_count}</a></td>
+								<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+								<td>
+									<a href="{:U('edit', array('beauty_id'=>$vo[beauty_id]))}">编辑</a>
+									<a href="{:U('del', array('beauty_id'=>$vo[beauty_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

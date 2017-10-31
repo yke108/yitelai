@@ -1,0 +1,311 @@
+<style>
+.pro_deta_select .weui-cell_access{border-bottom:1px solid #ededed!important;}
+.pro_deta_recommend{margin-bottom:60px;}
+.pro_deta_tabs{margin-bottom:10px;}
+</style>
+<div class="warp">
+	<div class="pro_deta">
+	
+		<div class="pro_deta_banner">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<foreach name="info.goods_gallery" item="vo" key="k"> 
+					<div class="swiper-slide"><a href="javascript:;"><img src="<if condition='$vo eq ""'>__PUBLIC__/wap/images/pic3.jpg<else/>__UPLOAD__/{$vo}</if>"></a></div>
+					</foreach>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+		
+		<div class="pro_deta_info">
+			<div class="deta_info_hd">
+				<h1 class='clearfix' style='display:block;position:relative; overflow:visible;'>{$team_info.act_name}<span style='float:right;color:#aaa;position:absolute;right:0;top:0;' class='add_share'><p><img width='25' src="__PUBLIC__/wap/images/icon20_old.png" /></p><p>分享</p></span></h1>
+				<p style='color:#999;'>规格：{$team_info[product_name]}</p>
+				<h3>
+					<span>￥
+						<font>
+							<if condition="$team_info[price_info][min_price] eq $team_info[price_info][max_price]">
+							{$team_info.price_info.min_price}
+							<else/>
+							{$team_info.price_info.min_price}-{$team_info.price_info.max_price}
+							</if>
+						</font>
+					</span>
+					<del>原价：{$team_info.product.product_price}</del>
+				</h3>
+				<h3><b><img src="__PUBLIC__/wap/images/icon63.png">距结束<em class="yomibox" data="{$team_info .end_time|date='Y-m-d H:i',###}"></em></b></h3>
+			</div>
+			<h4>
+				<span><i class="weui-icon-success-circle"></i>不支持七天无理由</span>
+				<span><i class="weui-icon-success-circle"></i>假一赔十</span>
+				<span><i class="weui-icon-success-circle"></i>送货入户</span>
+			</h4>
+		</div>
+		
+		<div class="weui-cells pro_deta_select">
+			<volist name='team_info.price_plan_array' id='val'>
+			<a href="{:U('mall/cart/team_confirm',array('num'=>$val[min_peoples],'act_id'=>$team_info[act_id]))}">
+			<div class="weui-cell weui-cell_access">
+				<div class="weui-cell__bd">
+					<p><span>￥{$val.price} ({$val.min_peoples}-{$val.max_peoples}人团)</span></p>
+					<p style='color:#aaa;'>拼团人数不足自动退款</p>
+				</div>
+				<div class=""><font style='background:#ff3451;color:#fff;border-radius:5px;padding:5px 10px;'>去开团</font></div>
+			</div>
+			</a>
+			</volist>
+			
+			<div class="weui-cell weui-cell_access bg">
+				<div class="weui-cell__bd">
+					<p>以下小伙伴正在发起团购，您可以直接参团</p>
+				</div>
+			</div>
+			<volist name='team_post_list' id='val'>
+			<a class="weui-cell weui-cell_access" href="{:U('team_info',array('post_id'=>$val['post_id']))}" val='{$team_info.act_id}'>
+				<div class="weui-cell__bd">
+					<div class='weui-cell__bd'>
+						<div style='display:inline-block;'><img src="<if condition='$val[user][user_img] neq ""'>__UPLOAD__/thumbs/b200/{$val[user][user_img]}<elseif condition='$val[user][headimgurl] neq ""' />{$val[user][headimgurl]}<else/>__PUBLIC__/wap/images/user_default_img.jpg</if>" width="50"></div>
+						<div style='display:inline-block; vertical-align:middle;'>
+							<p>{$val[user][nick_name]}</p>
+							<if condition="$val[member_num]-$val[joined_num] gt 0">	
+							<p>{$val.member_num}-{$val.member_limit}人团，还差{$val[member_num]-$val[joined_num]}人成团</p>
+							<elseif condition="$val[member_limit]-$val[joined_num] gt 0" />
+							<p>已成团,还有{$val[member_limit]-$val[joined_num]}人可以参团</p>
+							<else/>
+							<p>已成团，参团名额已满</p>
+							</if>
+						</div>
+					</div>
+					
+				</div>
+				<div class="">
+					<if condition="$val[member_num]-$val[joined_num] gt 0">	
+					<font style='background:#ff3451;color:#fff;border-radius:5px;padding:5px 10px;'>去参团</font>
+					<elseif condition="$val[member_limit]-$val[joined_num] gt 0" />
+					<font style='background:#ff3451;color:#fff;border-radius:5px;padding:5px 10px;'>去参团</font>
+					<else/>
+					<font style='background:#ccc;color:#fff;border-radius:5px;padding:5px 10px;'>去参团</font>
+					</if>
+				</div>
+			</a>
+			</volist>
+			
+		</div>
+		
+		
+		
+		
+		
+		<div class="pro_deta_tabs">
+			<div class="pro_deta_tabs_hd">
+				<ul class="clearfix">
+					<li><a href="javascript:;" name="#tab1">图片详情</a></li>
+					<li><a href="javascript:;" name="#tab2">售后保障</a></li>
+					<li><a href="javascript:;" name="#tab3">累计评价（{$comment_count}）</a></li>
+				</ul>
+			</div>
+			<div class="pro_deta_tabs_bd">
+				<div id="tab1" class="con photo">
+					<div id="section2">{:htmlspecialchars_decode($info[goods_desc])}</div>
+					<div id="section3">{:htmlspecialchars_decode($info[goods_desc1])}</div>
+					<div id="section4">{:htmlspecialchars_decode($info[goods_desc2])}</div>
+					<div id="section5">{:htmlspecialchars_decode($info[goods_desc3])}</div>
+					<div id="section6">{:htmlspecialchars_decode($info[goods_desc4])}</div>
+					<div id="section7">{:htmlspecialchars_decode($info[goods_desc5])}</div>
+					<div id="section8">{:htmlspecialchars_decode($info[goods_desc6])}</div>
+					<div id="section9">{:htmlspecialchars_decode($info[goods_desc7])}</div>
+					<div id="section10">{:htmlspecialchars_decode($info[goods_desc8])}</div>
+					<div id="section11">{:htmlspecialchars_decode($info[goods_desc9])}</div>
+				</div>
+				<div id="tab2" class="con parameter">
+					<img src="__PUBLIC__/main/images/pic78.jpg" style='max-width:100%;'>
+				</div>
+				<div id="tab3" class="con comments">
+					<empty name="comment_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<div class="comments_item">
+							<h2><img src="<if condition='$vo[user][user_img] eq ""'>__PUBLIC__/wap/images/user_default_img.jpg<else/>__UPLOAD__/{$vo[user][user_img]}</if>">{$vo.user.nick_name}</h2>
+							<h3><time>{$vo.add_time|date="Y-m-d H:i:s",###}</time><!--<span>颜色分类：白色</span>--><!--<span>规格：四门衣柜</span>--></h3>
+							<h4>{$vo.content}</h4>
+							<div class="photoswipe">
+								 <volist name="vo.pictures" id="vo2">
+									 <a href="__UPLOAD__/{vo2}">
+									 <img src="__UPLOAD__/{vo2}" alt="" />
+									 </a>
+								 </volist>
+							</div>
+						</div>
+					</empty>
+				</div>
+			</div>
+		</div>
+		<div class="pro_deta_recommend">
+			<h2>掌柜推荐</h2>
+			<empty name="hot_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<ul class="clearfix">
+					<volist name="hot_list" id="vo">
+						<li><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"><p>￥{$vo.product.product_price}</p></a></li>
+					</volist>
+				</ul>
+			</empty>
+		</div>
+		<div class="pro_deta_service" style='left:0;right:0;margin:auto;max-width:720px;bottom:0;'><a href="tel:{$distributor.distributor_tel}"><img style='margin-right:7px;height:18px;' src="__PUBLIC__/wap/images/icon66.png" />服务中心 {$distributor.distributor_tel}</a></div>
+		
+		<!--<div class="pro_deta_btn">
+			<span><a href="#"><em><img src="__PUBLIC__/wap/images/icon5.png"></em>客服</a></span>
+			<span><a href="#"><em><img src="__PUBLIC__/wap/images/icon6.png"></em>店铺</a></span>
+			<span><a href="#"><em><img src="__PUBLIC__/wap/images/icon7.png"></em>收藏</a></span>
+			<b><a href="#">加入购物车</a><a href="#">立即购买</a></b>
+		</div>-->
+		
+	</div>        
+	
+	<div class="actionsheet">
+		<i class="close"><a href="javascript:;"><img src="__PUBLIC__/wap/images/icon8.png" width="25"></a></i>
+		<dl>
+			<dt><img src="__PUBLIC__/wap/images/pic6.jpg"></dt>
+			<dd>
+				<p><span>￥688</span></p>
+				<p>库存99件</p>
+				<p>运费 包邮</p>
+			</dd>
+		</dl>
+		<div class="actionsheet_item">
+			<label>颜色</label>
+			<p><a href="javascript:;">白色</a><a href="javascript:;">黑色</a><a href="javascript:;">原木色</a></p>
+		</div>
+		<div class="actionsheet_item">
+			<label>规格</label>
+			<p><a href="javascript:;">双门</a><a href="javascript:;">3门</a><a href="javascript:;">4门</a></p>
+		</div>
+		<div class="actionsheet_item clearfix">
+			<label>数量</label>
+			<div class="spinner fl"></div>
+			
+		</div>
+		<div class="actionsheet_pop_btn"><a href="#">加入购物车</a><a href="#">立即购买</a></div>
+	</div>
+	<div class="mask con"></div>
+	
+	
+	<div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="pswp__bg"></div>
+	
+		<div class="pswp__scroll-wrap">
+		
+			<div class="pswp__container">
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+			</div>
+		
+			<div class="pswp__ui pswp__ui--hidden">
+				<div class="pswp__top-bar">
+					<div class="pswp__counter"></div>
+					<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+					<button class="pswp__button pswp__button--share" title="Share"></button>
+					<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+					<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+					<div class="pswp__preloader">
+						<div class="pswp__preloader__icn">
+							<div class="pswp__preloader__cut">
+								<div class="pswp__preloader__donut"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+					<div class="pswp__share-tooltip"></div>
+				</div>
+				<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+				<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+				<div class="pswp__caption">
+					<div class="pswp__caption__center"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<script src="__PUBLIC__/wap/js/jquery.yomi.js"></script>
+<script src="__PUBLIC__/wap/js/jquery.Spinner.js"></script>
+<script src="__PUBLIC__/wap/js/photoswipe.min.js"></script>
+<script src="__PUBLIC__/wap/js/photoswipe-ui-default.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/wap/css/photoswipe.css">
+<link rel="stylesheet" href="__PUBLIC__/wap/css/default-skin.css">
+<script src="__PUBLIC__/wap/js/gallery.js"></script>
+<script>
+
+	function resetTabs(){
+		$(".pro_deta_tabs_bd > div.con").hide();
+		$(".pro_deta_tabs_hd a").attr("class","");
+	}
+	
+	var myUrl = window.location.href;
+	var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+	var myUrlTabName = myUrlTab.substring(0,4);
+	
+	(function(){
+		$(".pro_deta_tabs_bd > div.con").hide();
+		$(".pro_deta_tabs_hd li:first a").attr("class","on");
+		$(".pro_deta_tabs_bd > div.con:first").fadeIn();
+	
+		$(".pro_deta_tabs_hd a").on("click",function(e) {
+			e.preventDefault();
+			if ($(this).attr("class") == "on"){
+				return       
+			}else{             
+				resetTabs();
+				$(this).attr("class","on");
+				$($(this).attr('name')).fadeIn();
+			}
+		});
+	
+		for (i = 1; i <= $(".pro_deta_tabs_hd a").length; i++) {
+			if(myUrlTab == myUrlTabName + i){
+				resetTabs();
+				$("a[name='"+myUrlTab+"']").attr("class","on");
+				$(myUrlTab).fadeIn();
+			}
+		}
+	})()
+
+	var swiper = new Swiper('.pro_deta_banner .swiper-container',{
+		pagination:'.pro_deta_banner .swiper-pagination',
+		paginationClickable:true,
+		autoplay:5000,
+		autoplayDisableOnInteraction:false,
+	});
+	$(function(){
+		$(".spinner").Spinner({value:1, min:1, len:3, max:99})
+		$(".actionsheet .actionsheet_item p a").click(function(){
+			$(this).addClass("on").siblings().removeClass("on")	
+		})
+		$(".actionsheet_btn").click(function(){
+			$(".actionsheet").addClass("actionsheet-active")
+			$(".mask").fadeIn()
+		})
+		$(".actionsheet i.close").click(function(){
+			$(".actionsheet").removeClass("actionsheet-active")
+			$(".mask").fadeOut()
+		})
+	})
+</script>
+
+<script>
+$(function(){
+	$(".add_share").click(function(){
+		$(".show_share").show();
+	})
+	$(".show_share").click(function(){
+		$(this).hide();
+	})
+})
+</script>
+<div style='position:fixed;top:0;left:0;background:rgba(0,0,0,0.8);width:100%;height:100%;display:none;text-align:center;z-index:99999;' class='show_share'>
+	<img style='width:95%;' src="__PUBLIC__/wap/images/icon59.png" />
+</div>

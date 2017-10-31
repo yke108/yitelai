@@ -1,0 +1,173 @@
+<div class="warp">
+	<div class="comment">
+		<div class="my_orders_item_cd">
+			<a href="{:U('mall/goods/info', array('id'=>$info[goods_id]))}" class="dl_box">
+				<dl>
+					<dt><img src="__UPLOAD__/{$info.goods_img}"></dt>
+					<dd>
+						<h2>{$info.goods_name}</h2>
+						<h3>
+							<p><span>￥{$info.goods_price}</span><em class="fr">X{$info.goods_number}</em></p>
+						</h3>
+					</dd>
+				</dl>
+			</a>
+		</div>
+		<div class="comment_2">
+			<ul>
+				<li><span>评星：</span><div id="star1"><div id="hint1"></div></div></li>
+			</ul>
+		</div>
+		<div class="comment_3">
+			<textarea name="content" cols="" rows="4" placeholder="请填写您的评价"></textarea>
+		</div>
+		<div class="comment_4">
+			<div class="weui-cell">
+				<div class="weui-cell__bd">
+					<div class="weui-uploader">
+						<div class="weui-uploader__bd">
+							<ul class="weui-uploader__files upload_preview" id="preview">
+								
+							</ul>
+							<div class="weui-uploader__input-box">
+								<input id="fileImage" class="weui-uploader__input" name="fileselect[]" type="file" accept="image/*" multiple>
+							</div>
+						</div>
+						<div class="weui-uploader__hd">
+							<p class="weui-uploader__title">最多添加3张图片</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="contract_btn btn">
+			<a href="javascript:;" class="weui-btn weui-btn_primary" id="btn_submit">确定</a>
+			<input type="hidden" name="stars" value="" id="stars" />
+			<input type="hidden" name="id" value="{$info.id}" />
+		</div>
+		<script src="__PUBLIC__/wap/js/jquery.raty.min.js"></script>
+		<script src="__PUBLIC__/wap/js/zxxFile.js"></script>
+		<script>
+			$('#star1').raty({
+				cancel:false,
+				target:'#hint1',
+				targetKeep:true,
+				hints: ["1.0分", "2.0分", "3.0分", "4.0分", "5.0分"],
+				width:"auto",
+				starOff: "__PUBLIC__/wap/images/icon24.png",
+				starOn: "__PUBLIC__/wap/images/icon20.png",
+			});
+			var params = {
+				fileInput: $("#fileImage").get(0),
+				dragDrop: $("#fileDragArea").get(0),
+				upButton: $("#fileSubmit").get(0),
+				filter: function(files) {
+					var arrFiles = [];
+					for (var i = 0, file; file = files[i]; i++) {
+						if (file.type.indexOf("image") == 0) {
+							if (file.size >= 512000) {
+								alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+							} else {
+								arrFiles.push(file);	
+							}
+						} else {
+							alert('文件"' + file.name + '"不是图片。');
+						}
+					}
+					return arrFiles;
+				},
+				onSelect: function(files) {
+					var html = '', i = 0;
+					$("#preview").html('<div class="upload_loading"></div>');
+					var funAppendImage = function() {
+						file = files[i];
+						if (file) {
+							var reader = new FileReader()
+							reader.onload = function(e){
+								html = html + '<li id="uploadList_'+ i +'" class="upload_append_list weui-uploader__file"><p>'+ 
+									'<a href="javascript:;" class="upload_delete" title="删除" data-index="'+ i +'"><i class="weui-icon-cancel"></i></a>' +
+									'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
+								'</li>';
+								i++;
+								funAppendImage();
+							}
+							reader.readAsDataURL(file);
+						} else {
+							$("#preview").html(html);
+							if (html) {
+								//删除方法
+								$(".upload_delete").click(function() {
+									ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+									return false;	
+								});
+								//提交按钮显示
+								$("#fileSubmit").show();	
+							} else {
+								//提交按钮隐藏
+								$("#fileSubmit").hide();	
+							}
+						}
+					};
+					funAppendImage();		
+				},
+				onDelete: function(file) {
+					$("#uploadList_" + file.index).remove();
+					$("#fileImage").val("")
+				}
+			};
+			ZXXFILE = $.extend(ZXXFILE, params);
+			ZXXFILE.init();
+		</script>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#star1 img').click(function(){
+		$('#stars').val($(this).attr('alt'));
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').click(function(){
+		var content = $(":input[name='content']").val();
+		var stars = $("input[name='stars']").val();
+		var id = $("input[name='id']").val();
+		var _image_datas = new Array();
+		$('.upload_image').each(function(){
+			_image_datas.push($(this).attr('src'));
+		});
+		
+		if(!content){
+			layer.open({time:1,content:'评价内容不能为空'});return false;
+		}
+		if(_image_datas.length > 3){
+			layer.open({time:1,content:'最多可上传3张图片'});return false;
+		}
+		if(!stars){
+			layer.open({time:1,content:'请选择评星'});return false;
+		}
+		
+		var data = {
+			content:content,
+			stars:stars,
+			image_datas:_image_datas,
+			id:id,
+		};
+		
+		var btn_submit = $(this);
+		btn_submit.attr('disabled',true);
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				btn_submit.attr('disabled',false);
+			}
+		}, 'json');
+	});
+});
+</script>

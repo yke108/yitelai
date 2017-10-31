@@ -1,0 +1,10 @@
+<div class="warp">
+	<div class="new_brand">
+		<h2>品牌大全</h2>
+		<ul class="clearfix">
+			<volist name="list" id="vo">
+				<li><a href="{:U('mall/goods/index', array('brand_id'=>$vo[brand_id]))}"><img src="__UPLOAD__/{$vo.brand_logo}"><p>{$vo.brand_name}</p></a></li>
+			</volist>
+		</ul>
+	</div>
+</div>

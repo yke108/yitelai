@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+
+<body>
+	<style type="text/css">
+		.shop_home_name dl dd p a{color:#535353; display:inline-block; margin-top:5px;}
+		.shop_home_name dl dd p a.on{color:#f1a502;}
+		.shop_home_name dl dd p span{ color:#e3012a;}
+		.shop_home_name dl dd p span img{ margin-right:2px;}
+	</style>
+	<div class="warp">
+        
+        <div class="shop_home">
+            <div class="shop_home_name">
+            	<dl>
+                	<dt><img src="<notempty name="distributor.distributor_image">__UPLOAD__/{$distributor.distributor_image}<else/>__PUBLIC__/wap/images/pic22.jpg</notempty>" width="170" /></dt>
+                    <dd>
+                    	<h2>{$distributor.distributor_name}</h2>
+                        <p>
+                        	<span><img src="__PUBLIC__/main/images/icon121.png" width="15">品牌授权</span>
+                            <span><img src="__PUBLIC__/main/images/icon122.png" width="17">品质保障</span>
+                            <span><img src="__PUBLIC__/main/images/icon123.png" width="17">无忧服务</span>
+                            <a href="{:U('store/index/collect', array('id'=>$distributor[distributor_id]))}" class="collect <notempty name="collect">on</notempty>"><img id="collect_icon" src="<notempty name="collect">__PUBLIC__/wap/images/icon20.png<else/>__PUBLIC__/wap/images/icon24.png</notempty>">收藏</a>
+                        </p>
+                    </dd>
+                </dl>
+            </div>
+            <include file='Public/store_header' />
+            <div class="shop_home_banner">
+            	<div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <volist name="store_ad_list.wap_store_index_lunbo" id="vo">
+                        	<div class="swiper-slide"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></div>
+                        </volist>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <div class="shop_home_header">
+            	<form action="{:U('store/goods/index', array('store_id'=>$get[store_id]))}" method="post" id="myform">
+                	<input name="keyword" type="search" placeholder="搜索商品关键词" style="background-image:none">
+                </form>
+                <!--<a href="{:U('store/category/index', array('store_id'=>$get[store_id]))}"><img src="__PUBLIC__/wap/images/icon19.png">分类</a>-->
+				<a href="javascript:;" onClick="formsubmit()"><img src="__PUBLIC__/wap/images/icon2.png">搜索</a>
+            </div>
+			<script>
+			function formsubmit(){document.getElementById("myform").submit();}
+			</script>
+			<if condition="$store_ad_list[wap_store_index_1] OR $store_ad_list[wap_store_index_2]">
+				<div class="shop_home_1">
+					<notempty name="store_ad_list.wap_store_index_1">
+						<div class="shop_home_1_hd">
+							<ul>
+								<li><a href="{$store_ad_list.wap_store_index_1.0.ad_value}"><img src="__UPLOAD__/{$store_ad_list.wap_store_index_1.0.ad_picture}"><!--<p><span>To view</span></p>--></a></li>
+							</ul>
+						</div>
+					</notempty>
+					<notempty name="store_ad_list.wap_store_index_2">
+						<div class="shop_home_1_bd">
+							<ul class="clearfix">
+								<foreach name="store_ad_list.wap_store_index_2" item="vo" key="k">
+									<lt name="k" value="2">
+										<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/thumbs/w360h280/{$vo.ad_picture}"><!--<p><span>To view</span></p>--></a></li>
+									</lt>
+								</foreach>
+							</ul>
+						</div>
+					</notempty>
+				</div>
+			</if>
+			<notempty name="store_ad_list.wap_store_index_3">
+				<div class="shop_home_2">
+					<ul class="clearfix">
+						<foreach name="store_ad_list.wap_store_index_3" item="vo" key="k">
+							<lt name="k" value="3">
+								<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/thumbs/w240h200/{$vo.ad_picture}"></a></li>
+							</lt>
+						</foreach>
+					</ul>
+				</div>
+			</notempty>
+            <div class="shop_home_item">
+            	<h2><span>爆款推荐</span></h2>
+				<empty name="hot_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="hot_list" id="vo">
+							<li>
+								<a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">
+									<img src="__UPLOAD__/thumbs/b660/{$vo.goods_image}">
+									<p>{$vo.goods_name|msubstr=0,12,'utf-8',true}</p>
+									<p><span>￥{$vo.product.product_price}</span><em>销量：{$vo.total_sale_count}</em></p>
+								</a>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+            </div>
+            
+            <div class="shop_home_item">
+            	<h2><span>新品推荐</span></h2>
+				<empty name="new_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="new_list" id="vo">
+							<li>
+								<a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">
+									<img src="__UPLOAD__/thumbs/b660/{$vo.goods_image}">
+									<p>{$vo.goods_name|msubstr=0,12,'utf-8',true}</p>
+									<p><span>￥{$vo.product.product_price}</span><em>销量：{$vo.total_sale_count}</em></p>
+								</a>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+            </div>
+            
+            <foreach name="floor_list" item="vo" key="k">
+				<div class="shop_home_item">
+					<h2><span>{$k+1}F{$vo.cat_name}</span></h2>
+					<empty name="vo.goods_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<foreach name="vo.goods_list" item="vo2" key="k2">
+								<li>
+									<a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}">
+										<img src="__UPLOAD__/thumbs/b660/{$vo2.goods_image}">
+										<p>{$vo2.goods_name|msubstr=0,12,'utf-8',true}</p>
+										<p><span>￥{$vo2.product.product_price}</span><em>销量：{$vo2.total_sale_count}</em></p>
+									</a>
+								</li>
+							</foreach>
+						</ul>
+					</empty>
+				</div>
+            </foreach>
+            
+            <include file='Public/store_footer' />
+        </div>
+        
+    </div>
+</body>
+</html>
+<script>
+	var swiper1 = new Swiper('.shop_home_banner .swiper-container',{
+		pagination:'.shop_home_banner .swiper-pagination',
+		paginationClickable:true,
+		autoplay:5000,
+		autoplayDisableOnInteraction:false,
+	});
+	
+	
+	var swiper2 = new Swiper('.shop_home_nav .swiper-container', {
+        slidesPerView:4,
+        spaceBetween:0,
+        freeMode:true
+    });
+	
+</script>
+
+<script>
+	$(".collect").click(function(){
+		var collect_obj = $(this);
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				if(d.is_collect == 1){
+					collect_obj.addClass("on");
+					$('#collect_icon').attr("src", '__PUBLIC__/wap/images/icon20.png');
+				}else{
+					collect_obj.removeClass("on");
+					$('#collect_icon').attr("src", '__PUBLIC__/wap/images/icon24.png');
+				}
+			}
+		}, 'json');
+		return false;
+	})
+</script>

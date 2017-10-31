@@ -1,0 +1,82 @@
+<form action="{:U('')}" style="position:absolute; top:0; left:0; width:100%;">
+	<div class="mui-input-row mui-search" style="margin:10px; padding:0;">
+		<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="请输入电话号码搜索">
+	</div>
+</form>
+<style>
+	.mui-search .mui-placeholder{ border-radius:20px;}
+	.mui-input-row.mui-search.mui-active:before{ top:50%; margin-top:-11px;}
+	.mui-search input[type=search]{ border-radius:20px;}
+</style>
+
+<div class="integral_management mui-scroll-wrapper" id="pullrefresh" style="top:54px;">
+	<div class="mui-scroll">
+		<!--<form action="{:U('')}">
+			<div class="mui-input-row mui-search">
+				<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="请输入电话号码搜索">
+			</div>
+		</form>-->
+		<div class="integral_management_list">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无用户</p>
+			<else/>
+				<div class="mui-table-view">
+					<include file="Point/Index/_index"/>
+				</div>
+			</empty>
+		</div>
+	</div>
+</div>
+
+<script>
+	mui('body').on('tap', 'a.link', function() {
+		var href = this.getAttribute('href');
+		//非plus环境，直接走href跳转
+		if(!mui.os.plus){
+			location.href = href;
+			return;
+		}
+	});
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var keyword = "{$get.keyword}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, keyword:keyword},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .mui-table-view").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

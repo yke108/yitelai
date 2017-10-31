@@ -1,0 +1,443 @@
+<style>
+.pro_deta_btn span em b{height:20px;width:25px;display:inline-block;background-image:url(__PUBLIC__/wap/images/icon7.png);background-size:100% 100%;}
+.pro_deta_btn span em b.on{background-image:url(__PUBLIC__/wap/images/icon7_2.png);}
+.deta_info_hd h3 em{float:left;}
+.deta_info_hd p em{float:left;}
+.pro_deta_tabs_hd ul li{width:25%;}
+.pro_deta_tabs{margin-bottom:10px;}
+.deta_info_hd span.add_share{font-size:13px;}
+.deta_info_hd span.add_share p{margin-top:0;}
+.deta_info_hd h1{ overflow:visible;}
+</style>
+<div class="warp">
+	
+	<div class="pro_deta" style='padding-bottom:105px;'>
+	
+		<div class="pro_deta_banner">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<foreach name="info.goods_gallery" item="vo" key="k">
+						<div class="swiper-slide"><a href="javascript:;"><img src="__UPLOAD__/{$vo}"></a></div>
+					</foreach>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+		
+		<div class="pro_deta_info">
+			
+			<div class="new_spike_price">
+				<p>
+					<if condition="$info[is_seckill] eq 1">
+						<span id="price">秒杀：￥<font>{$info.product.seckill_price}</font></span>
+					<else/>
+						<span id="price">￥<font>{$info.product.product_price}</font></span>
+					</if>
+					<del>参考价：￥{$info.product.market_price}</del>
+				</p>
+				<if condition="$info[is_seckill] eq 1">
+					<p id="yomibox"><b><img src="__PUBLIC__/wap/images/icon64.png">距结束<em class="yomibox" data="{$info.seckill_end|date="Y-m-d H:i:s",###}"></em></b></p>
+				</if>
+			</div>
+			<div class="deta_info_hd">
+				<h1 class='clearfix' style='display:block;position:relative;'>{$info.goods_name}<span style='float:right;color:#aaa;position:absolute;right:0;top:0;' class='add_share'><p><img width='25' src="__PUBLIC__/wap/images/icon20_old.png" /></p><p>分享</p></span></h1>
+				<!--<h2>{$info.goods_intro}</h2>-->
+				<h2 style='color:#ff0000;'>{$info.goods_title}</h2>
+				<h3>
+					<!--<span>￥<font class="product_price">{$info.product.product_price}</font></span><del>市场参考价：{$info.product.market_price}</del>-->
+					<span><font class="product_price"></font></span><del></del>
+					<em>月销{$info.total_sale_count}笔</em>
+				</h3>
+				<p><span><gt name="info.delivery_time" value="0">付款后{$info.delivery_time}天内发货<else/>&nbsp;</gt></span><em><!--{$distributor.region}-->{$distributor.service_area}   <!--100%送货上门--></em></p>
+			</div>
+			<!--<h4>
+				<volist name="info.service_promise_arr" id="vo">
+					<span><i class="weui-icon-success-circle"></i>{$vo}</span>
+				</volist>
+			</h4>--->
+		</div>
+		
+		<div class="weui-cells pro_deta_select">
+			<!--<notempty name="service_list">
+				<div class="weui-cell weui-cell_access actionsheet_btn">
+					<div class="weui-cell__bd">
+						<p>商品服务</p>
+					</div>
+					<div class="weui-cell__ft"><c id="service_name"></c><span id="service_price"></span></div>
+				</div>
+				<div class="weui-cell weui-cell_access bg">
+					<div class="weui-cell__bd">
+						<p><c id="service_intro">{$service_info.intro}</c><a id="service_url" href="{:U('article/page/service', array('service_id'=>$service_info[service_id]))}">服务详情</a></p>
+					</div>
+				</div>
+			</notempty>-->
+			<a class="weui-cell weui-cell_access actionsheet_btn" href="javascript:;">
+				<div class="weui-cell__bd">
+					<p>选择规格<span id="product_name" style="float:right"><!--{$info.product.product_name}--></span></p>
+				</div>
+				<div class="weui-cell__ft"></div>
+			</a>
+			<notempty name="service_list">
+				<div class="weui-cell weui-cell_access bg">
+					<div class="weui-cell__bd">
+						<p><c id="service_intro">{$service_info.intro}</c><a id="service_url" href="{:U('article/page/service', array('service_id'=>$service_info[service_id]))}">服务详情</a></p>
+					</div>
+				</div>
+			</notempty>
+		</div>
+		
+		<!--<div class="pro_deta_shopname">
+			<a href="{:U('store/index/index', array('store_id'=>$distributor[distributor_id]))}">
+				<span>综合<font>96.8</font></span>
+				<dl>
+					<dt><img src="__PUBLIC__/wap/images/pic8.jpg"></dt>
+					<dd>
+						<h2>{$distributor.distributor_name}</h2>
+						<p>{$distributor.distributor_intro}</p>
+					</dd>
+				</dl>
+			</a>
+		</div>-->
+		
+		
+		
+		<div class="pro_deta_tabs">
+			<div class="pro_deta_tabs_hd">
+				<ul class="clearfix">
+					<li><a href="javascript:;" name="#tab1">图片详情</a></li>
+					<li><a href="javascript:;" name="#tab2">产品参数</a></li>
+					<li><a href="javascript:;" name="#tab3">累计评价（{$comment_count}）</a></li>
+					<li><a href='javascript:;' name='#tab4'>VR预览</a></li>
+				</ul>
+			</div>
+			<div class="pro_deta_tabs_bd">
+				<div id="tab1" class="con photo">
+					{:htmlspecialchars_decode($info[goods_desc])}
+				</div>
+				<div id="tab2" class="con parameter">
+					<div class="weui-cells">
+						<div class="weui-cell">
+							<div class="weui-cell__ft">品牌名称：</div>
+							<div class="weui-cell__bd">
+								<p>{$info.brand_name}</p>
+							</div>
+						</div>
+						<volist name="info.spec_list" id="vo">
+							<div class="weui-cell">
+								<div class="weui-cell__ft">{$vo.spec_name}</div>
+								<div class="weui-cell__bd">
+									<p>{$vo.spec_value}</p>
+								</div>
+							</div>
+						</volist>
+					</div>
+				</div>
+				<div id="tab3" class="con comments">
+					<empty name="comment_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<volist name="comment_list" id="vo">
+							<div class="comments_item">
+								<h2><img src="<if condition='$vo[user][user_img] neq ""'>__UPLOAD__/thumbs/b200/{$vo[user][user_img]}<elseif condition='$vo[user][headimgurl] neq ""' />{$vo[user][headimgurl]}<else/>__PUBLIC__/wap/images/user_default_img.jpg</if>">{$vo.user.nick_name}</h2>
+								<h3><time>{$vo.add_time|date="Y-m-d H:i:s",###}</time><span>规格：{$vo.order_goods.product_name}</span></h3>
+								<h4>{$vo.content}</h4>
+								<div class="photoswipe">
+									<volist name="vo.pictures" id="vo2">
+										<a href="__UPLOAD__/{$vo2.picture}" data-size="{$vo2.width}x{$vo2.height}" data-med="__UPLOAD__/{$vo2.picture}" data-med-size="{$vo2.width}x{$vo2.height}"><img src="__UPLOAD__/thumbs/b120/{$vo2.picture}" alt="" /></a>
+									</volist>
+								</div>
+							</div>
+						</volist>
+					</empty>
+				</div>
+				<div id='tab4' class='con vr_review' style='padding:30px 0;text-align:center;'>
+					<if condition='$info.vr_url neq ""'>
+						<img width='200' src="http://qr.liantu.com/api.php?text={$info.vr_url}" />
+					<else/>
+						<span style='color:#bdbdbd;font-size:16px;font-weight:bold;'>该商品未添加VR链接</span>
+					</if>
+				</div>
+			</div>
+		</div>
+		<div class="pro_deta_recommend">
+			<h2>掌柜推荐</h2>
+			<empty name="hot_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<ul class="clearfix">
+					<volist name="hot_list" id="vo">
+						<li><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"><p>￥{$vo.product.product_price}</p></a></li>
+					</volist>
+				</ul>
+			</empty>
+		</div>
+		<div class="pro_deta_service"><a href="tel:{$distributor.distributor_tel}"><img style='margin-right:7px;height:18px;' src="__PUBLIC__/wap/images/icon66.png" />服务中心 {$distributor.distributor_tel}</a></div>
+		
+		<div class="pro_deta_btn">
+			<span><a href="http://wpa.qq.com/msgrd?v=3&uin={$distributor_config.qq}&site={$distributor.qq}&menu=yes" target="_blank"><em><img src="__PUBLIC__/wap/images/icon5.png"></em>客服</a></span>
+			<span><a href="{:U('store/index/index', array('store_id'=>$distributor[distributor_id]))}"><em><img src="__PUBLIC__/wap/images/icon6.png"></em>店铺</a></span>
+			<span>
+				<a href="{:U('collect', array('id'=>$info[record_id]))}" class="ajaxlink">
+					<em>
+						<b <if condition="$is_collect eq 1">class='on'</if>></b>
+					</em>收藏</a>
+			</span>
+			<!--<b><a href="{:U('mall/cart/add', array('id'=>$info[product][id], 'number'=>1))}" class="ajaxlink">加入购物车</a><a href="{:U('mall/cart/add', array('id'=>$info[product][id], 'number'=>1, 'act_type'=>1))}" class="ajaxlink">立即购买</a></b>-->
+			<b><a href="javascript:;" class="actionsheet_btn">加入购物车</a><a href="javascript:;" class="actionsheet_btn">立即购买</a></b>
+		</div>
+		
+	</div>        
+	
+	<div class="actionsheet">
+		<form action="{:U('mall/cart/add')}">
+			<i class="close"><a href="javascript:;"><img src="__PUBLIC__/wap/images/icon8.png" width="25"></a></i>
+			<dl>
+				<dt id="product_image"><img src="__UPLOAD__/thumbs/b200/{$info.product.product_image}"></dt>
+				<dd>
+					<p><span id="product_price">￥<if condition="$info[is_seckill] eq 1">{$info.product.seckill_price}<else/>{$info.product.product_price}</if></span></p>
+					<p>库存<c id="stock_num"><if condition="$info[is_seckill] eq 1">{$info.product.seckill_num}<else/>{$info.product.stock_num}</if></c>件</p>
+					<!--<p>运费 包邮</p>-->
+				</dd>
+			</dl>
+			<div class="actionsheet_item">
+				<label>规格</label>
+				<p>
+					<volist name="product_list" id="vo">
+						<!--<a class="product_item <eq name="vo.is_default" value="1">on</eq>" href="javascript:;" product_id="{$vo.id}">{$vo.product_name}</a>-->
+						<a class="product_item " href="javascript:;" product_id="{$vo.id}">{$vo.product_name}</a>
+					</volist>
+				</p>
+			</div>
+			<div class="actionsheet_item clearfix">
+				<label>数量</label>
+				<div class="spinner fl"></div>
+				
+			</div>
+			<notempty name="service_list">
+				<div class="actionsheet_item" style="border-top:1px solid #ccc;">
+					<label>私人定制</label>
+					<p>
+						<volist name="service_list" id="vo">
+							<a href="javascript:;" service_id="{$vo.service_id}" class="distribution_btn">{$vo.name} ￥{$vo.price}</a>
+						</volist>
+					</p>
+				</div>
+				<script type="text/javascript">
+				var service_list = {:json_encode($service_list)};
+				
+				$(function(){
+					$(".distribution_btn").click(function(){
+						$(this).toggleClass("on").siblings().removeClass("on")
+						
+						if($(this).hasClass('on')){
+							var service_id = $(this).attr('service_id');
+							$('#service_id').val(service_id);
+							
+							//切换
+							var service_info = service_list[service_id];
+							$('#service_name').html(service_info.name);
+							$('#service_price').html('￥'+service_info.price);
+							$('#service_intro').html(service_info.intro);
+							var url = "{:U('article/page/service', array('service_id'=>'sservice_id'))}";
+							url = url.replace('sservice_id', service_id);
+							$('#service_url').attr('href', url);
+						}else{
+							$('#service_name').html('');
+							$('#service_price').html('');
+							$('#service_id').val('');
+						}
+					})
+				})
+				</script>
+			</notempty>
+			<div class="actionsheet_pop_btn">
+				<a href="{:U('mall/cart/add', array('act_type'=>0))}" class="buy_btn">加入购物车</a>
+				<a href="{:U('mall/cart/add', array('act_type'=>1))}" class="buy_btn">立即购买</a>
+				<input type="hidden" name="id" value="{$info.product.id}" id="product_id" />
+				<input type="hidden" name="service_id" value="" id="service_id" />
+			</div>
+		</form>
+	</div>
+	<div class="mask con"></div>
+	
+	
+	<div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="pswp__bg"></div>
+	
+		<div class="pswp__scroll-wrap">
+		
+			<div class="pswp__container">
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+				<div class="pswp__item"></div>
+			</div>
+		
+			<div class="pswp__ui pswp__ui--hidden">
+				<div class="pswp__top-bar">
+					<div class="pswp__counter"></div>
+					<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+					<button class="pswp__button pswp__button--share" title="Share"></button>
+					<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+					<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+					<div class="pswp__preloader">
+						<div class="pswp__preloader__icn">
+							<div class="pswp__preloader__cut">
+								<div class="pswp__preloader__donut"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+					<div class="pswp__share-tooltip"></div>
+				</div>
+				<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+				<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+				<div class="pswp__caption">
+					<div class="pswp__caption__center"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+<script src="__PUBLIC__/js/jquery.yomi.js"></script>
+<script src="__PUBLIC__/js/jquery.Spinner.js"></script>
+<script src="__PUBLIC__/wap/js/photoswipe.min.js"></script>
+<script src="__PUBLIC__/wap/js/photoswipe-ui-default.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/wap/css/photoswipe.css">
+<link rel="stylesheet" href="__PUBLIC__/wap/css/default-skin.css">
+<script src="__PUBLIC__/wap/js/gallery.js"></script>
+<script>
+
+	function resetTabs(){
+		$(".pro_deta_tabs_bd > div.con").hide();
+		$(".pro_deta_tabs_hd a").attr("class","");
+	}
+	
+	var myUrl = window.location.href;
+	var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+	var myUrlTabName = myUrlTab.substring(0,4);
+	
+	(function(){
+		$(".pro_deta_tabs_bd > div.con").hide();
+		$(".pro_deta_tabs_hd li:first a").attr("class","on");
+		$(".pro_deta_tabs_bd > div.con:first").fadeIn();
+	
+		$(".pro_deta_tabs_hd a").on("click",function(e) {
+			e.preventDefault();
+			if ($(this).attr("class") == "on"){
+				return       
+			}else{             
+				resetTabs();
+				$(this).attr("class","on");
+				$($(this).attr('name')).fadeIn();
+			}
+		});
+	
+		for (i = 1; i <= $(".pro_deta_tabs_hd a").length; i++) {
+			if(myUrlTab == myUrlTabName + i){
+				resetTabs();
+				$("a[name='"+myUrlTab+"']").attr("class","on");
+				$(myUrlTab).fadeIn();
+			}
+		}
+	})()
+
+	var swiper = new Swiper('.pro_deta_banner .swiper-container',{
+		pagination:'.pro_deta_banner .swiper-pagination',
+		paginationClickable:true,
+		autoplay:5000,
+		autoplayDisableOnInteraction:false,
+	});
+	$(function(){
+		$(".spinner").Spinner({name:'number', value:1, min:1, len:3, max:99})
+		$(".actionsheet .actionsheet_item p a.product_item").click(function(){
+			$(this).addClass("on").siblings().removeClass("on")
+			
+			var product_id = $(this).attr('product_id');
+			$('#product_id').val(product_id);
+			//库存
+			var product_list = {:json_encode($product_list)};
+			var product = product_list[product_id];
+			
+			$('#product_id').val(product.id);
+			var product_image = '<img src="'+product.product_image_url+'" />';
+			$('#product_image').html(product_image);
+			$('#product_name').html(product.product_name);
+			
+			//是否秒杀
+			var is_seckill = "{$info.is_seckill}";
+			if(is_seckill > 0 && product.seckill_price > 0){
+				$('#product_price').html('￥'+product.seckill_price);
+				//$('.product_price').html(product.seckill_price);
+				$('#price').html('秒杀￥<font>'+product.seckill_price+'</font>');
+				$('#stock_num').html(product.seckill_num);
+				//$('.new_spike_price').css('display', 'block');
+				$('#yomibox').css('display', 'block');
+			}else{
+				$('#product_price').html('￥'+product.product_price);
+				//$('.product_price').html(product.product_price);
+				$('#price').html('￥<font>'+product.product_price+'</font>');
+				$('#stock_num').html(product.stock_num);
+				//$('.new_spike_price').css('display', 'none');
+				$('#yomibox').css('display', 'none');
+			}
+		})
+		$(".actionsheet_btn").click(function(){
+			$(".actionsheet").addClass("actionsheet-active")
+			$(".mask").fadeIn()
+		})
+		$(".actionsheet i.close").click(function(){
+			$(".actionsheet").removeClass("actionsheet-active")
+			$(".mask").fadeOut()
+		})
+	})
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.ajaxlink').bind('click',function(){
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+			if(d.is_collect==1){
+				$(".pro_deta_btn span em b").addClass('on')
+			}else{
+				$(".pro_deta_btn span em b").removeClass('on')
+			}
+		}, 'json');
+		return false;
+	});
+	
+	$('.buy_btn').bind('click',function(){
+		var url = $(this).attr('href');
+		var form = $(this).parents('form');
+		var data = form.serializeArray();
+		$.post(url, data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>
+
+<script>
+$(function(){
+	$(".add_share").click(function(){
+		$(".show_share").show();
+	})
+	$(".show_share").click(function(){
+		$(this).hide();
+	})
+})
+</script>
+<div style='position:fixed;top:0;left:0;background:rgba(0,0,0,0.8);width:100%;height:100%;display:none;text-align:center;z-index:99999;' class='show_share'>
+	<img style='width:95%;' src="__PUBLIC__/wap/images/icon59.png" />
+</div>

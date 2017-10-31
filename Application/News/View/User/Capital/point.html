@@ -1,0 +1,34 @@
+<div class="warp">
+	<style>
+		body{ background:#F3F3F3;}
+	</style>
+	<div class="my_integral mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<div class="my_integral_hd">
+				<div class="my_integral_hd_box">
+					<h2><span>当前积分</span><a href="{:U('point_info')}">获得积分？</a></h2>
+					<p><span>{$user.pay_points}</span></p>
+					<div class="btn"><a href="{:U('user/pointgift')}" class="mui-btn mui-btn-primary mui-btn-block">积分兑换商品</a></div>
+				</div>
+			</div>
+			<div class="my_integral_bd">
+				<h2>积分记录</h2>
+				<include file="User/Capital/_point"/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);				
+</script>

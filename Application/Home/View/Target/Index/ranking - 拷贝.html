@@ -1,0 +1,127 @@
+<div class="work_target_rate_tabs">
+    <div id="slider" class="mui-slider mui-fullscreen">
+        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+            <a class="mui-control-item  mui-active" href="#item1mobile">日排行榜</a>
+            <a class="mui-control-item" href="#item2mobile">周排行榜</a>
+            <a class="mui-control-item" href="#item3mobile">月排行榜</a>
+            <a class="mui-control-item" href="#item4mobile">年排行榜</a>
+        </div>
+        <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-3"></div>
+        <div class="mui-slider-group">
+            <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+                <div id="scroll1" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <ul>
+                        	<?php
+                            $finish_status = array('进行中','已完成','超额完成','未完成');
+                            if($day)
+                            {
+                            	foreach($day as $k => $v)
+                                {
+                            ?>
+                            <li>
+                                <a href="{:U('detail','id='.$v['id'])}">
+                                    <h2><i><?=$k+1?></i><em>{$v.distributor_name}</em><span class="mui-badge mui-badge-success mui-badge-inverted">(<?=$finish_status[$v['finish_status']]?>)</span></h2>
+                                    <p>开始时间：{$v.start}</p>
+                                    <p>结束时间：{$v.end}</p>
+                                </a>
+                            </li>
+                            <?php
+                            	}
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item2mobile" class="mui-slider-item mui-control-content">
+                <div id="scroll2" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <ul>
+                            <?php
+                            if($week)
+                            {
+                            	foreach($week as $k => $v)
+                                {
+                            ?>
+                            <li>
+                                <a href="{:U('detail','id='.$v['id'])}">
+                                    <h2><i><?=$k+1?></i><em>{$v.distributor_name}</em><span class="mui-badge mui-badge-success mui-badge-inverted">(<?=$finish_status[$v['finish_status']]?>)</span></h2>
+                                    <p>开始时间：{$v.start}</p>
+                                    <p>结束时间：{$v.end}</p>
+                                </a>
+                            </li>
+                            <?php
+                            	}
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item3mobile" class="mui-slider-item mui-control-content">
+                <div id="scroll3" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <ul>
+                            <?php
+                            if($month)
+                            {
+                            	foreach($month as $k => $v)
+                                {
+                            ?>
+                            <li>
+                                <a href="{:U('detail','id='.$v['id'])}">
+                                    <h2><i><?=$k+1?></i><em>{$v.distributor_name}</em><span class="mui-badge mui-badge-success mui-badge-inverted">(<?=$finish_status[$v['finish_status']]?>)</span></h2>
+                                    <p>开始时间：{$v.start}</p>
+                                    <p>结束时间：{$v.end}</p>
+                                </a>
+                            </li>
+                            <?php
+                            	}
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item4mobile" class="mui-slider-item mui-control-content">
+                <div id="scroll3" class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <ul>
+                            <?php
+                            if($year)
+                            {
+                            	foreach($year as $k => $v)
+                                {
+                            ?>
+                            <li>
+                                <a href="{:U('detail','id='.$v['id'])}">
+                                    <h2><i><?=$k+1?></i><em>{$v.distributor_name}</em><span class="mui-badge mui-badge-success mui-badge-inverted">(<?=$finish_status[$v['finish_status']]?>)</span></h2>
+                                    <p>开始时间：{$v.start}</p>
+                                    <p>结束时间：{$v.end}</p>
+                                </a>
+                            </li>
+                            <?php
+                            	}
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    mui.init();
+    (function($) {
+        //阻尼系数
+        var deceleration = mui.os.ios?0.003:0.0009;
+        $('.mui-scroll-wrapper').scroll({
+            bounce: true,
+            indicators: true, //是否显示滚动条
+            deceleration:deceleration
+        });			
+    })(mui);						
+</script>

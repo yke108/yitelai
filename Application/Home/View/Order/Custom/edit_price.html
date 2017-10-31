@@ -1,0 +1,83 @@
+<div class="order_produce_detaild">
+	<div class="order_produce_detaild_hd">
+		<p><span><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$user.nick_name}</span><em><i>{$info.status}</i></em></p>
+		<p>订单号:{$info.order_id}</p>
+		<p>所属店铺：{$info.distributor.distributor_name|default='无'}</p>
+		<time>{$info.add_time|date="Y-m-d H:i:s",###}</time>
+	</div>
+	<form action="{:U('')}">
+		<input type="hidden" name="id" value="{$info.order_id}" />
+		<div class="order_produce_detaild_cd">
+			<a href="javascript:;">
+				<volist name="info.order_goods" id="vo">
+					<dl>
+						<dt><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></dt>
+						<dd>
+							<h3>{$vo.goods_name}</h3>
+							<p>￥{$vo.goods_price}</p>
+							<p>数量：{$vo.goods_number}</p>
+						</dd>
+					</dl>
+				</volist>
+				<ol>
+					<volist name="file_list" id="vo">
+						<li><span><img src="__UPLOAD__/thumbs/b90/{$vo.upload_path}" data-preview-src="__UPLOAD__/{$vo.upload_path}" data-preview-group="1">{$vo.file_name}</span><em>x{$vo.file_size}</em></li>
+					</volist>
+                </ol>
+				<ol>
+					<volist name="detail_list" id="vo">
+						<li>
+							<span><!--<img src="__UPLOAD__/thumbs/b90/{$vo.upload_path}" data-preview-src="__UPLOAD__/{$vo.upload_path}" data-preview-group="1">-->{$vo.goods_name}<input type="hidden" name="goods[{$vo.detail_id}][goods_name]" value="{$vo.goods_name}" /></span>
+							<em style="margin:0 10px;">x{$vo.goods_number}<input type="hidden" name="goods[{$vo.detail_id}][goods_number]" value="{$vo.goods_number}" class="goods_number" /></em>
+							<em>￥<input name="goods[{$vo.detail_id}][goods_price]" type="text" placeholder="修改价格" value="{$vo.goods_price}" class="goods_price"></em>
+						</li>
+					</volist>
+				</ol>
+				<h4><span>共{$info.total_goods_number}件商品，合计：<font>￥{$info.custom_amount}</font></span></h4>
+			</a>
+		</div>
+		<div class="order_produce_detaild_bd">
+			<ul>
+				<li>总价：<span>￥{$info.custom_amount}</span></li>
+				<li>出厂价：<span>￥<input name="" type="text" placeholder="请输入修改价格" class="price" value="{$info.floor_price}" disabled id="floor_price"></span></li>
+			</ul>
+		</div>
+		<div class="order_produce_detaild_btn btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">提交</a>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.goods_price').keyup(function(){
+		var floor_price = 0;
+		$('.goods_price').each(function(index,element){
+			var goods_price = parseFloat(element.value);
+			var goods_number = $(this).parents('li').find('.goods_number').val();
+			if(goods_price > 0 && goods_number > 0){
+				floor_price += goods_price * goods_number;
+			}
+		});
+		$('#floor_price').val(floor_price);
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var btnElem = this;
+		mui(btnElem).button('loading');//切换为loading状态
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui(btnElem).button('reset');//切换为reset状态(即重置为原始的button)
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url;
+				}
+			},'json'
+		);
+	})
+});
+</script>

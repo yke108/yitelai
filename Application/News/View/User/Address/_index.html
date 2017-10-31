@@ -1,0 +1,20 @@
+<volist name="list" id="vo">
+	<div class="user_address_item">
+		<div class="address_item_hd">
+			<p><span>{$vo.consignee}</span><em>{$vo.mobile}</em></p>
+			<p>{$vo.zone} {$vo.address}</p>
+		</div>
+		<div class="address_item_bd">
+			<div class="mui-input-row mui-radio mui-left">
+				<label for="default_{$vo.address_id}">
+					<c class="label_text"><eq name="vo.is_default" value="1">默认地址<else/>设为默认</eq></c>
+					<input type="radio" name="is_default" value="{$vo.address_id}" id="default_{$vo.address_id}" {:m_checked($vo[is_default], 1)}>
+				</label>
+			</div>
+			<span>
+				<a href="{:U('edit', array('id'=>$vo['address_id']))}"><img src="__PUBLIC__/news/images/icon28.png">编辑</a>
+				<a href="{:U('del', array('id'=>$vo['address_id']))}" class="del"><img src="__PUBLIC__/news/images/icon29.png">删除</a>
+			</span>
+		</div>
+	</div>
+</volist>

@@ -1,0 +1,77 @@
+<style>
+.point_back{border-bottom:1px solid #ececec;background:#fff;padding:10px;margin-bottom:10px;}
+.point_back img{float:left;height:15px;margin-top:2px;}
+.point_back a{font-size:16px;float:left;margin-left:7px;color:#9c9c9c;height:20px;line-height:18px;}
+</style>
+<div class="warp load_page">
+	<include file='Game/Index/_exchange' />
+</div>
+<script>
+	
+$(".get_page").live('click',function(e){
+	e.preventDefault();
+	e.stopImmediatePropagation()
+	var href=$(this).attr('href');
+	$.ajax({
+		type:'GET',
+		url:href,
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".load_page").html(res.info).fadeIn();
+		}
+	})
+})
+
+$(".get_page_two").live('click',function(e){
+	e.preventDefault();
+	e.stopImmediatePropagation()
+	var href=$(this).attr('href');
+	var html_str="<div class='point_back clearfix'><img src='__PUBLIC__/wap/images/asd(1).png'><a class='get_page' href='__SELF__' style=''>返回奖品页</a></div>";
+	$.ajax({
+		type:'GET',
+		url:href,
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".load_page").html(html_str);
+			$(".load_page").append(res.info).fadeIn();
+		}
+	})
+})
+function get_page(href){
+	var html_str="<div class='point_back clearfix'><img src='__PUBLIC__/wap/images/asd(1).png'><a class='get_page' href='__SELF__' style=''>返回奖品页</a></div>";
+	$.ajax({
+		type:'GET',
+		url:href,
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".load_page").html(html_str);
+			$(".load_page").append(res.info);
+		}
+	})
+}
+$(".add_gift_order").live('click',function(e){
+	e.stopImmediatePropagation()
+	//if(window.confirm('你确认要兑换该商品')==false){return;}
+	var val=$(this).attr('val');
+	$.ajax({
+		type:'POST',
+		url:"{:U('add_gift_order')}",
+		data:{gift_id:val},
+		dataType:"json",
+		async:false,
+		success:function(res){
+			if(res.error_code==10000){
+				layer.open({time:1,content:'请设置收货地址'});
+				return ;
+			}
+			alert(res.msg);
+			if(res.error==0){
+				window.location="{:U('index')}";
+			}
+		}
+	})
+})
+</script>

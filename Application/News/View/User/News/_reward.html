@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<dl class="item">
+		<dt>
+			<h2><a href="{:U('news/index/info', array('id'=>$vo[news_id]))}">{$vo.title}</a></h2>
+			<p>{$vo.pay_time|date="Y-m-d H:i:s",###}</p>
+		</dt>
+		<dd>{$vo.reward_amount}</dd>
+	</dl>
+</volist>

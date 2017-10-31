@@ -1,0 +1,263 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------订单中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>售后列表</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="orders_list">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">退货列表</a></li>
+					</ul>
+				</div>
+				<!--<form action="{:U('')}" method="get">
+					<table class="ncm-search-table">
+						<tbody>
+							<tr>
+								<td align="right">
+									<span>订单状态</span>
+									<select name="type">
+										<option value="">所有订单</option>
+										<option {:m_selected($get[type], 1)} value="1">待付款</option>
+										<option {:m_selected($get[type], 2)} value="2">待发货</option>
+										<option {:m_selected($get[type], 3)} value="3">待收货</option>
+										<option {:m_selected($get[type], 4)} value="4">已完成</option>
+										<option {:m_selected($get[type], 5)} value="5">待评价</option>
+										<option {:m_selected($get[type], 6)} value="6">已取消</option>
+									</select>
+									<span>下单时间</span>
+									<input type="text" name="start_time" value="{$get.start_time}" readonly class="w70" id="datetimepicker1"><label class="add-on"><i><img src="__PUBLIC__/main/images/icon54.png"></i></label>
+									<span>–</span>
+									<input type="text" name="end_time" value="{$get.end_time}" readonly class="w70" id="datetimepicker2"><label class="add-on"><i><img src="__PUBLIC__/main/images/icon54.png"></i></label>
+									<span>订单号</span>
+									<input type="text" class="text w150" name="order_id" value="{$get.order_id}">
+									<button type="submit">搜索</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>-->
+				<!----日期选择---->
+				<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+				<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+				<script type="text/javascript">
+					$('#datetimepicker1').datetimepicker({
+						lang:'ch',
+						timepicker:false,
+						format:'Y-m-d',
+						formatDate:'Y-m-d',
+						timepicker:false
+					});
+					$('#datetimepicker2').datetimepicker({
+						lang:'ch',
+						timepicker:false,
+						format:'Y-m-d',
+						formatDate:'Y-m-d',
+						timepicker:false
+					});
+				</script>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table class="ncm-default-table order">
+						<thead>
+							<tr>
+								<th colspan="2" align="left" style="padding-left:10px;">订单信息</th>
+								<th>退货数量</th>
+								<th align="center">售后原因</th>
+								<th align="center">状态</th>
+								<th align="center">申请时间</th>
+								<th align="center">订单号</th>
+							</tr>
+						</thead>
+						<volist name="list" id="vo">
+							<tbody>
+								<tr>
+									<td colspan="5" class="sep-row"></td>
+								</tr>
+								<tr>
+									<td class="brn" width="70">
+										<div class="ncm-goods-thumb"><a href="{:U('mall/goods/info',array('id'=>$vo[item][goods_id]))}"><img src="{:picurl($vo[item][goods_img])}"></a></div>
+									</td>
+									<td class="bln" width="150">
+										<dl class="goods-name" style="word-wrap:break-word; width:150px;">
+											<dt><a href="{:U('mall/goods/info',array('id'=>$vo[item][goods_id]))}">{$vo.item.goods_name}</a></dt>
+											<dd>{$vo.item.product_name}</dd>
+										</dl>
+									</td>
+									<td align="center">{$vo.amount}</td>
+                                    <td align="center" width="200"><div style="width:200px;word-break:break-all;">{$vo.reason}</div></td>
+                                    <td align="center" width="300">
+										<switch name="vo.status" >
+											<case value="0">
+												<p>待审核</p>
+											</case>
+											<case value="1">
+												<p>审核成功</p>
+												<div class="tips_box">
+													<a href="javascript:;">填写运单号</a>
+													<div class="tips_1 tips_form">
+                                                    	<i><img src="__PUBLIC__/main/images/icon73.png"></i>
+														<form action="{:U('')}">
+                                                        	<p><span>收货地址</span>{$vo.back_address}</p>
+															<p>
+																<span>快递公司</span>
+																<select name="shipping_id">
+																	<volist name="shipping_list" id="vo2">
+																		<option value="{$vo2.id}">{$vo2.name}</option>
+																	</volist>
+																</select>
+															</p>
+															<p><span>快递单号</span><input name="shipping_no" type="text"></p>
+															<p>
+																<button type="button" class="btn_submit">确定</button>
+																<input type="hidden" name="id" value="{$vo.id}" />
+															</p>
+														</form>
+													</div>
+												</div>
+											</case>
+											<case value="2">
+												<p>审核失败</p>
+												<div class="tips_box">
+													<a href="javascript:;">详情</a>
+													<div class="tips_1 tips_text">
+                                                    	<i><img src="__PUBLIC__/main/images/icon73.png"></i>
+														<p>{$vo.remark}</p>
+													</div>
+												</div>
+											</case>
+											<case value="3">
+												<p>店铺待收货</p>
+												<div class="tips_box">
+													<a href="javascript:;">详情</a>
+													<div class="tips_1 tips_text">
+                                                    	<i><img src="__PUBLIC__/main/images/icon73.png"></i>
+														<p><span>收货地址：</span>{$vo.back_address}</p>
+														<p><span>快递公司：</span>{$vo.shipping_name}</p>
+														<p><span>快递单号：</span><a href="{$vo.pc_ship_url}" target="_blank">{$vo.shipping_no}</a></p>
+													</div>
+												</div>
+											</case>
+											<case value="4">
+												<p>退货不通过</p>
+												<div class="tips_box">
+													<a href="javascript:;">详情</a>
+													<div class="tips_1 tips_text">
+                                                    	<i><img src="__PUBLIC__/main/images/icon73.png"></i>
+														<p>{$vo.instruction}</p>
+														<p><span>收货地址：</span>{$vo.back_address}</p>
+														<p><span>快递公司：</span>{$vo.shipping_name}</p>
+														<p><span>快递单号：</span><a href="{$vo.pc_ship_url}" target="_blank">{$vo.shipping_no}</a></p>
+													</div>
+												</div>
+											</case>
+											<case value="5">
+												<p>店铺已收货，待退款</p>
+												<div class="tips_box">
+													<a href="javascript:;">详情</a>
+													<div class="tips_1 tips_text">
+                                                    	<i><img src="__PUBLIC__/main/images/icon73.png"></i>
+														<p><span>收货地址：</span>{$vo.back_address}</p>
+														<p><span>快递公司：</span>{$vo.shipping_name}</p>
+														<p><span>快递单号：</span><a href="{$vo.pc_ship_url}" target="_blank">{$vo.shipping_no}</a></p>
+													</div>
+												</div>
+											</case>
+											<case value="6">
+												<p>已退款</p>
+												<div class="tips_box">
+													<a href="javascript:;">详情</a>
+													<div class="tips_1 tips_text">
+                                                    	<i><img src="__PUBLIC__/main/images/icon73.png"></i>
+														<p>退款金额：{$vo.back_money}</p>
+														<p><span>收货地址：</span>{$vo.back_address}</p>
+														<p><span>快递公司：</span>{$vo.shipping_name}</p>
+														<p><span>快递单号：</span><a href="{$vo.pc_ship_url}" target="_blank">{$vo.shipping_no}</a></p>
+													</div>
+												</div>
+											</case>
+										</switch>
+									</td>
+                                    <td align="center" nowrap="nowrap">{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+									<td align="center"><a href="{:U('user/order/info', array('id'=>$vo[order_id]))}">{$vo.order_id}</a></td>
+								</tr>
+							</tbody>
+						</volist>
+					</table>
+					<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------订单中心结束----->
+
+<div class="mask"></div>
+
+<script>
+	$(function(){
+		$(".tips_box a").hover(function(){
+			$(this).siblings(".tips_1").show()
+			$(".mask").show()
+		})
+		$(".mask").click(function(){
+			$(".mask").hide()
+			$(".tips_1").hide()	
+		})
+		$(".tips_1 i").click(function(){
+			$(".mask").hide()
+			$(".tips_1").hide()	
+		})
+	})
+</script>
+<style>
+	table.order{ border-collapse:collapse; }
+	table.order tbody td{ border:1px solid #e7e7e7; padding:10px; vertical-align:middle;}
+	table.order tbody td.brn{ border-right:none;}
+	table.order tbody td.bln{ border-left:none; padding-left:0;}
+	table.order tbody td .tips_box{ position:relative;}
+	table.order tbody td .tips_box a{ color:#ec4f4a;}
+	table.order tbody td .tips_1{ position:absolute; background:#FFF; border-radius:5px; border:solid 1px #ec4f4a; padding:10px 15px; color:#666; display:none; z-index:30;}
+	table.order tbody td .tips_1 i{ position:absolute; right:5px; top:5px; line-height:0; cursor:pointer;}
+	table.order tbody td .tips_text{ width:280px; left:50%; margin-left:-155px; top:15px;}
+	table.order tbody td .tips_form{ width:390px; left:50%; margin-left:-205px; top:15px; text-align:left; padding:15px 15px 0 15px;}
+	table.order tbody td .tips_form p{ margin-bottom:10px;}
+	table.order tbody td .tips_form select,.exchange table tbody td .tips_form input{ border:solid 1px #d2d2d2; height:30px; line-height:30px;}
+	table.order tbody td .tips_form select{ padding:0 10px;}
+	table.order tbody td .tips_form span{ line-height:30px; margin-right:10px;}
+	table.order tbody td .tips_form input{ padding-left:10px; width:280px; border:solid 1px #d2d2d2; height:30px; line-height:30px;}
+	table.order tbody td .tips_form button{ cursor:pointer; color:#FFF; height:30px; line-height:30px; border-radius:5px; background:#ec4f4a; width:85px; margin-left:66px;}
+</style>
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.orders_list table tbody td p{padding:5px;}
+</style>
+
+<script>
+	$(document).ready(function(){
+		$(".btn_submit").click(function(){
+			var form = $(this).parents('form');
+			$.post($(this).attr('href'), form.serialize(), function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){
+					window.location.reload();
+				}
+			}, 'json');
+		})
+	});
+</script>

@@ -1,0 +1,40 @@
+.wap_service{ position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #ebeff2;}
+.wap_service_shop{ background: #FFFFFF; padding: 10px; font-size: 14px;}
+.wap_service_shop img{ width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;}
+.wap_service_shop span{ display: inline-block; color: #FFF; border-radius: 5px; background: #f2ad07; padding: 0 10px; margin-left: 10px;}
+.wap_service_send{ position: absolute; bottom: 0; left: 0; right: 0;}
+.wap_service_send textarea{ width: 100%; resize: none; padding: 10px 80px 10px 10px; border-radius: 5px; color: #666; line-height: 24px;}
+.wap_service_send p{ padding: 5px 0;}
+.wap_service_send p a{ display: inline-block; width: 50%; text-align: center;}
+.wap_service_send p a img{ width: 30px;}
+.wap_service_send p span{ display: inline-block; width: 50%; text-align: center; position: relative;}
+.wap_service_send p span input{ position: absolute; right: 0; left: 0; top: 0; bottom: 0; opacity: 0;}
+.wap_service_send p span img{ width: 30px;}
+.wap_service_send button{ position: absolute; bottom: 50px; right: 10px; border-radius: 5px; background: #ff3451; color: #FFF; padding: 5px 15px;}
+.wap_service_mask{ position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: rgba(0,0,0,.3); z-index: 10; display: none;}
+.wap_service_comment{ position: absolute; bottom: 0; left: 0; right: 0; background: #FFF; z-index: 15; transition: all 0.5s; transform: translateY(100%); -webkit-transform: translateY(100%);}
+.wap_service_comment.on{ transform: translateY(0); -webkit-transform: translateY(0);}
+.wap_service_comment.on i{ top: -20px;}
+.wap_service_comment i{ position: absolute; right: 10px; top: 0;}
+.wap_service_comment i img{ width: 40px; height: 40px; }
+.wap_service_comment form{ display: block; padding: 10px;}
+.wap_service_comment form h2{ font-weight: normal; font-size: 15px; color: #999;}
+.wap_service_comment form #star1{ text-align: center; margin: 10px 0;}
+.wap_service_comment form #star1 img{ width: 35px; margin: 0 5px;}
+.wap_service_comment form p{ padding: 0 10px;}
+.wap_service_comment form p textarea{ resize: none; width: 100%; border-bottom: solid 1px #e6e6e6;}
+.wap_service_comment form p button{ margin: 10px auto 0; display: block; background: #fc5d61; color: #FFF; font-size: 14px; border: solid 1px #d14548;  padding:5px 30px;}
+
+.speak_window{ position:absolute; top:60px; left:0; bottom:132px; right:0; overflow-y:auto; padding-top: 10px;}
+.speak_window time{ font-size:13px; margin-bottom:10px; display:block; text-align:right; color:#a1a1a1; margin-right:10px;}
+.speak_window time span{ color:#000; margin-left:10px;}
+.service_record_box{display:-webkit-flex; display:flex;-webkit-box-align:center; -webkit-align-items:flex-start; align-items:flex-start; }
+.answer{ margin-bottom:15px; padding:0 10px;}
+.speak_window .answer time{ text-align:left;}
+.speak_window .answer time span{ margin-left:0; margin-right:10px;}
+.answer .answer_text{ position:relative; background:#FFF; margin-left:15px; border-bottom:solid 1px #d3d3d3; border-radius:8px; padding:8px 10px; font-size:12px; line-height:22px; max-width:85%;}
+.answer .answer_text p a{ color:#51a0bf;}
+.answer .answer_text i{ display:inline-block; height:16px; width:20px; background:url(../images/service_arrow.png) no-repeat; position:absolute; left:-20px; top:10px;}
+.question .service_record_box{ display:-webkit-box; display:-webkit-flex; display:-ms-flexbox; display:flex; -webkit-box-align:center; -webkit-align-items:center;-ms-flex-align:flex-start; align-items:flex-start; justify-content:flex-end; -webkit-justify-content:flex-end; padding:0 10px; margin-bottom:15px;}
+.question .question_text{ position:relative; background:#ff3451;  margin-right:15px; border-radius:8px; padding:8px 10px; font-size:13px; color:#FFF; line-height:22px; max-width:85%;}
+.question .question_text i{ display:inline-block; height:13px; width:20px; background:url(../images/service_arrow1.png) no-repeat; position:absolute; right:-19px; top:10px;}

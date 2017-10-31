@@ -1,0 +1,152 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------新增&修改收货地址开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span><gt name="info.address_id" value="0">编辑收货地址<else/>新增收货地址</gt></div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_address">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;"><gt name="info.address_id" value="0">编辑收货地址<else/>新增收货地址</gt></a></li>
+					</ul>
+				</div>
+				<div class="personal_information_box">
+					<form action="{:U('')}" onSubmit="">
+						<ul>
+							<li><span>收件人：</span><input name="consignee" value="{$info.consignee}" id="consignee" type="text"></li>
+							<li>
+								<span>地址：</span>
+								<input type="hidden" value="0" class="region_sel"/>
+								<select class="region_sel" name="province" id="province"><option>省</option></select>
+								<select class="region_sel m10" name="city" id="city"><option>市</option></select>
+								<select name="district" id="district"><option>区/县</option></select>
+							</li>
+							<li><span>详细地址：</span><input name="address" id="address" value="{$info.address}" type="text"></li>
+							<li><span>邮编：</span><input name="zipcode" value="{$info.zipcode}" id="zipcode" type="text"></li>
+							<li><span>联系电话：</span><input name="mobile" value="{$info.mobile}" id="mobile" type="text"></li>
+                            <li><span>&nbsp;</span><label><input {:m_checked($info[is_default], 1)} name="is_default" type="checkbox" value="1" id="is_default">设为默认地址</label></li>
+							<li>
+								<button type="button" id="btn_submit">保存收货信息</button>
+								<input type="hidden" name="id" value="{$info.address_id}" id="address_id" />
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------新增&修改收货地址结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(function(){
+	//添加收货地址
+	$('#btn_submit').bind('click',function(){
+            if(!$('#consignee').val()){
+                layer.open({time:1,content:'收件人不可为空'});return false;
+            }
+            if(!$('#district').val()){
+                layer.open({time:1,content:'请选择地址'});return false;
+            }
+            if(!$('#address').val()){
+                layer.open({time:1,content:'详细地址不可为空'});return false;
+            }
+            if(!$('#zipcode').val()){
+                layer.open({time:1,content:'邮编不可为空'});return false;
+            }
+			var _mobile = $('#mobile').val();
+            if(!$('#mobile').val()){
+                layer.open({time:1,content:'联系方式不可为空'});return false;
+            }
+			if(!checkMobile(_mobile)){
+                layer.open({time:1,content:'手机号码格式不正确'});return false;
+            }
+			var form = $(this).parents('form');
+			$.post(form.attr('action'), form.serialize(), function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){
+					window.location.href = d.url;
+				}
+			}, 'json');
+	});
+})
+
+function checkMobile(str) {
+    var re = /^1\d{10}$/
+    if (re.test(str)) {
+    	return true;
+    } else {
+    	return false;
+    }
+}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[region_code] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[region_code])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+	
+	//提交咨询
+	$('#inquiry').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>

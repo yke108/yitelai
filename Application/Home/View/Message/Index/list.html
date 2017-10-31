@@ -1,0 +1,198 @@
+<div class="infomation_list">
+	<div class="mui-scroll-wrapper" id="pullrefresh">
+		<div class="mui-scroll">
+			<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关信息</p>
+			<else/>
+					<div class="mui-table-view">
+						<include file="Message/Index/_list"/>
+					</div>
+			</empty>
+		</div>
+	</div>
+</div>
+
+<div class="filter_pop">
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<form action="{:U('')}">
+				<input type="hidden" name="type" value="{$get.type}" />
+				<ul>
+					<li>
+						<h2><a href="javascript:;" class="right-after">发送对象</a></h2>
+						<div class="material_sort_list">
+							<a href="{:U('', array('type'=>$get[type]))}" class="link <if condition="$get[store_id] eq ''">on</if>">全部</a>
+							<volist name="distributor_list" id="vo">
+								<a href="{:U('', array('store_id'=>$vo[distributor_id], 'type'=>$get[type]))}" class="link <if condition="$vo[distributor_id] eq $get[store_id]">on</if>">{$vo.distributor_name}</a>
+							</volist>
+						</div>
+					</li>
+					<li>
+						<h2><a href="javascript:;" class="right-after">时间</a></h2>
+						<div class="material_sort_list">
+							<input name="start_time" value="{$get.start_time}" type="text" readonly="readonly" class="time" placeholder="开始时间" data-options='{}'>
+							<input name="end_time" value="{$get.end_time}" type="text" readonly="readonly" class="time" placeholder="结束时间" data-options='{}'>
+						</div>
+					</li>
+				</ul>
+				<div class="btn">
+					<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+					<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="mask" id="cloase_pop"></div>
+
+<style type="text/css">
+.client_management_btn{z-index:9999;}
+.material_sort_list input{ width:100%; margin-bottom:10px; background:#e0e0e0; font-size:14px; height:37px; padding:0 10px;}
+.filter_pop .btn{display:-webkit-box; display:-webkit-flex; display:flex;-webkit-box-align:center; -webkit-align-items:center; align-items:center; border-bottom:solid 1px #E4E4E4;}
+.filter_pop .btn a{ border-radius:0; font-size:15px;  -webkit-box-flex:1; -webkit-flex:1; flex:1; }
+.filter_pop .btn a.mui-btn-default{ background:none; border:none;}
+.filter_pop ul li .material_sort_list a.on{background:#21a3ff; color:#fff;}
+</style>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+</script>
+
+<script>
+mui.init();
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<script>
+	mui(".filter_pop ul li h2").on("tap","a",function(){
+		if($(this).hasClass("on")){
+			$(this).removeClass("on")
+			$(this).parent().siblings(".material_sort_list").css({"display":"none"})
+		}else{
+			$(this).addClass("on")
+			$(this).parent().siblings(".material_sort_list").css({"display":"flex"})
+		}
+	})
+	
+	document.getElementById("click").addEventListener("tap",function(event){
+	   $(".filter_pop").addClass("show")
+	   $(".mask").fadeIn()
+	})
+	
+	document.getElementById("cloase_pop").addEventListener("tap",function(event){
+	   $(".filter_pop").removeClass("show")
+	   $(".mask").fadeOut()
+	})
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	$(".filter_pop").toggleClass("show")	
+	$(".mask").fadeToggle()
+}
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_pop ul li a").removeClass("on")
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+
+$(document).ready(function(){
+	$('.mask').click(function(){
+		$(".filter_new_pop").removeClass("on")
+		$(".mask").fadeOut()
+	});
+});
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var type = "{$get.type}";
+		var store_id = "{$get.store_id}";
+		var start_time = "{$get.start_time}";
+		var end_time = "{$get.end_time}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, type:type, store_id:store_id, start_time:start_time, end_time:end_time},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .mui-table-view").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

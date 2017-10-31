@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">团购活动列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加团购活动</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form" method="get" action="{:U('')}">
+					活动状态：
+					<select name='status'>
+						<option <if condition="$get.status eq ''">selected='selected'</if> value=''>全部</option>
+						<option <if condition="$get.status eq 1">selected='selected'</if> value='1'>活动未开始</option>
+						<option <if condition="$get.status eq 2">selected='selected'</if> value='2'>活动中</option>
+						<option <if condition="$get.status eq 3">selected='selected'</if> value='3'>活动已结束</option>
+					</select>
+					<button class="btn btn-default btn-sm" type="submit" style='margin-left:20px;'>搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>活动标题</th>
+							<th>商品名称</th>
+							<th>商品图片</th>
+							<th>商品规格</th>
+							<th>阶梯价格</th>
+							<th>添加时间</th>
+							<th>活动开始时间</th>
+							<th>活动结束时间</th>
+							<th>拼团有效天数</th>
+							<th>是否显示拼团列表</th>
+							<th>拼团列表</th>
+							<th>活动状态</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+					<volist name="list" id="vo">
+						<tr class="rowlink">
+							<td>{$vo.act_name}</td>
+							<td class="center">{$vo.goods_name}</td>
+							<td><img height='50' src="__UPLOAD__/{$vo.act_img}" /></td>
+							<td>{$vo.product_name}</td>
+							<td>{$vo.price_plan_lang}</td>
+							<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+							<td>{$vo.start_time|date="Y-m-d H:i",###}</td>
+							<td>{$vo.end_time|date="Y-m-d H:i",###}</td>
+							<td>{$vo.limit_days}</td>
+							<td>
+								<if condition="$vo.is_show_page eq 1">
+								<span class='label label-success'>是</span>
+								<else/>
+								<span class='label label-danger'>否</span>
+								</if>
+							</td>
+							<th>
+								<a href="{:U('activity/team/teamup',array('act_id'=>$vo['act_id']))}">查看</a>
+							</th>
+							<td>
+								<if condition="$vo[start_time] gt $now_time">
+								<span class='label label-danger'>活动未开始</span>
+								<elseif condition="$vo[start_time] lt $now_time and $vo[end_time] gt $now_time" />
+								<span class='label label-success'>活动进行中</span>
+								<else/>
+								<span class='label label-danger'>活动已结束</span>
+								</if>
+							</td>
+							<td>
+								<a href="{:U('edit', array('id'=>$vo[act_id]))}">编辑</a>
+								<a href="{:U('del', array('id'=>$vo[act_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+							</td>
+						</tr>
+					</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

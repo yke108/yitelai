@@ -1,0 +1,42 @@
+<div class="pay">	
+	<div class="pay_1">
+		<empty name="address">
+			<!---如果没有选择收货地址---->
+			<!--<div class="no_data "><a class='get_page_two' href="{:U('User/Address/index')}">选择收货人</a></div>-->
+			<div class="no_data "><a class='get_page_two' href="{:U('User/Address/add')}">添加收货地址</a></div>
+		<else/>
+			<!---如果已经选择收货地址---->
+			<div class="has_data">
+				<!--<a class='get_page_two' href="{:U('User/Address/index')}">
+					<p><span>{$address.consignee}</span><span>{$address.mobile}</span></p>
+					<p>{$address.zone} {$address.address}</p>
+				</a>-->
+				<a class='get_page_two' href="{:U('User/Address/index')}">
+					<p><span>{$address.consignee}</span><span>{$address.mobile}</span></p>
+					<p>{$address.zone} {$address.address}</p>
+				</a>
+			</div>
+		</empty>
+	</div>
+	<div class="pay_2">
+		<dl>
+			<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b150/{$info.picture}"></a></dt>
+			<dd>
+				<h2><a href="javascript:;">{$info.name}</a></h2>
+				<p><span>{$info.point}积分</span></p>
+				<p>剩余：{$info.stock|default=0}件</p>
+			</dd>
+		</dl>
+	</div>
+	<div class="pay_5">
+		<div class='weui-cell' style='font-size:14px;'>
+			<div class='weui-cell__hd'>我的积分：<font style='color:#e11313;'>{$user.pay_points}</font></div>
+		</div>
+		<div class='weui-cell'>
+			<div class='weui-cell__hd'><p class='clearfix'><em>使用积分：<b style='color:#ff0000;'>{$info[point]}</b></em><span></span></p></div>
+			<div class='weui-cell__bd'><p class="clearfix"><a href="javascript:;" val='{$info.id}' class="add_gift_order createordernow">立即兑换</a></p></div>
+		</div>
+		
+		
+	</div>
+</div>

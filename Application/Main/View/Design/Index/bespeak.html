@@ -1,0 +1,189 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+<!-------装修公司设计师开始----->
+<div class="site_position w1200"><a href="#">首页</a><span>></span><if condition='$store_id eq ""'>设计师预约<else/>在线报名</if></div>
+<div class="main" style="background:#FFF;">
+	<div class="design_reservation w1200 clearfix">
+		<div class="reservation_pic fl"><img src="__PUBLIC__/main/images/pic75.jpg"></div>
+		<div class="reservation_box fr">
+			<empty name='store_id'>
+			<h2>已有<span>{$order_count|default=0}</span>位业主提交设计需求</h2>
+			</empty>
+			<form action="" onSubmit="">
+				<ul>
+					<li><input name="nick_name" id='nick_name' type="text" placeholder="您的称呼"></li>
+					<li><input name="mobile" id='mobile' type="text" placeholder="手机号码"></li>
+					<li>
+						<select name="province" class="short mr" id='province_show' onchange='change_region(this,"city_show")'>
+							<option value=''>省</option>
+							<foreach name='province' key='key' item='val'>
+							<option value='{$key}'>{$val}</option>
+							</foreach>
+						</select>
+						<select name="city" class="short" id='city_show' onchange='change_region(this,"district_show")'><option value=''>市</option></select>
+						<select name="district" class="short fr" id='district_show'><option value=''>区/县</option></select>
+					</li>
+					<!--<li>
+						<select name="space_type" id='space_type'>
+							<option value=''>空间类型</option>
+							<volist name='filter.demand' id='val'>
+							<option value='{$val}'>{$val}</option>
+							</volist>
+						</select>
+					</li>-->
+					<li>
+						<select name="space_type" id='space_type'>
+							<option value=''>空间类型</option>
+							<volist name='type_list.space.list' id='val'>
+							<option value='{$val.id}'>{$val.name}</option>
+							</volist>
+						</select>
+					</li>
+					<!--<li>
+						<select name="decorate_type" id='decorate_type'>
+							<option value=''>风格</option>
+							<volist name='filter.decorate_type' id='val'>
+							<option value='{$val}'>{$val}</option>
+							</volist>
+						</select>
+					</li>-->
+					<li>
+						<select name="decorate_type" id='decorate_type'>
+							<option value=''>风格</option>
+							<volist name='decorate_list' id='val'>
+								<option value='{$val.id}'>{$val.name}</option>
+							</volist>
+						</select>
+					</li>
+					<li><input name="area" id='area' type="text" placeholder="项目面积(㎡)"></li>
+					<li><input name="budget" id='budget' type="text" placeholder="预算(万)"></li>
+					
+					<li>
+						<input type='hidden' value='{$designer_info.designer_id}' name='designer_id' />
+						<button type="button" id='add_design_msg'>立即提交</button>
+					</li>
+					<li><span><img src="__PUBLIC__/main/images/icon107.png"></span><em>我们承诺：为了您的利益以及我们的口碑，您的隐私将被严格保密，请放心填写</em></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+<!-------装修公司设计师结束----->    
+
+<!-------底部开始----->
+<include file='Public/footer' />
+<!-------底部结束----->
+<script>
+function change_region(obj,type){
+	var code=$(obj).val();
+	$.ajax({
+		type:'POST',
+		url:"{:U('Index/Site/get_region')}",
+		data:{code:code,type:type},
+		dataType:"json",
+		success:function(res){
+			//alert($("#"+'city').html())
+			$("#"+type).html(res.html)
+		}
+	})
+}
+$("#add_design_msg").click(function(){
+	var nick_name=$('#nick_name').val();
+	var mobile=$('#mobile').val();
+	var re=/^1[1|3|5|7|8]\d{9}$/i;
+	var province=$('#province_show').val();
+	var city=$('#city_show').val();
+	var district=$('#district_show').val();
+	var space_type=$('#space_type').val();
+	var decorate_type=$('#decorate_type').val();
+	var area=$('#area').val();
+	var budget=$('#budget').val();
+	var designer_id="{$_GET['id']}";
+	var store_id="{$store_id}";
+	
+	
+	if(nick_name==''){
+		layer.open({time:1,content:'请输入您的昵称'});
+		$('#nick_name').focus();
+		return;
+	}
+	
+	if(mobile==''){
+		layer.open({time:1,content:'请输入手机号码'});
+		$('#mobile').focus();
+		return;
+	}else{
+		if(re.test(mobile)==false){layer.open({time:1,content:'手机格式不正确'});return;}
+	}
+	if(nick_name==''){
+		layer.open({time:1,content:'请输入您的昵称'});
+		$('#nick_name').focus();
+		return;
+	}
+	
+	if(province==''){
+		layer.open({time:1,content:'请选择省份'});
+		return;
+	}
+	if(city==''){
+		layer.open({time:1,content:'请选择城市'});
+		return;
+	}
+	if(district==''){
+		layer.open({time:1,content:'请选择县/区'});
+		return;
+	}
+	
+	/*if(space_type==''){
+		layer.open({time:1,content:'请选择空间类型'});
+		return;
+	}
+	if(decorate_type==''){
+		layer.open({time:1,content:'请选择空间风格'});
+		return;
+	}*/
+	
+	if(area==''){
+		layer.open({time:1,content:'请填写项目面积'});
+		$('#area').focus();
+		return;
+	}
+	if(budget==''){
+		layer.open({time:1,content:'请填写预算'});
+		$('#budget').focus();
+		return;
+	}
+	
+	
+	
+	$.ajax({
+		type:'POST',
+		url:"{:U('order')}",
+		data:{
+				nick_name:nick_name,
+				mobile:mobile,
+				province:province,
+				city:city,
+				district:district,
+				space_type:space_type,
+				style:decorate_type,
+				area:area,
+				budget:budget,
+				designer_id:designer_id,
+				store_id:store_id
+			},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.msg});
+			if(res.error==0){
+				//$('#nick_name,#mobile,#area,#budget').val('');
+				window.location.href = document.referrer;
+			}else if(res.error==2){
+				window.location="{:U('Index/Site/login')}";
+			}
+		}
+	})
+})
+</script>

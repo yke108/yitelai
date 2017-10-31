@@ -1,0 +1,15 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+<div class="main w1200">
+	<div class="pay_result">
+		<h2><img src="__PUBLIC__/main/images/icon117.png">恭喜你，充值成功</h2>
+		<p>充值金额：<span>￥{$recharge.recharge_amount|default=0}</span></p>
+		<p><a href="{:U('User/Recharge/log')}" class="pay_result_1">查看充值记录</a><a href="{:U('Index/index/index')}" class="pay_result_2">去逛逛</a></p>
+	</div>
+</div>
+
+<!-------头部开始----->
+<include file="Public/footer"/>
+<!-------头部结束----->

@@ -1,0 +1,801 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+<style type="text/css">
+.group_4_l dl dd p a{max-height:35px;}
+</style>
+
+<!-------首页内容开始----->
+<div class="banner w1200 clearfix">
+	<div id="focus" class="focus fl">
+		<ul>
+			<volist name="ad_list.pc_index_lunbo" id="vo">
+				<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%" height="450"></a></li>
+			</volist>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			$('#focus').slideFocus();
+		});
+	</script>
+	<div class="banner_r fr">
+		<h2><a href="{:U('article/help/index')}">更多></a>谷安居乐报</h2>
+		<ul>
+			<volist name="news_recommend_list" id="vo">
+				<li><a href="{:U('article/help/info', array('id'=>$vo[news_id]))}">{$vo.title}</a><span style="float:right; font-size:12px;">{$vo.add_time|date="Y/m/d",###}</span></li>
+			</volist>
+		</ul>
+		<ol class="clearfix">
+			<volist name="servecat_list" id="vo">
+				<li><a href="{:U('serve/index/index', array('cat_id'=>$vo[cat_id]))}">{$vo.cat_name}</a></li>
+			</volist>
+		</ol>
+		<h3><a href="{$ad_list.pc_index_lunbo_right.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_lunbo_right.0.ad_picture}"></a></h3>
+	</div>
+</div>
+
+<div class="main w1200">
+	<div class="group_1" id="section1">
+		<span class="fl"><a href="{$ad_list.pc_index_today.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_today.0.ad_picture}"></a></span>
+		<ul class="clearfix">
+			<volist name="ad_list.pc_index_today_right" id="vo">
+				<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+			</volist>
+		</ul>
+	</div>
+	<div class="group_2" id="section2">
+		<h2>谷安居 · 品质生活</h2>
+		<div class="group_2_main clearfix">
+			<div class="group_2_l fl">
+				<div id="slider">
+					<div class="nav">
+						<a class="now">新发现</a>
+						<a>好东西</a>
+						<a>品牌街</a>
+					</div>
+					<div id="wai_box">
+						<div class="slider_box">
+							<ul>
+								<foreach name="ad_list.pc_index_discovery" item="vo" key="k">
+									<lt name="k" value="8">
+										<li class="item{$k+1}"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a><span class="title">{$vo.ad_name}</span></li>
+									</lt>
+								</foreach>
+							</ul>
+							<ul>
+								<foreach name="ad_list.pc_index_good" item="vo" key="k">
+									<lt name="k" value="8">
+										<li class="item{$k+1}"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a><span class="title">{$vo.ad_name}</span></li>
+									</lt>
+								</foreach>
+							</ul>
+							<ul>
+								<foreach name="ad_list.pc_index_brand" item="vo" key="k">
+									<lt name="k" value="8">
+										<li class="item{$k+1}"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a><span class="title">{$vo.ad_name}</span></li>
+									</lt>
+								</foreach>
+							</ul>
+						</div>
+						<style type="text/css">
+						.group_2 .group_2_l #slider .slider_box li img{ width:177px;}
+						.group_2 .group_2_l #slider .slider_box li.item1 img, .group_2 .group_2_l #slider .slider_box li.item3 img{ width:356px;}
+						.group_2 .group_2_l #slider .slider_box li.item2 img, .group_2 .group_2_l #slider .slider_box li.item6 img{ width:232px;}
+						.group_4_r_bd ul li a img{width:160px; height:160px;}
+						</style>
+					</div>
+				</div>
+				<script type="text/javascript">
+					$(document).ready(function(){
+											   
+						$("#slider").find(".pre").hide();//初始化为第一版
+						var page=1;//初始化当前的版面为1
+						var $show=$("#slider").find(".slider_box");//找到图片展示区域
+						var page_count=$show.find("ul").length;
+						var $width_box=$show.parents("#wai_box").width();//找到图片展示区域外围的div
+						function nav(){
+							if(page==1){
+								$("#slider").find(".pre").hide().siblings(".next").show();
+							}else if(page==page_count){
+								$("#slider").find(".next").hide().siblings(".pre").show();
+							}else{
+								$("#slider").find(".pre").show().siblings(".next").show();
+							}
+						}
+						$("#slider").find(".next").click(function(){
+							//首先判断展示区域是否处于动画
+							if(!$show.is(":animated")){
+								$show.animate({left:'-='+$width_box},"normal");
+								page++;
+								nav();
+								$number=page-1;
+								$("#slider").find(".nav a:eq("+$number+")").addClass("now").siblings("a").removeClass("now");
+								return false;
+							}
+						})
+						$("#slider").find(".pre").click(function(){
+							if(!$show.is(":animated")){
+								$show.animate({left:'+='+$width_box},"normal");
+								page--;
+								nav();
+								$number=page-1;
+								$("#slider").find(".nav a:eq("+$number+")").addClass("now").siblings("a").removeClass("now");
+							}
+							return false;
+						})
+						$("#slider").find(".nav a").click(function(){
+							$index=$(this).index();
+							page=$index+1;
+							nav();
+							$show.animate({left:-($width_box*$index)},"normal");	
+							$(this).addClass("now").siblings("a").removeClass("now");
+							return false;
+						})
+						
+						// 隐藏所有工具提示
+						//$(".slider_box li").each(function(){
+//								$(".slider_box li .title", this).css("opacity", "0");
+//							});
+						
+						$(".slider_box li").hover(function(){ // 悬浮 
+							$(this).stop().fadeTo(500,1).siblings().stop().fadeTo(500,0.2);
+						},function(){ // 寻出
+							$(this).stop().fadeTo(500, 1).siblings().stop().fadeTo(500,1);	
+						});
+											   
+					});
+				</script>
+			</div>
+			<div class="group_2_r fr">
+				<ul class="clearfix">
+					<volist name="brand_list" id="vo">
+						<li><a href="{:U('mall/category/index', array('brand_id'=>$vo[brand_id]))}"><img src="__UPLOAD__/{$vo.brand_logo}" width="120" height="55"></a></li>
+					</volist>
+				</ul>
+			</div>
+			<script>
+				$(function(){
+					$(".group_2_r ul li:even").addClass("even")	
+				})
+			</script>
+		</div>
+	</div>
+	
+	<div id="adbanner" class="w1200">
+    	<div class="kinMaxShow">
+            <volist name="ad_list.pc_index_guanju_bottom" id="vo">
+            	<div><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%"></a></div>
+            </volist>
+        </div>
+    </div>
+	
+	<foreach name="floor_list" item="vo" key="k">
+		<eq name="k" value="0">
+			<div class="group_3" id="section3">
+				<h2 class="group_tit">
+					<span class="fr">
+						<em>
+							<foreach name="vo.label_list" item="vo2" key="k2">
+								<a href="{:U('mall/category/index', array('label_id'=>$k2))}">{$vo2}</a>
+							</foreach>
+						</em>
+						<a href="{:U('mall/category/index', array('cat_id'=>$vo[cat_id]))}" class="more">更多></a>
+					</span>
+					<b><font>{$k+1}F</font>{$vo.floor_name}</b>
+				</h2>
+				<div class="clearfix">
+					<div class="group_3_l fl">
+						<div class="group_3_l_h"><a href="{$vo.top_left.0.ad_value}"><img src="__UPLOAD__/{$vo.top_left.0.ad_picture}"></a></div>
+						<div class="group_3_l_c">
+							<ul class="clearfix">
+								<foreach name="vo.scene_list" item="vo2" key="k2"> 
+									<lt name="k2" value="15">
+										<li><a href="{:U('mall/category/index', array('scene_id'=>$vo2[scene_id]))}"><i class="i{$k2+1}" style="background-image:url({:picurl($vo2[picture])})"></i>{$vo2.name}</a></li>
+									</lt>
+								</foreach>
+							</ul>
+						</div>
+						<div class="group_3_l_b"><a href="{$vo.bottom_left.0.ad_value}"><img src="__UPLOAD__/{$vo.bottom_left.0.ad_picture}"></a></div>
+					</div>
+					<div class="group_3_r fr">
+						<div class="group_3_r_hd clearfix">
+							<div id="focus{$k+1}" class="focus fl">
+								<ul>
+									<volist name="vo.lunbo" id="vo2">
+										<li><a href="{$vo2.ad_value}"><img src="__UPLOAD__/{$vo2.ad_picture}"></a></li>
+									</volist>
+								</ul>
+							</div>
+							<script type="text/javascript">
+								$(function() {
+									$('#focus{$k+1}').slideFocus();
+								});
+							</script>
+							<ul class="clearfix fr">
+								<foreach name="vo.top_right" item="vo2" key="k2">
+									<lt name="k2" value="2">
+										<li><a href="{$vo2.ad_value}"><img src="__UPLOAD__/{$vo2.ad_picture}"></a></li>
+									</lt>
+								</foreach>
+							</ul>
+						</div>
+						<div class="group_3_r_bd">
+							<ul class="clearfix">
+								<foreach name="vo.bottom_right" item="vo2" key="k2">
+									<lt name="k2" value="3">
+										<li><a href="{$vo2.ad_value}"><img src="__UPLOAD__/{$vo2.ad_picture}"></a></li>
+									</lt>
+								</foreach>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<notempty name="vo.brand_list">
+					<div class="bottom_logo">
+						<ul class="clearfix">
+							<foreach name="vo.brand_list" item="vo2" key="k2">
+								<lt name="k2" value="10">
+									<li><a href="#"><img src="__UPLOAD__/{$vo2.brand_logo}"></a></li>
+								</lt>
+							</foreach>
+						</ul>
+					</div>
+				</notempty>
+			</div>
+			<!--<notempty name="ad_list.pc_index_floor_1_bottom">
+				<div class="adbanner">
+                	<div class="kinMaxShow">
+                        <volist name="ad_list.pc_index_floor_1_bottom" id="vo2">
+							<div><a href="{$vo2.ad_value}"><img src="__UPLOAD__/{$vo2.ad_picture}" width="100%"></a></div>
+						</volist>
+                    </div>
+                </div>
+			</notempty>-->
+		<else/>
+			<div class="group_{$k+3}" id="section{$k+3}">
+				<h2 class="group_tit">
+					<span class="fr">
+						<em>
+							<foreach name="vo.label_list" item="vo2" key="k2">
+								<a href="#">{$vo2}</a>
+							</foreach>
+						</em>
+						<a href="{:U('mall/category/index', array('cat_id'=>$vo[cat_id]))}" class="more">更多></a>
+					</span>
+					<b><font>{$k+1}F</font>{$vo.floor_name}</b>               
+				</h2>
+				<div class="clearfix" style="border-bottom:solid 1px #e1e1e1;">
+					<div class="group_4_l fl">
+						<h3>销量排行榜</h3>
+						<volist name="vo.top_list" id="vo2">
+							<dl class="clearfix">
+								<dt><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}"><img src="__UPLOAD__/thumbs/b120/{$vo2.goods_image}" width="56"></a></dt>
+								<dd>
+									<p><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}">{$vo2.goods_name}</a></p>
+									<p><span>¥ {$vo2.product.product_price}</span></p>
+                                    <p><em>销量：{$vo2.total_sale_count}</em></p>
+								</dd>
+							</dl>
+						</volist>
+					</div>
+                    <style>
+						.group_4_l dl{ height:auto; padding-bottom:5px;}
+						.group_4_l dl dt{ margin-top:15px;}
+                    	.group_4_l dl dd p em{ margin-right:10px; color:#999; font-size:12px; line-height:22px;}
+                    </style>
+					<script>
+						$(function(){
+							$(".group_4_l dl:last-child").addClass("last")	
+						})
+					</script>
+					<div class="group_4_r fr">
+						<div class="group_4_r_hd clearfix">
+							<div id="focus{$k+1}" class="focus fl">
+								<ul>
+									<volist name="vo.lunbo" id="vo2">
+										<li><a href="{$vo2.ad_value}"><img src="__UPLOAD__/{$vo2.ad_picture}"></a></li>
+									</volist>
+								</ul>
+							</div>
+							<script type="text/javascript">
+								$(function() {
+									$('#focus{$k+1}').slideFocus();
+								});
+							</script>
+							<ul class="clearfix fr">
+								<foreach name="vo.top_right" item="vo2" key="k2">
+									<lt name="k2" value="4">
+										<li><a href="{$vo2.ad_value}"><img src="__UPLOAD__/{$vo2.ad_picture}"></a></li>
+									</lt>
+								</foreach>
+							</ul>
+							<script>
+								$(function(){
+									$(".group_4_r_hd ul.fr li:even").addClass("even")	
+								})
+							</script>
+						</div>
+						<div class="group_4_r_bd">
+							<ul class="clearfix">
+								<volist name="vo.goods_list" id="vo2">
+									<li><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}"><img src="__UPLOAD__/thumbs/b300/{$vo2.goods_image}"></a><p style="font-size:14px; padding:0 10px;"><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}" title="{$vo2.goods_name}">{:subtext($vo2[goods_name], 13)}</a></p><p><span><del style="display:inline-block; font-size:12px; color:#FFF; vertical-align:middle; margin:-2px 5px 0 0;">原价：¥{$vo2.product.platform_market_price}</del>￥{$vo2.product.product_price}</span></p></li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<notempty name="vo.brand_list">
+					<div class="bottom_logo">
+						<ul class="clearfix">
+							<foreach name="vo.brand_list" item="vo2" key="k2">
+								<lt name="k2" value="10">
+									<li><a href="#"><img src="__UPLOAD__/{$vo2.brand_logo}"></a></li>
+								</lt>
+							</foreach>
+						</ul>
+					</div>
+				</notempty>
+			</div>
+		</eq>
+		<style type="text/css">
+		.bottom_logo ul li a img{height:auto;}
+		</style>
+		<notempty name="vo.floor_picture">
+			<div class="adbanner">
+				<div><a href="{$vo.floor_link}"><img src="__UPLOAD__/{$vo.floor_picture}" width="100%"></a></div>
+			</div>
+		</notempty>
+	</foreach>
+	
+	<div class="group_6" id="section7">
+		<h2 class="group_tit">
+			<b>装修效果图 <!--<strong>已有<i>25658963</i>位业主找到灵感</strong>--></b>               
+		</h2>
+		<div class="group_6_hd clearfix">
+			<div class="group_6_clo1 fl">
+				<a href="{$ad_list.pc_index_decoration_left.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_decoration_left.0.ad_picture}"><p><b>{$ad_list.pc_index_decoration_left.0.ad_name}</b><span>{$ad_list.pc_index_decoration_left.0.ad_desc}</span></p></a>
+			</div>
+			<div class="group_6_clo2 fl">
+				<foreach name="ad_list.pc_index_decoration_middle" item="vo" key="k">
+					<lt name="k" value="3">
+						<a href="{$vo.ad_value}" class="item{$k+1}"><img src="__UPLOAD__/{$vo.ad_picture}"><p>{$vo.ad_name}</p></a>
+					</lt>
+				</foreach>
+			</div>
+			<style type="text/css">
+			.group_6_clo2 a.item3 img {
+				width: 236px;
+				height: 130px;
+			}
+			</style>
+			<div class="group_6_clo3 fl">
+				<a href="{$ad_list.pc_index_decoration_right.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_decoration_right.0.ad_picture}"><p>{$ad_list.pc_index_decoration_right.0.ad_name}</p></a>
+			</div>
+		</div>
+		<div class="group_6_bd">
+			<ul class="clearfix">
+				<volist name='ad_list.indexDecorationDrawing' id='val'>
+				<li>
+					<a href="<if condition='$val.ad_value eq ""'>javascript:;<else/>{$val.ad_value}</if>">
+						<span><em>{$val.ad_name}</em></span>
+						<img src="<if condition='$val.ad_picture eq ""'>__PUBLIC__/main/images/pic39.jpg<else/>__UPLOAD__/{$val.ad_picture}</if>">
+					</a>
+				</li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="group_7" id="section8">
+		<h2 class="group_tit">
+			<b>装修攻略 <!--<strong>已有<i>25658963</i>位业主找到灵感</strong>--></b>               
+		</h2>
+		<div class="group_7_hd clearfix">
+			<span class="fl"><img src="__PUBLIC__/main/images/pic40.jpg"></span>
+			<ul class="clearfix fl">
+				<volist name='ad_list.indexRenovationStrategy' id='val'>
+				<li><a href="<if condition='$val.ad_value eq ""'>javascript:;<else/>{$val.ad_value}</if>"><img width='226' height='163' src="<if condition='$val.ad_picture eq ""'>__PUBLIC__/main/images/pic41.jpg<else/>__UPLOAD__/{$val.ad_picture}</if>"><p>{$val.ad_name}</p><!--<i class="green">地中海</i>--></a></li>
+				</volist>
+			</ul>
+		</div>
+		<div class="group_7_bd clearfix">
+			<span class="fl"><img src="__PUBLIC__/main/images/pic42.png"></span>
+			<volist name='story_cat' id='val'>
+			<div class="group_7_bd_item fl">
+				<h3>{$val.cat_name}</h3>
+				<dl class="clearfix">
+					<dt><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic43.jpg<else/>__UPLOAD__/thumbs/w108h115/{$val.picture}</if>"></dt>
+					<dd>
+						<volist name='val.story_list' id='val2'>
+						<p><a href="{:U('story/index/info',array('id'=>$val2['story_id']))}">· {$val2.story_title}</a></p>
+						</volist>
+					</dd>
+				</dl>
+			</div>
+			</volist>
+		</div>
+	</div>
+	
+	<div class="group_8 clearfix" id="section9">
+		<div class="group_8_l fl">
+			<h2 class="group_tit">
+				<!--<span class="fr">
+					<a href="#" class="more">找我家小区 ></a>
+				</span>-->
+				<b>口碑精品案例 <!--<strong>已有<i>25658963</i>位业主找到灵感</strong>--></b>            
+			</h2>
+			<ul class="clearfix">
+				<foreach name="ad_list.pc_index_community" item="vo" key="k">
+					<lt name="k" value="3">
+						<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="289" height="328"><p>{$vo.ad_name}</p></a></li>
+					</lt>
+				</foreach>
+			</ul>
+		</div>
+		<div class="group_8_r fr">
+			<h3><span>设计师</span></h3>
+			<volist name='designer_list' id='val'>
+			<dl class="clearfix">
+				<dt>
+					<a href="{:U('design/index/info',array('id'=>$val['designer_id']))}">
+					<img src="<if condition='$val[designer_image] eq ""'>__PUBLIC__/main/images/pic45.jpg<else/>__UPLOAD__/thumbs/b200/{$val[designer_image]}</if>">
+					</a>
+				</dt>
+				<dd>
+					<p><b><a href="{:U('design/index/info',array('id'=>$val['designer_id']))}">{$val.designer_name}</a></b></p>
+					<p><span><a href="{:U('design/index/info',array('id'=>$val['designer_id']))}">案例：<em>{$val.case_count}</em></a></span> <!--| <span><a href="#">雅茗装饰</a></span>--></p>
+				</dd>
+			</dl>
+			</volist>
+			
+		</div>
+	</div>
+	
+	<notempty name="ad_list.pc_index_community_bottom">
+		<div class="adbanner">
+        	<div class="kinMaxShow">
+                <volist name="ad_list.pc_index_community_bottom" id="vo">
+					<div><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%"></a></div>
+				</volist>
+            </div>
+        </div>
+	</notempty>
+	
+	<div class="group_9 clearfix" id="section10">
+		<h2 class="group_tit">
+			<span class="fr">
+				<a href="{:U('story/index/index')}" class="more">更多 ></a>
+			</span>
+			<b>粉丝故事会 <strong>分享我们的真实快乐故事</strong></b>
+		</h2>
+		<div class="group_9_l fl"><a href="{$ad_list.pc_index_fans_left.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_fans_left.0.ad_picture}"></a></div>
+		<div class="group_9_c fl">
+			<volist name='index_story_list' id='val'>
+			<dl class="clearfix">
+				<dt>
+					<a href="{:U('story/index/info',array('id'=>$val['story_id']))}">
+						<img width='125' height='105' src="<if condition='$val.story_image eq ""'>__PUBLIC__/main/images/pic47.jpg<else/>__UPLOAD__/thumbs/w4h3/{$val.story_image}</if>">
+					</a>
+				</dt>
+				<dd>
+					<h3><a href="{:U('story/index/info',array('id'=>$val['story_id']))}">{$val.story_title}</a></h3>
+					<p class="zy"><span>【摘要】</span>{$val.story_intro|msubstr=0,20}</p>
+					<p class="last"><span><if condition="$val.nick_name neq ''">{$val.nick_name|msubstr=0,5}<else/>匿名</if></span><span>发布于{$val.add_time|date="Y-m-d",###}</span><span>阅读数:<em>{$val.view_num|default=0}</em></span><span>点赞人气:<em>{$val.good_num|default=0}</em></span></p>
+				</dd>
+			</dl>
+			</volist>
+			
+		</div>
+		<div class="group_9_r fr">
+			<ul class="clearfix">
+				<foreach name="ad_list.pc_index_fans_right" item="vo" key="k">
+					<lt name="k" value="6">
+						<li><a href="{$vo.ad_value}"><img src="__PUBLIC__/main/images/icon134.png" class="icon"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+					</lt>
+				</foreach>
+			</ul>
+		</div>
+        <style>
+        	.group_9_r ul li a{ display:block; position:relative;}
+			.group_9_r ul li a img.icon{ position:absolute; top:50%; left:50%; margin:-25px 0 0 -25px; width:50px; height:50px;}
+			.group_10_l_hd ul li a img{height:125px;}
+        </style>
+	</div>
+	
+	<div class="group_10 clearfix" id="section11">
+		<h2 class="group_tit">
+			<b>{$city_choice.region_name}装修公司</b><ins><img src="__PUBLIC__/main/images/icon19.png">装修公司CEO面对面</ins>
+		</h2>
+		<div class="group_10_l fl">
+			<empty name="designer_recommend_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关装修公司</p>
+			<else/>
+				<div class="group_10_l_hd">
+					<ul class="clearfix">
+						<volist name='designer_recommend_list' id="val">
+							<li>
+								<a href="{:U('design/index/info',array('id'=>$val['designer_id']))}">
+								<img src="<if condition='$val.designer_image eq ""'>__PUBLIC__/main/images/pic49.jpg<else/>__UPLOAD__/thumbs/w147h125/{$val.designer_image}</if>">
+								</a>
+							</li>
+						</volist>
+					</ul>
+				</div>
+				<div class="company_name clearfix">
+					<div class="name_tx fl">
+						<div class="tx_img">
+							<a href="{:U('design/index/info',array('id'=>$desinger_info['designer_id']))}">
+								<img width='147' height='147' src="<if condition='$desinger_info.designer_image eq ""'>__PUBLIC__/main/images/pic50.png<else/>__UPLOAD__/thumbs/b200/{$desinger_info.designer_image}</if>">
+							</a>
+						</div>
+						<p><a href="{:U('design/index/bespeak',array('id'=>$desinger_info['designer_id']))}">免费预约</a></p>
+						<p><span>已有<em>{$desinger_info.order_count}</em>人在咨询</span></p>
+					</div>
+					<div class="name_info fr">
+						<dl class="clearfix">
+							<dt>
+								<h3>{$desinger_info.designer_name}</h3>
+								<p class="icon">
+									<span><i class="color4">案例</i>{$desinger_info.case_count}</span>
+									<span><i class="color3">关注</i>{$desinger_info.follow_count|default=0}</span>
+									<!--<span><i class="color6">工</i>40个</span>
+									<span><i class="color7">评</i>37次</span>-->
+								</p>
+								<p class="location">{$desinger_info.region_lang}</p>
+							</dt>
+							<dd>
+								<!--<p>口碑值</p>
+								<p><b>188</b></p>-->
+								<a href="{:U('design/index/info',array('id'=>$desinger_info['designer_id']))}"><img src="__PUBLIC__/main/images/jiantou.png" /></a>
+							</dd>
+						</dl>
+						<div class="name_info_text">{$desinger_info.designer_intro}<a href="{:U('design/index/info',array('id'=>$desinger_info['designer_id']))}">更多></a></div>
+						<ul class="clearfix">
+							<volist name='desinger_info.case_list' id='val'>
+							<li>
+								<a href="{:U('design/index/case_info',array('id'=>$val[case_id]))}">
+									<img src="<if condition='$val[picture] eq ""'>__PUBLIC__/main/images/pic16.jpg<else/>__UPLOAD__/{$val[picture]}</if>" width="145" height="110">
+									<p>{$val.case_name}</p>
+								</a>
+							</li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+			</empty>
+		</div>
+		<div class="group_10_r fr">
+			<h3><span>帮我找公司 </span></h3>
+			<div class="group_10_r_bd">
+				<h4>简单4步轻松搞定装修公司</h4>
+				<ul class="clearfix">
+					<li><img src="__PUBLIC__/main/images/icon21.png"><p>看口碑</p></li>
+					<li><img src="__PUBLIC__/main/images/icon22.png"><p>比方案</p></li>
+					<li><img src="__PUBLIC__/main/images/icon23.png"><p>比报价</p></li>
+					<li><img src="__PUBLIC__/main/images/icon24.png"><p>比保障</p></li>
+				</ul>
+				<form action="" onSubmit="">
+					<p><input name="user_name" type="text" id='nick_name' placeholder="您的称呼"></p>
+					<p><input name="mobile" type="text" id='mobile' placeholder="您的电话"></p>
+					<p>
+						<input type="hidden" value="0" class="region_sel"/>
+						<select class="region_sel" id='province_show' name=""><option>省</option></select>
+						<select class="region_sel m10" id='city_show' name=""><option>市</option></select>
+						<select name="region_code" id='district_show'><option>区/县</option></select>
+					</p>
+					<p><textarea name="content" cols="" id='msg_content' rows="" placeholder="填写您的需求，如：屋形、风格、功能、时间等"></textarea></p>
+					<p><button type="button" id="add_design_msg">免费帮您推荐靠谱公司</button></p>
+				</form>
+			</div>
+			<script type="text/javascript">
+			$(document).ready(function(){
+				var region_list = {:json_encode($region_list)};
+				<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+				var province = {$province};
+				<php>$city = intval($info[region_code] / 100) * 100;</php>
+				var city = {$city};
+				var district = {:intval($info[region_code])};
+				var cobj = $('.region_sel');
+				function build_sitem_select(thisobj){
+					var region_id = thisobj.val();
+					var obj = thisobj.next();
+					obj.html('<option value="">请选择</option>');
+					if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+						for(var i in region_list){
+							var bbc = region_list[i];
+							test_region_id = parseInt(bbc.region_code);
+							if(region_id == test_region_id){
+								continue;
+							}
+							if(region_id == 0){
+								if(test_region_id % 10000 > 0) continue;
+							} else if(region_id % 10000 == 0) {
+								if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+							} else if(region_id % 100 == 0) {
+								if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+							} else {
+								break;
+							}
+							var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+							if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+							opt.appendTo(obj);
+						}
+					}
+					if(obj.hasClass('region_sel')) build_sitem_select(obj);
+				}
+				cobj.bind('change', function(){
+					build_sitem_select($(this));
+				});
+				$('input.region_sel').each(function(){
+					build_sitem_select($(this));
+				});
+				
+				//提交咨询
+				$('#inquiry').click(function(){
+					var form = $(this).parents('form');
+					$.post(form.attr('action'), form.serialize(), function(d){
+						layer.open({time:1,content:d.info});
+						if(d.status == 1){
+							form[0].reset();
+						}
+					}, 'json');
+				});
+			});
+			</script>
+		</div>
+	</div>
+	
+	<div class="group_11" id="section12">
+		<h2 class="group_tit">
+			<b>大牌联盟</b>            
+		</h2>
+		<ul class="clearfix">
+			<foreach name="ad_list.pc_index_special" item="vo" key="k">
+				<lt name="k" value="6">
+					<li>
+						<a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a>
+						<p style="height:60px;"><a href="{$vo.ad_value}">{$vo.ad_name}</a></p>
+						<p><span>{$vo.ad_desc}</span></p>
+						<p><em>{$vo.ad_time}</em></p>
+					</li>
+				</lt>
+			</foreach>
+		</ul>
+	</div>
+</div>
+
+<div class="quick_navigation">
+	<ul id="nav">
+		<li class="on"><a href="#section1" title="今日推荐">今日<br>推荐</a></li>
+		<li><a href="#section2" title="品质生活">品质<br>生活</a></li>
+		
+		<li><a href="#section3" title="定制家具">定制<br>家具</a></li>
+		<li><a href="#section4" title="家居软装">家居<br>软装</a></li>
+		<!--<li><a href="#section5" title="装修主材">装修<br>主材</a></li>-->
+		<li><a href="#section5" title="家用电器">家用<br>电器</a></li>
+		
+		<li><a href="#section7" title="装修效果图">装修<br>效果图</a></li>
+		<li><a href="#section8" title="装修攻略">装修<br>攻略</a></li>
+		<li><a href="#section9" title="小区案例">小区<br>案例</a></li>
+		<li><a href="#section10" title="粉丝故事会">粉丝<br>故事会</a></li>
+		<li><a href="#section11" title="装修公司">装修<br>公司</a></li>
+		<li><a href="#section12" title="特卖专场">大牌<br>联盟</a></li>
+	</ul>
+	<div class="back_top"><a href="javascript:;"><img src="__PUBLIC__/main/images/icon17.png">返回<br>顶部</a></div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.kinMaxShow-1.0.min.js"></script>
+<script>
+	$(function(){
+		$(".kinMaxShow").each(function() {
+			$(this).kinMaxShow({
+				height:100	
+			});
+		});
+	});
+</script>
+<script src="__PUBLIC__/main/js/smooth.js"></script>
+<script>
+	$(document).ready(function(){
+		$('#nav').onePageNav({
+			filter: ':not(.external)',
+			scrollThreshold: 0.25
+		});
+		
+		//右边浮动层定位
+		$(function(){
+			$(".quick_navigation").css("left",$(".main").offset().left - 70)
+			
+			window.onresize=function(){
+				$(".quick_navigation").css("left",$(".main").offset().left - 70)
+			}
+		})
+		
+		//返回顶部
+		$(".back_top a").click(function(){
+			$('body,html').animate({scrollTop:0},1000);
+			return false;
+		});
+		
+		if($(window).width()<1525){
+			$(".quick_navigation").hide();
+		}else{
+			$(window).scroll(function(){
+				if ($(window).scrollTop()>550){
+					$(".quick_navigation").fadeIn();
+				}
+				else{
+					$(".quick_navigation").fadeOut();
+				}
+			});
+		}
+		
+		window.onresize=function(){
+			if($(window).width()<1525){
+				$(".quick_navigation").hide();
+			}else{
+				$(window).scroll(function(){
+					if ($(window).scrollTop()>550){
+						$(".quick_navigation").fadeIn();
+					}
+					else{
+						$(".quick_navigation").fadeOut();
+					}
+				});
+			}	
+		}
+		
+	});
+</script>
+<script>
+$("#add_design_msg").click(function(){
+	var nick_name=$('#nick_name').val();
+	var mobile=$('#mobile').val();
+	var re=/^1[1|3|5|7|8]\d{9}$/i;
+	var province=$('#province_show').val();
+	var city=$('#city_show').val();
+	var district=$('#district_show').val();
+	var msg_content=$("#msg_content").val();
+	
+	if(nick_name==''){
+		layer.open({time:1,content:'请输入您的昵称'});
+		$('#nick_name').focus();
+		return;
+	}
+	
+	if(mobile==''){
+		layer.open({time:1,content:'请输入手机号码'});
+		$('#mobile').focus();
+		return;
+	}else{
+		if(re.test(mobile)==false){
+			layer.open({time:1,content:'手机格式不正确'});
+			$('#mobile').focus();
+			return;
+		}
+	}
+	
+	$.ajax({
+		type:'POST',
+		url:"{:U('design/index/message')}",
+		data:{nick_name:nick_name,mobile:mobile,province:province,city:city,district:district,content:msg_content},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:2,content:res.msg});
+			if(res.error==0){
+				$('#nick_name,#mobile').val('');
+			}else if(res.error==2){
+				window.location="{:U('Index/site/login')}";
+			}
+		}
+	})
+})
+</script>
+<!-------首页内容结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

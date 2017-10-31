@@ -1,0 +1,60 @@
+<div class="exchange_review_detaild">
+	<div class="exchange_review_detaild_hd">
+		<h2><span><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$info.user_name}</span><time>{:date('Y-m-d H:i', $info[add_time])}</time></h2>
+		<volist name="list" id="vo">
+			<dl>
+				<dt><img src="__UPLOAD__/thumbs/b300/{$vo.gift_img}"></dt>
+				<dd>
+					<p>{$vo.gift_name}</p>
+					<span>{$vo.recommend_points}积分</span>
+				</dd>
+			</dl>
+		</volist>
+	</div>
+	<div class="exchange_review_detaild_bd">
+		<p><span>收货人：{$info.consignee}</span><em>{$info.mobile}</em></p>
+		<p>收货人：{$info.region_name}{$info.address}</p>
+	</div>
+	<eq name="info.status" value="0">
+		<div class="exchange_review_detaild_btn btn">
+			<a href="{:U('check', array('id'=>$info[id], 'status'=>1))}" class="mui-btn mui-btn-block mui-btn-primary check1">通过</a>
+			<a href="{:U('check', array('id'=>$info[id], 'status'=>2))}" class="mui-btn mui-btn-block mui-btn-warning check2">不通过</a>
+		</div>
+	</eq>
+</div>
+
+<script>
+	$(function(){
+		$(".check1").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认审核通过吗？', '积分兑换审核', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+		
+		$(".check2").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认审核不通过吗？', '积分兑换审核', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

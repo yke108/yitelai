@@ -1,0 +1,195 @@
+<script type="text/javascript">
+    $(function(){
+        $('.department-category').click(function(){
+            var department_id = $(this).find('a').attr('data-action');
+            $('.department-category').find('a').removeClass('on');
+            $('.personnel_list').hide();
+            $(this).find('a').addClass('on');
+            $('.personnel_list_' + department_id).show();
+        });
+    });
+</script>
+<div class="platform_staff_management">
+    <div class="platform_staff_management_hd">
+    	<span>
+    		<eq name="is_system_admin" value="2">{$distributorInfoFind[distributor_name]}<else/>谷安居</eq>
+    	</span>
+    </div>
+    <div class="platform_staff_management_bd">
+        <div class="platform_staff_management_l mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <ul>
+                    <volist name="department_list" key="ko" id="vo">
+                    	<php>$cls = $ko == 1 ? 'on' : '';</php>
+                        <li class="department-category"><a href="javascript:void(0);" data-action="{$vo[department_id]}" class="{$cls}">{$vo[department_name]}</a></li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <div class="platform_staff_management_r mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <volist name="department_list" key="ko" id="vo">
+                	<php>$style = $ko == 1 ? '' : 'display:none;';</php>
+                    <div class="personnel_list personnel_list_{$vo[department_id]}" style="{$style}" >
+                        <volist name="vo[personnel]" id="v">
+                            <a href="{:U('detail',['admin_id'=>$v['admin_id']])}" class="right-after">
+                                <dl>
+                                    <dt><img src="{$v[avatar]}"></dt>
+                                    <dd>
+                                        <h2>{$v[admin_name]}</h2>
+                                        <p>{$v[role_name]}</p>
+                                    </dd>
+                                    <dt>查看</dt>
+                                </dl>
+                            </a>
+                        </volist>
+                    </div>
+                </volist>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="filter_new_pop">
+    <form action="" method="post">
+        <div class="mui-input-row mui-search"><input type="search" value="{$content}" name="content" class="mui-input-clear input-class" placeholder="请输入姓名"></div>
+        <h2>区域筛选</h2>
+        <ul>
+            <li class="right-after" style="background: #ededed;padding: 8px; border-radius: 5px;">
+               <span style="width: 100%;">
+                    <input name="province_city_area" style="width: 100%;background: #ededed;" value="{$province_city_area}" type="text" class="text input-class input-class" readonly placeholder="省/市/区" id="city" />
+                    <input name="province" type='hidden' id='province' value='{$province}' class="input-class" />
+                    <input name="city" type='hidden' id='city2' value='{$city}' class="input-class" />
+                    <input name="region_code" type='hidden' id='region_code' value='{$region_code}' class="input-class"/>
+               </span>
+            </li>
+        </ul>
+        <h2>店铺筛选</h2>
+        <ul>
+            <li class="right-after">
+                <select name="distributor_id" id="distributor_id" class="input-class">
+                    <option value="">请选择</option>
+                </select>
+            </li>
+        </ul>
+        <div class="btn">
+            <a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default">清除筛选</a>
+            <input type="submit" value="完成" class="mui-btn mui-btn-block mui-btn-primary input-button-class"/>
+        </div>
+    </form>
+</div>
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script type="text/javascript" src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<!--start 诚市-->
+<script src="__PUBLIC__/home/js/public.js"></script>
+<script src="__PUBLIC__/home/js/city.data-3.js"></script>
+<script type="text/javascript">
+    mui.init();
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            var cityPicker = new $.PopPicker({
+                layer: 3
+            });
+            cityPicker.setData(cityData3);
+            var cityPickerButton = doc.getElementById('city');
+            cityPickerButton.addEventListener('tap', function(event) {
+                cityPicker.show(function(items) {
+                    cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+                    doc.getElementById('province').value = (items[0] || {}).text;
+                    doc.getElementById('city2').value = (items[1] || {}).text;
+                    doc.getElementById('region_code').value = (items[2] || {}).value;
+                    var region_code = (items[2] || {}).value;
+                    if (region_code) {
+                        $.ajax({
+                            url: '{$distributorListUrl}',
+                            type: 'POST',
+                            data: {region_code: region_code},
+                            dataType: 'json',
+                            success: function (data) {
+                                try {
+                                    doc.getElementById("distributor_id").innerHTML = data.html;
+                                } catch (e) {
+                                    doc.getElementById("distributor_id").innerHTML = '<option value="">请选择</option>';
+                                    return false;
+                                }
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                doc.getElementById("distributor_id").innerHTML = '<option value="">请选择</option>';
+                                return false;
+                            }
+                        });
+                    }
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+        });
+    })(mui, document);
+</script>
+<!--end 诚市-->
+
+<div class="mask"></div>
+<if condition="$is_system_admin eq 1">
+    <script type="text/javascript">
+        app.setTitleRight('筛选', 'showAppSidebar');
+        function showAppSidebar(){
+            $(".filter_new_pop").addClass("on");
+            $(".mask").fadeIn();
+        }
+    </script>
+</if>
+<script type="text/javascript">
+    (function ($) {
+        $('.mui-scroll-wrapper').scroll({
+            indicators: true //是否显示滚动条
+        });
+    })(mui);
+
+    $(function () {
+        var region_code = $('input[name=region_code]').val();
+        var distributor_id = $('select[name=distributor_id]').val();
+        if (region_code) {
+            $.ajax({
+                url: '{$distributorListUrl}',
+                type: 'POST',
+                data: {region_code: region_code, distributor_id:distributor_id},
+                dataType: 'json',
+                success: function (data) {
+                    try {
+                       $('#distributor_id').html(data.html);
+                    } catch (e) {
+                        $('#distributor_id').html('<option value="">请选择</option>');
+                        return false;
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $('#distributor_id').html('<option value="">请选择</option>');
+                    return false;
+                }
+            });
+        }
+
+
+
+        $("#click").click(function () {
+            $(".filter_new_pop").toggleClass("on");
+            $(".mask").fadeToggle();
+        });
+
+        $(".filter_new_pop ul li a").click(function () {
+            $(this).addClass("on");
+        });
+
+        $(".filter_new_pop a.mui-btn-primary,.mask").click(function () {
+            $(".filter_new_pop").removeClass("on");
+            $(".mask").fadeOut();
+        });
+
+        $(".filter_new_pop a.mui-btn-default").click(function () {
+            $(".filter_new_pop ul li a").removeClass("on");
+            $(".input-class").val('');
+            $('#distributor_id').html('<option value="">请选择</option>');
+        });
+    })
+</script>

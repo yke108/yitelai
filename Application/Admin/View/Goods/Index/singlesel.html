@@ -1,0 +1,37 @@
+<div class="col-sm-12 col-md-12">
+       <div class="well clearfix">
+		<form class="form-horizontal cs_ajax_form" method="get" action="{:U('')}">
+           <div class="pull-left">
+			商品名称:
+			<input type="text" class="form-control input-sm" placeholder="名称" style="display:inline-block;width:auto;" value="{$get.keyword}" name='keyword'/>
+			<button class="btn btn-default btn-sm"  style='margin-left:20px;' type="submit">查询</button>
+		</div>
+           </form>
+       </div>
+	<div class="row sepH_c">
+		<div class="col-sm-12 col-md-12">
+			<table class="table table-striped table-bordered">
+                   <tbody id='tblc'>
+					<volist name="list" id="vo">
+						<tr class="rowlink">
+					       <td class="line_sel" rid={$vo.goods_id}>{$vo.goods_name}</td>
+						</tr>
+					</volist>
+                   </tbody>
+               </table>
+			<div id="pwrap">{$page}</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+//给父页面传值
+$('.line_sel').on('click', function(){
+	var obj = parent.$('#select_wrap');
+	obj.find('input[name=goods_id]').val($(this).attr('rid'));
+	obj.find('input[name=product_name]').attr('refid', $(this).attr('rid'));
+	obj.find('input[name=goods_name]').val($(this).html());
+    parent.layer.close(index);
+});
+</script>

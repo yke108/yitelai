@@ -1,0 +1,126 @@
+<div class="store_activities_release">
+	<form action="{:U('')}">
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>活动主题</label>
+				<input type="text" name="title" placeholder="请输入">
+			</div>
+			<!--<div class="mui-input-row right-after">
+				<label>活动主题</label>
+				<select name="">
+					<option>请选择</option>
+				</select>
+			</div>-->
+		</div>
+		<h2>活动时间</h2>
+		<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>开始时间</label>
+				<input data-options='{}' type="text" name="start_time" placeholder="请选择" class="data-time">
+			</div>
+			<div class="mui-input-row right-after">
+				<label>结束时间</label>
+				<input data-options='{}' type="text" name="end_time" placeholder="请选择" class="data-time">
+			</div>
+		</div>
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>活动费用</label>
+				<input type="text" name="cost" placeholder="请输入">
+			</div>
+			<div class="mui-input-row">
+				<label>销售目标</label>
+				<input type="text" name="target" placeholder="请输入">
+			</div>
+		</div>
+		<h2>优惠活动</h2>
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>优惠活动一</label>
+				<input type="text" name="description1" placeholder="请描述优惠内容">
+			</div>
+			<div class="mui-input-row">
+				<label>优惠活动二</label>
+				<input type="text" name="description2" placeholder="请描述优惠内容">
+			</div>
+		</div>
+		<h3><a href="javascript:;" id="add_activity">+添加一条主推系列</a></h3>
+		<h2>主推系列</h2>
+		<div class="mui-input-group" id="activity_list">
+			<div class="mui-input-row right-after">
+				<label>主推系列1</label>
+				<select name="cat_ids[]">
+					<option value="">请选择</option>
+					{$categorys}
+				</select>
+			</div>
+			<div class="mui-input-row right-after">
+				<label>主推系列2</label>
+				<select name="cat_ids[]">
+					<option value="">请选择</option>
+					{$categorys}
+				</select>
+			</div>
+		</div>
+		<h3><a href="{:U('goods_list', array('record_ids'=>$get[record_ids]))}">+添加一个主推产品</a></h3>
+		<h2>主推产品</h2>
+		<div class="pro_item">
+			<volist name="goods_list" id="vo">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b120/{$vo.goods_image}"></dt>
+					<dd>{$vo.goods_name}</dd>
+				</dl>
+				<input type="hidden" name="record_ids[]" value="{$vo.record_id}" />
+			</volist>
+			<!--<a href="{:U('goods_list', array('record_ids'=>$get[record_ids]))}"><span></span></a>-->
+		</div>
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block" id="btn_submit">发布</a></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#add_activity').click(function(){
+		var refobj = $('#activity_list');
+		var row = refobj.children(':last-child').clone().appendTo(refobj);
+		var num = $('#activity_list .mui-input-row').length;
+		row.find('label').html('主推系列'+num);
+	});
+});
+</script>
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/home/css/mui.picker.min.css" />
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.data-time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					btn.value = rs.text;
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

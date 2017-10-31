@@ -1,0 +1,41 @@
+<div class="sidebar">
+    <div class="sidebar_inner_scroll">
+        <div class="sidebar_inner">
+            <div id="side_accordion" class="panel-group">
+				
+				<foreach name="menulist" key="kx" item="mx">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a href="#{$kx}" data-parent="#side_accordion" data-toggle="collapse" class="accordion-toggle">
+                                <i class="glyphicon {$mx.cls}"></i>{$mx.txt}
+                            </a>
+                        </div>
+                        <div class="accordion-body collapse {$$kx}" id="{$kx}">
+                            <div class="panel-body">
+                                <ul class="nav nav-pills nav-stacked">
+									<foreach name="mx.itm" key="ky" item="my">
+										<li {$$ky}>
+											<a href="{:U($my['url'])}">{$my['txt']}
+												<switch name="ky" >
+													<case value="order_index_wait"><font color="red">（{$ordercount.platform_wait}）</font></case>
+													<case value="distributorman_index_nocheck"><font color="red">（{$distributormancount.platform_nocheck}）</font></case>
+													
+													<case value="aftersales_back_nocheck"><font color="red">（{$aftersalescount.nocheck}）</font></case>
+													<case value="aftersales_back_backmoney"><font color="red">（{$aftersalescount.backmoney}）</font></case>
+													
+													<case value="finance_cashapply_wait"><font color="red">（{$cashapplycount.wait}）</font></case>
+												</switch>
+											</a>
+										</li>
+									</foreach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+				</foreach>
+				
+            <div class="push"></div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,39 @@
+<div class="col-sm-12 col-md-12">
+    <h3 class="heading">客服地址设置</h3>
+	<form class="form-horizontal cs_ajax_form" method="post" action="{:U('update')}">
+		<fieldset>
+			<div class="form-group">
+				<label class="control-label col-sm-2">联系QQ</label>
+				<div class="col-sm-4">
+					<input name="c[qq]" class="input-xlarge form-control" value="{$info.qq}"/>
+					<span class="help-block"><a href="http://shang.qq.com/v3/index.html" target="_blank">点击开通QQ推广</a></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">退货地址</label>
+				<div class="col-sm-4">
+					<input name="c[back_address]" class="input-xlarge form-control" value="{$info.back_address}"/>
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="control-label col-sm-2">分类设置</label>
+				<div class="col-sm-8">
+					<label class="radio-inline">
+						<input {:m_checked($info[use_cat],0)} type="radio" name="c[use_cat]" value="0">
+						使用系统分类
+					</label>
+					<label class="radio-inline">
+						<input {:m_checked($info[use_cat],1)} type="radio" name="c[use_cat]" value="1">
+						使用自定义分类
+					</label>
+				</div>
+			</div>-->
+			<div class="form-group">
+				<div class="col-sm-8 col-sm-offset-2">
+					<input type="hidden" name="type" value="{$info._type}">
+					<button class="btn btn-default" type="submit">确认并保存</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>

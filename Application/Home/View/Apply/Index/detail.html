@@ -1,0 +1,72 @@
+<div class="apply_management_record_detaild">
+    <div class="apply_detaild">
+        <div class="apply_detaild_1">
+            <dl>
+                <php>$warning = in_array($info['verify_status'], [10, 50, 150]) ? 'warning' : '';</php>
+                <dt>{$info.apply_name}<span class="{$warning}">（{$info.status_label}）</span></dt>
+                <dd>
+                    <h2>{$info.content}</h2>
+                    <p>
+                        <volist name="info.pics" id="v">
+                        <span><img src="{$v}" data-preview-src="{$v}" data-preview-group="1"></span>
+                        </volist>
+                    </p>
+                </dd>
+            </dl>
+        </div>
+        <notempty name="info.attachments">
+        <div class="apply_detaild_2">
+            <h2>附件</h2>
+            <volist name="info.attachments" id="v">
+            <a href="{$v}" class="file_item">
+                <dl>
+                    <dt></dt>
+                    <dd>附件.zip</dd>
+                </dl>
+            </a>
+            </volist>
+        </div>
+        </notempty>
+        <volist name="info.verify_list" id="vo">
+        <php>$warning = !in_array($vo['verify_status'], [100]) ? 'warning' : '';</php>
+        <php>$admin = $info['admins'][$vo['admin_id']];</php>
+        <div class="apply_detaild_3">
+            <h2>审批人</h2>
+            <dl>
+                <dt><img src="{$admin.admin_image}"></dt>
+                <dd>{$admin.admin_name}</dd>
+                <dt><span class="{$warning}">{$vo.status_label}</span></dt>
+            </dl>
+            <p>{$info.verify_note}</p>
+        </div>
+        </volist>
+        <div class="apply_detaild_4">
+        	<eq name="info.verify_status" value="10">
+            	<a href="{:U('cancel', ['id'=>$info['apply_id']])}"><img src="__PUBLIC__/target/images/icon3.png">撤销申请</a>
+            </eq>
+            <eq name="info.verify_status" value="150(TODO)">
+            	<a href="{:U('retry', ['id'=>$info['apply_id']])}"><img src="__PUBLIC__/target/images/icon4.png">重新提交</a>
+            </eq>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/target/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/target/js/mui.previewimage.js"></script>
+<script>
+mui.previewImage();
+$('.apply_detaild_4').find('a').each(function(){
+	$(this).bind('tap', function(){
+		$.get($(this).attr('href'), {}, function(res){
+			if(res.status == 1){
+				mui.alert('', res.info, function(){
+					$.get('{:U("detail", ["id"=>$info["apply_id"]])}', function(d){
+						$('body').html(d.info);
+					}, 'json');
+				});
+			} else {
+				mui.toast(res.info);
+			}
+		}, 'json');
+	});
+})
+</script>

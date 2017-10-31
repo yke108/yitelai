@@ -1,0 +1,251 @@
+<div class="orders_management_list mui-scroll-wrapper" id="pullrefresh">
+	<div class="mui-scroll">
+		<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; position:relative; display:none;">筛选</a>
+		<form action="{:U('')}">
+			<div class="mui-input-row mui-search">
+				<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="手机号码/会员名称/订单编号">
+				<input type="hidden" name="type" value="{$get.type}" />
+			</div>
+		</form>
+		<empty name="list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无相关订单</p>
+		<else/>
+			<ul>
+				<include file="Order/Custom/_index"/>
+			</ul>
+		</empty>
+	</div>
+</div>
+
+<div class="filter_new_pop">
+	<form action="{:U('')}">
+		<input type="hidden" name="type" value="{$get.type}" />
+		<h2>日期</h2>
+		<ol>
+			<li><span>开始时间：</span><input name="start_time" value="{$get.start_time}" type="text" readonly class="time" id="StartTime" data-options='{}'></li>
+			<li><span>结束时间：</span><input name="end_time" value="{$get.end_time}" type="text" readonly class="time" id="EndTime" data-options='{}'></li>
+		</ol>
+		<h2>订单金额</h2>
+		<h3><input name="min_order_amount" value="{$get.min_order_amount}" type="text" placeholder="最低价"><span>-</span><input name="max_order_amount" value="{$get.max_order_amount}" type="text" placeholder="最高价"></h3>
+		<notempty name="distributor_list">
+			<h2>所店铺</h2>
+			<ul>
+				<li class="right-after">
+					<select name="store_id">
+						<option value="">全部店铺</option>
+						<volist name="distributor_list" id="vo">
+							<option value="{$vo.distributor_id}" {:m_selected($vo[distributor_id], $get[store_id])}>{$vo.distributor_name}</option>
+						</volist>
+					</select>
+				</li>
+			</ul>
+		</notempty>
+		<h2>所属客户</h2>
+		<ul>
+			<li class="right-after">
+				<select name="user_id">
+					<option value="">全部客户</option>
+					<volist name="user_list" id="vo">
+						<option value="{$vo.user_id}" {:m_selected($vo[user_id], $get[user_id])}>{$vo.user_name}</option>
+					</volist>
+				</select>
+			</li>
+		</ul>
+		<!--<h2>订单跟进人</h2>
+		<ul>
+			<li class="right-after">
+				<select name="user_id">
+					<option value="">全部</option>
+					<volist name="user_list" id="vo">
+						<option value="{$vo.user_id}" {:m_selected($vo[user_id], $get[user_id])}>{$vo.user_name}</option>
+					</volist>
+				</select>
+			</li>
+		</ul>-->
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+	$(function(){
+		$("#click").click(function(){
+			$(".filter_new_pop").addClass("on")	
+			$(".mask").fadeIn()
+		})
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+		
+		$(".mui-control-item").click(function(){
+			$('input[name=type]').val($(this).attr('type'))
+		})
+	})
+	
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+$(document).ready(function(){
+	$('.mask').click(function(){
+		$(".filter_new_pop").removeClass("on")	
+		$(".mask").fadeOut()
+	});
+	
+	$('#btn_search').bind('click', function(){
+		$('input[name=type]').val($('#mui-scroll .mui-active').attr('type'))
+		
+		var form = $(this).parents('form')
+		form[0].submit();
+	})
+});
+</script>
+
+<script>
+	$(function(){
+		$(".cancel").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认取消订单吗？', '取消订单', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+		
+		$(".check").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认审核吗？', '退货审核', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>
+
+<script>
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var keyword = "{$get.keyword}";
+		var start_time = "{$get.start_time}";
+		var end_time = "{$get.end_time}";
+		var min_order_amount = "{$get.min_order_amount}";
+		var max_order_amount = "{$get.max_order_amount}";
+		var store_id = "{$get.store_id}";
+		var user_id = "{$get.user_id}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, keyword:keyword, start_time:start_time, end_time:end_time, min_order_amount:min_order_amount, max_order_amount:max_order_amount, store_id:store_id, user_id:user_id},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll ul").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

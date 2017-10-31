@@ -1,0 +1,264 @@
+<div class="exchange_review">
+	<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+	<div class="exchange_review_bd_new" style="top:0; background:none;">
+		<div id="slider" class="mui-slider mui-fullscreen">
+			<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="background:#FFF;">
+				<a class="mui-control-item <eq name="get.type" value="1">mui-active</eq>" href="#item1mobile">待审核</a>
+				<a class="mui-control-item <eq name="get.type" value="2">mui-active</eq>" href="#item2mobile">已审核</a>
+				<a class="mui-control-item <eq name="get.type" value="3">mui-active</eq>" href="#item3mobile">不通过</a>
+			</div>
+			<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+			<div class="mui-slider-group" style="top:48px; background:#FFF;">
+				<div id="item1mobile" class="mui-slider-item mui-control-content <eq name="get.type" value="1">mui-active</eq>" style="background:#FFF; border:none;">
+					<div id="scroll1" class="mui-scroll-wrapper">
+						<php>$list = $wait_list;</php>
+						<empty name="list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+						<else/>
+							<div class="mui-scroll" type="1" p="2">
+								<div class="div">
+									<include file="Finance/Cashapply/_index"/>
+								</div>
+							</div>
+						</empty>
+					</div>
+				</div>
+				<div id="item2mobile" class="mui-slider-item mui-control-content <eq name="get.type" value="2">mui-active</eq>" style="background:#FFF; border:none;">
+					<div id="scroll2" class="mui-scroll-wrapper">
+						<php>$list = $agree_list;</php>
+						<empty name="list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+						<else/>
+							<div class="mui-scroll" type="2" p="2">
+								<div class="div">
+									<include file="Finance/Cashapply/_index"/>
+								</div>
+							</div>
+						</empty>
+					</div>
+				</div>
+				<div id="item3mobile" class="mui-slider-item mui-control-content <eq name="get.type" value="3">mui-active</eq>" style="background:#FFF; border:none;">
+					<div id="scroll3" class="mui-scroll-wrapper">
+						<php>$list = $notagree_list;</php>
+						<empty name="list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+						<else/>
+							<div class="mui-scroll" type="3" p="2">
+								<div class="div">
+									<include file="Finance/Cashapply/_index"/>
+								</div>
+							</div>
+						</empty>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="filter_new_pop">
+	<form action="{:U('')}">
+		<input type="hidden" name="type" value="{$get.type}" />
+		<div class="mui-input-row mui-search">
+			<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="搜索">
+		</div>
+		<h2>城市筛选</h2>
+		<ul>
+			<li class="right-after">
+				<span>
+					<input value="{$get.region_name}" type="text" class="text" readonly placeholder="省/市" id="region">
+					<input type="hidden" name="province" id="province" value="{$get.province}">
+					<input type="hidden" name="city" id="city" value="{$get.city}">
+					<!--<input type="hidden" name="district" id="district" value="{$get.region_code}">-->
+				</span>
+			</li>
+		</ul>
+		<notempty name="distributor_list">
+			<h2>店铺筛选</h2>
+			<ul>
+				<li class="right-after">
+					<select name="store_id">
+						<option value="">所有店铺</option>
+						<volist name="distributor_list" id="vo">
+							<option value="{$vo.distributor_id}" {:m_selected($vo[distributor_id], $get[store_id])}>{$vo.distributor_name}</option>
+						</volist>
+					</select>
+				</li>
+			</ul>
+		</notempty>
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+
+<!---城市选择--->
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script src="__PUBLIC__/home/js/mui.poppicker.js"></script>
+<script src="__PUBLIC__/home/js/city.data-3.js"></script>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($, doc) {
+		$.init();
+		$.ready(function() {
+			var cityPicker = new $.PopPicker({
+				layer: 2
+			});
+			
+			cityPicker.setData(cityData3);
+			var cityPickerButton = doc.getElementById('region');
+			cityPickerButton.addEventListener('tap', function(event) {
+				cityPicker.show(function(items) {
+					cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text// + " " + (items[2] || {}).text;
+					doc.getElementById('province').value = (items[0] || {}).value;
+					doc.getElementById('city').value = (items[1] || {}).value;
+					//doc.getElementById('district').value = (items[2] || {}).value;
+					//返回 false 可以阻止选择框的关闭
+					//return false;
+				});
+			}, false);
+		});
+	})(mui, document);
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_pop ul li a").removeClass("on")
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	$('input[name=type]').val($('.mui-slider-group .mui-active .mui-scroll').attr('type'))
+	
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+</script>
+
+<script>
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+<script>
+	mui.init();
+	
+	var keyword = "{$info.keyword}";
+	var city = "{$info.city}";
+	var store_id = "{$info.store_id}";
+	
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: false,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+		$.ready(function() {
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					up: {
+						callback: function() {
+							var self = this;
+							var jqobj = jQuery(pullRefreshEl);
+							
+							var type = jqobj.attr('type');
+							var p = jqobj.attr('p');
+							
+							var data = {
+								type:type,
+								keyword:keyword,
+								city:city,
+								store_id:store_id,
+								p:p
+							};
+							mui.post("{:U('list')}",data,function(data){
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.html != ''){
+										jqobj.attr('p', data.p);
+										var list = jqobj.find('.div');
+										list.append(data.html);
+										self.endPullUpToRefresh();
+									}else{
+										self.endPullUpToRefresh(true);
+									}
+								},'json'
+							);
+						}
+					}
+				});
+			});
+		});
+		
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+	$(function(){
+		$("#click").click(function(){
+			$(".filter_new_pop").toggleClass("on")	
+			$(".mask").fadeToggle()
+		})
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary,.mask").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+	})
+</script>

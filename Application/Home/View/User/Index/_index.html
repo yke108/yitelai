@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('user_id'=>$vo[user_id]))}" class="link">
+		<dl>
+			<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2><span>{$vo.user_name}</span><time>{:date('Y-m-d H:i', $vo[reg_time])}</time></h2>
+				<p><span>城市：{$vo.city|default='无'}</span><span>来源：{$from_list[$vo[from]]}</span></p>
+				<p>所属店铺：{$vo.distributor_name|default='无'}</p>
+			</dd>
+		</dl>
+	</a>
+</volist>

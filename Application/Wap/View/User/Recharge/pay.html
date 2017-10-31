@@ -1,0 +1,54 @@
+<div class="warp">
+        <div class="user_recharge_pay">
+			<form action="{:U('')}" method="post" onSubmit="">
+				<div class="recharge_pay_hd"><span>充值金额</span><em>￥{$recharge_info.recharge_amount}</em></div>
+				<div class="pay_3">
+					<h2>支付方式</h2>
+					<div class="weui-cells weui-cells_checkbox">
+						<label class="weui-cell weui-check__label" for="s2">
+							<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon49.png" style="width:45px;margin-right:5px;display:block"></div>
+							<div class="weui-cell__bd">
+								<p>微信支付</p>
+								<p><span>使用微信支付，更快捷更方便</span></p>
+							</div>
+							<div class="weui-cell__ft">
+								<input type="radio" class="weui-check" name='pay_id' value='2' name="checkbox1" id="s2" checked>
+								<i class="weui-icon-checked"></i>
+							</div>
+						</label>
+						<!--<label class="weui-cell weui-check__label" for="s3">
+							<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon50.png" style="width:45px;margin-right:5px;display:block"></div>
+							<div class="weui-cell__bd">
+								<p>银联支付</p>
+								<p><span>使用银联支付</span></p>
+							</div>
+							<div class="weui-cell__ft">
+								<input type="radio" class="weui-check" name="checkbox1" id="s3">
+								<i class="weui-icon-checked"></i>
+							</div>
+						</label>-->
+					</div>
+				</div>
+				<div class="recharge_pay_btn btn">
+					<a href="javascript:;" class="weui-btn weui-btn_primary online_recharge_btn">立即支付</a>
+					<input type='hidden' name='recharge_sn' value='{$recharge_info.recharge_sn}'  />
+					<input type="hidden" name="money" value="{$get.money}" />
+				</div>
+			</form>
+        </div>        
+    </div>
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.online_recharge_btn').click(function(){
+		var form = $(this).parents('form');
+		form.submit();
+		/*$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				form[0].reset();
+			}
+		}, 'json');*/
+	});
+});
+</script>

@@ -1,0 +1,70 @@
+
+<div class="row hy_page_content" href='{:U("",$get)}'>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">设计师配置
+			<a id="rec_add"  href="{:U('add',array('designer_id'=>$info['designer_id']))}" hy_w='800' hy_h='300' class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal">添加案例配置</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<!--<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>-->
+		<!-- end搜索 -->
+		
+		<div class="row sepH_c">
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<volist name='list' id='val'>
+					<li class="<if condition='$i eq 1'>active</if>"><a href="#tab{$i}" data-toggle="tab">{$val[name]}</a></li>
+					</volist>
+				</ul>
+				<div class="tab-content">
+					<volist name='list' id='vo'>
+					<div class="tab-pane <if condition='$i eq 1'>active</if>" id="tab{$i}">
+						<div class="col-sm-12 col-md-12">
+							<table class="table_vam table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th>名称</th>
+										<th>推荐首页</th>
+										<th>排序</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<foreach name="vo.list" item="val">
+										<tr class="rowlink">
+											<td>{$val.name}</td>
+											<td>
+												<if condition="$val.is_index eq 1">
+												<a class='cs_ajax_link label label-success cs_flesh_page' href="{:U('is_key_index',array('id'=>$val['id']))}">是</a>
+												<else/>
+												<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('is_key_index',array('id'=>$val['id']))}">否</a>
+												</if>
+											</td>
+											<td>{$val.sort_order}</td>
+											<td>
+												<a class='cs_ajax_link hy_show_modal' href="{:U('edit', array('id'=>$val[id]))}">编辑</a>
+												<a href="{:U('del', array('id'=>$val['id']))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+											</td>
+										</tr>
+									</foreach>
+								</tbody>
+							</table>
+							<div id="pwrap">{$pager}</div>
+						</div>
+					</div>
+					</volist>
+				</div>
+			</div>
+			
+		
+		</div>
+		
+		
+	</div>
+</div>

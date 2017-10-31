@@ -1,0 +1,90 @@
+<empty name="keyword">
+	<div class="warp">
+		<div class="search">
+			<header>
+				<form action="{:U('')}" method="post">
+					<span class="mui-icon mui-icon-search"></span>
+					<input name="keyword" type="search" placeholder="请输入关键词">
+				</form>
+			</header>
+			<div class="search_results">
+				<div id="scroll1" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="hot_keyword">
+							<h2>近期热点</h2>
+							<ul>
+								<volist name="keyword_list" id="vo">
+									<li><a href="{:U('', array('keyword'=>$vo[keyword_name]))}">{$vo.keyword_name}</a></li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+		mui.init();
+		(function($) {
+			var deceleration = mui.os.ios?0.003:0.0009;
+			$('.mui-scroll-wrapper').scroll({
+				bounce: true,
+				indicators: true, //是否显示滚动条
+				deceleration:deceleration
+			});
+		})(mui);
+	</script>
+<else/>
+	<div class="warp">
+    	<div class="search">
+        	<header>
+            	<form action="{:U('')}" method="post">
+                	<span class="mui-icon mui-icon-search"></span>
+                	<input name="keyword" value="{$keyword}" type="search" placeholder="请输入关键词">
+                </form>
+            </header>
+            <div class="search_results mui-fullscreen">
+                <div id="scroll1" class="mui-scroll-wrapper">
+					<empty name="list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关新闻</p>
+					<else/>
+						<div class="mui-scroll">
+							<include file="Index/Index/_search"/>
+						</div>
+					</empty>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__PUBLIC__/news/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/news/js/mui.pullToRefresh.material.js"></script>
+    <script>
+		document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+        mui.init();
+        (function($) {
+            //阻尼系数
+            var deceleration = mui.os.ios?0.003:0.0009;
+            $('.mui-scroll-wrapper').scroll({
+                bounce: true,
+                indicators: true, //是否显示滚动条
+                deceleration:deceleration
+            });
+            $.ready(function() {
+                //循环初始化所有下拉刷新，上拉加载。
+                $.each(document.querySelectorAll('.search_results .mui-scroll'), function(index, pullRefreshEl) {
+                    $(pullRefreshEl).pullToRefresh({
+                        up: {
+                            callback: function() {
+                                var self = this;
+                               setTimeout(function() {
+									self.endPullUpToRefresh(true);										
+								}, 1000);
+                            }
+                        }
+                    });
+                });
+            });
+        })(mui);
+    </script>
+</empty>

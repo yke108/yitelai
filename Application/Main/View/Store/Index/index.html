@@ -1,0 +1,209 @@
+<!-------头部开始----->
+<include file="Public/store_header"/>
+<!-------头部结束----->
+
+    
+
+<!-------店铺首页开始----->
+<div class="main">
+	<div class="shop_home">
+		<div class="shop_home_banner">
+			<notempty name="store_ad_list.pc_store_index_lunbo">
+				<div id="focus_big" class="focus fl">
+					<ul>
+						<volist name="store_ad_list.pc_store_index_lunbo" id="vo">
+							<li style="background:url(__UPLOAD__/{$vo.ad_picture}) center center no-repeat;"><a href="{$vo.ad_value}"></a></li>
+						</volist>
+					</ul>
+				</div>
+			</notempty>
+			<script type="text/javascript">
+				$(function() {
+					$('#focus_big').slideFocus();
+					$(".shop_home_banner .focus ul li").width($(window).width())
+					window.onresize=function(){
+						$(".shop_home_banner .focus ul li").width($(window).width())	
+					}
+				});
+			</script>
+		</div>
+		<notempty name="store_ad_list.pc_store_index_buy">
+			<div class="shop_home_group1">
+				<div class="w1200" style="text-align:center; width:100%;"><a href="{$store_ad_list.pc_store_index_buy.0.ad_value}"><img src="__UPLOAD__/{$store_ad_list.pc_store_index_buy.0.ad_picture}"></a></div>
+			</div>
+		</notempty>
+		<div class="shop_home_group2">
+			<ul class="clearfix">
+				<foreach name="store_ad_list.pc_store_index_buy_bottom" item="vo" key="k">
+					<lt name="k" value="6">
+						<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+					</lt>
+				</foreach>
+			</ul>
+		</div>
+		<div class="shop_home_group3">
+			<foreach name="store_ad_list.pc_store_index_hot_top" item="vo" key="k">
+				<lt name="k" value="3">
+					<span><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="392" height="271"></a></span>
+				</lt>
+			</foreach>
+		</div>
+		<div class="shop_home_group4">
+			<div class="shop_home_tit">
+				<p>
+					<b>爆款推荐</b>
+					<span><font>HOT</font> PRODUCT</span>
+				</p>
+			</div>
+			<div class="shop_home_list">
+				<empty name="hot_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="hot_list" id="vo">
+							<li>
+								<div class="pro_pic"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b512/{$vo.goods_image}" width="212" height="212"></a></div>
+								<div class="pro_price"><span>￥<font>{$vo.product.product_price}</font></span><em class="fr">销量：{$vo.total_sale_count}</em></div>
+								<div class="pro_name"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$vo.goods_name|msubstr=0,34,'utf-8',true}</a></div>
+								<div class="pro_position"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$distributor.distributor_name}</a><span>{$distributor.region}</span></div>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+			</div>
+		</div>
+		<div class="shop_home_group4">
+			<div class="shop_home_tit">
+				<p>
+					<b>新品推荐</b>
+					<span><font>NEW</font>PRODUCT</span>
+				</p>
+			</div>
+			<div class="shop_home_list">
+				<empty name="new_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="new_list" id="vo">
+							<li>
+								<div class="pro_pic"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b512/{$vo.goods_image}" width="212" height="212"></a></div>
+								<div class="pro_price"><span>￥<font>{$vo.product.product_price}</font></span><em class="fr">销量：{$vo.total_sale_count}</em></div>
+								<div class="pro_name"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$vo.goods_name|msubstr=0,34,'utf-8',true}</a></div>
+								<div class="pro_position"><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$distributor.distributor_name}</a><span>{$distributor.region}</span></div>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				$(".shop_home_list ul li").hover(function(){
+					$(this).toggleClass("on")
+				})	
+			})
+		</script>
+		<div class="shop_home_group5 clearfix">
+			<div class="shop_home_group5_l fl">
+				<!--<div class="shop_deisgner">
+					<h2>—— 首席设计师 ——</h2>
+					<p><img src="__PUBLIC__/main/images/pic69.jpg"></p>
+					<p>姓 名：张斌</p>
+					<p>擅 长：欧式书房、 卧房、阳台</p>
+					<p>作 品：58</p>
+					<p><a href="#">了解更多</a></p>
+				</div>-->
+				<div class="shop_top">
+					<h2>—— 销量排行榜TOP5 ——</h2>
+					<volist name="sale_list" id="vo">
+						<dl class="clearfix">
+							<dt><i>{$i}</i><img src="__UPLOAD__/thumbs/b150/{$vo.goods_image}" width="62" height="62"></dt>
+							<dd>
+								<p><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" target="_blank">{$vo.goods_name|msubstr=0,34,'utf-8',true}</a></p>
+								<p><!--<span>活动价</span>--><em>￥{$vo.product.product_price}</em><!--<del>￥{$vo.product.market_price}</del>--></p>
+							</dd>
+						</dl>
+					</volist>
+				</div>
+				<div class="shop_home_sort">
+					<h1>宝贝分类</h1>
+					<empty name="self_cat_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<ul>
+							<volist name="self_cat_list" id="vo">
+								<li>
+									<h2><i></i><a href="{:U('store/goods/index', array('store_id'=>$get[store_id], 'cat_id'=>$vo[cat_id]))}">{$vo.cat_name}</a></h2>
+									<div class="all_pro_subnav">
+										<volist name="vo.children" id="vo2">
+											<p><a href="{:U('store/goods/index', array('store_id'=>$get[store_id], 'cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></p>
+										</volist>
+									</div>
+								</li>
+							</volist>
+						</ul>
+					</empty>
+					<script>
+						$(function(){
+							$(".shop_home_sort ul li:last-child").addClass("last")
+							$(".shop_home_sort ul li:first-child").addClass("on")
+							$(".shop_home_sort ul li:first-child").find(".all_pro_subnav").show()
+							$(".shop_home_sort ul li h2 i").click(function(){
+								$(this).parent().parent().toggleClass("on")
+								$(this).parent().siblings(".all_pro_subnav").slideToggle()
+								$(this).parent().parent().siblings().removeClass("on")
+								$(this).parent().parent().siblings().find(".all_pro_subnav").slideUp()
+							})
+						})
+					</script>
+				</div>
+			</div>
+			<div class="shop_home_group5_r fr">
+				<foreach name="floor_list" item="vo" key="k">
+					<div class="group5_item">
+						<h1>{$k+1}F  {$vo.cat_name}</h1>
+						<empty name="vo.goods_list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+						<else/>
+							<ul class="clearfix">
+								<foreach name="vo.goods_list" item="vo2" key="k2">
+									<lt name="k2" value="6">
+										<li>
+											<div class="pro_pic"><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b512/{$vo2.goods_image}" width="212" height="212"></a></div>
+											<div class="pro_price"><span>￥<font>{$vo2.product.product_price}</font></span><em class="fr">销量：{$vo2.total_sale_count}</em></div>
+											<div class="pro_name"><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}" target="_blank">{$vo2.goods_name|msubstr=0,34,'utf-8',true}</a></div>
+											<div class="pro_position"><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}" target="_blank">{$vo2.distributor.distributor_name}</a><span>{$vo.distributor.region}</span></div>
+										</li>
+									</lt>
+								</foreach>
+							</ul>
+						</empty>
+					</div>
+				</foreach>
+				<script>
+					$(function(){
+						$(".group5_item ul li").hover(function(){
+							$(this).toggleClass("on")	
+						})	
+					})
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------店铺首页结束----->
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/store_vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.shop_home_list ul li .pro_name a{height:37px; display:block;}
+.group5_item ul li .pro_name a{height:56px; display:block;}
+</style>

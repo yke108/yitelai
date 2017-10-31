@@ -1,0 +1,109 @@
+<div class="warp">
+	<style>
+		.case_list{ background:#FFF; padding-bottom:4%;}
+		.case_list_hd{ border-bottom:solid 1px #ECECEC; position:relative; z-index:55;}
+		.case_list_hd ul.designer_hd_nav li{ float:left; width:33.33333333%; text-align:center; background:#FFF;}
+		.case_list_hd ul.designer_hd_nav li a{ display:block; font-size:14px; padding:10px 0; position:relative; border-right:solid 1px #ECECEC;}
+		.case_list_hd ul.designer_hd_nav li:last-child a{ border-right:none;}
+		.case_list_hd ul.designer_hd_nav li a:after{ content:" "; display:inline-block; height:8px; width:8px; border-width:1px 1px 0 0;  border-color:#C8C8CD; border-style:solid; -webkit-transform:matrix(0.71, 0.71, -0.71, 0.71, 0, 0); transform:matrix(0.71, 0.71, -0.71, 0.71, 0, 0); transform:rotate(135deg); -webkit-transform:rotate(135deg); display:inline-block; margin:-7px 0 0 10px; vertical-align:middle;}
+		.case_list_hd .designer_hd_select{ position:absolute; top:43px; left:0; right:0; background:#FFF; border-bottom:solid 1px #ECECEC; padding-bottom:10px; display:none;}
+		.case_list_hd .designer_hd_select ul li{ float:left; font-size:14px; margin:10px 0 0 10px;}
+		.case_list_hd .designer_hd_select ul li a{ display:inline-block; padding:3px 15px; border:solid 1px #d7d7d7; border-radius:20px;}
+		.case_list_hd .designer_hd_select ul li a.on{ background:#ff0c4b; color:#FFF; border-color:#ff0c4b;}
+		.designer_hd .designer_hd_select{display:block;padding-bottom:0px;margin-bottom:10px;}
+		.designer_hd_select .condition{display:none;margin-bottom:10px;}
+	</style>
+	<div class="case_list">
+		<div class="case_list_hd designer_hd ">
+			<div class='swiper-container'>
+				<ul class="clearfix designer_hd_nav swiper-wrapper">
+					<foreach name='filter_list' item='val'>
+					<li class='swiper-slide'><a href="javascript:;">{$val[name]}</a></li>
+					</foreach>
+				</ul>
+			</div>
+			<div class="designer_hd_select">
+				<foreach name='filter_list' item='vo' key='key'>
+				<div class='condition'>
+					<ul class="clearfix">
+						<li><a href="javascript:;" type='{$key}' val='' class="on" >不限</a></li>
+						<volist name='vo.list' id='val'>
+						<li><a href="javascript:;" type='{$val.type}' val='{$val.id}' >{$val.name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				</foreach>
+			</div>
+		</div>
+		
+		<div class="mask"></div>
+	
+		<script>
+			$(".designer_hd ul.designer_hd_nav li").click(function(){
+				var index=$(this).index();
+				$(".designer_hd_select .condition").eq(index).fadeIn().siblings('.condition').hide();
+				$(".mask").show();
+			})
+			$(".designer_hd_select ul li a").click(function(){
+				$(this).addClass("on").parent().siblings().find("a").removeClass("on")
+				
+			})
+			$(".mask").click(function(){
+				$(this).hide();
+				$(".designer_hd_select .condition").hide();
+			})
+		</script>
+		
+		<div class="home_item_bd">
+			<ul class="clearfix designer_list">
+				<include file='Design/Index/_case' />
+			</ul>
+		</div>
+		<div class="designer_page">
+			<include file='Design/Index/_page' />
+		</div>
+	</div>
+</div>
+<script>
+var swiper = new Swiper('.case_list_hd .swiper-container', {
+					slidesPerView:3,
+					spaceBetween:0,
+					freeMode:true
+				});
+var filter_district='',filter_house_type='',filter_country='',filter_decorate_style='';
+$(".designer_hd_select .condition ul li a").click(function(){
+	var filter_type=$(this).attr('type');
+	var val=$(this).attr('val');
+	if(filter_type=='district'){
+		filter_district=val;
+	}else if(filter_type=='house_type'){
+		filter_house_type=val;
+	}else if(filter_type=='country'){
+		filter_country=val;
+	}else if(filter_type=='decorate_style'){
+		filter_decorate_style=val;
+	}
+	
+	$(this).addClass('on').siblings().removeClass('on')
+	get_design();
+})
+$(".designer_page a").live('click',function(e){
+	e.preventDefault();
+	var href=$(this).attr('href');
+	get_design(href);
+})
+function get_design(href){
+	var go_href='';
+	if(href!=undefined){go_href=href}
+	$.ajax({
+		type:'POST',
+		url:go_href,
+		data:{district:filter_district,house_type:filter_house_type,country:filter_country,decorate_style:filter_decorate_style},
+		dataType:"json",
+		success:function(res){
+			$(".designer_list").html(res.html);
+			$(".designer_page").html(res.page);
+		}
+	})
+}
+</script>

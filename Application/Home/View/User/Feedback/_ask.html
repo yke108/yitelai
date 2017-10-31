@@ -1,0 +1,8 @@
+<volist name="list" id="vo">
+	<li>
+		<a href="{:U('info', array('log_id'=>$vo[log_id]))}">
+			<h2><span>咨询店铺：{$vo.distributor_name|default='平台'}</span><time>{:date('Y-m-d H:i', $vo[add_time])}</time></h2>
+			<p>咨询客服：{$vo.admin_name|default='无'}</p>
+		</a>
+	</li>
+</volist>

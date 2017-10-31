@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">抽奖活动
+			<if condition="hasPurview('promotionautocoupon_add')">
+				<a  href="{:U('add')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal" hy_w="800">添加抽奖活动</a>
+			</if>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered dTableR" id="dt_a">
+                    <thead>
+                        <tr>
+							<th>活动名称</th>
+							<th>添加时间</th>
+							<th class="center">开始时间</th>
+							<th class="center">结束时间</th>
+							<th class="center">开启</th>
+							<th>奖品</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td>{$vo.lottery_name}</td>
+								<td>{:date('Y-m-d', $vo['add_time'])}</td>
+								<td class="center">{:date('Y-m-d H:i:s', $vo['start_time'])}</td>
+								<td class="center">{:date('Y-m-d H:i:s', $vo['end_time'])}</td>
+								<td><eq name="vo.is_open" value="1">是</eq></td>
+								<td>
+										<a href="{:U('lottery/index/log', array('lottery_id'=>$vo[lottery_id]))}"
+											 class="cs_ajax_link hy_show_modal modal_type_iframe" hy_w="800">查询</a>
+								</td><td>
+										<a href="{:U('edit', array('id'=>$vo[lottery_id]))}"
+											 class="cs_ajax_link hy_show_modal" hy_w="800">编辑</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+			</div>
+			<div>{$page}</div>
+		</div>
+	</div>
+</div>
+	

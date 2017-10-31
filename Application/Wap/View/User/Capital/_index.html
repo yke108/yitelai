@@ -1,0 +1,22 @@
+<volist name="list" id="vo">
+	<dl class="item">
+		<dt>
+			<h2>{$vo.change_desc}<if condition='$vo.change_type eq 16'><font style='color:#ff0000;'>（现金）</font></if></h2>
+			<p>{$vo.change_time|date="Y-m-d H:i:s",###}</p>
+		</dt>
+		<dd>
+			<switch name="vo.change_type" >
+				<case value="10"><em>-{$vo.amount_change}</em></case>
+				<case value="11"><em>+{$vo.amount_change}</em></case>
+				<case value="12"><em>-{$vo.amount_change}</em></case>
+				<case value="13"><em>+{$vo.amount_change}</em></case>
+				<case value="14"><em>+{$vo.amount_change}</em></case>
+				<case value="15"><em>+{$vo.amount_change}</em></case>
+				<case value="16"><em>+{$vo.amount_change}</em></case>
+				<case value="17"><em>+{$vo.amount_change}</em></case>
+				<case value="18"><em>-{$vo.amount_change}</em></case>
+				<case value="19"><em>+{$vo.amount_change}</em></case>
+			</switch>
+		</dd>
+	</dl>
+</volist>

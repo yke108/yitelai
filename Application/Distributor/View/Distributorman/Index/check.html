@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">审核
+			<div style="clear:both"></div>
+		</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-3">头像</label>
+					<div class="col-sm-6">
+						<notempty name="info.user_img"><img src="__UPLOAD__/{$info.user_img}" width="200" /></notempty>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">昵称</label>
+					<div class="col-sm-6">
+						<input name="nick_name" class="input-xlarge form-control" type="text" value="{$info.nick_name}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">真实姓名</label>
+					<div class="col-sm-6">
+						<input name="real_name" class="input-xlarge form-control" type="text" value="{$info.real_name}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">手机号</label>
+					<div class="col-sm-6">
+						<input name="mobile" class="input-xlarge form-control" type="text" value="{$info.mobile}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">邮箱</label>
+					<div class="col-sm-6">
+						<input name="email" class="input-xlarge form-control" type="text" value="{$info.email}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">账户余额</label>
+					<div class="col-sm-6">
+						<input name="user_money" class="input-xlarge form-control" type="text" value="{$info.user_money}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">积分</label>
+					<div class="col-sm-6">
+						<input name="pay_points" class="input-xlarge form-control" type="text" value="{$info.pay_points}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">生日</label>
+					<div class="col-sm-6">
+						<input name="birthday" class="input-xlarge form-control" type="text" value="{$info.birthday}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">注册时间</label>
+					<div class="col-sm-6">
+						<input name="reg_time" class="input-xlarge form-control" type="text" value="{$info.reg_time|date="Y-m-d H:i:s",###}" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">是否通过审核</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="status"  type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="2" name="status" type="radio">
+							否
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">审核反馈信息</label>
+					<div class="col-sm-6">
+						<textarea name="feedback" class="input-xlarge form-control" >{$info.feedback}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-3">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="apply_id" value="{$apply_info.apply_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

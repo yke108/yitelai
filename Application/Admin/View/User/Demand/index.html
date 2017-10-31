@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">指派需求
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r cs_ajax_link cs_show_modal" cs_id="remark">添加需求</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-6 col-md-6">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>需求</th>
+							<th>排序</th>
+							<th>是否显示</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.demand_name}</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<eq name="vo.is_show" value="1">
+										<a class='cs_ajax_link label label-success cs_flesh_page' href="{:U('is_show',array('demand_id'=>$vo['demand_id']))}">是</a>
+									<else/>
+										<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('is_show',array('demand_id'=>$vo['demand_id']))}">否</a>
+									</eq>
+								</td>
+								<td>
+									<a href="{:U('edit', array('demand_id'=>$vo[demand_id]))}" class="cs_ajax_link cs_show_modal" cs_id="remark">编辑</a>
+									<a href="{:U('del', array('demand_id'=>$vo[demand_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="remark" style="width:100%;">
+	<div class="modal-dialog" style="width:40%;height:auto;">
+		<div class="modal-content" id="order_content" style="padding:20px;height:480px; overflow:scroll">
+			
+		</div>
+	</div>
+</div>

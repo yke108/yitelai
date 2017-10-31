@@ -1,0 +1,77 @@
+	    <script src="__PUBLIC__/js/jquery.min.js"></script>
+	    <script src="__PUBLIC__/js/jquery-migrate.min.js"></script>
+	    <script src="__PUBLIC__/lib/jquery-ui/jquery-ui-1.10.0.custom.min.js"></script>
+	    <!-- touch events for jquery ui-->
+		<script src="__PUBLIC__/js/forms/jquery.ui.touch-punch.min.js"></script>
+	    <!-- easing plugin -->
+		<script src="__PUBLIC__/js/jquery.easing.1.3.min.js"></script>
+	    <!-- smart resize event -->
+		<script src="__PUBLIC__/js/jquery.debouncedresize.min.js"></script>
+	    <!-- js cookie plugin -->
+		<script src="__PUBLIC__/js/jquery_cookie_min.js"></script>
+	    <!-- main bootstrap js -->
+		<script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+	    <!-- bootstrap plugins -->
+		<script src="__PUBLIC__/js/bootstrap.plugins.min.js"></script>
+		<!-- typeahead -->
+		<script src="__PUBLIC__/lib/typeahead/typeahead.min.js"></script>
+	    <!-- code prettifier -->
+		<script src="__PUBLIC__/lib/google-code-prettify/prettify.min.js"></script>
+	    <!-- sticky messages -->
+		<script src="__PUBLIC__/lib/sticky/sticky.min.js"></script>
+	    <!-- lightbox -->
+		<script src="__PUBLIC__/lib/colorbox/jquery.colorbox.min.js"></script>
+	    <!-- jBreadcrumbs -->
+		<script src="__PUBLIC__/lib/jBreadcrumbs/js/jquery.jBreadCrumb.1.1.min.js"></script>
+		<!-- hidden elements width/height -->
+		<script src="__PUBLIC__/js/jquery.actual.min.js"></script>
+		<!-- custom scrollbar -->
+		<script src="__PUBLIC__/lib/slimScroll/jquery.slimscroll.js"></script>
+		<!-- fix for ios orientation change -->
+		<script src="__PUBLIC__/js/ios-orientationchange-fix.js"></script>
+		<!-- to top -->
+		<script src="__PUBLIC__/lib/UItoTop/jquery.ui.totop.min.js"></script>
+		<!-- mobile nav -->
+		<script src="__PUBLIC__/js/selectNav.js"></script>
+	    <!-- moment.js date library -->
+	    <script src="__PUBLIC__/lib/moment/moment.min.js"></script>
+	    <script src="__PUBLIC__/lib/datepicker/bootstrap-datepicker.min.js"></script>
+		<script src="__PUBLIC__/lib/datepicker/bootstrap-datepicker.zh-CN.js"></script>
+		
+		<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+		<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+        <script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+		
+	    <script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+		<script charset="utf-8" src="__PUBLIC__/editor/lang/zh_CN.js"></script>
+
+		<!-- common functions -->
+		<script src="__PUBLIC__/js/pages/gebo_common.js"></script>
+		
+		<script src="__PUBLIC__/lib/jquery-ui/external/globalize.js"></script>
+		
+		<!-- smoke_js -->
+		<script src="__PUBLIC__/lib/smoke/smoke.js"></script>
+		
+		<script src="__PUBLIC__/layer/layer.js"></script>
+		
+		<!-- cs functions -->
+		<script src="__PUBLIC__/c.js?v=1"></script>
+		<script src="__PUBLIC__/singleupload.js?v=1"></script>
+		<script src="__PUBLIC__/editor/time/jquery.datetimepicker.js"></script>
+		
+		<script type="text/javascript" src="__PUBLIC__/laydate/laydate.js"></script>
+		
+		<script type="text/javascript">
+		$(document).ready(function(){
+			var K = KindEditor;
+			var ue = UE.getEditor('ueditor',
+				{
+					maximumWords:150000,
+					initialFrameWidth:1000
+				}
+			);
+			
+			$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+		});
+		</script>

@@ -1,0 +1,17 @@
+<div class="warp">
+	<div class="user_points_mall">
+		<ul class="clearfix">
+			<notempty name='list'>
+			<volist name='list' id='val'>
+			<li>
+				<p><a href="{:U('exchange',array('id'=>$val['id']))}"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic38.jpg<else/>__UPLOAD__/thumbs/w170h145/{$val.picture}</if>"><span>{$val.name}</span></a></p>
+				<p><em>剩余：{$val.stock|default=0}件</em></p>
+				<h2><a href="{:U('exchange',array('id'=>$val['id']))}" class="exchange">兑换</a><a href="javascript:;" class="del">{$val.point}积分</a></h2>
+			</li>
+			</volist>
+			<else/>
+			<div style='background:#fff;padding:20px 0;text-align:center;font-size:16px;color:#bbb;'>暂时没有相关的积分商品</div>
+			</notempty>
+		</ul>
+	</div>
+</div>

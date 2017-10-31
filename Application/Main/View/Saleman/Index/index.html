@@ -1,0 +1,186 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+
+
+
+
+<div class="distribution_banner" <notempty name="ad_list.pc_saleman_index">style="background-image:url(__UPLOAD__/{$ad_list.pc_saleman_index.0.ad_picture})"</notempty>></div>
+<!-------申请分销开始----->
+<div class="main w1200">
+	<div class="distribution_form">
+		<h1>申请分销员<img src="__PUBLIC__/main/images/pic94.png"></h1>
+		<form action="" onSubmit="">
+			<ul>
+				<li class="clearfix">
+					<label>所在城市<font>*</font></label>
+					<input type="hidden" value="0" class="region_sel"/>
+					<select name='province' id='province' style='width:42%;margin-right:2%;' class="region_sel"></select>
+					<select name='city' id='city' style='width:42%;' class="region_sel"></select>
+					<!--<select name='district' id='district'></select>-->
+				</li>
+				<li class="clearfix"><label>姓名<font>*</font><br><span>（真实填写）</span></label><input name="name" id='name' type="text"></li>
+				<li class="clearfix"><label>手机号码<font>*</font></label><input name="tel" id='tel' type="text"></li>
+				<li class="clearfix"><label>银行卡号<font>*</font></label><input name="card_no" id='card_no' type="text"></li>
+				<li class="clearfix"><label>身份证号<font>*</font></label><input name="id_no" id='id_no' type="text"></li>
+				<li class="clearfix"><label>微信号<font>*</font><br><!--<span>（可收款）</span>--></label><input name="weixin_account" id='weixin_account' type="text"></li>
+				<li class="clearfix"><label>分销品牌<font>*</font><br><!--<span>（任选1个）</span>--></label><input name="brand" id='brand' type="text"></li>
+				<li class="clearfix"><label>申请理由<font>*</font></label><input name="reason" id='reason' type="text"></li>
+				<li class="clearfix"><label>建议：<br><span>（选填）</span></label><textarea name="proposal" id='proposal' cols="" rows="5"></textarea></li>
+				<li class="clearfix last-btn"><button type="button" id='apply_btn'>提 交</button></li>
+			</ul>
+		</form>
+	</div>
+</div>
+<!-------申请分销结束----->
+
+
+
+<!-------底部开始----->
+<include file='Public/footer' />
+<!-------底部结束----->
+
+<!--<script src="__PUBLIC__/main/js/picker.min.js"></script>
+<script src="__PUBLIC__/main/js/city.min.js"></script>
+<script src="__PUBLIC__/main/js/index_city.js"></script>-->
+<script>
+$("#apply_btn").click(function(){
+	var city=$("#city").val();
+	var name=$("#name").val();
+	var tel=$("#tel").val();
+	var card_no=$("#card_no").val();
+	var id_no=$("#id_no").val();
+	var weixin_account=$("#weixin_account").val();
+	var brand=$("#brand").val();
+	var reason=$("#reason").val();
+	var proposal=$("#proposal").val();
+	var re = /^0?1[1-9][0-9]\d{8}$/;
+	
+	/*if(city=='' || city==0){
+		layer.open({time:1,content:'请选择所在城市'});
+		return;
+	}*/
+	
+	
+	if(name==''){
+		layer.open({time:1,content:'请输入姓名'});
+		return;
+	}
+	
+	if(tel==''){
+		layer.open({time:1,content:'请输入手机号码'});
+		return;
+	}else{
+		if(re.test(tel)==false){
+			layer.open({time:1,content:'请输入一个正确的手机号码'});
+			return;
+		}
+	}
+	
+	if(card_no==''){
+		layer.open({time:1,content:'请输入银行卡号'});
+		return;
+	}else{
+		var card_re=/^[1-9][0-9]{15,18}/;
+		if(card_re.test(card_no)==false){
+			layer.open({time:2,content:'请输入正确16-19位的银行卡号'});
+			$("#card").focus();
+			return; 
+		}
+	}
+	
+	if(id_no==''){
+		layer.open({time:1,content:'请输入身份证号'});
+		return;
+	}
+	
+	if(weixin_account==''){
+		layer.open({time:1,content:'请输入微信号'});
+		return;
+	}
+	
+	if(brand==''){
+		layer.open({time:1,content:'请输入分销品牌'});
+		return;
+	}
+	
+	if(reason==''){
+		layer.open({time:1,content:'请填写申请理由'});
+		return;
+	}
+	
+	var form = $(this).parents('form');
+	var data = form.serialize();
+	
+	$.ajax({
+		type:'POST',
+		url:"{:U('')}",
+		data:data,
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.info});
+			if(res.status==1){
+				window.location="{:U('user/index/index')}";
+			}
+		}
+	})
+	
+})
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[region_code] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[region_code])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+	
+	//提交咨询
+	$('#inquiry').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				form[0].reset();
+			}
+		}, 'json');
+	});
+});
+</script>

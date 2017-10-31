@@ -1,0 +1,18 @@
+<script>
+function add_follow(designer_id){
+	$.ajax({
+		type:'POST',
+		url:"{:U('Design/Index/add_follow')}",
+		data:{designer_id:designer_id},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.msg});
+			if(res.error==0){
+				window.location.reload();			
+			}else if(res.error==2){
+				window.location="{:U('Index/Site/login')}";
+			}
+		}
+	})
+}
+</script>

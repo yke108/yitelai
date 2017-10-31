@@ -1,0 +1,8 @@
+<volist name="sub_list" id="vo">
+	<h2>{$vo.cat_name}</h2>
+	<div class="lm_pop_list">
+		<volist name="vo.child" id="vo2">
+			<label><input type="checkbox" name="cat_ids[]" value="{$vo2.cat_id}" {:m_checked($vo2[cat_id], $merchant_cat_ids)} />{$vo2.cat_name}</label>
+		</volist>
+	</div>
+</volist>

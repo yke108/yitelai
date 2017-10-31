@@ -1,0 +1,207 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+<style>
+	.upload_preview{ margin:10px 0 0 55px;}
+	.upload_append_list{ float:left; margin-right:10px; text-align:center; border:solid 1px #ECECEC;}
+	.upload_append_list p{ display:table-cell; vertical-align: middle; position:relative; width:100px; height:100px;}
+	.upload_append_list p img{ max-width:100%; max-height:100%;}
+	.upload_append_list p a{ position:absolute; top:0; right:0;}
+	.vip_article_form ul li{margin-top:0px;}
+	.vip_article_form ul li p {
+		margin-left: 85px;
+		color: #8d8d8d;
+		line-height: 24px;
+	}
+</style>
+
+<!-------会员中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a>></span>投诉建议</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="vip_article">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">投诉建议</a></li>
+					</ul>
+				</div>
+				<div class="vip_article_form">
+					<form action="{:U('')}" onSubmit="" method="post" enctype="multipart/form-data">
+						<ul>
+							<li style="margin-top:50px">
+								<span>类别</span>
+								<select name="type" style="width:150px;border:1px solid #ccc;margin-top:8px;">
+									<foreach name="type_list" item="vo" key="ko">
+										<lt name="ko" value="3">
+											<option value="{$ko}">{$vo}</option>
+										</lt>
+									</foreach>
+								</select>
+							</li>
+							<li style="margin-top:0px">
+								<span>品牌</span>
+								<select name='brand_id' style='width:150px;border:1px solid #ccc;margin-top:8px;'>
+									<option value='0'>选择品牌</option>
+									<volist name="brand_list" id="vo">
+										<option value='{$vo.brand_id}'>{$vo.brand_name}</option>
+									</volist>
+								</select>
+							</li>
+							<li style="margin-top:0px">
+								<span>门店</span>
+								<select name='distributor_id' style='width:150px;border:1px solid #ccc;margin-top:8px;'>
+									<option value='0'>选择门店</option>
+									<volist name="distributor_list" id="vo">
+										<option value='{$vo.distributor_id}'>{$vo.distributor_name}</option>
+									</volist>
+								</select>
+							</li>
+							<li style="margin-top:0px">
+								<span>内容：</span>
+								<div class="edit_article">
+									<textarea id="content" name="content" style="width:100%;height:100px;border:1px solid #dcdcdc;">{$info.content}</textarea>
+								</div>
+							</li>
+							<li class="clearfix">
+								<div class="clearfix">
+									<span>上传凭证：</span>
+									<em>
+										<i><img src="__PUBLIC__/main/images/icon116.jpg">
+										<input id="fileImage" type="file" name="fileselect[]" multiple></i>
+									</em>
+								</div>
+								<div id="preview" class="upload_preview clearfix"></div>
+								<p>为了帮助我们更好的解决问题，请您上传图片</p>
+								<p>最多可上传3张图片，每张图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</p>
+							</li>
+							<li>
+								<button type="button" id="btn_submit">提 交</button>
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+			<div style="padding:10px; font-size:14px;">{$sysconfig.feedback} 全国免费服务热线：{$sysconfig.tel}&nbsp;&nbsp;&nbsp;&nbsp;在线QQ：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$sysconfig.qq}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:516147248:52" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+		</div>
+	</div>
+	<!-------会员中心结束------->
+</div>
+<!-------粉丝故事会结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$('document').ready(function(){
+	$('#btn_submit').click(function(){
+		var content = $('#content').val();
+		if(content == ''){
+			layer.open({time:1,content:'内容不能为空'});return false;
+		}
+		var _image_datas = new Array();
+		$('.upload_image').each(function(){
+			_image_datas.push($(this).attr('src'));
+		});
+		if(_image_datas.length > 3){
+			layer.open({time:1,content:'最多可上传3张图片'});return false;
+		}
+		var type = $(':input[name="type"]').val();
+		var distributor_id = $(":input[name='distributor_id']").val();
+		var brand_id = $(":input[name='brand_id']").val();
+		var data = {
+			type:type,
+			brand_id:brand_id,
+			distributor_id:distributor_id,
+			content:content,
+			image_datas:_image_datas,
+		};
+		
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), data, function(d){
+			layer.open({
+				time:1,
+				content:d.info,
+				end:function(){
+					if(d.status == 1){
+						//window.location.href = d.url;
+						window.location.reload();
+					}
+				}
+			});
+		}, 'json');
+	});
+});
+</script>
+
+<script src="__PUBLIC__/v8/js/zxxFile.js"></script>
+<script>
+	var params = {
+		fileInput: $("#fileImage").get(0),
+		dragDrop: $("#fileDragArea").get(0),
+		upButton: $("#fileSubmit").get(0),
+		filter: function(files) {
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				if (file.type.indexOf("image") == 0) {
+					if (file.size >= 512000) {
+						alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+					} else {
+						arrFiles.push(file);	
+					}
+				} else {
+					alert('文件"' + file.name + '"不是图片。');
+				}
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#preview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e){
+						html = html + '<div id="uploadList_'+ i +'" class="upload_append_list"><p>'+ 
+							'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'"><img src="__PUBLIC__/main/images/icon4.png"></a>' +
+							'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
+						'</div>';
+						
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#preview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").click(function() {
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;	
+						});
+						//提交按钮显示
+						$("#fileSubmit").show();	
+					} else {
+						//提交按钮隐藏
+						$("#fileSubmit").hide();	
+					}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file) {
+			$("#uploadList_" + file.index).remove();
+			$("#fileImage").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+</script>

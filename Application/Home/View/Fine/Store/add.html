@@ -1,0 +1,132 @@
+<div class="fine_statistics_form">
+	<form action="{:U('')}">
+		<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>违规类型</label>
+				<select name="type_id">
+					<option value="">请选择</option>
+					<volist name="type_list" id="vo">
+						<option value="{$vo.type_id}">{$vo.type_name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>违规品牌(店铺)</label>
+				<select name="distributor_id">
+					<option value="">请选择</option>
+					<volist name="distributor_list" id="vo">
+						<option value="{$vo.distributor_id}">{$vo.distributor_name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>扣分</label>
+				<input name="point" type="text" placeholder="请输入">
+			</div>
+			<div class="mui-input-row right-after">
+				<label>罚款</label>
+				<input name="money" type="text" placeholder="请输入">
+			</div>
+		</div>
+		<div class="apply_management_textarea">
+			<textarea name="remark" cols="" rows="3" placeholder="详细描述"></textarea>
+			<div class="mui-clearfix">
+				<ul id="preview"></ul>
+				<span>
+					<input id="fileImage" name="fileselect[]" type="file" multiple>
+					<em></em>
+				</span>
+			</div>
+		</div>          
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block" id="btn_submit">提交</a></div>
+	</form>
+</div>
+
+<script src="__PUBLIC__/home/js/zxxFile.js"></script>
+<script>
+	mui('body').on('tap', 'a', function() {
+		var href = this.getAttribute('href');
+		//非plus环境，直接走href跳转
+		if(!mui.os.plus){
+			location.href = href;
+			return;
+		}
+	});
+	
+	var params = {
+		fileInput: $("#fileImage").get(0),
+		dragDrop: $("#fileDragArea").get(0),
+		upButton: $("#fileSubmit").get(0),
+		filter: function(files) {
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				if (file.type.indexOf("image") == 0) {
+					arrFiles.push(file);
+				} else {
+					alert('文件"' + file.name + '"不是图片。');
+				}
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#preview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e){
+						html = html + '<li id="uploadList_'+ i +'" class="upload_append_list">'+ 
+							'<em href="javascript:;" class="upload_delete" title="删除" data-index="'+ i +'"><i class="mui-icon mui-icon-closeempty"></i></em>' +
+						 '<img src="'+e.target.result+'">' +
+						'</li>';
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#preview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").click(function() {
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;	
+						});
+						//提交按钮显示
+						$("#fileSubmit").show();	
+					} else {
+						//提交按钮隐藏
+						$("#fileSubmit").hide();	
+					}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file) {
+			$("#uploadList_" + file.index).remove();
+			$("#fileImage").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+	
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

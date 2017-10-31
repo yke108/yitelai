@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+	<li class="item">
+		<a href="{:U('info',array('id'=>$vo[case_id]))}">
+			<h1>{$vo[type_name]}</h1>
+			<div class="up_case_info_text">
+				<span>所属科室：{$vo[office_name]}</span><span>年龄：{$vo.age}岁</span>
+				<span>主要病症：{$vo.symptom}</span><span>就诊时间：{:date('Y-m-d H:i',$vo['case_time'])}</span>
+				<span>解决方法：{$vo.measure}</span>
+			</div>
+		</a>
+	</li>
+</volist>

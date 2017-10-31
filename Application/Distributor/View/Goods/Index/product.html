@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">货品列表（{$info['goods_name']})
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 cs_flesh_info" href="{$Think.server.request_uri}">
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>货品图片</th>
+							<th>货品规格</th>
+							<th>原进货价</th>
+							<th>折扣</th>
+							<th>现进货价</th>
+							<th>原价</th>
+							<th>优惠价</th>
+							<th>货品重量（单位kg）</th>
+							<th>库存数量</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>
+									<notempty name="vo.product_image">
+										<img src="__UPLOAD__/{$vo.product_image}" height="40" border="0">
+									</notempty>
+								</td>
+								<td>{$vo.product_items_name}</td>
+								<td>￥{$vo.stock_price}</td>
+								<td><eq name="discount" value="100">无折扣<else/>{$discount}%</eq></td>
+								<td>￥{$vo[stock_price] * $discount / 100}</td>
+								<td>￥{$vo.market_price}</td>
+								<td>￥{$vo.product_price}</td>
+								<td>{$vo.product_weight}</td>
+								<td>{$vo.stock_number}</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="product_edit" href="{$Think.server.request_uri}">
+	<div class="modal-dialog" style="width:800px;">
+		<div class="modal-content" style="height:800px;overflow-y:scroll; padding:30px;">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#chk_all").click(function(){
+		if($(this).prop('checked')){
+			$(".checkid").prop("checked",true);
+		}else{
+			$(".checkid").prop("checked",false);
+		}
+	});
+	
+	$('.checkid').bind('click',function(){
+		if($(".checkid:checked").length == $(".checkid").length){
+			$("#chk_all").prop("checked",true);
+		}else{
+			$("#chk_all").prop("checked",false);
+		}
+	});
+});
+
+</script>

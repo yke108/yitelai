@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">反馈列表</h3>
+		<!-- start搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				<span class="sepV_c">反馈类型：
+					 <select class="form-control input-sm" name="type">
+							<option value="">全部类型</option>
+							<foreach name="type_list" item="vo" key="ko">
+								<option {:m_selected($ko, $get[type])} value="{$ko}">{$vo}</option>
+							</foreach>
+					  </select>
+				</span>
+				<span class="sepV_c">品牌：
+					 <select class="form-control input-sm" name="brand_id">
+							<option value="">全部</option>
+							<volist name="brand_list" id="vo">
+								<option {:m_selected($get[brand_id], $vo[brand_id])} value='{$vo.brand_id}'>{$vo.brand_name}</option>
+							</volist>
+					  </select>
+				</span>
+				<span class="sepV_c">门店：
+					 <select class="form-control input-sm" name="distributor_id">
+							<option value="">全部</option>
+							<volist name="distributor_list" id="vo">
+								<option {:m_selected($get[distributor_id], $vo[distributor_id])} value='{$vo.distributor_id}'>{$vo.distributor_name}</option>
+							</volist>
+					  </select>
+				</span>
+				反馈时间：
+				<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start_time}" name='start_time' class='form-control input-sm hy_dp' /> - <input value="{$get.end_time}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end_time' />
+				<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>用户</th>
+							<th>反馈类型</th>
+							<th>品牌</th>
+							<th>门店</th>
+							<th>内容</th>
+							<th>上传凭证</th>
+							<th>来源</th>
+							<th>反馈时间</th>
+							<th>状态</th>
+							<th>备注</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.nick_name|default='匿名用户'}</td>
+								<td>{$vo.type_name}</td>
+								<td>{$brand_list[$vo[brand_id]][brand_name]}</td>
+								<td>{$distributor_list[$vo[distributor_id]][distributor_name]}</td>
+								<td><div style="width:300px; word-wrap:break-word">{$vo.content}</div></td>
+								<td>
+									<volist name="vo.pictures" id="vo2">
+										<a href="__UPLOAD__/{$vo2}" target="_blank" style="margin:0 3px"><img src="__UPLOAD__/thumbs/b90/{$vo2}" height="32"></a>
+									</volist>
+								</td>
+								<td>{$vo.client_label}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+								<td>{$vo.status_label}</td>
+								<td>{$vo.remark}</td>
+								<td>
+									<a href="{:U('info', array('id'=>$vo[log_id]))}" class="cs_ajax_link hy_show_modal" hy_w="1000" hy_h="800">查看</a>
+									<a href="{:U('edit', array('id'=>$vo[log_id]))}" class="cs_ajax_link cs_show_modal" cs_id="remark">备注</a>
+									<a href="{:U('del', array('id'=>$vo[log_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="remark" style="width:100%">
+	<div class="modal-dialog" style="width:800px;height:auto;">
+		<div class="modal-content" id="order_content" style="padding:20px;height:480px; overflow:scroll">
+			
+		</div>
+	</div>
+</div>

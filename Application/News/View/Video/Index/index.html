@@ -1,0 +1,235 @@
+<div class="warp">
+	<div id="app" class="mui-views">
+		<div class="mui-view">
+			<div class="mui-pages">
+			</div>
+		</div>
+	</div>
+	
+	<div class="video mui-page" id="video">
+		<div class="mui-content">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<div class="mui-scroll">
+						<a class="mui-control-item mui-active" href="#item1mobile">推荐</a>
+						<volist name="cat_list" id="vo" key="k">
+							<a class="mui-control-item" href="#item{$k+1}mobile">{$vo.cat_name}</a>
+						</volist>
+					</div>
+					<a class="mui-icon mui-icon-plusempty" href="#plus"></a>
+				</div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<empty name="recommend_list">
+								<p style="text-align:center;color:#999999;padding:20px;">暂无相关视频</p>
+							<else/>
+								<div class="mui-scroll" is_recommend="1" p="2">
+									<volist name="recommend_list" id="vo">
+										<div class="item_type_4">
+											<eq name="vo.content_type" value="1">
+												{$vo.content}
+											<else/>
+												<video src="{:picurl($vo[content])}" controls width="100%" poster="__UPLOAD__/thumbs/w666h330/{$vo.picture}"></video>
+											</eq>
+											<a href="{:U('info', array('id'=>$vo[news_id]))}">
+												<h2>{$vo.title}</h2>
+											</a>
+											<p>
+												<span><img src="__UPLOAD__/thumbs/b90/{$vo.author_img}">{$vo.author_name}</span>
+												<em><time>{$vo.read_count}播放</time><time>{$vo.comment_count}评论</time><time>···</time></em>
+											</p>
+										</div>
+									</volist>
+								</div>
+							</empty>
+						</div>
+					</div>
+					<volist name="cat_list" id="vo" key="k">
+						<div id="item{$k+1}mobile" class="mui-slider-item mui-control-content">
+							<div class="mui-scroll-wrapper">
+								<empty name="vo.news_list">
+									<p style="text-align:center;color:#999999;padding:20px;">暂无相关视频</p>
+								<else/>
+									<div class="mui-scroll" cat_id="{$vo.cat_id}" p="2">
+										<volist name="vo.news_list" id="vo2">
+											<div class="item_type_4">
+												<eq name="vo2.content_type" value="1">
+													{$vo2.content}
+												<else/>
+													<video src="{:picurl($vo2[content])}" controls width="100%" poster="__UPLOAD__/thumbs/w666h330/{$vo2.picture}"></video>
+												</eq>
+												<a href="{:U('info', array('id'=>$vo2[news_id]))}">
+													<h2>{$vo2.title}</h2>
+												</a>
+												<p>
+													<span><img src="__UPLOAD__/thumbs/b90/{$vo2.author_img}">{$vo2.author_name}</span>
+													<em><time>{$vo2.read_count}播放</time><time>{$vo2.comment_count}评论</time><time>···</time></em>
+												</p>
+											</div>
+										</volist>
+									</div>
+								</empty>
+							</div>
+						</div>
+					</volist>
+				</div>
+			</div>
+		</div>
+		<include file="Public/footer"/>
+	</div>
+	
+	<div id="plus" class="mui-page">
+		<div class="mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="plus_tags">
+					<button type="button" class="mui-action-back"><span class="mui-icon mui-icon-closeempty"></span></button>
+					<h2>已添加栏目</h2>
+					<div class="plus-tag tagbtn clearfix" id="myTags">
+						<empty name="cat_list">
+							<p>暂无栏目</p>
+						<else/>
+							<volist name="cat_list" id="vo">
+								<a value="{$vo.cat_id}" title="{$vo.cat_name}" href="javascript:void(0);"><span>{$vo.cat_name}</span><em></em></a>
+							</volist>
+						</empty>
+					</div>
+					<h2>可添加栏目</h2>
+					<div id="mycard-plus">
+						<div class="default-tag tagbtn">
+							<volist name="cat_all_list" id="vo">
+								<a value="{$vo.cat_id}" title="{$vo.cat_name}" href="javascript:void(0);"><em></em><span>{$vo.cat_name}</span></a>
+							</volist>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="__PUBLIC__/news/js/mui.view.js"></script>
+<script src="__PUBLIC__/news/js/mui.pullToRefresh.js"></script>
+<script src="__PUBLIC__/news/js/mui.pullToRefresh.material.js"></script>
+<script>
+
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+	mui.init();
+		
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+		
+		mui(".plus_tags").on('tap','button',function(){
+			window.location.reload();
+		})
+		
+		$.ready(function() {
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					up: {
+						callback: function() {
+							var self = this;
+							var jqobj = jQuery(pullRefreshEl);
+							var is_recommend = jqobj.attr('is_recommend');
+							var cat_id = jqobj.attr('cat_id');
+							var p = jqobj.attr('p');
+							var data = {
+								is_recommend:is_recommend,
+								cat_id:cat_id,
+								p:p
+							};
+							mui.post("{:U('list')}",data,function(data){
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.html != ''){
+										var ul = jqobj.find('.mui-table-view');
+										ul.attr('p', data.p);
+										ul.append(data.html);
+										self.endPullUpToRefresh();
+									}else{
+										self.endPullUpToRefresh(true);
+									}
+								},'json'
+							);
+						}
+					}
+				});
+			});
+		});
+	})(mui);
+	
+	//初始化单页view
+	var viewApi = mui('#app').view({
+		defaultPage: '#video'
+	});
+	
+	var view = viewApi.view;
+	(function($) {
+		//处理view的后退与webview后退
+		var oldBack = $.back;
+		$.back = function() {
+			if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+				viewApi.back();
+			} else { //执行webview后退
+				oldBack();
+			}
+		};
+		//监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+		//第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+		view.addEventListener('pageBeforeShow', function(e) {
+			//				console.log(e.detail.page.id + ' beforeShow');
+		});
+		view.addEventListener('pageShow', function(e) {
+			//				console.log(e.detail.page.id + ' show');
+		});
+		view.addEventListener('pageBeforeBack', function(e) {
+			//				console.log(e.detail.page.id + ' beforeBack');
+		});
+		view.addEventListener('pageBack', function(e) {
+			//				console.log(e.detail.page.id + ' back');
+		});
+	})(mui);
+	
+	$(".mui-segmented-control.mui-scroll-wrapper .mui-scroll").css("transform","translate3d(0, 0px, 0px) translateZ(0px)")
+</script>
+
+<script src="__PUBLIC__/news/js/tags.js"></script>
+<script>
+// 推荐标签
+(function(){
+	$('.default-tag a').live('click', function(){
+		var $this = $(this),
+		name = $this.attr('title'),
+		id = $this.attr('value');
+		
+		mui.post("{:U('set_tips')}",{id:id},function(data){
+				if(data.status == 1){
+					setTips(name, id);
+				}else{
+					mui.toast(data.info);
+				}
+			},'json'
+		);
+	});
+	
+	var a=$(".plus-tag");
+	$("a em",a).live("click",function(){
+		var c=$(this).parents("a"),b=c.attr("title"),id=c.attr("value");
+		mui.post("{:U('del_tips')}",{id:id},function(data){
+				if(data.status == 1){
+					delTips(b,id)
+				}else{
+					mui.toast(data.info);
+				}
+			},'json'
+		);
+	});
+})();
+</script>

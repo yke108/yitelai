@@ -1,0 +1,27 @@
+<volist name="list" id="vo">
+	<tr>
+		<td>{$vo.file_name}</td>
+		<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+		<td>{$vo.record_total}</td>
+		<td>{$vo.record_success}</td>
+		<td>
+			<if condition="$vo.import_status eq 3">
+			处理完成
+			<elseif condition="$vo.import_status eq 2" />
+			处理中
+			<else/>
+			待处理
+			</if>
+		</td>
+		<td class="center">{$vo.admin_code}</td>
+		<td>
+			<if condition="$vo.import_status lt 3">
+			<a href="{:U('export_data', array('id'=>$vo[import_id]))}">开始处理</a>
+			<else/>
+			<a href="{:U('record',array('id'=>$vo[import_id]))}">查看数据</a>
+			</if>
+			
+			<!--<a href="{:U('del', array('id'=>$vo[admin_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>-->
+		</td>
+	</tr>
+</volist>

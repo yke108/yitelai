@@ -1,0 +1,137 @@
+<div class="orders_management_detaild">
+	<div class="orders_detaild_1">
+		<h2><span><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$user.nick_name}</span><em>{$info.status}</em></h2>
+		<p>订单号:{$info.order_id}</p>
+		<ol>
+			<li>所属店铺：{$info.distributor.distributor_name|default='无'}</li>
+			<!--<li>接待客服：客服 1</li>
+			<li>分销员：分销1</li>
+			<li>业务员：业务1</li>-->
+		</ol>
+		<time>{$info.add_time|date="Y-m-d H:i:s",###}</time>
+	</div>
+	<div class="orders_detaild_2">
+		<p><span>收货人：{$info.consignee}</span><em>{$info.mobile}</em></p>
+		<p>收货人：{$info.address}</p>
+	</div>
+	<div class="orders_detaild_3">
+		<volist name="info.order_goods" id="vo">
+			<a href="javascript:;">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></dt>
+					<dd>
+						<h3>{$vo.goods_name}</h3>
+						<p>￥{$vo.goods_price}</p>
+						<p>数量：{$vo.goods_number}</p>
+					</dd>
+				</dl>
+			</a>
+		</volist>
+		<h4>共{$info.total_goods_number}件商品，合计：<span>￥{$info.order_amount}</span></h4>
+	</div>
+	<notempty name="info.shipping_name">
+		<div class="orders_detaild_5">
+			<div class="order_deta_item">
+				<b>物流信息</b>
+				<p>物流状态：<span><eq name="info.shipping_status" value="3">已收货<else/>未收货</eq></span></p>
+				<p>快递公司：{$info.shipping_name}</p>
+				<p>运单编号：{$info.shipping_no}</p>
+			</div>
+		</div>
+		<div class="orders_detaild_btn btn"><a href="{$info.ship_url}" class="mui-btn mui-btn-block mui-btn-primary link">查看物流</a></div>
+	</notempty>
+	<div class="orders_detaild_6">
+		<ul>
+			<volist name="comment_list" id="vo">
+				<li>
+					<dl>
+						<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+						<dd>
+							<h2>{$vo.user.nick_name}</h2>
+							<p><for start="0" end="$vo[stars]"><img src="__PUBLIC__/home/images/icon20.png"></for></p>
+							<!--<p><volist name="vo.pictures" id="vo2"><img src="__UPLOAD__/thumbs/b90/{$vo2}"></volist></p>-->
+						</dd>
+						<dt><time>{:date('Y-m-d H:i', $vo[add_time])}</time></dt>
+					</dl>
+					<h3>{$vo.content}</h3>
+                    <div class="btn">
+                        <a href="{:U('comment_del', array('comment_id'=>$vo[comment_id]))}" class="del">删除</a>
+                        <a href="{:U('set_status', array('comment_id'=>$vo[comment_id]))}" class="ajaxlink"><eq name="vo.status" value="1">显示<else/>隐藏</eq></a>
+                    </div>
+				</li>
+			</volist>
+		</ul>
+        <style>
+			.orders_management_detaild{ padding-bottom:54px;}
+        	.orders_detaild_6 ul li .btn{ display:-webkit-box; display:-webkit-flex;  display:flex; -webkit-box-align:center; -webkit-align-items:center; align-items:center; margin-top:10px;}
+			.orders_detaild_6 ul li .btn a{ font-size:14px; background:#FFF; border:solid 1px #EEE; padding:8px 20px; margin-right:10px;}
+			.orders_detaild_btn{ z-index:10;}
+        </style>
+	</div>
+	<eq name="sys_id" value="2">
+		<if condition="($info[pay_status] eq 0) AND ($info[order_status] eq 0)">
+			<div class="orders_detaild_btn btn"><a href="{:U('close', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-primary cancel">取消订单</a></div>
+		</if>
+		<if condition="($info[pay_status] eq 1) AND ($info[shipping_status] eq 0)">
+			<div class="orders_detaild_btn btn"><a href="{:U('send', array('order_id'=>$vo[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">发货/填写物流号</a></div>
+		</if>
+	</eq>
+</div>
+
+<script>
+mui.init();
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<script>
+	$(function(){
+		$(".del").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认通过删除吗？', '删除评论', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+		
+		$(".ajaxlink").click(function(){
+			var obj = $(this);
+			$.post(obj.attr('href'), {}, function(d){
+				mui.toast(d.info);
+				if(d.status == 1){
+					window.location.reload()
+				}
+			}, 'json');
+			return false;
+		})
+		
+		$(".cancel").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认取消订单吗吗？', '取消订单', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

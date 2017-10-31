@@ -1,0 +1,13 @@
+<a href="{:U('index', array('from'=>$get[from], 'store_id'=>$get[store_id]))}" class="link <if condition="$get[city] eq ''">on</if>">全部</a>
+<volist name="city_list" id="vo">
+	<a href="{:U('index', array('city'=>$vo[region_name], 'from'=>$get[from], 'store_id'=>$get[store_id]))}" class="link <if condition="$vo[region_name] eq $get[city]">on</if>">{$vo.region_name}</a>
+</volist>
+
+<script type="text/javascript">
+$('#search_city').keyup(function(){
+	var keyword = $(this).val();
+	$.post("{:U('search_city')}", {keyword:keyword}, function(d){
+		$('#city_list').html(d.html);
+	}, 'json');
+});
+</script>

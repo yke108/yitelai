@@ -1,0 +1,485 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+<!-------订单中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>订单中心</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="orders_list_deta">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">订单详情</a></li>
+					</ul>
+				</div>
+				<div class="orders_list_deta_tit">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<th align="center" width="33.33333333%">订单号：{$info.order_id}<eq name="info.order_type" value="2">（定制订单）</eq></th>
+							<th align="center" width="33.33333333%">下单时间：{$info.add_time|date="Y-m-d H:i",###}</th>
+							<th align="center" width="33.33333333%">订单状态：<span>{$info.status}<notempty name="info.cancel_reason">（{$info.cancel_reason}）</notempty></span></th>
+						</tr>
+					</table>
+				</div>
+                <if condition="($info[order_type] eq 2) AND ($info[pay_status] eq 1)">
+					<div class="orders_list_deta_process">
+						<ul class="clearfix">
+							<empty name="log_list[1]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待付定金</p>
+								</li>
+							<else/>
+								<php>$step_count = 1;</php>
+								<li <notempty name="log_list[1]">class="on"</notempty>>
+									<span>{:date('Y.m.d', $log_list[1][add_time])}</span>
+									<p>{$log_list[1]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[5]">
+								<li>
+									<span>&nbsp;</span>
+									<p>测量与设计</p>
+								</li>
+							<else/>
+								<php>$step_count = 2;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[5][add_time])}</span>
+									<p>{$log_list[5]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[7]">
+								<li>
+									<span>&nbsp;</span>
+									<p>确定方案价格</p>
+								</li>
+							<else/>
+								<php>$step_count = 3;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[7][add_time])}</span>
+									<p>{$log_list[7]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[8]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待付全款</p>
+								</li>
+							<else/>
+								<php>$step_count = 4;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[8][add_time])}</span>
+									<p>{$log_list[8]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[9]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待生产</p>
+								</li>
+							<else/>
+								<php>$step_count = 5;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[9][add_time])}</span>
+									<p>{$log_list[9]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[11]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待入库</p>
+								</li>
+							<else/>
+								<php>$step_count = 6;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[11][add_time])}</span>
+									<p>{$log_list[11]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[12]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待配送</p>
+								</li>
+							<else/>
+								<php>$step_count = 7;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[12][add_time])}</span>
+									<p>{$log_list[12]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[14]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待安装</p>
+								</li>
+							<else/>
+								<php>$step_count = 8;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[14][add_time])}</span>
+									<p>{$log_list[14]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[15]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待确认</p>
+								</li>
+							<else/>
+								<php>$step_count = 9;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[15][add_time])}</span>
+									<p>{$log_list[15]['content']}</p>
+								</li>
+							</empty>
+							<empty name="log_list[16]">
+								<li>
+									<span>&nbsp;</span>
+									<p>待完成</p>
+								</li>
+							<else/>
+								<php>$step_count = 10;</php>
+								<li class="on">
+									<span>{:date('Y.m.d', $log_list[16][add_time])}</span>
+									<p>{$log_list[16]['content']}</p>
+								</li>
+							</empty>
+						</ul>
+						<div class="orders_list_deta_process_box step{$step_count}"></div>
+					</div>
+				</if>
+                <style>
+                	.orders_list_deta_process{ border:solid 1px #e5e5e5; position:relative; padding:25px 0; margin-bottom:10px;}
+					.orders_list_deta_process ul li{ float:left; width:103px; text-align:center;}
+					.orders_list_deta_process ul li.on{ display:inline-block;}
+					.orders_list_deta_process ul li:first-child{ width:105px; margin-left:55px;}
+					.orders_list_deta_process ul li span{ color:#dc0d09;}
+					.orders_list_deta_process ul li p{ margin-top:55px;}
+					.orders_list_deta_process_box{ width:891px; height:30px; background:url(__PUBLIC__/main/images/icon140.png) no-repeat; position:absolute; left:50%; margin-left:-445px; top:55px;}
+					.orders_list_deta_process_box.step1{ background-position:0 -30px;}
+					.orders_list_deta_process_box.step2{ background-position:0 -60px;}
+					.orders_list_deta_process_box.step3{ background-position:0 -90px;}
+					.orders_list_deta_process_box.step4{ background-position:0 -120px;}
+					.orders_list_deta_process_box.step5{ background-position:0 -150px;}
+					.orders_list_deta_process_box.step6{ background-position:0 -180px;}
+					.orders_list_deta_process_box.step7{ background-position:0 -210px;}
+					.orders_list_deta_process_box.step8{ background-position:0 -270px;}
+
+					.new-order-detaild-1{ margin-bottom:15px; padding:20px; border:solid 1px #E5E5E5; }
+					.new-order-detaild-1 p{ line-height: 30px; font-size: 14px;}
+					.new-order-detaild-1 p span{ margin-right: 260px;}
+					.new-order-detaild-1 p em{ color: #666;}
+
+					.new-order-detaild-2{ margin-top: 10px;}
+					.new-order-detaild-2 h1{ font-weight: normal; font-size: 14px;}
+					.new-order-detaild-2 h1 span{ display: inline-block; border-radius: 5px 5px 0 0; text-align: center; width: 128px; height: 25px; line-height: 25px; border: solid 1px #e5e5e5; margin-left: 20px;}
+					.new-order-detaild-2 table{ border-collapse: collapse;}
+					.new-order-detaild-2 table th{ background: #e5e5e5; font-weight: normal; height: 34px;}
+					.new-order-detaild-2 table td{border: solid 1px #e5e5e5; padding: 10px;}
+					.new-order-detaild-2 table td a.pay{ display: inline-block; color: #FFFFFF; width: 90px; height: 28px; border-radius: 3px; border: solid 1px #e02219; line-height: 28px; text-align: center; font-size: 14px; background-image:-webkit-linear-gradient(to top, #f54a42, #ff908a); background-image:linear-gradient(to top,#f54a42,#ff908a); margin-top: 5px;}
+					.new-order-detaild-2 table td dl dt,.new-order-detaild-2 table td dl dd{ display: inline-block; vertical-align: middle;}
+					.new-order-detaild-2 table td dl dt img{ width: 50px; height: 50px;}
+					.new-order-detaild-2 table td dl dd{ width: 180px; font-size: 14px; line-height: 24px; margin-left: 10px;}
+				</style>
+
+				<div class="new-order-detaild-1">
+					<p><span>{$info.distributor.distributor_name}</span><span>发票抬头：<em>{$info.invoice_title|default='无'}</em></span></p>
+					<p><span>收货地址：<em>{$info.consignee}， {$info.mobile}， {$info.address}， {$info.zipcode}</em></span></p>
+					<p><span>给卖家的留言：<em>{$info.buyer_note|default='无'}</em></span></p>
+				</div>
+				<div class="orders_list_deta_2">
+					<p>收货人：{$info.consignee}</p>
+					<p>联系电话：{$info.mobile}</p>
+					<p>收货地址：{$info.address}</p>
+				</div>
+				<!--<eq name="info.shipping_status" value="2">
+					<div class="orders_list_deta_3">
+						<h2><span>配送方式：普通快递</span><span>运单号：{$info.shipping_no}</span></h2>
+						<ul>
+							<li><span></span><time>2016-11-23 22:14:23</time>您提交了订单，请等待系统确认</li>
+							<li><span></span><time>2016-11-23 22:14:23</time>您的订单已经打印完毕</li>
+							<li><span></span><time>2016-11-23 22:14:23</time>您的订单已经拣货完成</li>
+							<li class="on"><span></span><time>2016-11-23 22:14:23</time>打包成功</li>
+						</ul>
+					</div>
+				</eq>-->
+				<notempty name="info.invoice_title">
+					<div class="orders_list_deta_3">
+						<h2><span>发票抬头：{$info.invoice_title}</span></h2>
+					</div>
+				</notempty>
+				<notempty name="info.buyer_note">
+					<div class="orders_list_deta_3">
+						<h2><span>给卖家的留言：{$info.buyer_note}</span></h2>
+					</div>
+				</notempty>
+				<div class="orders_list_deta_3">
+					<h2><span><a href="{:U('store/index/index', array('store_id'=>$info[distributor][distributor_id]))}">{$info.distributor.distributor_name}</a></span></h2>
+				</div>
+				<div class="orders_list_deta_4">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<th width="450">商品信息</th>
+							<th width="180">单价</th>
+							<th width="180">数量</th>
+							<th width="">实付总价</th>
+						</tr>
+						<volist name="info.order_goods" id="vo">
+							<tr>
+								<td>
+									<dl class="clearfix">
+										<dt><a href="{:U('mall/goods/info', array('id'=>$vo[goods_id]))}"><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></a></dt>
+										<dd>
+											<p><a href="{:U('mall/goods/info', array('id'=>$vo[goods_id]))}">{$vo.goods_name}</a></p>
+											<!--<p>规格：{$vo.product_name}</p>-->
+											<volist name="vo.extension_code.sku" id="vo2">
+												<p>{$vo2.sku_name}：{$vo2.sku_value}</p>
+											</volist>
+											<gt name="vo.service_id" value="0"><p>【商品服务】{$vo.service_name} ￥{$vo.service_price}</p></gt>
+										</dd>
+									</dl>
+								</td>
+								<td align="center">￥{$vo.goods_price}<notempty name="vo.ori_price"><del style="font-size:12px; color:#999; margin-left:10px;">¥{$vo.ori_price}</del></notempty>
+									<eq name="vo.is_seckill" value="1"><p style="color:red">（秒杀）</p></eq>
+									<if condition="($vo[is_seckill] eq 0) AND ($info[discount] gt 0)"><p style="color:red">（会员折扣：{$info[discount]/10}折）</p></if>
+								</td>
+								<td align="center">x{$vo.goods_number}</td>
+								<td align="center"><span>￥{:sprintf("%.2f", $vo[goods_price] * $vo[goods_number])}</span></td>
+							</tr>
+						</volist>
+					</table>
+				</div>
+				
+				<!--<div class="orders_list_deta_4">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<th width="450">商品信息</th>
+							<th width="180">单价</th>
+							<th width="180">数量</th>
+							<th width="">实付定金</th>
+						</tr>
+						<volist name="info.order_goods" id="vo">
+							<tr>
+								<td align="left">
+									<dl class="clearfix">
+										<dt><a href="{:U('mall/goods/info', array('id'=>$vo[goods_id]))}"><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></a></dt>
+										<dd>
+											<p><a href="{:U('mall/goods/info', array('id'=>$vo[goods_id]))}">{$vo.goods_name}</a></p>
+											<volist name="vo.extension_code.sku" id="vo2">
+												<p>{$vo2.sku_name}：{$vo2.sku_value}</p>
+											</volist>
+											<gt name="vo.service_id" value="0"><p>【商品服务】{$vo.service_name} ￥{$vo.service_price}</p></gt>
+										</dd>
+									</dl>
+								</td>
+								<td align="center">￥{$vo.goods_price}<notempty name="vo.ori_price"><del style="font-size:12px; color:#999; margin-left:10px;">¥{$vo.ori_price}</del></notempty>
+									<eq name="vo.is_seckill" value="1"><p style="color:red">（秒杀）</p></eq>
+									<if condition="($vo[is_seckill] eq 0) AND ($info[discount] gt 0)"><p style="color:red">（会员折扣：{$info[discount]/10}折）</p></if>
+								</td>
+								<td align="center">x{$vo.goods_number}</td>
+								<td align="center"><span>￥{:sprintf("%.2f", $vo[goods_price] * $vo[goods_number])}</span></td>
+							</tr>
+						</volist>
+					</table>
+				</div>-->
+				
+				<notempty name="file_list">
+					<div class="new-order-detaild-2">
+						<h1><span>设计效果</span></h1>
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<th width="270">效果图</th>
+								<th width="230">数量</th>
+								<th width="">备注</th>
+							</tr>
+							<volist name="file_list" id="vo">
+								<tr>
+									<td><a href="javascript:;"><img src="__UPLOAD__/thumbs/b200/{$vo.upload_path}" height="90"></a></td>
+									<td align="center">{$vo.file_size}</td>
+									<td align="center">{$vo.remark}</td>
+								</tr>
+							</volist>
+						</table>
+					</div>
+				</notempty>
+				
+				<notempty name="detail_list">
+					<eq name="info.show_type" value="1">
+						<div class="new-order-detaild-2">
+							<h1><span>产品明细</span></h1>
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<th width="270">产品</th>
+									<th width="230">规格</th>
+									<th width="230">数量</th>
+									<th width="">价格</th>
+								</tr>
+								<volist name="detail_list" id="vo">
+									<tr>
+										<td>
+											<dl class="clearfix">
+												<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b200/{$vo.picture}"></a></dt>
+												<dd>
+													<p><a href="javascript:;">{$vo.goods_name}</a></p>
+												</dd>
+											</dl>
+										</td>
+										<td align="center">{$vo.width}mm x {$vo.depth}mm x {$vo.height}mm</td>
+										<td align="center">{$vo.goods_number}</td>
+										<td align="center">￥{$vo.user_price}</td>
+									</tr>
+								</volist>
+							</table>
+						</div>
+					</eq>
+				</notempty>
+				
+				<notempty name="payment_list">
+					<eq name="info.pay_type" value="0">
+						<div class="new-order-detaild-2">
+							<h1><span>分期明细</span></h1>
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<th width="70">序号</th>
+									<th width="195">应付款项</th>
+									<th width="195">金额</th>
+									<th width="195">状态</th>
+									<th width="">操作时间</th>
+								</tr>
+								<volist name="payment_list" id="vo" key="ko">
+									<tr>
+										<td align="center">{$ko}</td>
+										<td align="center">尾款</td>
+										<td align="center">￥{$vo.pay_amount}</td>
+										<td align="center">
+											<p>{$vo.pay_status_label}</p>
+											<eq name="vo.pay_status" value="0">
+												<p><a href="{:U('payment',array('payment_id'=>$vo[payment_id]))}" class="pay">去付款</a></p>
+											</eq>
+										</td>
+										<td align="center"><notempty name="vo.pay_time">{:date('Y-m-d  H:i', $vo[pay_time])}</notempty></td>
+									</tr>
+								</volist>
+							</table>
+						</div>
+					<else/>
+						<div class="new-order-detaild-2">
+							<h1><span>分期明细</span></h1>
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<th width="70">序号</th>
+									<th width="195">应付款项</th>
+									<th width="195">金额</th>
+									<th width="195">状态</th>
+									<th width="">操作时间</th>
+								</tr>
+								<volist name="payment_list" id="vo" key="ko">
+									<if condition="$ko eq 1">
+										<php>$pay_name = '首付款';</php>
+									<elseif condition="$ko eq $payment_count"/>
+										<php>$pay_name = '尾款';</php>
+									<else/>
+										<php>$pay_name = '第{$ko}期';</php>
+									</if>
+									<tr>
+										<td align="center">{$ko}</td>
+										<td align="center">{$pay_name}</td>
+										<td align="center">￥{$vo.pay_amount}</td>
+										<td align="center">
+											<p>{$vo.pay_status_label}</p>
+											<eq name="vo.pay_status" value="0">
+												<p><a href="{:U('payment',array('payment_id'=>$vo[payment_id]))}" class="pay">去付款</a></p>
+											</eq>
+										</td>
+										<td align="center"><notempty name="vo.pay_time">{:date('Y-m-d  H:i', $vo[pay_time])}</notempty></td>
+									</tr>
+								</volist>
+							</table>
+						</div>
+					</eq>
+				</notempty>
+				
+				<eq name="info.order_type" value="2">
+					<div class="orders_list_deta_5">
+						<p>商品总金额：<span>￥{$info.custom_amount}</span></p>
+						<p>商品定金：<span>￥{$info.order_amount}</span></p>
+						<p>已付金额：<span>￥{$info.money_paid}</span></p>
+						<p>未付金额金额：<span>￥{$info[custom_amount] - $info[money_paid]}</span></p>
+					</div>
+				<else/>
+					<div class="orders_list_deta_5">
+						<p>{$info.total_goods_number}件商品，总商品金额：<span>￥{$info.goods_amount}</span></p>
+						<gt name="info.service_money" value="0"><p>商品服务费用：<span>￥{$info.service_money}</span></p></gt>
+						<p>运费：<span><gt name="info.shipping_fee" value="0">￥{$info.shipping_fee}<else/>免邮</gt></span></p>
+						<gt name="info.points_money" value="0"><p>积分抵扣：<span>￥{$info.points_money}</span></p></gt>
+						<p>优惠券抵扣：<em>￥20</em></p>
+						<p>合计：<span>￥{$info.order_amount}<gt name="info.discount" value="0"><font color="red">（享受会员折扣：{$info[discount]/10}折）</font></gt></span></p>
+						<if condition="($info[pay_status] eq 0) AND ($info[order_status] eq 0)">
+							<p>
+								<a href="javascript:;" onclick="can_order({$info.order_id})">取消订单</a>
+								<a href="{:U('pay',array('id'=>$info[order_id]))}">立即付款</a>
+							</p>
+						</if>
+						<if condition="($info[shipping_status] eq 2) AND ($info[order_status] eq 1)">
+							<p>
+								<a href="{$info.pc_ship_url}" target="_blank">查看物流</a>
+								<a href="javascript:;" onclick="rece_order({$info.order_id})">确认收货</a>
+							</p>
+						</if>
+					</div>
+				</eq>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------订单中心结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+function can_order(id){
+	if(id < 1) return;
+	layer.open({
+		content: '确定取消此订单吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('cancel')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					window.location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	}); 
+}
+
+function rece_order(id){
+	if(id < 1) return;
+	layer.open({
+		content: '确定收货此订单吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('receive')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					window.location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+</script>

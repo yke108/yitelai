@@ -1,0 +1,7 @@
+<volist name="sku_list" id="vo" key="k">
+	<tr>
+		<td width="30%"><input type="text" name="skus[{$vo.sku_id}][sku_name]" class="form-control value_clear sku_name" value='{$vo.sku_name}' placeholder="规格项"></td>
+		<td><input goodsid="{$info.goods_id}" key="{$k}" id="sku_value_{$k}" type="text" name="skus[{$vo.sku_id}][sku_value]" class="form-control value_clear hy_select_id" value='{$vo.sku_value}' placeholder="规格值" readonly="readonly" style="cursor:pointer"></td>
+		<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+	</tr>
+</volist>

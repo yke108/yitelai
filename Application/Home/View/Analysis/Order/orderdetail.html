@@ -1,0 +1,27 @@
+<div class="new_order_type_detaild">
+    <div class="new_order_type_detaild_hd">
+        <dl>
+            <dt><img src="{$orderFind[user_img]}"></dt>
+            <dd>
+                <p>订单号：{$orderFind['order_id']}</p>
+                <time>{$orderFind[distributor_name]}</time>
+            </dd>
+            <dt>
+                <span>￥{$orderFind['order_amount']}</span>
+                <p style="text-align: right">订单金额</p>
+            </dt>
+        </dl>
+    </div>
+    <div class="new_order_type_detaild_bd">
+        <ul>
+            <li><span>品牌</span><em>{$orderFind['brand_name']}</em></li>
+            <li><span>品类</span><em>{$orderFind['cat_name']}</em></li>
+            <li><span>品名</span><em>{$orderFind['goods_name']}</em></li>
+            <li><span>客服</span><em>null</em></li>
+            <li><span>会员</span><em>{$orderFind['user_name']}</em></li>
+            <li><span>业务员</span><em>null</em></li>
+            <li><span>设计师</span><em>null</em></li>
+            <li><span>安装工</span><em>null</em></li>
+        </ul>
+    </div>
+</div>

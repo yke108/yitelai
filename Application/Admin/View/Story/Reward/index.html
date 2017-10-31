@@ -1,0 +1,106 @@
+<style>
+input.states,.check_all{margin:0!important;position:static!important;}
+.label_checkAll{margin:0!important;}
+</style>
+<style type="text/css">
+td a.goodst{display:inline-block;width:16px;height:16px;border-radius:50%;}
+td a.goodst0{background:#DDD;}
+td a.goodst1{background:green;}
+th.cur{cursor: pointer;}
+
+.mgr_divb {
+    background: #f2fafc none repeat scroll 0 0;
+    border-bottom: 1px solid #e3eff3;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+}
+.coolbg {
+    background: #eeeeee none repeat scroll 0 0;
+    border-bottom: 1px solid #acacac;
+    border-right: 1px solid #acacac;
+    color: #333333;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+</style>
+<div class="row hy_page_content" href="{:U('',$get)}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">打赏列表
+			
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="标题" style="display:inline-block;width:auto;" type="text">
+				<span class="sepV_c">分类：
+					<select class="form-control input-sm" name="cat_id">
+						<option value="0">全部分类</option>
+						<volist name="catlist" id="vo">
+							<option {:m_selected($vo[cat_id], $get[cat_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+							<volist name="vo.children" id="vo2">
+								<option {:m_selected($vo2[cat_id], $get[cat_id])} value="{$vo2.cat_id}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ {$vo2.cat_name}</option>
+							</volist>
+						</volist>			
+					</select>
+				</span>
+				<span class="sepV_c">支付状态：
+					<select class="form-control input-sm" name="pay_status">
+						<option value="0">全部</option>
+						<option {:m_selected($get[pay_status], 1)} value="1">已支付</option>
+						<option {:m_selected($get[pay_status], 2)} value="2">未支付</option>
+					</select>
+				</span>
+            	<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>图片</th>
+							<th width='160'>标题</th>
+							<th>发布者</th>
+							<th>分类</th>
+							<th>打赏者</th>
+							<th>打赏金额</th>
+							<th>打赏时间</th>
+							<th>支付状态</th>
+							<th>支付时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><if condition="$vo[story_image] neq null"><img src="__UPLOAD__/{$vo.story_image}" height="40"></if></td>
+							    <td>{$vo.story_title}</td>
+								<td><if condition="$vo.author_name neq ''">{$vo.author_name}<else/>{$admins[$vo[admin_id]][admin_name]|default='管理员'}</if></td>
+								<td>{$vo.cat_name}</td>
+								<td>{$vo.nick_name}</td>
+								<td>￥{$vo.reward_amount}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td>
+									<if condition="$vo.pay_status eq 2">
+										<span class='label label-danger'>未支付</span>
+									<elseif condition="$vo.pay_status eq 1" />
+										<span class='label label-success'>已支付</span>
+									<else/>
+										
+									</if>
+								</td>
+								<td><gt name="vo.pay_time" value="0">{$vo.pay_time|date="Y-m-d H:i",###}</gt></td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

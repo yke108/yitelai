@@ -1,0 +1,120 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+
+<!-------参团详情开始----->
+<style>.hd_search{ background:#FFF; border-bottom:solid 2px #e3002b;}</style>
+<div class="groupbuy_deta w1200">
+	<h1><span>团购详情</span><font style='color:#ff0000;font-size:18px;margin-left:5px;'>( 团号：{$team_post_info.post_sn} )</font></h1>
+	<dl class="clearfix">
+		<dt><img src="<if condition='$info.goods_image eq ""'>__PUBLIC__/main/images/pic69.jpg<else/>__UPLOAD__/thumbs/b200/{$info.goods_image}</if>" width="140" height="140"></dt>
+		<dd>
+			<h2>
+				<span title='拼团倒计时' class="fr yomibox" data="{$team_post_info[end_time]|date='Y-m-d H:i',###}"></span>
+				{$team_post_info.act_name}
+			</h2>
+			<h3>{$team_post_info.goods_name}</h3>
+			<div class="groupbuy_deta_price"><span>{$team_post_info.member_num}-{$team_post_info.member_limit}人团：<em>￥<font>{$team_post_info.price}</font></em></span><del>原价：￥{$info.product.product_price}</del><!--<b class="fr">累计销量：{$info.total_sale_count}</b>--></div>
+			<h4>支付开团，人数不足自动退款</h4>
+		</dd>
+	</dl>
+	<h1><span>参团成员</span></h1>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<th width="33%">成员</th>
+			<th width="33%">参团时间</th>
+			<th width="33%">价格</th>
+		</tr>
+		<volist name='team_member_list' id='val'>
+		<tr>
+			<td align="center"><img src="<if condition='$val.user_img eq ""'>__PUBLIC__/main/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b200/{$val.user_img}</if>">{$val.nick_name}</td>
+			<td align="center">
+				{$val.add_time|date="Y-m-d H:i",###}
+				<if condition="$val[is_promoter] eq 1">
+				<span>（发起时间）</span>
+				</if>
+			</td>
+			<td align="center"><span>￥{$val.price}</span></td>
+		</tr>
+		</volist>
+		
+	</table>
+	<div class="groupbuy_deta_btn clearfix">
+		<div class="fl clearfix">
+			<p class="fl"><img src="__PUBLIC__/main/images/pic8.jpg" width="100" height="100"><br>扫一扫二维码分享</p>
+			<!-- JiaThis Button BEGIN -->
+			<div class="jiathis_style_32x32 fl">
+				<a class="jiathis_button_cqq"></a>
+				<a class="jiathis_button_weixin"></a>
+				<a class="jiathis_button_tsina"></a>
+			</div>
+			<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+			<!-- JiaThis Button END -->
+		</div>
+		<div class="fr">
+			目前{$team_post_info.joined_num}人参团，
+			<span>
+				
+				<if condition="$team_post_info[member_num]-$team_post_info[joined_num] gt 0">	
+				还差{$team_post_info[member_num]-$team_post_info[joined_num]}人成团
+				<elseif condition="$team_post_info[member_limit]-$team_post_info[joined_num] gt 0" />
+				还有{$team_post_info[member_limit]-$team_post_info[joined_num]}人可以参团
+				<else/>
+				参团名额已满
+				</if>
+				
+			</span>
+			
+			<?php if($team_post_info[start_time] < time() && $team_post_info[end_time] > time()){ ?>
+				<if condition="in_array($self_user_id,$team_member_id) eq false">
+					<empty name='order'>
+						<if condition="($team_post_info[member_limit]-$team_post_info[joined_num]) gt 0">
+						<a href="{:U('mall/cart/team_confirm',array('post_id'=>$team_post_info['post_id']))}" id='join_team_post' >参加此团</a>
+						<else/>
+						<a href="javascript:;" class="disabled">已成团</a>
+						</if>
+					<else/>
+						<if condition="$order.pay_status eq 0">
+						<a href="{:U('mall/cart/pay',array('id'=>$order['general_order_id']))}">已参团未支付</a>
+						</if>
+					</empty>
+				<else/>
+					<a href="javascript:;" class="disabled">已参团</a>
+				</if>
+			<?php }else{ ?>
+				<a href="javascript:;" class="disabled">拼团已结束</a>
+			<?php }?>
+			
+		</div>
+	</div>
+</div>
+<script src="__PUBLIC__/main/js/jquery.yomi.js"></script>
+<!-------参团详情结束----->
+
+<!-------底部开始----->
+<include file='Public/footer' />
+<!-------底部结束----->
+
+<!--<script>
+	$("#join_team_post").click(function(){
+		var url="{:U('mall/cart/pay',array('id'=>'order_str'))}";
+		var post_id="{$team_post_info.post_id}"
+		$.ajax({
+			type:'POST',
+			url:"{:U('join_team_post')}",
+			data:{post_id:post_id},
+			dataType:"json",
+			success:function(res){
+				if(res.error==0){
+					url=url.replace('order_str',res.general_order)
+					window.location=url;
+				}else if(res.error==2){
+					window.location="{:U('Index/site/login')}";
+				}else{
+					alert(res.msg)
+				}
+			}
+		})
+	})
+</script>-->

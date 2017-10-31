@@ -1,0 +1,173 @@
+<div class="warp">
+    <div class="user_feedback" style="padding-top:0;">
+        <form action="{:U('')}" method="post">
+            <div class="new_feedback">
+                <div class="weui-cells_checkbox clearfix">
+                    <label class="weui-cell weui-check__label fl" for="s1">
+                        <div class="weui-cell__hd">
+                            <input type="radio" class="weui-check" name="type" value="1" id="s1" checked="checked">
+                            <i class="weui-icon-checked"></i>
+                        </div>
+                        <div class="weui-cell__bd">投诉</div>
+                    </label>
+                    <label class="weui-cell weui-check__label fl" for="s2">
+                        <div class="weui-cell__hd">
+                            <input type="radio" name="type" value="2" class="weui-check" id="s2">
+                            <i class="weui-icon-checked"></i>
+                        </div>
+                        <div class="weui-cell__bd">建议</div>
+                    </label>
+                </div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">选择品牌</label></div>
+					<div class="weui-cell__bd">
+						<select name='brand_id' style="background:none">
+							<option value='0'>选择品牌</option>
+							<volist name="brand_list" id="vo">
+								<option value='{$vo.brand_id}'>{$vo.brand_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">选择门店</label></div>
+					<div class="weui-cell__bd">
+						<select name='distributor_id' style="background:none">
+							<option value='0'>选择门店</option>
+							<volist name="distributor_list" id="vo">
+								<option value='{$vo.distributor_id}'>{$vo.distributor_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+                <p><textarea name="content" id="content" cols="" rows="5" placeholder="请输入详细说明"></textarea></p>
+				<div class="comment_4">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<div class="weui-uploader">
+								<div class="weui-uploader__bd">
+									<ul class="weui-uploader__files upload_preview" id="preview">
+										
+									</ul>
+									<div class="weui-uploader__input-box">
+										<input id="fileImage" class="weui-uploader__input" name="fileselect[]" type="file" accept="image/*" multiple>
+									</div>
+								</div>
+								<div class="weui-uploader__hd">
+									<p class="weui-uploader__title" style="color:#F00; font-weight:bold;">上传凭证</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div class="btn"><a class="weui-btn weui-btn_primary" href="javascript:;" id="btn_submit">提交</a></div>
+        </form>
+    </div>
+	<div style="padding:15px">{$sysconfig.feedback} 全国免费服务热线：<a href="tel:{$sysconfig.tel}">{$sysconfig.tel}</a>&nbsp;&nbsp;&nbsp;&nbsp;在线QQ：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$sysconfig.qq}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:516147248:52" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></div>
+</div>
+
+<script type="text/javascript">
+$('document').ready(function(){
+	$('#btn_submit').click(function(){
+		var content = $('#content').val();
+		if(content == ''){
+			layer.open({time:1,content:'内容不能为空'});return false;
+		}
+		var _image_datas = new Array();
+		$('.upload_image').each(function(){
+			_image_datas.push($(this).attr('src'));
+		});
+		if(_image_datas.length > 3){
+			layer.open({time:1,content:'最多可上传3张图片'});return false;
+		}
+		var type = $(':input[name="type"]:checked').val();
+		var distributor_id = $(":input[name='distributor_id']").val();
+		var brand_id = $(":input[name='brand_id']").val();
+		var data = {
+			type:type,
+			brand_id:brand_id,
+			distributor_id:distributor_id,
+			content:content,
+			image_datas:_image_datas,
+		};
+		
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), data, function(d){
+			layer.open({
+				time:1,
+				content:d.info,
+				end:function(){
+					if(d.status == 1){
+						window.location.href = d.url;
+					}
+				}
+			});
+		}, 'json');
+	});
+});
+</script>
+
+<script src="__PUBLIC__/wap/js/zxxFile.js"></script>
+<script>
+	var params = {
+		fileInput: $("#fileImage").get(0),
+		dragDrop: $("#fileDragArea").get(0),
+		upButton: $("#fileSubmit").get(0),
+		filter: function(files) {
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				if (file.type.indexOf("image") == 0) {
+					if (file.size >= 512000) {
+						alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+					} else {
+						arrFiles.push(file);	
+					}
+				} else {
+					alert('文件"' + file.name + '"不是图片。');
+				}
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#preview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e){
+						html = html + '<li id="uploadList_'+ i +'" class="upload_append_list weui-uploader__file"><p>'+ 
+							'<a href="javascript:;" class="upload_delete" title="删除" data-index="'+ i +'"><i class="weui-icon-cancel"></i></a>' +
+							'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
+						'</li>';
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#preview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").click(function() {
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;	
+						});
+						//提交按钮显示
+						$("#fileSubmit").show();	
+					} else {
+						//提交按钮隐藏
+						$("#fileSubmit").hide();	
+					}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file) {
+			$("#uploadList_" + file.index).remove();
+			$("#fileImage").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+</script>

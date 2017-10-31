@@ -1,0 +1,51 @@
+<div class="order_produce_detaild">
+	<div class="order_produce_detaild_hd">
+		<p><span><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$user.nick_name}</span><em>{$info.status}</em></p>
+		<p>订单号:{$info.order_id}</p>
+		<p>所属店铺：{$info.distributor.distributor_name|default='无'}</p>
+		<time>{$info.add_time|date="Y-m-d H:i:s",###}</time>
+	</div>
+	<div class="order_produce_detaild_cd">
+		<volist name="info.order_goods" id="vo">
+			<a href="javascript:;">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></dt>
+					<dd>
+						<h3>{$vo.goods_name}</h3>
+						<p>￥{$vo.goods_price}</p>
+						<p>数量：{$vo.goods_number}</p>
+					</dd>
+				</dl>
+				<h4><span>共{$info.total_goods_number}件商品，合计：<font>￥{$info.custom_amount}</font></span></h4>
+			</a>
+		</volist>
+	</div>
+	<form action="{:U('')}">
+		<input type="hidden" name="id" value="{$info.order_id}" />
+		<div class="order_produce_detaild_bd">
+			<ul>
+				<li>申请特批原因：</li>
+				<li><input name="delay_reason" type="text" placeholder="请输入申请特批的原因"></li>
+			</ul>
+		</div>
+		<div class="order_produce_detaild_btn btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">提交</a></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var btnElem = this;
+		mui(btnElem).button('loading');//切换为loading状态
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui(btnElem).button('reset');//切换为reset状态(即重置为原始的button)
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url;
+				}
+			},'json'
+		);
+	})
+});
+</script>

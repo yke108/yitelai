@@ -1,0 +1,47 @@
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading"><gt name="info.distribution_id" value="0">编辑<else/>添加</gt>方案</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-group">
+								<label class="control-label col-sm-2">方案名称</label>
+								<div class="col-sm-6">
+									<input name="distribution_name" value="{$info.distribution_name}" class="input-xlarge form-control" type="text" />
+								</div>
+							</div>
+							
+							<div class="row" style="margin-top:12px;padding-top:12px;border-top:1px dashed #CCC;"></div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">等级折扣设置</label>
+								<div class="col-sm-6">
+									
+								</div>
+							</div>
+							
+							<volist name="rank_list" id="vo">
+								<div class="form-group">
+									<label class="control-label col-sm-2">{$vo.rank_name}</label>
+									<div class="col-sm-6">
+										<input name="distribution_info[{$vo.rank_id}]" value="{$info[distribution_info][$vo[rank_id]][discount]}" class="input-xlarge form-control" type="text" />
+									</div>
+									<label class="control-label" style="float:left">%</label>
+								</div>
+							</volist>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="distribution_id" value="{$info.distribution_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

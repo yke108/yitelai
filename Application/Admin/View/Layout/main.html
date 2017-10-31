@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{$sysconfig.name} 平台系统</title>
+
+        <!-- Bootstrap framework -->
+            <link rel="stylesheet" href="__PUBLIC__/bootstrap/css/bootstrap.min.css" />
+        <!-- jQuery UI theme -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/jquery-ui/css/Aristo/Aristo.css" />
+        <!-- breadcrumbs -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/jBreadcrumbs/css/BreadCrumb.css" />
+        <!-- tooltips-->
+            <link rel="stylesheet" href="__PUBLIC__/lib/qtip2/jquery.qtip.min.css" />
+		<!-- colorbox -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/colorbox/colorbox.css" />
+        <!-- code prettify -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/google-code-prettify/prettify.css" />
+        <!-- sticky notifications -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/sticky/sticky.css" />
+        <!-- aditional icons -->
+            <link rel="stylesheet" href="__PUBLIC__/img/splashy/splashy.css" />
+		<!-- flags -->
+            <link rel="stylesheet" href="__PUBLIC__/img/flags/flags.css" />
+        <!-- datatables -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/datatables/extras/TableTools/media/css/TableTools.css">
+			<!-- smoke_js -->
+            <link rel="stylesheet" href="__PUBLIC__/lib/smoke/themes/gebo.css" />
+			<!-- datepicker -->
+			<link rel="stylesheet" href="__PUBLIC__/lib/timepicker/css/bootstrap-timepicker.css" />
+        <!-- main styles -->
+            <link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+		<!-- theme color-->
+            <link rel="stylesheet" href="__PUBLIC__/css/blue.css" id="link_theme" />
+			<link rel="stylesheet" href="__PUBLIC__/editor/themes/default/default.css">
+
+
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/ie.css" />
+        <![endif]-->
+
+        <!--[if lt IE 9]>
+			<script src="js/ie/html5.js"></script>
+			<script src="js/ie/respond.min.js"></script>
+			<script src="lib/flot/excanvas.min.js"></script>
+        <![endif]-->    
+	<style>
+	.navbar .brand{width:50%;}
+	.table>thead>tr>th{white-space:nowrap;}
+	.modal-content{padding:20px;}
+	.sidebar .nav-pills>li>a{font-weight:normal;}
+	</style>				
+	</head>
+    <body class="full_width">
+		<include file="Public/sidebar"/>
+        <div id="maincontainer" class="clearfix">
+			<include file="Public/header"/>
+            <include file="Public/js"/>
+            <div id="contentwrapper">
+                <div class="main_content" id="cs_main_content">
+					<div class="cs_main_content_box">{__CONTENT__}</div>
+              </div>
+            </div>
+        </div>
+		
+    </body>
+</html>

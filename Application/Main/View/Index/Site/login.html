@@ -1,0 +1,71 @@
+<!-------登陆注册重置密码头部开始----->
+<div class="header_small" style='background:#fff;'>
+	<div class="w1200 clearfix">
+		<div class="logo fl"><a href="{:U('index/index/index')}"><img style='max-height:120px;' src="__PUBLIC__/main/images/logo_2.jpg"></a></div>
+		<div class="header_small_r fr"><img src="__PUBLIC__/main/images/icon25.png">还没有注册用户？<a href="{:U('index/site/reg')}">立即注册</a></div>
+	</div>
+</div>
+<!-------登陆注册重置密码头部结束----->
+
+
+
+<!-------登陆内容开始----->
+<div class="login_box w1200 clearfix">
+	<div class="login_box_l fl"><img src="__PUBLIC__/main/images/pic52.png" width="780" height="395"></div>
+	<div class="login_box_r fr">
+		<h2>登录</h2>
+		<form action="{:U('')}" onSubmit="">
+			<ul>
+				<li><span>账&nbsp;&nbsp;&nbsp;户</span><input id="mobile" name="mobile" type="text" placeholder="请输入手机号"></li>
+				<li><span>密&nbsp;&nbsp;&nbsp;码</span><input id="pwd" name="pwd" type="password" placeholder="请输入密码"></li>
+				<li><button id="addlogin" type="button">立即登录</button></li>
+				<li class="last"><a href="{:U('reg')}" style="float:left">立即注册</a><a href="{:U('forget')}">忘记密码？</a></li>
+			</ul>
+		</form>
+	</div>
+</div>
+<!-------登陆内容结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(function(){
+	$("#addlogin").click(function(){
+		var mobile = $('#mobile').val();
+		var pwd = $('#pwd').val();
+		if(mobile && pwd){		
+			$.post("{:U('login')}",{mobile:mobile,pwd:pwd},function(data){
+				layer.open({time:1,content:data.info});
+				if (data.status == 1){
+					window.location.href = data.url; 
+				}
+			},'json');	
+		}else{
+			layer.open({time:1,content:'请输入完整信息'});
+			return false;
+		}
+	});
+	
+	$("body").keydown(function(){
+		if(event.keyCode==13){
+			var mobile = $('#mobile').val();
+			var pwd = $('#pwd').val();
+			if(mobile && pwd){		
+				$.post("{:U('login')}",{mobile:mobile,pwd:pwd},function(data){
+					layer.open({time:1,content:data.info});
+					if (data.status == 1){
+						window.location.href = data.url; 
+					}
+				},'json');
+			}else{
+				layer.open({time:1,content:'请输入完整信息'});
+				return false;
+			}
+		}
+	});
+})
+</script>

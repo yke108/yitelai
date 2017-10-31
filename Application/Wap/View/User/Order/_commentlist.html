@@ -1,0 +1,22 @@
+<volist name="list" id="vo">
+	<li class="item">
+		<h2><a href="{:U('mall/goods/info', array('id'=>$vo[order_goods][goods_id]))}">{$vo.order_goods.goods_name}</a></h2>
+		<a href="{:U('mall/goods/info', array('id'=>$vo[order_goods][goods_id]))}" class="user_comments_link">
+			<dl>
+				<dt><img src="__UPLOAD__/{$vo.order_goods.goods_img}"></dt>
+				<dd>
+					<h3>
+						<span <gt name="vo.stars" value="0">class="on"</gt>></span>
+						<span <gt name="vo.stars" value="1">class="on"</gt>></span>
+						<span <gt name="vo.stars" value="2">class="on"</gt>></span>
+						<span <gt name="vo.stars" value="3">class="on"</gt>></span>
+						<span <gt name="vo.stars" value="4">class="on"</gt>></span>
+						<font>{$vo.stars}星</font>
+						<time>{$vo.add_time|date="Y-m-d H:i:s", ###}</time>
+					</h3>
+					<p>{$vo.content}</p>
+				</dd>
+			</dl>
+		</a>
+	</li>
+</volist>

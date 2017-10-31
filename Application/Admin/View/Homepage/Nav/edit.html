@@ -1,0 +1,66 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading"><gt name="info.nav_id" value="0">编辑菜单<else/>添加菜单</gt></h3>
+		<form class="form-horizontal cs_ajax_form" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">名称</label>
+					<div class="col-sm-8">
+						<input value="{$info.name}" name="name" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">链接地址</label>
+					<div class="col-sm-8">
+						<input value="{$info.url}" name="url" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="is_show" <gt name="info.nav_id" value="0">{:m_checked($info[is_show], 1)}<else/>checked="checked"</gt> type="radio">
+							是 </label>
+						<label class="radio-inline">
+							<input value="0" name="is_show" <gt name="info.nav_id" value="0">{:m_checked($info[is_show], 0)}</gt> type="radio">
+							否 </label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否热门</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="is_hot" {:m_checked($info[is_hot], 1)} type="radio">
+							是 </label>
+						<label class="radio-inline">
+							<input value="0" name="is_hot" {:m_checked($info[is_hot], 0)} type="radio">
+							否 </label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否新窗口</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="opennew" {:m_checked($info[opennew], 1)} type="radio">
+							是 </label>
+						<label class="radio-inline">
+							<input value="0" name="opennew" {:m_checked($info[opennew], 0)} type="radio">
+							否 </label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">排序</label>
+					<div class="col-sm-8">
+						<input value="{$info.sort_order|default=50}" name="sort_order" class="input-xlarge form-control" type="text">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="nav_id" value="{$info.nav_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

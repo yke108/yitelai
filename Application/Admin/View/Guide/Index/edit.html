@@ -1,0 +1,96 @@
+<link href="__PUBLIC__/lib/uploadify/uploadify.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/lib/uploadify/jquery.uploadify.js"></script>
+<style>
+.uploadify-button {background:#3993ba;color:#fff;text-align:center;border-radius:5px;}
+.input-xlarge2{width:350px;display:inline-block;}
+#upload_video{display:inline-block;}
+.uploadify-queue{margin:0;position:absolute;left:462px;top:-8px;width:280px;}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">上传文件</h3>
+        <php>$action=$info['admin_id'] > 0 ? U('edit', array('id'=>$info['admin_id'])) : U('add');</php>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					<div class="form-group div_flash">
+						<label for="u_username" class="control-label col-sm-1">文件</label>
+						<div class="col-sm-8" style='position:relative;'>
+							<input name="path" class="input-xlarge form-control input-xlarge2 path" disabled="disabled" type="text" value="{$val.varvalue}">
+							<div class='' id='upload_video'></div>
+							<input class='upload_path' name='upload_path' type='hidden' />
+							<input class='file_name' name='file_name' type='hidden' />
+						</div>
+						<script>
+								$(function(){
+									add_media();	
+									<notempty name='val.varvalue'>	
+									init_path('http://{$Think.server.HTTP_HOST}__UPLOAD__/{$val.varvalue}','{$val.varvalue}');
+									</notempty>
+								})
+                            	
+                            </script>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+<script>
+
+function del_media(){
+	var str='<div class="del_path" style="background:#999;color:#fff;display:inline-block;padding:8px 10px;border-radius:5px;margin-left:10px;cursor:pointer;">删除文件</div>';
+	$("#upload_video").html('').css({display:'none'});
+	$("input.upload_path").after(str);
+	window.setTimeout(function(){$(".uploadify-queue").remove()},1000);
+}
+
+function add_media(){
+	$("input[name='path'],input[name='upload_path']").val('');
+	$('.del_path').remove();
+	$("#upload_video").uploadify({
+		swf : '__PUBLIC__/lib/uploadify/uploadify.swf',
+		uploader : "{:U('Site/Upload/uploadExcel')}",
+		fileObjName  : 'Filedata',
+		//removeCompleted : true,
+		formData        : {},
+		buttonText      : '上传文件',   
+		onUploadSuccess : function(file, data, response){
+			data=jQuery.parseJSON(data)
+			init_path(data.url,data.path,data.file_name)
+		}
+	})
+}
+function del_path(path){
+	$.ajax({
+		type:'POST',
+		url:"{:U('Site/Upload/del_path')}",
+		data:{'path':path},
+		dataType:"json",
+		success:function(res){
+			
+			add_media();
+			
+		}
+	})
+}
+
+function init_path(url,path,name){
+	
+	$(".div_flash input.path").val(url);
+	$(".div_flash input.upload_path").val(path)
+	$(".div_flash input.file_name").val(name)
+	del_media();
+	
+	$(".del_path").click(function(){
+		if(window.confirm('您确认要删除该文件')){
+			
+			del_path(path)
+		}
+	})
+}
+</script>

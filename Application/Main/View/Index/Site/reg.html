@@ -1,0 +1,184 @@
+<!-------登陆注册重置密码头部开始----->
+<div class="header_small" style='background:#fff;'>
+	<div class="w1200 clearfix">
+		<div class="logo fl"><a href="{:U('index/index/index')}"><img style='max-height:120px;' src="__PUBLIC__/main/images/logo_2.jpg"></a></div>
+		<div class="header_small_r fr"><img src="__PUBLIC__/main/images/icon25.png">已注册用户？<a href="{:U('index/site/login')}">立即登陆</a></div>
+	</div>
+</div>
+<!-------登陆注册重置密码头部结束----->
+
+
+
+<!-------登陆内容开始----->
+<div class="login_box w1200 clearfix">
+	<div class="login_box_l fl"><img src="__PUBLIC__/main/images/pic52.png" width="780" height="395"></div>
+	<div class="login_box_r fr">
+		<h2>注册</h2>
+		<form action="{:U('')}" method="post" onSubmit="">
+			<ul>
+				<li><span>账&nbsp;&nbsp;&nbsp;户</span><input id="phone" name="phone" type="text" placeholder="请输入手机号"></li>
+				<li><span>验证码</span><input id="vcode" name="code" type="text" placeholder="请输入验证码" class="code_input"><button type="button" class="button" href="{:U('Index/Site/code')}" id="code_btn">点击获取验证码</button><input type="hidden" name="sms_id" id="sms_id"/></li>
+				<li><span>密&nbsp;&nbsp;&nbsp;码</span><input id="pwd1" name="password" type="password" placeholder="请输入密码"></li>
+				<li><span>确认密码</span><input id="pwd2" name="password2" type="password" placeholder="请输入确认密码"></li>
+				<li><span>推荐人</span><input id="invite" name="invite" type="text" placeholder="请输入推荐人手机号码"></li>
+				<li><label><input id="remember" name="comcode" type="checkbox" value="1">我已阅读并同意<a href="{:U('article/page/info', array('id'=>33))}">《谷安居用户协议》</a></label></li>
+				<li><button type="button" id="reg_btn">立即注册</button></li>
+			</ul>
+		</form>
+	</div>
+</div>
+<!-------登陆内容结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+var clock_id = 0;
+var clock_fun = function(){
+    var obj = $('#code_btn');
+    var sleft = obj.attr('sleft');
+    sleft -= 1;
+    if(sleft <= 0){
+        clearInterval(clock_id);
+        obj.css({'background':'#ff3451', 'border':'1px solid #ffbd29'}).attr('sleft','0').html('获取验证码');
+		//obj.attr('disabled', 'false');
+    } else {
+        obj.attr('sleft', sleft).html(sleft+'s后可重新获取');
+    }
+};
+
+$(document).ready(function(){
+    $('#reg_btn').bind('click',function(){
+        var pwd1 = $('#pwd1').val();
+        var pwd2 = $('#pwd2').val();
+        var phone = $('#phone').val();
+        var sms_id = $('#sms_id').val();
+        var vcode = $('#vcode').val();
+        var agree = $('#remember:checked').val();
+        var invite =  $('#invite').val();
+        //$invite
+        
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (!reg.test(phone)) {
+            layer.open({time:1,content:'请输入正确的手机号码'});
+            return false;
+        }
+        if (vcode=='') {
+            layer.open({time:1,content:'请输入验证码'});
+            return false;
+        }
+        if (sms_id<=0) {
+            layer.open({time:1,content:'请输入正确的验证码'});
+            return false;
+        }
+                
+        if(pwd1.length < 6){
+            layer.open({time:1,content:'密码的长度应大于六个字符'});
+            return false;
+        }
+        if(pwd1 != pwd2){
+            layer.open({time:1,content:'两次输入的密码不一致'});
+            return false;
+        }
+        
+        if (!agree==1) {
+            layer.open({time:1,content:'请选择用户协议'});
+            return false;
+        }
+                
+        $.post("{:U('reg')}",{username:phone,pwd:pwd1,sms_id:sms_id,code:vcode,invite:invite},function(d){
+			layer.open({time:1,content:d.info});
+            if(d.status == 1){    
+                window.location.href = d.url;
+            }
+        },'json');
+        
+        return false;
+
+    });
+	
+	$('body').bind('keydown',function(){
+		if(event.keyCode==13){
+			var pwd1 = $('#pwd1').val();
+			var pwd2 = $('#pwd2').val();
+			var phone = $('#phone').val();
+			var sms_id = $('#sms_id').val();
+			var vcode = $('#vcode').val();
+			var agree = $('#remember:checked').val();
+			var invite =  $('#invite').val();
+			//$invite
+			
+			var reg = /^0?1[1-9][0-9]\d{8}$/;
+			if (!reg.test(phone)) {
+				layer.open({time:1,content:'请输入正确的手机号码'});
+				return false;
+			}
+			if (vcode=='') {
+				layer.open({time:1,content:'请输入验证码'});
+				return false;
+			}
+			if (sms_id<=0) {
+				layer.open({time:1,content:'请输入正确的验证码'});
+				return false;
+			}
+					
+			if(pwd1.length < 6){
+				layer.open({time:1,content:'密码的长度应大于六个字符'});
+				return false;
+			}
+			if(pwd1 != pwd2){
+				layer.open({time:1,content:'两次输入的密码不一致'});
+				return false;
+			}
+			
+			if (!agree==1) {
+				layer.open({time:1,content:'请选择用户协议'});
+				return false;
+			}
+					
+			$.post("{:U('reg')}",{username:phone,pwd:pwd1,sms_id:sms_id,code:vcode,invite:invite},function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){    
+					window.location.href = d.url;
+				}
+			},'json');
+			
+			return false;
+		}
+    });
+    
+    $('#code_btn').bind('click',function(){
+        var obj = $(this);
+        if(obj.attr('sleft') > 0){
+            layer.open({time:1,content:'请稍后再试'});
+            return false;
+        }
+        var phone = $('#phone').val();
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (!reg.test(phone)) {
+            layer.open({time:1,content:'请输入正确的手机号码'});
+            return false;
+        }
+        //obj.attr('disabled', 'true');
+        var sleft = 60;
+        obj.attr('sleft',sleft).css('background','gray').css('border','1px solid gray').html(sleft+'s后可重新获取');
+        clock_id=setInterval("clock_fun()",1000);
+        $.post('{:U("code")}',{phone:phone},function(d){
+            if(d.status == 0){    
+                obj.attr('sleft', -1);
+                clearInterval(clock_id);
+                alert(d.info);
+				//obj.attr('disabled', 'false');
+                clock_fun();
+                return false;
+            }
+            $('#sms_id').val(d.sms_id);
+			console.log(d);
+        },'json');
+        return false;
+    });
+});
+</script>

@@ -1,0 +1,31 @@
+<volist name="product_list" id="vo">
+	<tr class="rowlink">
+		<td><input type="checkbox" value="{$vo.id}" class="checkid" name="checkid[]"></td>
+		<td>
+			<notempty name="vo.product_image">
+				<img src="__UPLOAD__/{$vo.product_image}" height="40" border="0">
+			</notempty>
+		</td>
+		<td>{$vo.product_items_name}</td>
+		<td>{$vo.product_price}</td>
+		<td><gt name="vo.product_weight" value="0">{$vo.product_weight}kg</gt></td>
+		<!--<td>{$vo.stock_num}</td>
+		<td>{$vo.notify_num}</td>-->
+		<td><input name="seckill_price[{$vo.id}]" class="input-xlarge form-control seckill_price" type="text" value="" disabled="disabled"></td>
+		<td><input name="seckill_num[{$vo.id}]" class="input-xlarge form-control seckill_num" type="text" value="" disabled="disabled"></td>
+	</tr>
+</volist>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.checkid').click(function(){
+		var is_checked = $(this).prop('checked');
+		if(is_checked){
+			$(this).parents('tr').find('.seckill_price').attr('disabled',false);
+			$(this).parents('tr').find('.seckill_num').attr('disabled',false);
+		}else{
+			$(this).parents('tr').find('.seckill_price').attr('disabled',true);
+			$(this).parents('tr').find('.seckill_num').attr('disabled',true);
+		}
+	});
+});
+</script>

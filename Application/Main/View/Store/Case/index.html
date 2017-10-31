@@ -1,0 +1,109 @@
+<!-------头部开始----->
+<include file="Public/store_header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------店铺真实案例开始----->
+<div class="main w1200">
+	<div class="site_position">当前位置：<a href="{:U('Index/index/index')}">首页</a> - 真实案例</div>
+	<div class="shop_case clearfix">
+		<div class="shop_case_l fl">
+			<div class="shop_case_sort">
+				<ul class='scs_box'>
+					<volist name='type_list' id='val'>
+					<li class="clearfix">
+						<span>{$val.type_name}：</span>
+						<em>
+							<a href="javascript:;" class="on case_type" type='{$val.key}'>全部</a>
+							<volist name='val.list' id='val2'>
+							<a href="javascript:;" class='case_type' val='{$val2.id}' type='{$val.key}'>{$val2.name}</a>
+							</volist>
+						</em>
+					</li>
+					</volist>
+				</ul>
+			</div>
+			<div class="shop_case_list">
+				<ul class="clearfix scl_box">
+					<include file='Store/Case/_index' />
+				</ul>
+				<div class="pages1">
+					{$page}
+				</div>
+			</div>
+		</div>
+		<div class="shop_case_r fr">
+			<include file='Store/Case/_custom' />
+			<div class="shop_hot_case">
+				<h2><!--<a href="#" class="fr">查看更多>></a>-->热门案例</h2>
+				<volist name='hot_list' id='val'>
+				<dl class="clearfix">
+					<dt><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w250h165/{$val.picture}</if>" width="145" height="100"></a></dt>
+					<dd>
+						<h3><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}">{$val.case_name}</a></h3>
+						<p>
+							<a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}" class="color_btn">查看详情</a>
+							<a href="{:U('design/index/info',array('id'=>$val['designer_id'],'store_id'=>$get[store_id]))}" class="gay_btn">预约设计</a>
+						</p>
+					</dd>
+				</dl>
+				</volist>
+				
+			</div>
+		</div>
+		<script>
+			$(function(){
+				$(".shop_case_sort ul li:last").addClass("last")
+				$(".shop_hot_case dl:last").addClass("last")
+			})
+		</script>
+	</div>
+</div>
+<!-------店铺真实案例结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+<script>
+var decorate_style='';
+var house_type='';
+$(function(){	
+	$(".case_type").click(function(){
+		var key=$(this).attr('type');
+		var val=$(this).attr('val');
+		if(key=='house_type'){
+			house_type=val;
+		}else if(key=='decorate_style'){
+			decorate_style=val;
+		}
+		
+		$(this).addClass('on').siblings().removeClass('on')
+		get_case_config();
+	})
+	$(".pages1 a").live('click',function(e){
+		e.preventDefault();
+		var href=$(this).attr('href');
+		get_case_config(href);
+	})
+})
+function get_case_config(href){
+	
+	var go_href='';
+	if(href!=undefined){go_href=href}
+	$.ajax({
+		type:'POST',
+		url:go_href,
+		data:{decorate_style:decorate_style,house_type:house_type},
+		dataType:"json",
+		success:function(res){
+			$(".scl_box").html(res.html);
+			$(".pages1").html(res.page);
+		}
+	})
+}
+</script>

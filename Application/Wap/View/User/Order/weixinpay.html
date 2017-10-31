@@ -1,0 +1,29 @@
+<script type="text/javascript">
+function jsApiCall(){
+	WeixinJSBridge.invoke(
+		'getBrandWCPayRequest',
+		<?php echo $jsApiParameters; ?>,
+		function(res){
+			if(res.err_msg == "get_brand_wcpay_request:ok"){
+				location.href = "{:U('success', array('id'=>$order_id))}";
+			}else{
+				//alert(res.err_code+res.err_desc+res.err_msg);
+				alert('支付失败');
+				//location.href = "{:U('excavator/index')}";
+			}
+		}
+	);
+}
+$(document).ready(function(){
+	if (typeof WeixinJSBridge == "undefined"){
+	    if( document.addEventListener ){
+	        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+	    }else if (document.attachEvent){
+	        document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+	        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+	    }
+	}else{
+	    jsApiCall();
+	}
+});
+</script>

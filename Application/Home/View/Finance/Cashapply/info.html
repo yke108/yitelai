@@ -1,0 +1,89 @@
+<div class="withdraw_review_detaild">
+	<div class="withdraw_review_detaild_hd">
+		<dl>
+			<dt><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$user.nick_name} <font>{$user.user_typename}</font></h2>
+				<time>{:date('Y-m-d H:i', $info[add_time])}</time>
+			</dd>
+			<dd>
+				<switch name="info.status">
+					<case value="0"><span>{$info.status_label}</span></case>
+					<case value="1"><font>{$info.status_label}</font></case>
+					<case value="2"><em>{$info.status_label}</em></case>
+					<case value="3"><em>{$info.status_label}</em></case>
+					<case value="4"><em>{$info.status_label}</em></case>
+				</switch>
+				<i>提现金额<font>{$info.money}元</font></i>
+			</dd>
+		</dl>
+	</div>
+	<div class="withdraw_review_detaild_bd">
+		<h2>银行卡信息</h2>
+		<p>卡号：{$info.card}</p>
+		<p>银行卡：{$info.bank_name}</p>
+		<p>支行：{$info.open_bank}</p>
+	</div>
+	<div class="withdraw_review_detaild_bd">
+		<h2>提现明细</h2>
+		<empty name="list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无订单</p>
+		<else/>
+			<volist name="list" id="vo">
+				<p><span>订单号：{$vo.ref_id}</span><em>佣金：<font>{$vo.amount_change}元</font></em></p>
+			</volist>
+		</empty>
+		<h3><em>合计：<font>{$total_amount|default=0}元</font></em></h3>
+	</div>
+	<notempty name="info.remark">
+		<div class="withdraw_review_detaild_bd">
+			<h2>不通过原因</h2>
+			<p>{$info.remark}</p>
+		</div>
+	</notempty>
+	<div class="withdraw_review_detaild_btn btn">
+		<eq name="info.status" value="0">
+			<a href="{:U('check', array('apply_id'=>$info[apply_id], 'status'=>2))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认审核通过吗？" title="提现审核">通过</a>
+			<a href="{:U('check', array('apply_id'=>$info[apply_id], 'status'=>1))}" class="mui-btn mui-btn-block mui-btn-warning confirm" message="确认审核不通过吗？" title="提现审核">不通过</a>
+		</eq>
+	</div>
+</div>
+
+<script>
+	$(function(){
+		$(".confirm").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm($(this).attr('message'), $(this).attr('title'), btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>
+
+<script>
+mui.init();
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+app.setTitleRight('提现记录', 'apply_list');
+function apply_list(){
+	window.location.href = "{:U('apply_list', array('user_id'=>$user[user_id]))}";
+}
+</script>

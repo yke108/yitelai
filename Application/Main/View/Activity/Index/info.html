@@ -1,0 +1,273 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------活动详情开始----->
+<div class="activity_detaild w1200">
+	<div class="special_position"><a href="{:U('index')}">首页</a> > <a href="{:U('index')}">活动专场</a>  > {$info.title}</div>
+	<div class="activity_detaild_info">
+		<dl class="clearfix">
+			<dt><img src="__UPLOAD__/{$info.picture}"></dt>
+			<dd>
+				<!--<i><img src="__PUBLIC__/main/special/icon13.png"><br>点亮568</i>-->
+				<h1>{$info.title}</h1>
+				<h2>{$info.sub_title}</h2>
+				<p>活动日期：{:date('Y年m月d日', $info[start_time])}--{:date('m月d日', $info[end_time])}  {:date('H:i', $info[start_time])}--{:date('H:i', $info[end_time])}</p>
+				<p>活动地点：{$info.place}</p>
+				<eq name="info.is_active" value="1">
+					<a href="javascript:;" class="sign">免费报名</a>
+				<else/>
+					<a href="javascript:;" class="sign" disabled="disabled" style="background:#999">活动已过期</a>
+				</eq>
+				<!-- JiaThis Button BEGIN -->
+				<div class="jiathis_style_32x32 clearfix">
+					<span class="jiathis_txt" style="font-size:18px; color:#999;">分享到：</span>
+					<a class="jiathis_button_qzone"></a>
+					<a class="jiathis_button_tsina"></a>
+					<a class="jiathis_button_tqq"></a>
+					<a class="jiathis_button_weixin"></a>
+					<a class="jiathis_button_renren"></a>
+					<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+					<a class="jiathis_counter_style"></a>
+				</div>
+				<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+				<!-- JiaThis Button END -->
+				<div class="activity_detaild_info_recomment">
+					<h3><span>热门活动</span><a href="{:U('index', array('is_hot'=>1))}">更多></a></h3>
+					<ul class="clearfix">
+						<volist name="recommend_list" id="vo" key="ko">
+							<li><span>TOP.{$ko}</span><a href="{:U('info', array('id'=>$vo[activity_id]))}">{$vo.title}</a></li>
+						</volist>
+					</ul>
+				</div>
+			</dd>
+		</dl>
+	</div>
+	<div class="activity_detaild_initiator">
+		<h2>项目发起人</h2>
+		<ul class="clearfix">
+			<volist name="info.launch_list" id="vo">
+				<li><a href="javascript:;"><img src="__UPLOAD__/thumbs/w170h220/{$vo.launch_image}"><p>{$vo.launch_name}</p></a></li>
+			</volist>
+		</ul>
+	</div>
+	<div class="activity_detaild_tabs">
+		<div class="activity_detaild_tabs_hd">
+			<ul class="clearfix">
+				<li><a href="javascript:;" name="#tabs1">项目内容</a></li>
+				<li><a href="javascript:;" name="#tabs2">投资计划</a></li>
+				<li><a href="javascript:;" name="#tabs3">预计回报</a></li>
+				<li><a href="javascript:;" name="#tabs4">实施计划</a></li>
+				<li><a href="javascript:;" name="#tabs5">评论（{$info.comment_count}）</a></li>
+			</ul>
+		</div>
+		<div class="activity_detaild_tabs_bd">
+			<div class="con" id="tabs1">
+				<div class="tabs_info_text">
+					{$info.content}
+				</div>
+			</div>
+			<div class="con" id="tabs2">
+				<div class="tabs_info_text">
+					{$info.content1}
+				</div>
+			</div>
+			<div class="con" id="tabs3">
+				<div class="tabs_info_text">
+					{$info.content2}
+				</div>
+			</div>
+			<div class="con" id="tabs4">
+				<div class="tabs_info_text">
+					{$info.content3}
+				</div>
+			</div>
+			<div class="con" id="tabs5">
+				<div class="cooking_detaild_comment_hd">
+					<form action="{:U('comment')}">
+						<input type="hidden" name="activity_id" value="{$info.activity_id}" />
+						<dl class="clearfix">
+							<dt><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"><p>{$user.nick_name}</p></dt>
+							<dd>
+								<p><textarea name="content" cols="" rows="" placeholder="想说点什么..." style="width:930px"></textarea></p>
+								<p><em><a href="javascript:;" id="btn_comment">提交</a></em></p>
+							</dd>
+						</dl>
+					</form>
+				</div>
+				<div class="Evaluation_List">
+					<include file="Activity/Index/_comment_list"/>
+				</div>
+				<link href="__PUBLIC__/main/css/lightbox.css" rel="stylesheet" type="text/css"/>
+				<script src="__PUBLIC__/main/js/lightbox.js"></script>
+			</div>
+		</div>
+	</div>
+	<script>
+		function resetTabs1(){
+			$(".activity_detaild_tabs_bd > div.con").hide();
+			$(".activity_detaild_tabs_hd ul li a").attr("class","");
+		}
+		
+		var myUrl = window.location.href;
+		var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+		var myUrlTabName = myUrlTab.substring(0,4);
+		
+		(function(){
+			$(".activity_detaild_tabs_bd > div.con").hide();
+			$(".activity_detaild_tabs_hd ul li:first a").attr("class","on");
+			$(".activity_detaild_tabs_bd > div.con:first").fadeIn();
+		
+			$(".activity_detaild_tabs_hd ul li a").on("click",function(e) {
+				e.preventDefault();
+				if ($(this).attr("class") == "on"){
+					return       
+				}else{             
+					resetTabs1();
+					$(this).attr("class","on");
+					$($(this).attr('name')).fadeIn();
+				}
+			});
+		
+			for (i = 1; i <= $(".activity_detaild_tabs_hd ul li a").length; i++) {
+				if(myUrlTab == myUrlTabName + i){
+					resetTabs1();
+					$("a[name='"+myUrlTab+"']").attr("class","on");
+					$(myUrlTab).fadeIn();
+				}
+			}
+		})()
+	</script>
+	<div class="activity_detaild_participant">
+		<h2>参加人员（{$info.apply_count}人）</h2>
+		<ul class="clearfix">
+			<volist name="apply_list" id="vo">
+				<li><img src="{$vo.avatar}"><p>{$vo.nick_name}</p></li>
+			</volist>
+		</ul>
+	</div>
+	<div class="activity_detaild_brand">
+		<h2>现场大牌特惠预告</h2>
+		<empty name="advance_list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无相关活动</p>
+		<else/>
+			<ul class="clearfix">
+				<volist name="advance_list" id="vo">
+					<li><a href="{:U('info', array('id'=>$vo[activity_id]))}"><img src="__UPLOAD__/thumbs/w265h137/{$vo.picture}"></a></li>
+				</volist>
+			</ul>
+		</empty>
+	</div>
+	<div class="activity_detaild_others clearfix">
+		<div class="activity_detaild_others_item fl">
+			<h2>更多活动<span>担心错过？精彩活动随时预报！</span></h2>
+			<empty name="activity_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关活动</p>
+			<else/>
+				<ul class="clearfix">
+					<volist name="activity_list" id="vo">
+						<li><a href="{:U('info', array('id'=>$vo[activity_id]))}"><img src="__UPLOAD__/thumbs/w265h137/{$vo.picture}"><p>让生活性感起来-满498减100</p></a></li>
+					</volist>
+				</ul>
+			</empty>
+		</div>
+		<div class="activity_detaild_others_item fr">
+			<h2>往期活动<span>场场用户爆满  看看以往精彩活动花絮</span></h2>
+			<empty name="past_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关活动</p>
+			<else/>
+				<ul class="clearfix">
+					<volist name="past_list" id="vo">
+						<li><a href="{:U('info', array('id'=>$vo[activity_id]))}"><img src="__UPLOAD__/thumbs/w265h137/{$vo.picture}"><p>{$vo.title}</p></a></li>
+					</volist>
+				</ul>
+			</empty>
+		</div>
+	</div>
+</div>
+<div class="activity_detaild_pop">
+	<i><img src="__PUBLIC__/main/special/icon14.png"></i>
+	<h2>本活动已有<span class="apply_count">{$info.apply_count}</span>位网友报名</h2>
+	<form action="{:U('apply')}">
+		<input type="hidden" name="activity_id" value="{$info.activity_id}" />
+		<ul>
+			<li><span>姓&nbsp;&nbsp;&nbsp;名:</span><input name="name" type="text" placeholder="请输入"></li>
+			<li><span>手机号:</span><input name="mobile" type="text" placeholder="请输入"></li>
+		</ul>
+		<label><input name="agreement" type="checkbox" value="1" checked="checked">我已阅读并且同意<a href="{:U('article/page/info', array('id'=>33))}" target="_blank">《谷安居用户协议》</a></label>
+		<a href="javascript:;" class="activity_detaild_pop_btn">提交报名信息</a>
+	</form>
+</div>
+<div class="activity_detaild_mask"></div>
+<script>
+	$(function(){
+		$("a.sign").click(function(){
+			if($(this).attr('disabled') == 'disabled'){
+				return;
+			}
+			$(".activity_detaild_pop").fadeIn();
+			$(".activity_detaild_mask").fadeIn();	
+		})
+		$(".activity_detaild_pop i").click(function(){
+			$(".activity_detaild_pop").fadeOut();
+			$(".activity_detaild_mask").fadeOut();	
+		})
+	})
+</script>
+<!-------活动详情结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.Evaluation_List dl{padding:40px 0;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//评论
+	$('#btn_comment').click(function(){
+		var form = $(this).parents('form')
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				form[0].reset();
+				$('.Evaluation_List').prepend(d.html);
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+	
+	//报名
+	$('.activity_detaild_pop_btn').click(function(){
+		if(!$('input[name=agreement]').prop('checked')){
+			layer.open({time:1,content:'请先同意谷安居用户协议'});
+			return;
+		}
+		var form = $(this).parents('form')
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				var apply_count = $('.apply_count').html();
+				apply_count = parseInt(apply_count) + 1;
+				$('.apply_count').html(apply_count);
+				
+				$(".activity_detaild_pop").fadeOut();
+				$(".activity_detaild_mask").fadeOut();
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>

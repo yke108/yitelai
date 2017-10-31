@@ -1,0 +1,85 @@
+<div class="work_target">
+    <div class="work_target_hd">
+        <h1><span>{$admin.admin_name}</span><a href="tel:{$admin.mobile}">{$admin.mobile}</a></h1>
+        <p>所属店铺:{$distributor.distributor_name|default='无'}</p>
+        <p>{$distributor.region_name}  店长</p>
+    </div>
+    <div class="work_target_bd">
+        <ul class="mui-table-view">
+        	<?php
+            $finish = array('mui-badge-primary','mui-badge-success','mui-badge-success','mui-badge-warning');
+            $finish_status = array('进行中','已完成','超额完成','未完成');
+            ?>
+            <li class="mui-table-view-cell">
+              	<?php
+                if($day)
+                {
+                	
+                ?>  
+                <a class="right-after" href="{:U('my',array('id' => $day['id'],'type' => 1))}">天目标<span class="mui-badge <?=$finish[$day['finish_status']]?> mui-badge-inverted"><?=$finish_status[$day['finish_status']]?> {:round($day[sum_percent] / 6, 2)}%</span></a>
+                <?php
+                }
+                else
+                {
+                ?>
+                <a class="right-after" href="{:U('add','t=1')}">天目标<span class="mui-badge mui-badge-warning mui-badge-inverted">未填写</span></a>
+                <?php
+                }
+                ?>
+            </li>
+            <li class="mui-table-view-cell">
+                <?php
+                if($week)
+                {
+                	
+                ?>  
+                <a class="right-after" href="{:U('my',array('id' => $week['id'],'type' => 2))}">周目标<span class="mui-badge <?=$finish[$week['finish_status']]?> mui-badge-inverted"><?=$finish_status[$week['finish_status']]?></span></a>
+                <?php
+                }
+                else
+                {
+                ?>
+                <a class="right-after" href="{:U('add','t=2')}">周目标<span class="mui-badge mui-badge-warning mui-badge-inverted">未填写</span></a>
+                <?php
+                }
+                ?>
+            </li>
+            <li class="mui-table-view-cell">
+                <?php
+                if($month)
+                {
+                	
+                ?>  
+                <a class="right-after" href="{:U('my',array('id' => $month['id'],'type' => 3))}">月目标<span class="mui-badge <?=$finish[$month['finish_status']]?> mui-badge-inverted"><?=$finish_status[$month['finish_status']]?></span></a>
+                <?php
+                }
+                else
+                {
+                ?>
+                <a class="right-after" href="{:U('add','t=3')}">月目标<span class="mui-badge mui-badge-warning mui-badge-inverted">未填写</span></a>
+                <?php
+                }
+                ?>
+            </li>
+            <li class="mui-table-view-cell">
+                <?php
+                if($year)
+                {
+                	
+                ?>  
+                <a class="right-after" href="{:U('my',array('id' => $year['id'],'type' => 4))}">年目标<span class="mui-badge <?=$finish[$year['finish_status']]?> mui-badge-inverted"><?=$finish_status[$year['finish_status']]?></span></a>
+                <?php
+                }
+                else
+                {
+                ?>
+                <a class="right-after" href="{:U('add','t=4')}">年目标<span class="mui-badge mui-badge-warning mui-badge-inverted">未填写</span></a>
+                <?php
+                }
+                ?>
+            </li>
+        </ul>
+        <div class="work_target_bd_btn"><a href="{:U('other')}" class="mui-btn mui-btn-block">查看其他人目标</a></div>
+        <div class="work_target_bd_btn"><a href="{:U('ranking')}" class="mui-btn mui-btn-block">完成率排行榜</a></div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td>
+			<notempty name="vo.distributor_image">
+				<img src="{:picurl($vo['distributor_image'])}" height="40">
+			</notempty>
+		</td>
+		<td>{$vo.distributor_name}<eq name="vo.is_self_distributor" value="1"><font color="red">（直营店）</font></eq></td>
+		<td>{$vo.latitude}</td>
+		<td>{$vo.longitude}</td>
+		<td>{$vo.region_name}</td>
+		<td>{$vo.distributor_title}</td>
+		<td>{$vo.distributor_tel}</td>
+		<td>
+			<switch name="vo.status">
+				<case value="1">未审核</case>
+				<case value="2"><font color="green">正常</font></case>
+				<case value="3"><font color="red">关闭</font></case>
+			</switch>
+		</td>
+		<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+		<td><notempty name="vo.update_time">{$vo.update_time|date="Y-m-d H:i:s",###}</notempty></td>
+		<td>
+			<a class="" href="{:U('admin', array('distributor_id'=>$vo[distributor_id]))}">管理员</a>
+			<a class="" href="{:U('edit', array('distributor_id'=>$vo[distributor_id]))}">编辑</a>
+			<a href="{:U('del', array('distributor_id'=>$vo[distributor_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+		</td>
+	</tr>
+</volist>

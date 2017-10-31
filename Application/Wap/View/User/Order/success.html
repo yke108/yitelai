@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+
+<body>
+
+	<div class="warp">
+        
+        <div class="pay_result">
+        	<div class="pay_result_box">
+            	<dl>
+                	<dt><i class="weui-icon-success weui-icon_msg"></i></dt>
+                    <dd>
+                    	<h1>恭喜你，支付成功</h1>
+                        <p>付款金额：<span>￥{$info.order_amount}</span></p>
+                    </dd>
+                </dl>
+                <div class="btn">
+                    <a href="{:U('user/order/info', array('id'=>$info[order_id]))}" class="weui-btn weui-btn_plain-default">查看订单</a>
+                    <a href="{:U('index/index/index')}" class="weui-btn weui-btn_primary">继续购物</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

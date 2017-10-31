@@ -1,0 +1,13 @@
+<volist name="list" id="vo">
+	<dl>
+		<dt><img src="__UPLOAD__/thumbs/b90/{$vo.order_goods.picture}"></dt>
+		<dd>
+			<h2>{$vo.status_label}</h2>
+			<p>您于{:date('Y-m-d', $vo[add_time])}成功兑换{$vo.gift_name}一个</p>
+		</dd>
+		<dt>
+			<span>{$vo.recommend_points}</span>
+			<p>消耗积分</p>
+		</dt>
+	</dl>
+</volist>

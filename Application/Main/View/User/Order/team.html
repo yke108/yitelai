@@ -1,0 +1,103 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的团队开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('Index/Index/index')}">首页</a><span>></span><a href="{:U('User/index/index')}">会员中心</a><span>></span>我的团队</div>
+	<div class="vip clearfix">
+		<include file='Public/user_sidebar' />
+		<div class="vip_r fr">
+			<div class="my_groupbuy">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">我的拼团</a></li>
+					</ul>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th>商品</th>
+						<th>团号</th>
+						<th>参团时间</th>
+						<th>参团描述</th>
+						<th>拼团角色</th>
+						<th>金额</th>
+						<th>状态</th>
+						<th>操作</th>
+					</tr>
+					<volist name='list' id='val'>
+					<tr>
+						<td align="left">
+							<dl>
+								<dt><img src="<if condition='$val[order_goods][0][goods_img] eq ""'>__PUBLIC__/main/images/pic51.jpg<else/>__UPLOAD__/{$val[order_goods][0]['goods_img']}</if>"></dt>
+								<dd>
+									<p>{$val.team_info.act_name}</p>
+									<p><a href="javascript:;">{$val[order_goods][0][goods_name]|msubstr=0,10}</a></p>
+									<p>{$val[order_goods][0][product_name]}</p>
+								</dd>
+							</dl>
+						</td>
+						<td align='center'><span style='color:#ff0000;font-size:14px;'>{$val.team_info.post_sn}</span></td>
+						<td align="center">{$val.add_time|date="Y-m-d H:i",###}</td>
+						<td align="center">
+							<p>{$val.team_info.member_num}-{$val.team_info.member_limit}人团</p>
+							<span>
+							<if condition='($val[team_info][member_num]-$val[team_info][joined_num]) gt 0'>
+							还差{$val[team_info][member_num]-$val['team_info']['joined_num']}人成团
+							<else/>
+							已成团,参团人数{$val['team_info']['joined_num']}人
+							</if>
+							</span>
+						</td>
+						<td align='center'>
+							<if condition="$val[team_info][user_id] eq $val[user_id]">
+								发起人
+							<else/>
+								参与者
+							</if>
+						</td>
+						<td align="center"><em>￥{$val.goods_amount}</em></td>
+						<td align='center'>
+							<if condition="($val[team_info][end_time] lt time()) and ($val[pay_status] eq 4)" >
+							<p>拼团失败，已退款</p>
+							<elseif condition="$val[team_info][end_time] lt time()" />
+							<p>拼团已结束</p>
+							<elseif condition="$val[team_info][joined_num] egt $val[team_info][member_limit]" />
+							<p>拼团名额已满</p>
+							<elseif condition="$val.pay_status eq 0" />
+							<p>待支付</p>
+							<elseif condition="$val[team_info][joined_num] egt $val[team_info][member_num]" />
+							拼团成功
+							<else/>
+							<p><em>拼团中</em></p>
+							</if>
+						</td>
+						<td align="center">
+							<if condition="($val.pay_status eq 0) and ($val[team_info][joined_num] lt $val[team_info][member_limit]) and ($val[team_info][end_time] gt time())">
+							<p><a href="{:U('mall/cart/pay',array('id'=>$val['general_order_id']))}" class="look_deta">去支付</a></p>
+							</if>
+							<if condition="$val.pay_status eq 1">	
+							<p><a href="{:U('mall/goods/team_info',array('post_id'=>$val[team_info][post_id]))}" class="look_deta">查看详情</a></p>
+							</if>
+						</td>
+					</tr>
+					</volist>
+				</table>
+				<div class='pages1'>
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的团队结束----->
+
+
+
+<!-------底部开始----->
+<include file='Public/footer' />
+<!-------底部结束----->

@@ -1,0 +1,30 @@
+
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td>{$vo.nick_name}</td>
+		<td>{$vo.money}</td>
+		<td>{$vo.bank_name}</td>
+		<td>{$vo.card}</td>
+		<td>{$vo.open_bank}</td>
+		<td>{$vo.open_name}</td>
+		<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+		<td>
+			<switch name="vo.apply_status">
+				<case value="0">未审核</case>
+				<case value="1"><font color="green">审核失败</font></case>
+				<case value="2"><font color="red">审核通过</font></case>
+				<case value="3"><font color="green">打款成功</font></case>
+			</switch>
+		</td>
+		<td>{$vo.remark}</td>
+		<td>
+			<eq name="vo.apply_status" value="0">
+				<a href="{:U('check', array('apply_id'=>$vo[apply_id]))}">审核</a>
+			</eq>
+			<if condition="$vo.apply_status eq 2">
+				<a class='cs_ajax_link cs_flesh_page' cs_tip="您确定已打款？" href="{:U('remit',array('apply_id'=>$vo[apply_id]))}">打款</a>
+			</if>
+		</td>
+	</tr>
+</volist>
+<!---->

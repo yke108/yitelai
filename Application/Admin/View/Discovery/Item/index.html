@@ -1,0 +1,50 @@
+<div class="row cs_flesh_page hy_page_content" href="{:U('')}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">项目列表(发现)
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered dTableR" id="dt_a">
+                    <thead>
+                        <tr>
+                        	<th>图标</th>
+							<th>标题</th>
+							<th>副标题</th>
+							<th class="center">状态</th>
+							<th class="center">终端</th>
+							<th>备注</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><notempty name="vo.item_icon"><img src="__UPLOAD__/thumbs/b32/{$vo.item_icon}"/></notempty></td>
+							    <td>{$vo.item_title}</td>
+								<td>{$vo.item_tip}</td>
+								<td>
+									<eq name="vo.is_open" value="1"><span class="act-success">开放</span></eq>
+									<eq name="vo.is_open" value="2"><span class="act-danger">关闭</span></eq>
+									<eq name="vo.is_open" value="3"><span class="act-warning">内测</span></eq>
+								</td>
+								<td>
+									<eq name="vo.client_type" value="0">不限</eq>
+									<eq name="vo.client_type" value="3">安卓</eq>
+									<eq name="vo.client_type" value="4">IOS</eq>
+								</td>
+								<td>{$vo.remark}</td>
+								<td>
+										<a href="{:U('edit', array('id'=>$vo[item_id]))}"
+											 class="cs_ajax_link hy_show_modal" hy_w="800">编辑</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+			</div>
+			<div>{$page}</div>
+		</div>
+	</div>
+</div>
+	

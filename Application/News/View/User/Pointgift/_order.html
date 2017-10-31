@@ -1,0 +1,22 @@
+<volist name="list" id="vo">
+<dl>
+	<dt><img src='<if condition="$vo[order_goods][picture] eq ''">__PUBLIC__/wap/images/pic6.jpg<else/>__UPLOAD__/{$vo.order_goods.picture}</if>'></dt>
+	<dd>
+		<h2>
+			<span>{$vo.gift_name}</span>
+			<em>
+				<if condition="$vo.shipping_status eq 0">
+					待发货
+				<elseif condition="$vo.shipping_status eq 1"/>
+					已发货
+				</if>
+			</em>
+		</h2>
+		<p>兑换单号:{$vo.order_sn}</p>
+		<p>兑换积分:{$vo.recommend_points}</p>
+		<p>兑换时间:{$vo.add_time|date="Y-m-d H:i",###}</p>
+		<p>快递名称:{$vo.shipping_name}</p>
+		<p>快递单号:{$vo.shipping_sn}</p>
+	</dd>
+</dl>
+</volist>

@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">拼团列表 <font style='color:#ff0000;'>( 活动名称：{$act_info.act_name} )</font>
+			<!--<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加团购活动</a>-->
+			<a href="javascript:;" class='btn btn-info btn-sm ' style='float:right;' onclick="javascript:window.location='{:U("index")}';">返回上一页</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div style='margin-bottom:10px;margin-top:-10px;'> <a href="{:U('index')}">活动</a> > <span>拼团列表</span></div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>团号</th>
+							<th>商品名称</th>
+							<th>发起人</th>
+							<th>成团最小人数</th>
+							<th>已参与人数</th>
+							<th>成团最大人数</th>
+							<th>拼团价</th>
+							<th>发起时间</th>
+							<th>结束时间</th>
+							<th>成团时间</th>
+							<th>拼团描述</th>
+							<th>订单列表</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+					<volist name="list" id="vo">
+						<tr class="rowlink">
+							<td>{$vo.post_sn}</td>
+							<td class="center">{$vo.team.goods_name}</td>
+							<td>{$vo.user.nick_name}</td>
+							<td>{$vo.member_num}</td>
+							<td>{$vo.joined_num}</td>
+							<td>{$vo.member_limit}</td>
+							<td>{$vo.price}</td>
+							<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+							<td>{$vo.end_time|date="Y-m-d H:i",###}</td>
+							<td><if condition="$vo.closing_time gt 0">{$vo.closing_time|date="Y-m-d H:i",###}</if></td>
+							<td>
+								<if condition="$vo[member_num] gt $vo[joined_num]">
+								还差{$vo[member_num]-$vo[joined_num]}人成团
+								<elseif condition="$vo[member_limit] gt $vo[joined_num]" />
+								已成团,还剩{$vo[member_limit]-$vo[joined_num]}个名额
+								<else/>
+								已成团,名额已满
+								</if>
+							</td>
+							<td><a href="{:U('order',array('post_id'=>$vo[post_id]))}">查看</a></td>
+							<td>
+								<a class='cs_ajax_link hy_show_modal' hy_w='800' hy_h='400' href="{:U('team_member', array('post_id'=>$vo[post_id]))}">查看参团人员</a>
+								<!--<a href="{:U('del', array('id'=>$vo[act_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>-->
+							</td>
+						</tr>
+					</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

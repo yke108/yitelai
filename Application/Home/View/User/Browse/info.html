@@ -1,0 +1,24 @@
+<div class="customer_pool_detaild browsing_history_detaild">
+	<div class="browsing_history_detaild_hd">
+		<a href="{$info.url}" target="_blank">
+			<dl>
+				<dt><img src="__UPLOAD__/thumbs/b660/{$goods.goods_image}"></dt>
+				<dd>
+					<h2>{$goods.goods_name}</h2>
+				</dd>
+			</dl>
+		</a>
+	</div>
+	<ul>
+		<li><label>会员昵称</label><span>{$user.user_name}</span></li>
+		<li><label>手机号码</label><span>{$user.mobile}</span></li>
+		<li><label>使用浏览器</label><span>{$info.browser}</span></li>
+		<li><label>登录时间</label><span>{:date('Y-m-d H:i', $info[add_time])}</span></li>
+		<li><label>页面类型</label><span><eq name="info.collect_type" value="8">文章页<else/>产品页</eq></span></li>
+		<li><label>浏览时间</label><span>{:date('Y-m-d H:i', $info[add_time])}</span></li>
+		<!--<li><label>停留时间</label><span>1分32秒</span></li>-->
+	</ul>
+	<div class="browsing_history_btn btn">
+		<a href="{$info.url}" class="mui-btn mui-btn-block mui-btn-primary">打开链接</a>
+	</div>
+</div>

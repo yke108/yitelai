@@ -1,0 +1,521 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">公司信息提交</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="pass">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li class="on">
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li>
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_2">
+	<div class="w1200">
+	
+		<div class="alert-notice">
+			<a href="{:U('article/page/info', array('id'=>21))}" target="_blank" class="alert-notice-btn">审核通过秘诀 >></a>
+			<p>1、信息提交前。请务必了解<a href="{:U('article/page/info', array('id'=>19))}" target="_blank">谷安居开放平台招商资质标准细则；</a></p>
+			<p>2、公司类信息需填项较多，建议先查看<a href="{:U('article/page/info', array('id'=>20))}" target="_blank">公司信息注意事项</a>再进行填写；</p>
+			<p>3、以下所需要上传电子版资质仅支持JPG、CIF、PNG格式 的图片，大小不超过1M。且必须加盖企业彩色公章。</p>
+		</div>
+		
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$brand.merchant_id}" />
+			<input type="hidden" name="brand_id" value="{$brand.brand_id}" />
+			<div class="public_form">
+				<h2>新品牌信息<em>品牌资质上传注意事项较多，请见<a href="{:U('article/page/info', array('id'=>28))}" target="_blank">详细规则要求</a>。</em></h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">品牌中文名</label>
+						<div class="public_form_r">
+							<input name="brand_name" value="{$brand.brand_name}" type="text" class="text">
+							<p class="tip">请按照品牌商标填写中文名称，没有中文名称的请留空</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">品牌英文名</label>
+						<div class="public_form_r">
+							<input name="en_name" value="{$brand.en_name}" type="text" class="text">
+							<p class="tip">请按照品牌商标填写英文名称，没有英文名称的请留空</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">品牌商标注册人</label>
+						<div class="public_form_r">
+							<input name="register_person" value="{$brand.register_person}" type="text" class="text">
+							<p class="tip">请按品牌商标填写完整的商标注册人</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">品牌商标注册号</label>
+						<div class="public_form_r">
+							<input name="register_no" value="{$brand.register_no}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">品牌商标类别</label>
+						<div class="public_form_r">
+							<select name="register_type">
+								<volist name="merchant_config.register_type" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $brand[register_type])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">经营类型</label>
+						<div class="public_form_r">
+							<select name="manage_type">
+								<volist name="merchant_config.manage_type" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $brand[manage_type])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">品牌LOGO</label>
+						<div class="public_form_r">
+							<p><em>品牌LOGO需要与商标图文信息一致 <a href="{:U('article/page/info', array('id'=>29))}" target="_blank">[ 查看示例 ]</a></em></p>
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="brand_logo" type="file" class="hy_upload_single" hy_field="brand_logo" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.brand_logo">{$brand.brand_logo}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸400X*200Px，文件大小200K以内，支持JPG、GIF、PNG格式</p>
+						</div>
+					</li>
+				</ul>
+				<h2>品牌资质</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">商标注册证/商品注册申请书</label>
+						<div class="public_form_r">
+							<p><em>请上传商标注册证书，未获得注册的请上传商标注册受理通知书，受理通知书需满6个月。<a href="{:U('download',array('id'=>15))}" target="_blank">[ 查看示例 ]</a></em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="trademark_period_start" value="{$brand.trademark_period_start}" type="text" class="data text"> - <input name="trademark_period_end" value="{$brand.trademark_period_end}" type="text" class="data text"> <label><input type="checkbox" name="trademark_period_long" value="长期" {:m_checked($brand[trademark_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="trademark_pic" type="file" class="hy_upload_single" hy_field="trademark_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.trademark_pic">{$brand.trademark_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">销售授权书</label>
+						<div class="public_form_r">
+							<p><em>请上传品牌方提供的品牌授权证书</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="certificate_period_start" value="{$brand.certificate_period_start}" type="text" class="data text"> - <input name="certificate_period_end" value="{$brand.certificate_period_end}" type="text" class="data text"> <label><input type="checkbox" name="certificate_period_long" value="长期" {:m_checked($brand[certificate_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="certificate_pic" type="file" class="hy_upload_single" hy_field="certificate_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.certificate_pic">{$brand.certificate_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">报关单类</label>
+						<div class="public_form_r">
+							<p><em>进口品牌商品请上传报关单证书（进口产品必填）</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="customs_period_start" value="{$brand.customs_period_start}" type="text" class="data text"> - <input name="customs_period_end" value="{$brand.customs_period_end}" type="text" class="data text"> <label><input type="checkbox" name="customs_period_long" value="长期" {:m_checked($brand[customs_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="customs_pic" type="file" class="hy_upload_single" hy_field="customs_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.customs_pic">{$brand.customs_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">进货发票</label>
+						<div class="public_form_r">
+							<p><em>进口品牌商品请上传进货发票凭证（进口产品必填）</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="invoice_period_start" value="{$brand.invoice_period_start}" type="text" class="data text"> - <input name="invoice_period_end" value="{$brand.invoice_period_end}" type="text" class="data text"> <label><input type="checkbox" name="invoice_period_long" value="长期" {:m_checked($brand[invoice_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="invoice_pic" type="file" class="hy_upload_single" hy_field="invoice_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.invoice_pic">{$brand.invoice_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">环保质检、检验报告</label>
+						<div class="public_form_r">
+							<p><em>请上传正规部门提供的质检检疫报告</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="protection_period_start" value="{$brand.protection_period_start}" type="text" class="data text"> - <input name="protection_period_end" value="{$brand.protection_period_end}" type="text" class="data text"> <label><input type="checkbox" name="protection_period_long" value="长期" {:m_checked($brand[protection_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="protection_pic" type="file" class="hy_upload_single" hy_field="protection_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.protection_pic">{$brand.protection_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">3C认证</label>
+						<div class="public_form_r">
+							<p><em>请提供品牌方持有的3C许可证证书（电器、电子类产品必填）</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="threec_period_start" value="{$brand.threec_period_start}" type="text" class="data text"> - <input name="threec_period_end" value="{$brand.threec_period_end}" type="text" class="data text"> <label><input type="checkbox" name="threec_period_long" value="长期" {:m_checked($brand[threec_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="threec_pic" type="file" class="hy_upload_single" hy_field="threec_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.threec_pic">{$brand.threec_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">食品卫流通许可证</label>
+						<div class="public_form_r">
+							<p><em>请提供品牌方持有的食品流通许可证证书（食品类必填）</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="food_period_start" value="{$brand.food_period_start}" type="text" class="data text"> - <input name="food_period_end" value="{$brand.food_period_end}" type="text" class="data text"> <label><input type="checkbox" name="food_period_long" value="长期" {:m_checked($brand[food_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="food_pic" type="file" class="hy_upload_single" hy_field="food_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.food_pic">{$brand.food_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>&nbsp;</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span">其他资质</label>
+						<div class="public_form_r">
+							<p><em>需提交特殊产品资质的类目请将资质上传在此处，根据具体类目资质要求提交</em></p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">有效期</label>
+						<div class="public_form_r">
+							<input name="other_period_start" value="{$brand.other_period_start}" type="text" class="data text"> - <input name="other_period_end" value="{$brand.other_period_end}" type="text" class="data text"> <label><input type="checkbox" name="other_period_long" value="长期" {:m_checked($brand[other_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">上传图片</label>
+						<div class="public_form_r">
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="other_pic" type="file" class="hy_upload_single" hy_field="other_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="brand.other_pic">{$brand.other_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传20张。</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="public_btn">
+				<a href="{:U('article/page/info', array('id'=>22))}" target="_blank">撤销申请？</a>
+				<span><a href="{:U('merchant/apply/step3_2')}" class="prev">返回品牌列表</a><a href="javascript:;" class="next">保存品牌信息</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false,
+			scrollInput:false,
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>
+
+<style type="text/css">
+.hy_upload_single:before,.hy_upload_single:after{content:" ";position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background-color:#d9d9d9;}
+.hy_upload_single:before{ width:2px; height:50%;}
+.hy_upload_single:after{ width:50%; height:2px;}
+.weui_uploader_input{opacity:1;}
+input:disabled{background:#eee !important;}
+</style>
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script src="__PUBLIC__/main/js/singleupload.js"></script>
+<script src="__PUBLIC__/main/js/multiupload.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	$('.hy_upload_multi').hyMultiUpload("{:U('site/upload/index')}", '__UPLOAD__');
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//商标注册证/商品注册申请书
+	$('input[name=trademark_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=trademark_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=trademark_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=trademark_period_long]').prop('checked') == true){
+		$('input[name=trademark_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=trademark_period_end]').attr('disabled', false);
+	}
+	
+	//销售授权书
+	$('input[name=certificate_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=certificate_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=certificate_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=certificate_period_long]').prop('checked') == true){
+		$('input[name=certificate_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=certificate_period_end]').attr('disabled', false);
+	}
+	
+	//报关单类
+	$('input[name=customs_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=customs_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=customs_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=customs_period_long]').prop('checked') == true){
+		$('input[name=customs_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=customs_period_end]').attr('disabled', false);
+	}
+	
+	//进货发票
+	$('input[name=invoice_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=invoice_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=invoice_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=invoice_period_long]').prop('checked') == true){
+		$('input[name=invoice_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=invoice_period_end]').attr('disabled', false);
+	}
+	
+	//环保质检、检验报告
+	$('input[name=protection_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=protection_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=protection_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=protection_period_long]').prop('checked') == true){
+		$('input[name=protection_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=protection_period_end]').attr('disabled', false);
+	}
+	
+	//3C认证
+	$('input[name=threec_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=threec_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=threec_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=threec_period_long]').prop('checked') == true){
+		$('input[name=threec_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=threec_period_end]').attr('disabled', false);
+	}
+	
+	//食品卫流通许可证
+	$('input[name=food_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=food_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=food_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=food_period_long]').prop('checked') == true){
+		$('input[name=food_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=food_period_end]').attr('disabled', false);
+	}
+	
+	//其他资质
+	$('input[name=other_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			$('input[name=other_period_end]').val('').attr('disabled', true);
+		}else{
+			$('input[name=other_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=other_period_long]').prop('checked') == true){
+		$('input[name=other_period_end]').val('').attr('disabled', true);
+	}else{
+		$('input[name=other_period_end]').attr('disabled', false);
+	}
+});
+</script>

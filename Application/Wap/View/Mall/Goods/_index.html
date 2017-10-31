@@ -1,0 +1,11 @@
+<volist name="list" id="vo">
+	<li class="item">
+		<a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">
+			<div class="pro_pic"><img src="__UPLOAD__/thumbs/b660/{$vo.goods_image}"></div>
+			<div class="pro_price"><span>¥<font><if condition="$vo[is_seckill] eq 1">{$vo.product.seckill_price}<else/>{$vo.product.product_price}</if></font></span><em>{$vo.total_sale_count}销量</em></div>
+			<div class="pro_name">{$vo.goods_name|msubstr=0,11,'utf-8',true}<if condition="$vo[is_seckill] eq 1"><font color="red">（秒杀）</font></if></div>
+			<div class="pro_shop">{$vo.distributor.distributor_name}<span style="float:right">{$vo.distance}</span></div>
+			<div class="pro_position">{$vo.distributor.region}</div>
+		</a>
+	</li>
+</volist>

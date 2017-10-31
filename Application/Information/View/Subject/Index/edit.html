@@ -1,0 +1,144 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.news_id" value="0">编辑专题<else/>添加专题</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<input type="hidden" name="news_id" value="{$info.news_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">标题</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="title" class="input-xlarge form-control" type="text" value="{$info.title}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">图片</label>
+					<div class="col-sm-8">
+						<input class="hy_upload_single" hy_field="picture" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.picture">{$info.picture}</notempty>"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">来源</label>
+					<div class="col-sm-4 col-md-4">
+						<select class="form-control" name="source_id">
+							<option value="">选择来源</option>
+							<volist name="source_list" id="vo">
+								<option {:m_selected($vo[source_id], $info[source_id])} value="{$vo.source_id}">{$vo.source_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">作者</label>
+					<div class="col-sm-4 col-md-4">
+						<select class="form-control" name="author_id">
+							<option value="">选择作者</option>
+							<volist name="author_list" id="vo">
+								<option {:m_selected($vo[author_id], $info[author_id])} value="{$vo.author_id}">{$vo.author_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">描述</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="description" class="input-xlarge form-control" type="text" value="{$info.description}">
+					</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">内容</label>
+					<div class="col-sm-9">
+						<textarea id="ueditor" name="content" style="width:100%;height:300px;">
+							{$info.content}
+						</textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">地区</label>
+					<div class="col-sm-6 col-md-6">
+						<input type="hidden" value="0" class="region_sel"/>
+                        <select class="region_sel form-control input-xlarge" style="width:200px; display:inline-block;"></select>
+                        <select class="form-control input-xlarge" style="width:200px; display:inline-block;" name="region_code"></select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="is_open" <gt name="info.news_id" value="0">{:m_checked($info[is_open], 1)}<else/>checked="checked"</gt> type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="0" name="is_open" <gt name="info.news_id" value="0">{:m_checked($info[is_open], 0)}</gt> type="radio">
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[region_code] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[region_code])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="0">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+});
+</script>

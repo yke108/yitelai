@@ -1,0 +1,89 @@
+<div class="warp">
+	
+	<div class="pay">
+	
+		<div class="pay_1">
+			<!---如果已经选择收货地址---->
+			<div class="has_data">
+				<a href="javascript:;">
+					<p><span>{$info.consignee}</span><span>{$info.mobile}</span></p>
+					<p>{$info.address}</p>
+				</a>
+			</div>
+		</div>
+		
+		<div class="pay_2">
+			<volist name="info.order_goods" id="vo">
+				<dl>
+					<dt><a href="{:U('mall/goods/info',array('id'=>$vo[goods_id]))}"><img src="__UPLOAD__/thumbs/b150/{$vo.goods_img}"></a></dt>
+					<dd>
+						<h2><a href="{:U('mall/goods/info',array('id'=>$vo[goods_id]))}">{$vo.goods_name}</a></h2>
+						<p><span>￥{$vo.goods_price}</span></p>
+						<div class="type"><em>{$vo.product_name}</em><span>x{$vo.goods_number}</span></div>
+					</dd>
+				</dl>
+			</volist>
+		</div>
+		
+		<form action="{:U('')}" method="post">
+			<div class="pay_3">
+				<h2>支付方式</h2>
+				<div class="weui-cells weui-cells_checkbox">
+					<label class="weui-cell weui-check__label" for="s1">
+						<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon10.png" style="width:25px;margin-right:5px;display:block"></div>
+						<div class="weui-cell__bd">
+							<p>余额支付</p>
+						</div>
+						<div class="weui-cell__ft">
+							<span>账户余额<font>{$user.user_money}</font>元</span>
+							<input type="radio" class="weui-check" name="pay_id" value="1" id="s1" checked>
+							<i class="weui-icon-checked"></i>
+						</div>
+					</label>
+					<eq name="is_weixin" value="1">
+						<label class="weui-cell weui-check__label" for="s2">
+							<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon11.png" style="width:25px;margin-right:5px;display:block"></div>
+							<div class="weui-cell__bd">
+								<p>微信支付</p>
+							</div>
+							<div class="weui-cell__ft">
+								<input type="radio" class="weui-check" name="pay_id" value="2" id="s2">
+								<i class="weui-icon-checked"></i>
+							</div>
+						</label>
+					</eq>
+				</div>
+			</div>
+			<div class="pay_5">
+				<p><em>商品总金额</em><span>￥{$info.goods_amount}</span></p>
+				<gt name="info.service_money" value="0"><p>商品服务费用：<span>￥{$info.service_money}</span></p></gt>
+				<p>运费：<span><gt name="info.shipping_fee" value="0">￥{$info.shipping_fee}<else/>免邮</gt></span></p>
+				<p><em>积分抵扣</em><span>￥{$info.points_money}</span></p>
+				<p><em><b>实际支付</b></em><span><font>￥{$info.order_amount}</font></span></p>
+				<p class="last clearfix"><a href="javascript:;" class="payordernow">立即支付</a></p>
+				<input type="hidden" name="id" value="{$info.order_id}" />
+			</div>
+		</form>
+	</div>
+	
+</div>
+
+<div id="pay_page"></div>
+
+<script>
+$(document).ready(function(){
+	$('.payordernow').bind('click', function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			if(d.status == 0){
+				layer.open({time:1,content:d.info});
+			}else if(d.status == 1){
+				 window.location.href = d.url;
+			}else if(d.status == 2){
+				$('#pay_page').html(d.info);
+			}
+		}, 'json');
+		return false;
+	})
+});
+</script>

@@ -1,0 +1,59 @@
+<div class="store_decoration_release">
+	<form action="{:U('')}">
+		<input type="hidden" name="user_id" value="{$get.user_id}" />
+		<!--<div class="mui-input-group">
+			<div class="mui-input-row right-after">
+				<label>店铺</label>
+				<select name="distributor_id">
+					<option value="">请选择</option>
+					<volist name="distributor_list" id="vo">
+						<option value="{$vo.distributor_id}">{$vo.distributor_name}</option>
+					</volist>
+				</select>
+			</div>
+		</div>-->
+		
+		<input type="hidden" name="distributor_id" value="{$distributor.distributor_id}" />
+		<div class="mui-input-group">
+			<a href="{:U('distributor_list', array('user_id'=>$get[user_id]))}" class="mui-input-row right-after">
+				<label>请选择店铺</label>
+				<input type="text" name="" value="{$distributor.distributor_name}" readonly="readonly" />
+			</a>
+		</div>
+		
+		<notempty name="demand_list">
+			<div class="mui-input-group">
+				<div class="mui-input-row right-after">
+					<label>客户需求</label>
+					<select name="demand_id">
+						<option value="">请选择</option>
+						<volist name="demand_list" id="vo">
+							<option value="{$vo.demand_id}">{$vo.demand_name}</option>
+						</volist>
+					</select>
+				</div>
+			</div>
+		</notempty>
+		
+		<div class="apply_management_textarea" style="margin-bottom:10px">
+			<textarea name="designate_remark" cols="" rows="3" placeholder="备注"></textarea>
+		</div>
+		
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">提交</a></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

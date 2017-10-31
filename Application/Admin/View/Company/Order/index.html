@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">预约设计师列表
+			<a id="rec_add" href="{:U('add', array('distributor_id'=>$get[distributor_id]))}" class="btn btn-info btn-sm alink_r">添加预约</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get"><!-- 关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="标题" style="display:inline-block;width:auto;" type="text"> -->
+			<span class="sepV_c">状态:
+			<select class="form-control input-sm" name="status_id">
+				<option value="0">全部分类</option>
+				<volist name="statuslist" id="vo">
+					<option {:m_selected($get[status_id], $vo[status_id])} value="{$vo.status_id}">{$vo.status_name}</option>
+				</volist>				
+			</select>
+			</span><button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>设计师名称</th>
+							<th>客户姓名</th>
+							<th>客户手机号</th>		
+							<th>提交时间</th>
+							<!--<th>更新时间</th>-->
+							<th>预约状态</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td><if condition='$vo[designer_id] gt 0'>{$infoname[$vo['designer_id']]}<else/>未指派设计师</if></td>
+								<td>{$vo.customer_name}</td>
+								<td>{$vo.customer_mobile}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<!--<td>{$vo.update_time|date="Y-m-d",###}</td>-->
+								<td>{$statusname[$vo['status_id']]} <a href="{:U('zhuang', array('id'=>$vo[order_id]))}" class="cs_ajax_link hy_show_modal">修改</a> </td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[order_id]))}">查看</a>
+									<a href="{:U('she', array('id'=>$vo[order_id]))}" class="cs_ajax_link hy_show_modal">更换设计师</a>
+									<!-- <a href="{:U('del', array('id'=>$vo[order_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a> -->
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

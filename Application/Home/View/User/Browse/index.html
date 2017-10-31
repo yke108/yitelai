@@ -1,0 +1,205 @@
+<form action="{:U('')}" style="position:absolute; top:0; left:0; width:100%;">
+	<div class="mui-input-row mui-search" style="margin:10px; padding:0;">
+		<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="搜索关键词">
+	</div>
+</form>
+<style>
+	.mui-search .mui-placeholder{ border-radius:20px;}
+	.mui-input-row.mui-search.mui-active:before{ top:50%; margin-top:-11px;}
+	.mui-search input[type=search]{ border-radius:20px;}
+</style>
+
+<div class="browsing_history mui-scroll-wrapper" id="pullrefresh" style="top:54px;">
+	<div class="mui-scroll">
+		<!--<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px;">筛选</a>-->
+		<!--<form action="{:U('')}">
+			<div class="browsing_history_hd" style="padding-right:0;">
+				<div class="mui-input-row mui-search">
+					<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="搜索关键词" id="keyword">
+				</div>
+			</div>
+		</form>-->
+		<div class="browsing_history_new_bd">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无浏览记录</p>
+			<else/>
+				<div class="div">
+					<include file="User/Browse/_index"/>
+				</div>
+			</empty>
+		</div>
+	</div>
+</div>
+
+<div class="filter_new_pop">
+	<form action="{:U('')}">
+		<h2>日期</h2>
+		<ol>
+			<li><span>开始时间：</span><input name="start_time" value="{$get.start_time}" type="text" readonly class="time" id="StartTime" data-options='{}'></li>
+			<li><span>结束时间：</span><input name="end_time" value="{$get.end_time}" type="text" readonly class="time" id="EndTime" data-options='{}'></li>
+		</ol>
+		<notempty name="user_list">
+			<h2>客户标签</h2>
+			<ul>
+				<li class="right-after">
+					<select name="user_id">
+						<option value="">全部客户</option>
+						<volist name="user_list" id="vo">
+							<option value="{$vo.user_id}" {:m_selected($vo[user_id], $get[user_id])}>{$vo.user_name}</option>
+						</volist>
+					</select>
+				</li>
+			</ul>
+		<else/>
+			<input type="hidden" name="user_id" value="{$get.user_id}" />
+		</notempty>
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+	$(function(){
+		/*$("#click").click(function(){
+			$(".filter_new_pop").addClass("on")	
+			$(".mask").fadeIn()
+		})*/
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+		
+	})
+	
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+app.setTitleRight('筛选', 'show');
+function show(){
+	//$(".filter_new_pop").addClass("on")	
+	//$(".mask").fadeIn()
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_pop ul li a").removeClass("on")
+	//$(".filter_pop ul li input").val('')
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+
+$(document).ready(function(){
+	$('.mask').click(function(){
+		$(".filter_new_pop").removeClass("on")
+		$(".mask").fadeOut()
+	});
+});
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var keyword = "{$get.keyword}";
+		var user_id = "{$get.user_id}";
+		var start_time = "{$get.start_time}";
+		var end_time = "{$get.end_time}";
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, keyword:keyword, user_id:user_id, start_time:start_time, end_time:end_time},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .div").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>
+
+<script>
+mui.init();
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>

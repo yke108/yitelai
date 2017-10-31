@@ -1,0 +1,274 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">店铺信息提交</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="pass">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li class="on">
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li>
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_2">
+	<div class="w1200">
+	
+		<div class="alert-notice">
+			<a href="{:U('article/page/info', array('id'=>21))}" target="_blank" class="alert-notice-btn">审核通过秘诀 >></a>
+			<p>1、信息提交前。请务必了解<a href="{:U('article/page/info', array('id'=>19))}" target="_blank">谷安居开放平台招商资质标准细则；</a></p>
+			<p>2、公司类信息需填项较多，建议先查看<a href="{:U('article/page/info', array('id'=>20))}" target="_blank">公司信息注意事项</a>再进行填写；</p>
+			<p>3、若所选店铺类型为旗舰店或专卖店，相关授权模板请见：<a href="{:U('article/page/info', array('id'=>26))}" target="_blank">旗舰店类模板</a>、<a href="{:U('article/page/info', array('id'=>27))}" target="_blank">专卖店类模板</a>；</p>
+			<p>4、以下所需要上传电子版资质仅支持JPG、CIF、PNG格式 的图片，大小不超过1M。且必须加盖企业彩色公章。</p>
+		</div>
+		
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$info.merchant_id}" />
+			<div class="public_form">
+				<h2>选择店铺类型</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>期望店铺类型</label>
+						<div class="public_form_r">
+							<select name="top_id" id="top_id">
+								<volist name="type_list" id="vo">
+									<option value="{$vo.type_id}" {:m_selected($vo[type_id], $info[top_id])}>{$vo.type_name}</option>
+								</volist>
+							</select>
+							<select name="type_id" id="type_id">
+								<volist name="current_type.children" id="vo">
+									<option value="{$vo.type_id}" {:m_selected($vo[type_id], $info[type_id])}>{$vo.type_name}</option>
+								</volist>
+							</select>
+							<p class="tip">旗舰店默认仅可上传一个品牌，如经营多品牌时，请在申请品牌时提供品牌同属唯一实际控制人/公司的证明材料。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>选择可经营类目</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>主营类目</label>
+						<div class="public_form_r">
+							<select name="cat_id" id="cat_id">
+								<volist name="cat_top_list" id="vo">
+									<option value="{$vo.cat_id}" {:m_selected($vo[cat_id], $info[cat_id])}>{$vo.cat_name}</option>
+								</volist>
+							</select>
+							<p class="tip">易错类目提示："手机"类目包含手机通讯、手机配件，经营手机通讯、配件的商家请选择"手机"类目。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>详情类目</label>
+						<div class="public_form_r">
+							<p><em><button type="button">选择类目</button><a href="{:U('article/page/info', array('id'=>31))}" target="_blank">查看类目费用标准>></a></em></p>
+							<table width="760" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<th>序号</th>
+									<th>一级类目</th>
+									<th>二级类目</th>
+									<th>三级类目</th>
+									<th>操作</th>
+								</tr>
+								<volist name="merchant_cat_list" id="vo" key="k">
+									<tr>
+										<td>{$k}</td>
+										<td>{$vo.top_cat_name}</td>
+										<td>{$vo.parent_cat_name}</td>
+										<td>{$vo.cat_name} </td>
+										<td><a href="{:U('catdel', array('id'=>$vo[id]))}" class="del">删除</a></td>
+									</tr>
+								</volist>
+							</table>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">资费预览</label>
+						<div class="public_form_r">
+							<p><em>此处根据您选择的经营类目计算模式标准资费，最终实际收费以门店付费为准。</em></p>
+							<p><em>保证金：<font id="deposit">{$child.deposit}</font>元</em></p>
+							<p><em>技术服务费：<font id="service_charge">{$child.service_charge}</font>元/年</em></p>
+							<p><em>平台销售扣点：<font id="platform_take">{$child.platform_take}%</font></em></p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="public_btn">
+				<a href="{:U('article/page/info', array('id'=>22))}" target="_blank">撤销申请？</a>
+				<span><a href="{:U('merchant/apply/step2_3')}" class="prev">上一步</a><a href="javascript:;" class="next">下一步，完善店铺信息</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="lm_pop">
+	<div class="lm_pop_box">
+		<form action="{:U('add_cat')}">
+			<div id="sub_cat">
+				<include file="Merchant/Apply/sub_cat"/>
+			</div>
+			<h3><a href="javascript:;" class="submit">确定</a><a href="javascript:;" class="cancel">取消</a></h3>
+		</form>
+	</div>
+</div>
+
+<script>
+	$(function(){
+		$(".public_form ul li .public_form_r p em button").click(function(){
+			$(".lm_pop").fadeIn()	
+		})
+		$(".lm_pop h3 a.submit").click(function(){
+			var form = $(this).parents('form');
+			$.post(form.attr('action'),form.serialize(),function(d){
+				if(d.status == 1){
+					$(".lm_pop").fadeOut();
+					window.location.reload();
+				}else{
+					layer.open({time:1,content:d.info});
+				}
+			},'json');
+			return false;
+		})
+		$(".lm_pop h3 a.cancel").click(function(){
+			$(".lm_pop").fadeOut()	
+		})
+	})
+</script>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+	
+	//店铺类型
+	var type_list = {:json_encode($type_list)};
+	$('#top_id').change(function(){
+		var top_id = $(this).val();
+		var type = type_list[top_id];
+		var option = '';
+		var child;
+		$(type.children).each(function(index,element){
+			option += '<option value="'+element.type_id+'">'+element.type_name+'</option>';
+			if(index == 0){
+				child = element;
+			}
+		});
+		$('#type_id').html(option);
+		
+		$('#deposit').html(child.deposit);
+		$('#service_charge').html(child.service_charge);
+		$('#platform_take').html(child.platform_take+'%');
+	});
+	
+	$('#type_id').change(function(){
+		var top_id = $('#top_id').val();
+		var type = type_list[top_id];
+		var type_id = $(this).val();
+		var child;
+		$(type.children).each(function(index,element){
+			if(element.type_id == type_id){
+				child = element;
+			}
+		});
+		$('#deposit').html(child.deposit);
+		$('#service_charge').html(child.service_charge);
+		$('#platform_take').html(child.platform_take+'%');
+	});
+	
+	//获取二级分类
+	$("#cat_id").change(function(){
+		var cat_id = $(this).val();
+		$.post("{:U('sub_cat')}",{cat_id:cat_id},function(d){
+			$('#sub_cat').html(d);
+		},'json');
+		return false;
+	})
+	
+	//删除类目
+	$('.del').click(function(){
+		var obj = $(this);
+		layer.open({
+			content: '确认取消吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(obj.attr('href'), {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						window.location.reload();
+					}
+				}, 'json');
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	});
+});
+</script>

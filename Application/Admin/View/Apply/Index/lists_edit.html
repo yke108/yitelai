@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">审批</h3>
+			<form class="form-horizontal" method="post" action="{:U('lists_edit')}">
+				<fieldset>
+					<input type="hidden" name="id" value="{$info.id}">
+                    <input type="hidden" name="step" value="{$get.step}">
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">申请详情</label>
+						<div class="col-sm-8">
+							<textarea id="ueditor" name="content" style="height:200px;" disabled>{$info.content}</textarea>
+						</div>
+					</div>
+                    
+                    <?php
+                    if($get['step'] == 1)
+                    {
+                    ?>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">区域审批人</label>
+						<div class="col-sm-8">
+							<input name="examine_name_area" class="input-xlarge form-control" type="text" value="{$info.examine_name_area}" required>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">区域审批状态</label>
+						<div class="col-sm-8">
+							<label class="control-label col-sm-3" style="width:auto;padding-left:0"><input name="examine_status_area" type="radio" value="1" required> 同意</label>
+                            <label class="control-label col-sm-3" style="width:auto;padding-left:0"><input name="examine_status_area" type="radio" value="2" required> 驳回</label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">批示内容或者驳回理由</label>
+						<div class="col-sm-8">
+							<input name="examine_note_area" class="input-xlarge form-control" type="text" value="{$info.examine_note_area}" required>
+						</div>
+					</div>
+                    <?php
+                    }
+                    ?>
+                    
+                    <?php
+                    if($info['type'] > 1 && $get['step'] == 2)
+                    {
+                    ?>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">平台审批人</label>
+						<div class="col-sm-8">
+							<input name="examine_name_platform" class="input-xlarge form-control" type="text" value="{$info.examine_name_platform}" required>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">平台审批状态</label>
+						<div class="col-sm-8">
+							<label class="control-label col-sm-3" style="width:auto;padding-left:0"><input name="examine_status_platform" type="radio" value="1" required> 同意</label>
+                            <label class="control-label col-sm-3" style="width:auto;padding-left:0"><input name="examine_status_platform" type="radio" value="2" required> 驳回</label>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">批示内容或者驳回理由</label>
+						<div class="col-sm-8">
+							<input name="examine_note_platform" class="input-xlarge form-control" type="text" value="{$info.examine_note_platform}" required>
+						</div>
+					</div>
+                    <?php
+                    }
+                    ?>
+                    
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-3">短信/留言</label>
+						<div class="col-sm-8">
+							<input name="remind" class="input-xlarge form-control" type="text" value="{$info.remind}">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-3">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+<script type="text/javascript">
+$(document).ready(function(){
+	var ue = UE.getEditor('ueditor',{maximumWords:15000,elementPathEnabled :false});
+});
+</script>

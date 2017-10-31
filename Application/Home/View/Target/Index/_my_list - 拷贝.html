@@ -1,0 +1,10 @@
+<volist name="list" id="v">
+	<php>$finish_status_badge = $v['finish_status'] == 1 ? 'mui-badge-success' : 'mui-badge-warning';</php>
+	<li>
+		<a href="{:U('detail','id='.$v['id'])}">
+			<h2><em>{$v.admin_name}</em><span class="mui-badge {$finish_status_badge} mui-badge-inverted">（{$v.finish_status_label}）</span></h2>
+			<p>开始时间：{:date('Y-m-d', $v[start])}</p>
+			<p>结束时间：{:date('Y-m-d', $v[end])}</p>
+		</a>
+	</li>
+</volist>

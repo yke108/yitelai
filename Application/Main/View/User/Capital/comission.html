@@ -1,0 +1,48 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------获得分利开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>获得分利</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_subordinate">
+				<div class="tabmenu">
+					<span><a href="{:U('user/recharge/index')}" class="ncm-btn ncm-btn-orange"><img src="__PUBLIC__/main/images/icon55.png">在线充值</a></span>
+					<ul class="tab pngFix">
+						<li><a href="{:U('user/capital/index')}">资金明细</a></li>
+						<li class="on"><a href="{:U('user/capital/comission')}">获得分利</a></li>
+						<li><a href="{:U('user/capital/cashapply')}">提现记录</a></li>
+					</ul>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th width="33%">获得来源</th>
+						<th width="33%">获得时间</th>
+						<th>获得分利</th>
+					</tr>
+					<volist name="list" id="vo">
+						<tr>
+							<td align="center"><em>{$vo.ref_user}</em>购买商品{$vo.change_desc}</td>
+							<td align="center">{$vo.change_time|date="Y-m-d H:i",###}</td>
+							<td align="center"><span><strong>+{$vo.amount_change}</strong></span></td>
+						</tr>
+					</volist>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------获得分利结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

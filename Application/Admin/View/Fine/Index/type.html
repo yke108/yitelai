@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">罚款类型
+			<a id="rec_add" href="{:U('type_edit')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal" hy_w='600' hy_h='250'>添加</a>
+            <div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="50%">类型名称</th>
+							<th width="50%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="50%">{$vo.fine_name}</td>
+								<td width="50%">
+									<a class='cs_ajax_link hy_show_modal' hy_w='600' hy_h='200' href="{:U('type_edit',array('id'=>$vo['id']))}">编辑</a>
+                                    <a class='cs_ajax_link hy_show_modal cs_del_confirm' href="{:U('type_del',array('id'=>$vo['id']))}" cs_tip="删除不可恢复，确认删除！">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
+</div>

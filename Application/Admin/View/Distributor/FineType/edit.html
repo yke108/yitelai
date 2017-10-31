@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.type_id" value="0">修改类型<else/>添加类型</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="type_id" value="{$info.type_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">类型名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="type_name" class="input-xlarge form-control" type="text" value="{$info.type_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并修改</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

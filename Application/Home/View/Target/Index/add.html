@@ -1,0 +1,82 @@
+<div class="work_target_form">
+    <form action="{:U()}" method="post">
+    	<input type="hidden" name="type" value="{$get.t}">
+        <div class="mui-input-group">
+            <div class="mui-input-row">
+                <label>计划会员增量</label>
+                <input type="number" name="plan_user_add" placeholder="请输入">
+            </div>
+            <div class="mui-input-row">
+                <label>计划准客户增量</label>
+                <input type="number" name="plan_consumer_add" placeholder="请输入">
+            </div>
+            <div class="mui-input-row">
+                <label>计划邀约数</label>
+                <input type="number" name="plan_invitation" placeholder="请输入">
+            </div>
+            <div class="mui-input-row">
+                <label>计划报名数</label>
+                <input type="number" name="plan_sign_up" placeholder="请输入">
+            </div>
+            <div class="mui-input-row">
+                <label>计划成交客户量</label>
+                <input type="number" name="plan_deal" placeholder="请输入">
+            </div>
+            <div class="mui-input-row">
+                <label>计划销售额</label>
+                <input type="number" name="plan_sales" placeholder="请输入">
+            </div>
+        </div>
+        <div class="btn">
+            <a href="javascript:dosubmit()" class="mui-btn mui-btn-primary mui-btn-block">提交</a>
+        </div>
+    </form>
+</div>
+<script>
+function dosubmit()
+{ 
+	var plan_user_add = $('input[name=plan_user_add]');
+	if(plan_user_add.val() < 1 )
+	{ 
+		mui.toast('请输入计划会员增量');
+		plan_user_add.focus();
+		return;
+	}
+	var plan_consumer_add = $('input[name=plan_consumer_add]');
+	if(plan_consumer_add.val() < 1 )
+	{ 
+		mui.toast('请输入计划准客户增量');
+		plan_consumer_add.focus();
+		return;
+	}
+	var plan_invitation = $('input[name=plan_invitation]');
+	if(plan_invitation.val() < 1 )
+	{ 
+		mui.toast('请输入计划邀约数');
+		plan_invitation.focus();
+		return;
+	}
+	var plan_sign_up = $('input[name=plan_sign_up]');
+	if(plan_sign_up.val() < 1 )
+	{ 
+		mui.toast('请输入计划报名数');
+		plan_sign_up.focus();
+		return;
+	}
+	var plan_deal = $('input[name=plan_deal]');
+	if(plan_deal.val() < 1 )
+	{ 
+		mui.toast('请输入计划成交客户量');
+		plan_deal.focus();
+		return;
+	}
+	var plan_sales = $('input[name=plan_sales]');
+	if(plan_sales.val() < 1 )
+	{ 
+		mui.toast('请输入计划销售额');
+		plan_sales.focus();
+		return;
+	}
+	$('form').submit();
+}
+</script>

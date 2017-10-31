@@ -1,0 +1,69 @@
+<style type="text/css">
+table.table tr td a.goodst{display:inline-block;width:16px;height:16px;border-radius:50%;}
+table.table tr td a.goodst0{background:#DDD;}
+table.table tr td a.goodst1{background:green;}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">设计师列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加设计师</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<!-- end搜索 -->
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>头像</th>
+							<th>设计师名称</th>
+							<th width='500'>简介</th>
+							<th>发布时间</th>
+							<th>最新修改时间</th>
+							<th>访问量</th>
+							<!--<th>点赞数</th>
+							<th>拍砖数</th>-->
+							<th>排序(*从大到小排列)</th>
+							<!--<th style='text-align:center;'>推荐页面顶部</th>-->
+							<th>案例</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><if condition="$vo[designer_image] neq null"><img src="__UPLOAD__/{$vo.designer_image}" alt="" style="width:100px;height:100px;"></if></td>
+							    <td>{$vo.designer_name}</td>
+								<td>{$vo.designer_intro}</td>
+								<td>{$vo.add_time|date="Y-m-d",###}</td>
+								<td>{$vo.update_time|date="Y-m-d",###}</td>
+								<td>{$vo.view_num}</td>
+								<!--<td>{$vo.good_num}</td>
+								<td>{$vo.bad_num}</td>-->
+								<td>{$vo.sort_order}</td>
+								<!--<td align='center'>
+									<a class="goodst cs_tip_b goodst{$vo.is_page_top} cs_ajax_link" href="{:U('page_top',array('designer_id'=>$vo[designer_id]))}" v="0" c="goodst"></a></td>-->
+								<td><a href="{:U('Designer/DesignerCase/index',array('designer_id'=>$vo['designer_id']))}">查看</a></td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[designer_id]))}">编辑</a>
+									<a href="{:U('del', array('id'=>$vo[designer_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

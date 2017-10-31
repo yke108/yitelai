@@ -1,0 +1,108 @@
+<div class="warp">
+	<div class="user_change_password">
+		<form action="{:U('')}" method="post">
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell weui-cell_vcode">
+					<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon52.png" style="width:20px;margin-right:5px;display:block"></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码" id="vcode" name="code">
+					</div>
+					<div class="weui-cell__ft">
+						<button class="weui-vcode-btn" type="button" id="code_btn">获取验证码</button>
+					</div>
+				</div>
+			</div>
+			<h2 id="send_info" style="display:none">已发送验证码至{$user.mobile_hide}</h2>
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon53.png" style="width:20px;margin-right:5px;display:block"></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="password" placeholder="输入密码" name="password">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon54.png" style="width:20px;margin-right:5px;display:block"></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="password" placeholder="确认密码" name="password2">
+					</div>
+				</div>
+			</div>
+			<div class="btn">
+				<a class="weui-btn weui-btn_primary" href="javascript:;" id="btn_submit">确定</a>
+				<input type="hidden" name="sms_id" value="{$ssid}" id="sms_id"/>
+				<input type="hidden" name="phone" value="{$user.mobile}" id="phone"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('#btn_submit').click(function(){
+		if(!$("input[name='password']").val()){
+			layer.open({time:1,content:'新密码不能为空'});return false;
+		}
+		if($("input[name='password2']").val() != $("input[name='password']").val()){
+			layer.open({time:1,content:'确认密码不正确'});return false;
+		}
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>
+
+<script type="text/javascript">
+var clock_id = 0;
+var clock_fun = function(){
+    var obj = $('#code_btn');
+    var sleft = obj.attr('sleft');
+    sleft -= 1;
+    if(sleft <= 0){
+        clearInterval(clock_id);
+        obj.css({'background':'#ff3451', 'border':'1px solid #ffbd29'}).attr('sleft','0').html('获取验证码');
+		//obj.attr('disabled', 'false');
+    } else {
+        obj.attr('sleft', sleft).html(sleft+'s后可重新获取');
+    }
+};
+
+$(document).ready(function(){
+    $('#code_btn').bind('click',function(){
+        var obj = $(this);
+        if(obj.attr('sleft') > 0){
+            layer.open({time:1,content:'请稍后再试'});
+            return false;
+        }
+        var phone = $('#phone').val();
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (!reg.test(phone)) {
+            layer.open({time:1,content:'请输入正确的手机号码'});
+            return false;
+        }
+        //obj.attr('disabled', 'true');
+        var sleft = 60;
+        obj.attr('sleft',sleft).css('background','gray').css('border','1px solid gray').html(sleft+'s后可重新获取');
+        clock_id=setInterval("clock_fun()",1000);
+        $.post('{:U("code")}',{phone:phone},function(d){
+            if(d.status == 0){    
+                obj.attr('sleft', -1);
+                clearInterval(clock_id);
+                alert(d.info);
+				//obj.attr('disabled', 'false');
+				$('#send_info').css('display', 'block');
+                clock_fun();
+                return false;
+            }
+            $('#sms_id').val(d.ssid);
+			console.log(d);
+        },'json');
+        return false;
+    });
+});
+</script>

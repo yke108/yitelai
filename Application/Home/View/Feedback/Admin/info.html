@@ -1,0 +1,20 @@
+<div class="new_order_type_detaild">
+	<div class="new_order_type_detaild_hd">
+		<dl>
+			<dt><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}" style="width:50px; height:50px; border-radius:50%;"></dt>
+			<dd>
+				<p>{$info.admin_name}</p>
+				<time>{$info.region_name}</time>
+			</dd>
+		</dl>
+	</div>
+	<div class="new_order_type_detaild_bd">
+		<ul>
+			<li><span>性别</span><em>{$info.sex_name}</em></li>
+			<li><span>手机号</span><em><a href="tel:18888881234">{$info.mobile}</a></em></li>
+			<li><span>所属部门</span><em>{$info.department_name}</em></li>
+			<li><span>客服类型</span><em>{$info.admin_type_name}</em></li>
+			<li><span>总咨询用户数</span><em>{$feedback_count|default=0}</em></li>
+		</ul>
+	</div>
+</div>

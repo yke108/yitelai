@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">岗位管理
+			<a id="rec_add" href="{:U('department_edit')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal" hy_w='600' hy_h='400'>添加</a>
+            <div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="33%">所属组别</th>
+                            <th width="33%">岗位名称</th>
+							<th width="33%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="33%">{$vo.group_name}</td>
+                                <td width="33%">{$vo.department}</td>
+								<td width="33%">
+									<a class='cs_ajax_link hy_show_modal' hy_w='600' hy_h='400' href="{:U('department_edit',array('id'=>$vo['id']))}">编辑</a>
+                                    <a class='cs_ajax_link hy_show_modal cs_del_confirm' href="{:U('department_del',array('id'=>$vo['id']))}" cs_tip="删除不可恢复，确认删除！">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+			</div>
+		</div>
+	</div>
+</div>

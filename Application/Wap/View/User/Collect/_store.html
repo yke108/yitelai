@@ -1,0 +1,6 @@
+<volist name="list" id="vo">
+	<li>
+		<a href="{:U('store/index/index', array('store_id'=>$vo['id_value']))}"><img src="__UPLOAD__/thumbs/b120/{$vo.distributor_image}" class="pic">{$vo.distributor_name|msubstr=0,38,'utf-8',true}</a>
+		<span><a href="javascript:;" class="del" onClick="del_collect({$vo.collect_id})"><img src="__PUBLIC__/wap/images/icon9.png"></a></span>
+	</li>
+</volist>

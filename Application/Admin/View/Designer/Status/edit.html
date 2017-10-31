@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.status_id" value="0">订单状态修改<else/>订单状态增加</gt></h3>
+			<php>$action = $info['status_id'] > 0 ? U('edit', array('id'=>$info['status_id'])) : U('add');</php>
+		<form class="form-horizontal" action="{$action}" method="post" enctype="multipart/form-data">
+			<fieldset>			
+				<div class="form-group">
+					<label class="control-label col-sm-2">分类名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="status_name" class="input-xlarge form-control" type="text" value="{$info.status_name}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div> 
+	

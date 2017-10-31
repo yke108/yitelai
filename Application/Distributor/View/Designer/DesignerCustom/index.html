@@ -1,0 +1,67 @@
+<div class="row hy_page_content" href="{:U('',$get)}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">客户需求申请列表
+			<!--<a id="rec_add" href="{:U('add',array('designer_id'=>$info['designer_id']))}" class="btn btn-info btn-sm alink_r">添加案例</a>-->
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<!--<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>-->
+		<!-- end搜索 -->
+		
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>会员名称</th>
+							<th>用户名称</th>
+							<th>手机号码</th>
+							<th>楼盘名称</th>
+							<th>房屋面积</th>
+							<th>IP</th>
+							<th>提交时间</th>
+							<th>备注</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.nick_name}</td>
+								<td>{$vo.name}</td>
+							    <td>{$vo.tel}</td>
+								<td>{$vo.estate_name}</td>
+								<td>{$vo.house_area}</td>
+								<td>{$vo.ip}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td>{$vo.remark}</td>
+								<td>
+									<a href="{:U('remark', array('custom_id'=>$vo[custom_id]))}" class="cs_ajax_link cs_show_modal" cs_id="remark">备注</a>
+									<!--<a href="{:U('edit', array('designer_id'=>$vo[designer_id],'id'=>$vo['case_id']))}">编辑</a>-->
+									<a  href="{:U('del', array('id'=>$vo[custom_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+
+<div class="modal" id="remark" style="width:100%;">
+	<div class="modal-dialog" style="width:40%;height:auto;">
+		<div class="modal-content" id="order_content" style="padding:20px;height:480px; overflow:scroll">
+			
+		</div>
+	</div>
+</div>

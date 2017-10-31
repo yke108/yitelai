@@ -1,0 +1,67 @@
+<div class="mui-scroll-wrapper" id="pullrefresh">
+    <div class="install_master">
+        <div class="install_master_hd">
+            <form action="{:U('')}">
+                <div class="mui-input-row mui-search">
+                    <input type="search" name="area" value="{$area}" class="mui-input-clear" placeholder="搜索">
+                </div>
+            </form>
+        </div>
+        <div class="install_master_bd">
+            <h2><span>店铺</span><em>店铺数量</em></h2>
+            <ul class="load-data">
+                <include file="Statistics/Shop/_index"/>
+            </ul>
+        </div>
+    </div>
+</div>
+<if condition='$count gt count($list)'>
+    <script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+    <script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+    <script type="text/javascript">
+        var page = 2;
+        var area = "{$area}";
+        mui.init({
+            pullRefresh: {
+                container: '#pullrefresh',
+                up: {
+                    contentrefresh: '正在加载...',
+                    contentnomore: '没有更多数据了',
+                    callback: pullupRefresh
+                }
+            }
+        });
+
+        function pullupRefresh() {
+            var $this = this;
+            mui.ajax("{:U('')}", {
+                type: 'post',
+                data: {p: page, area: area},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.html != '') {
+                        $(".load-data").append(res.html);
+                        page++;
+                        $this.endPullupToRefresh();
+                    } else {
+                        $this.endPullupToRefresh(true);
+                    }
+                }
+            })
+        }
+    </script>
+    <else/>
+    <script type="text/javascript">
+        mui('.mui-scroll-wrapper').scroll({});
+    </script>
+</if>
+<script type="text/javascript">
+    mui.init();
+    mui('body').on('tap', 'a.link', function () {
+        var href = this.getAttribute('href');
+        if (!mui.os.plus) {
+            location.href = href;
+            return;
+        }
+    });
+</script>

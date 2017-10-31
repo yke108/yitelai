@@ -1,0 +1,44 @@
+<div class="col-sm-12 col-md-12">
+    <h3 class="heading">极光推送参数</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('update')}">
+			<fieldset>
+
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">AppKey</label>
+					<div class="col-sm-4">
+						<input name="c[app_key]" class="input-xlarge form-control" value="{$info.app_key}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">MasterSecret</label>
+					<php>$master_secret = empty($info['master_secret']) ? '' : '***********************************';</php>
+					<div class="col-sm-4">
+						<input name="c[master_secret]" class="input-xlarge form-control" value="{$master_secret}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">开启测试</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="c[api_debug]" {:m_checked($info[api_debug], 1)} type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="2" name="c[api_debug]" {:m_checked($info[api_debug], 2)} type="radio">
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<input type="hidden" name="type" value="{$info._type}">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+</div>

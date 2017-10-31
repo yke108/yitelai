@@ -1,0 +1,127 @@
+
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">发放 {$admin_name} 工资</h3>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+				<input type="hidden" name="inputtime" value="{$inputtime}"/>
+				<input type="hidden" name="admin_id" value="{$admin_id}"/>
+				<fieldset>
+					<div class="form-group">
+						<label class="control-label col-sm-2">发放时间</label>
+						<div class="col-sm-8"><span style="display: inline-block; padding-top: 7px;">{$inputtime}</span></div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">发放月份</label>
+						<div class="col-sm-8">
+							<select class="form-control input-sm" name="month">
+								<option value="">请选择发放月份</option>
+								<foreach name="month_list" item="vo">
+									<option {:m_selected($vo[value], $payroll_month)} value="{$vo[value]}">{$vo[monty]}</option>
+								</foreach>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">岗位工资</label>
+						<div class="col-sm-8">
+							<input name="post_salary" class="input-xlarge form-control" type="text" placeholder="请输入岗位工资">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">法定工资</label>
+						<div class="col-sm-8">
+							<input name="legal_wage" class="input-xlarge form-control" type="text" placeholder="请输入法定工资">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">考核工资</label>
+						<div class="col-sm-8">
+							<input name="assessment_wage" class="input-xlarge form-control" type="text" placeholder="请输入考核工资">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">差旅费</label>
+						<div class="col-sm-8">
+							<input name="travel_expenses" class="input-xlarge form-control" type="text" placeholder="请输入差旅费">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">办公费</label>
+						<div class="col-sm-8">
+							<input name="office_expenses" class="input-xlarge form-control" type="text" placeholder="请输入办公费">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">奖励</label>
+						<div class="col-sm-8">
+							<input name="reward" class="input-xlarge form-control" type="text" placeholder="请输入奖励">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">提成</label>
+						<input type="hidden" name="commission"/>
+						<input type="hidden" name="commission_value" value="{$commission_value}"/>
+						<div class="col-sm-8">
+							<div style="margin-top: 7px;" class="commission_html">0.00</div>
+							<span style="display: inline-block;">销售额：</span>
+							<input name="commission_total" class="input-xlarge form-control" style="width: 50%; display: inline-block" type="text" placeholder="请输入销售金额">
+							<span style="display: inline-block;">X {$commission_rate}%</span>
+							<div style="margin-top: 10px;">提成 = 销售额 X 提成比率</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2">状态</label>
+						<div class="col-sm-8">
+							<div style="margin-top: 10px;">
+								<label style="display: inline-block"><input type="radio" value="0" checked name="status"/>不发放</label>
+								<label style="display: inline-block"><input type="radio" value="1" name="status"/>发放</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var regular = /^[0-9]*(\.[0-9]{1,2})?$/;
+		$('input[name=commission_total]').blur(function(){
+			var totalCommissionValue = $(this).val();
+			if (!regular.test(totalCommissionValue)) {
+				alert("格式不正确");
+				$('.commission_html').html('0.00');
+				$('input[name=commission]').valueOf(0);
+				$('input[name=commission_total]').val('');
+				return false;
+			} else {
+				var commission_value = $('input[name=commission_value]').val();
+				var commission = totalCommissionValue * commission_value;
+				var commissionMoney = commission.toFixed(2);
+				$('.commission_html').html(commissionMoney);
+				$('input[name=commission]').val(commissionMoney);
+				return true;
+			}
+		});
+
+		var totalCommissionValue = $('input[name=commission_total]').val();
+		if (!regular.test(totalCommissionValue)) {
+			$('.commission_html').html('0.00');
+			$('input[name=commission]').valueOf(0);
+			$('input[name=commission_total]').val('');
+			return false;
+		} else {
+			var commission_value = $('input[name=commission_value]').val();
+			var commission = totalCommissionValue * commission_value;
+			var commissionMoney = commission.toFixed(2);
+			$('.commission_html').html(commissionMoney);
+			$('input[name=commission]').val(commissionMoney);
+			return true;
+		}
+	});
+</script>
+	

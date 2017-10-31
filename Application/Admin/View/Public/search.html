@@ -1,0 +1,16 @@
+<form class='cs_ajax_form' method='post'>
+<div class="pull-left">
+	关键字:
+	<input type="text" class="form-control input-sm" placeholder="请输入关键字" name='keyword'  style="display:inline-block;width:auto;" value='{$post.keyword}' id="keyword"/>
+	<input type='text' style='width:120px;display:inline;margin-left:20px;' placeholder="生成开始时间" value="{$post.start_time}" name='start_time' class='form-control' id='dp1' /> - <input value="{$post.end_time}" placeholder="生成结束时间" style='width:120px;display:inline;' class='form-control' type='text' name='end_time' id='dp2' />				
+	<button type='submit' style='position:relative;top:-2px;left:5px;' href="" class="btn btn-default btn-sm cs_ajax_link hy_submit" id="btn_search">搜索</button>
+</div>
+</form>
+<script src="__PUBLIC__/lib/datepicker/bootstrap-datepicker.min.js"></script>
+<script>
+$(document).ready(function(){
+	//$('#dp1,#dp2').val('');
+	$('#dp1').datepicker({format:"yyyy-mm-dd"});
+	$('#dp2').datepicker({format:"yyyy-mm-dd"});
+});
+</script>

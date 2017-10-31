@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">充值活动列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加充值活动</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>活动标题</th>
+							<th>累计增送天数</th>
+							<th>活动说明</th>
+							<th>条件金额</th>
+							<th>累计赠送金额</th>
+							<th>活动开始时间</th>
+							<th>活动结束时间</th>
+							<th>活动状态</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+					<volist name="list" id="vo">
+						<tr class="rowlink">
+							<td>{$vo.title}</td>
+							<td class="center">{$vo.days}</td>
+							<td>{$vo.description}</td>
+							<td>{$vo.limit_money}</td>
+							<td>{$vo.money}</td>
+							<td>{$vo.start_time|date="Y-m-d H:i",###}</td>
+							<td>{$vo.end_time|date="Y-m-d H:i",###}</td>
+							<td>
+								<if condition="$vo.status eq 1">
+								<a class="label label-success cs_ajax_link cs_tip_b" href='{:U("change_status",array("id"=>$vo[activity_id]))}'>开启</a>
+								<else/>
+								<a class="label label-danger cs_ajax_link cs_tip_b" href='{:U("change_status",array("id"=>$vo[activity_id]))}'>关闭</a>
+								</if>
+							</td>
+							<td>
+								<a href="{:U('edit', array('id'=>$vo[activity_id]))}">编辑</a>
+								<a href="{:U('del', array('id'=>$vo[activity_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+							</td>
+						</tr>
+					</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

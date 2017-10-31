@@ -1,0 +1,77 @@
+<style>
+.row{margin:0;}
+.not_padding{padding:0;}
+.heading{border:none;}
+.modal-content{position:static;}
+.alink_r{margin:0;float:none;}
+</style>
+<div class="row search_page" style='padding-bottom:50px;'>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">
+			
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				关键字:
+				<input type="text" class="form-control input-sm"  style="display:inline-block;width:auto;" id="keyword"/>
+				<a href="{:U('select_user')}" class="btn btn-default btn-sm" id="btn_search">搜索</a>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 not_padding">
+				<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th></th>
+							<th width="100">用户Id</th>
+							<th>用户昵称</th>
+							<th>用户手机</th>
+						</tr>
+					</thead>
+					<tbody id="tblc">
+						<include file='_user' />
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div class='' style='position:absolute;bottom:8px;left:0;right:0;margin:auto;width:100%;text-align:center;'>
+	<div class='sub_box' style='margin:0 25px 0 10px;background:#fff;padding:10px 0;border-top:1px solid #dfdfdf;'>	
+		<a style='display:inline-block;font-size:16px;' href="{:U('get_user')}" class='btn btn-info btn-sm alink_r get_user'>提交</a>
+	</div>
+</div>
+<script>
+$("#btn_search").click(function(e){
+	e.preventDefault();
+	var keyword=$("#keyword").val();
+	var href=$(this).attr('href');
+	$.ajax({
+		type:'POST',
+		url:href,
+		data:{keyword:keyword},
+		dataType:"json",
+		success:function(res){
+			$("#tblc").html(res.html)
+		}
+	})
+})
+$(".get_user").click(function(e){
+	e.preventDefault();$(".user_name_box")[0].value='';$(".user_id_box")[0].value='';
+	var href=$(this).attr('href');
+	var checked_user=[];
+	var checked_name=[];
+	$(".user:checked").each(function(){
+		checked_user.push($(this).val());
+		checked_name.push($(this).attr('val'))
+	})
+	//alert(checked_name.toString());
+	$(".user_name_box").val(checked_name.toString());
+	$(".user_id_box").val(checked_user.toString());
+	hide_modal()
+})
+function hide_modal(){
+	$(".modal").remove();
+}
+</script>

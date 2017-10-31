@@ -1,0 +1,91 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的收货地址开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>收货地址</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_address">
+				<div class="tabmenu">
+					<span><a href="{:U('add')}" class="ncm-btn ncm-btn-orange"><img src="__PUBLIC__/main/images/icon64.png">新增地址</a></span>
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">地址列表</a></li>
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="20"></td>
+							<td width="100" align="left">收货人</td>
+							<td width="150" align="center">所在地区</td>
+							<td width="360" align="left">街道地址</td>
+							<td width="180" align="center">电话/手机</td>
+							<td align="center">操作</td>
+						</tr>
+						<volist name="list" id="vo">
+							<tr>
+								<td></td>
+								<td align="left">{$vo.consignee}<eq name="vo.is_default" value="1"><font color="red">（默认地址）</font></eq></td>
+								<td align="center">{$vo.zone}</td>
+								<td align="left">{$vo.address}</td>
+								<td align="center"><img src="__PUBLIC__/main/images/icon65.png"><p>{$vo.mobile}</p></td>
+								<td align="center">
+									<a href="{:U('edit', array('id'=>$vo['address_id']))}"><img src="__PUBLIC__/main/images/icon66.png" width="15" height="15"><br>编辑</a>
+									<a href="javascript:;" onClick="del_addr({$vo.address_id})"><img src="__PUBLIC__/main/images/icon58.png" width="15" height="15"><br>删除</a>
+								</td>
+							</tr>
+						</volist>
+					</table>
+					<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的收货地址结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+function del_addr(address_id){
+	var $this = address_id;
+	if(address_id<0){return;}
+	layer.open({
+		content: '确认要删除该地址吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){
+			var address_id = $this;						
+			$.post("{:U('del')}",{id:address_id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					window.location.reload();
+					return;
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+
+function set_defaddr(address_id){
+	$.post("{:U('addressDef')}",{address_id:address_id},function(data){
+		layer.open({time:1,content:data.msg});
+	},'json');
+}
+</script>

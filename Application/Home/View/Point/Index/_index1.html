@@ -1,0 +1,11 @@
+<volist name="list" id="vo">
+	<a href="{:U('list', array('user_id'=>$vo[user_id]))}" class="right-after link">
+		<dl>
+			<dt><img src="{$vo.avatar}"></dt>
+			<dd>
+				<h2><span>{$vo.user_name}</span><em><gt name="vo.point_change" value="0">+{$vo.point_change}<else/><i>{$vo.point_change}</i></gt></em></h2>
+				<p><span>{:date('Y-m-d H:i', $vo[add_time])}</span><em>{$vo.change_desc}</em></p>
+			</dd>
+		</dl>
+	</a>
+</volist>

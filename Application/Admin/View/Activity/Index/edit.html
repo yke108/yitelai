@@ -1,0 +1,226 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.activity_id" value="0">编辑活动<else/>添加活动</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">图片</label>
+					<div class="col-sm-2">
+						<input class="hy_upload_single" hy_field="picture" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.picture">{$info.picture}</notempty>"/>
+					</div>
+					<label class="control-label" style="float:left">尺寸：580 * 300</label>
+				</div>
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">详情页图片</label>
+					<div class="col-sm-2">
+						<input class="hy_upload_single" hy_field="image" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.image">{$info.image}</notempty>"/>
+					</div>
+					<label class="control-label" style="float:left">尺寸：530 * 450</label>
+				</div>-->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">标题</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="title" class="input-xlarge form-control" type="text" value="{$info.title}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">副标题</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="sub_title" class="input-xlarge form-control" type="text" value="{$info.sub_title}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">开始时间</label>
+					<div class="col-sm-3 col-md-4">
+						<input class="form-control" type="text" name="start_time" value="{:hydate('Y-m-d H:i:s', $info[start_time])}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+						<span class="help-block">请选择开始时间</span>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">结束时间</label>
+					<div class="col-sm-3 col-md-4">
+						<input class="form-control" type="text" name="end_time" value="{:hydate('Y-m-d H:i:s', $info[end_time])}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+						<span class="help-block">请选择结束时间</span>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">活动地点</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="place" class="input-xlarge form-control" type="text" value="{$info.place}">
+					</div>
+				</div>
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">分类</label>
+					<div class="col-sm-4 col-md-4">
+						<select class="form-control" name="cat_id">
+							<option value="">选择分类</option>
+							<volist name="catlist" id="vo">
+								<option {:m_selected($info[cat_id], $vo[cat_id])} value="{$vo.cat_id}">{$vo.cat_name}</option>
+								<volist name="vo.children" id="vo2">
+									<option {:m_selected($info[cat_id], $vo2[cat_id])} value="{$vo2.cat_id}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ {$vo2.cat_name}</option>
+								</volist>
+							</volist>
+						</select>
+					</div>
+				</div>-->
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">来源</label>
+					<div class="col-sm-4 col-md-4">
+						<input name="from" class="input-xlarge form-control" type="text" value="{$info.from}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">作者</label>
+					<div class="col-sm-4 col-md-4">
+						<input name="author" class="input-xlarge form-control" type="text" value="{$info.author}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">描述</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="description" class="input-xlarge form-control" type="text" value="{$info.description}">
+					</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">项目发起人</label>
+					<div class="col-sm-4" style="padding:0;">
+						<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered" id="table_list">
+							<thead>
+								<tr>
+									<th>头像</th>
+									<th>姓名</th>
+									<th><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_button">添加发起人</a></th>
+								</tr>
+							</thead>
+							<tbody id="tblc">
+								<empty name="info.launch_list">
+									<tr>
+										<td><input class="hy_upload_single" hy_field="launch_image[]" src="" style="width:50px;height:50px;" /></td>
+										<td><input type="text" name="launch_name[]" value="" class="form-control"></td>
+										<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+									</tr>
+								<else/>
+									<volist name="info.launch_list" id="vo" key="k">
+										<tr>
+											<td><input class="hy_upload_single" hy_field="launchs[{$vo.launch_id}][launch_image]" src="{$vo.launch_image}" style="width:50px;height:50px;" /></td>
+											<td><input type="text" name="launchs[{$vo.launch_id}][launch_name]" value="{$vo.launch_name}" class="form-control"></td>
+											<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+										</tr>
+									</volist>
+								</empty>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">项目内容</label>
+					<div class="col-sm-9">
+						<textarea id="ueditor" name="content" style="width:100%;height:300px;">
+							{$info.content}
+						</textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">投资计划</label>
+					<div class="col-sm-10">
+						<textarea id="ueditor1" name="content1" style="width:100%;height:300px;">{$info.content1}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">预计回报</label>
+					<div class="col-sm-10">
+						<textarea id="ueditor2" name="content2" style="width:100%;height:300px;">{$info.content2}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">实施计划</label>
+					<div class="col-sm-10">
+						<textarea id="ueditor3" name="content3" style="width:100%;height:300px;">{$info.content3}</textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="is_open" <gt name="info.activity_id" value="0">{:m_checked($info[is_open], 1)}<else/>checked="checked"</gt> type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="0" name="is_open" <gt name="info.activity_id" value="0">{:m_checked($info[is_open], 0)}</gt> type="radio">
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="activity_id" value="{$info.activity_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var ue1 = UE.getEditor('ueditor1',{maximumWords:15000,initialFrameWidth:1000,elementPathEnabled :false});
+	var ue2 = UE.getEditor('ueditor2',{maximumWords:15000,initialFrameWidth:1000,elementPathEnabled :false});
+	var ue3 = UE.getEditor('ueditor3',{maximumWords:15000,initialFrameWidth:1000,elementPathEnabled :false});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.cs_row_add_button').unbind('click').bind('click', function(){
+		var row = '<tr>' +
+						'<td><input class="hy_upload_single" hy_field="launch_image[]" src="" style="width:50px;height:50px;" /></td>' +
+						'<td><input type="text" name="launch_name[]" value="" class="form-control"></td>' +
+						'<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>' +
+					'</tr>';
+		$('#tblc').append(row);
+		$('#tblc tr td').children('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+		
+		//删除事件
+		$('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				obj.remove();
+			}else{
+				return false;
+			}
+		});
+	});
+	
+	$('.btn_row_del').unbind('click').bind('click', function(){
+		var obj = $(this).parent().parent();
+		if(obj.parent().children().length > 1){
+			obj.remove();
+		}else{
+			return false;
+		}
+	});
+});
+</script>

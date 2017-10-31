@@ -1,0 +1,621 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------产品详情开始----->
+<div class="main w1200">
+	<div class="pro_deta">
+		<div class="pro_deta_hd clearfix">
+			<div class="pro_deta_hd_l fl">
+				<div class="pro_deta_position"><a href="{:U('mall/category/index')}">所有商品</a> <span>></span><em>{$info.cat_name}</em></div>
+				<dl class="clearfix">
+					<dt>
+						<div class="preview">
+							<div id="vertical" class="bigImg">
+								<img src="__UPLOAD__/{$info.goods_gallery.0}" alt="" id="midimg" />
+								<div style="display:none;" id="winSelector"></div>
+							</div>
+							<div class="smallImg clearfix">
+								<div class="scrollbutton smallImgUp disabled"></div>
+								<div id="imageMenu">
+									<ul class="clearfix">
+										<foreach name="info.goods_gallery" item="vo" key="k">
+											<li <eq name="k" value="0">id="onlickImg"</eq>><img src="__UPLOAD__/{$vo}" width="68" height="68" alt=""/></li>
+										</foreach>
+									</ul>
+								</div>
+								<div class="scrollbutton smallImgDown"></div>
+							</div>
+							<div id="bigView" style="display:none;"><img width="800" height="540" alt="" src="" /></div>
+						</div>
+						<script src="__PUBLIC__/main/js/jqzoom.js"></script>
+						<div class="share">
+							<a href="{:U('collect', array('id'=>$info[record_id]))}" class="sc_btn <eq name="is_collect" value="1">on</eq>"><i></i>关注</a>
+							<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis"><i></i>分享</a>
+						</div>
+						<!--<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>-->
+						<script>
+							$(".pro_deta_hd_l .share a.sc_btn").click(function(){
+								var sc_btn_obj = $(this);
+								$.post($(this).attr('href'), {}, function(d){
+									layer.open({time:1,content:d.info});
+									if(d.status == 1){
+										sc_btn_obj.addClass("on");
+									}
+								}, 'json');
+								return false;
+							})
+						</script>
+					</dt>
+					<dd>
+						<div class="pro_deta_name">
+							<h1>{$info.goods_name}</h1>
+							<p>{$info.goods_intro}</p>
+						</div>
+						<div class="pro_deta_price"><span>￥<font id="product_price">{$info.product.product_price}</font></span><em>销量：{$info.total_sale_count}</em></div>
+						<gt name="info.product.market_price" value="0"><div class="before_price"><del>原价：{$info.product.market_price}</del></div></gt>
+						<!--<div class="offers_price"><span>优惠</span><em>预约定金可抵500元装修费</em></div>-->
+						<ul>
+							<li class="clearfix"><span>服务范围</span><em><i>{$distributor.region}</i><eq name="info.is_distribution" value="1"><font>100%送货入户</font></eq></em></li>
+							<!--<li class="clearfix">
+								<span>选择颜色</span>
+								<em>
+									<a href="javascript:;"><img src="__PUBLIC__/main/images/pic60.jpg">红梨木色</a>
+									<a href="javascript:;"><img src="__PUBLIC__/main/images/pic60.jpg">红梨木色</a>
+									<a href="javascript:;"><img src="__PUBLIC__/main/images/pic60.jpg">红梨木色</a>
+									<a href="javascript:;"><img src="__PUBLIC__/main/images/pic60.jpg">红梨木色</a>
+								</em>
+							</li>
+							<li class="clearfix">
+								<span>选择规格</span>
+								<em>
+									<a href="javascript:;">2门</a>
+									<a href="javascript:;">3门</a>
+									<a href="javascript:;">4门</a>
+									<a href="javascript:;">三门衣柜+转角柜</a>
+									<a href="javascript:;">三门衣柜+转角柜</a>
+								</em>
+							</li>-->
+							<li class="clearfix">
+								<span>选择规格</span>
+								<em>
+									<volist name="info.product_list" id="vo">
+										<a <eq name="vo.is_default" value="1">class="on"</eq> href="javascript:;" product_id="{$vo.id}"><img src="__UPLOAD__/{$vo.product_image}">{$vo.product_name}</a>
+									</volist>
+								</em>
+								<input type="hidden" name="product_id" value="{$info.product.id}" id="product_id" />
+							</li>
+							<notempty name="info.delivery_time"><li class="clearfix"><span>发货时间</span><em><font>付款后{$info.delivery_time}天内</font></em></li></notempty>
+							<li class="clearfix"><span style="line-height:36px;">数量</span><div class="spinner fl"></div><strong>库存<c id="stock_num">{$info.product.stock_num}</c>件</strong></li>
+							<eq name="info.is_distribution" value="1">
+								<li class="clearfix">
+									<span>配送服务</span>
+									<div class="distribution fl">
+										<a href="javascript:;" class="distribution_btn">送货上门安装 ￥{$info.distribution_cost}</a>
+										<p>{$info.distribution_instruction}<a href="javascript:;">服务详情</a></p>
+									</div>
+								</li>
+							</eq>
+							<li class="clearfix"><span style="line-height:38px;">服务范围</span><div class="buy_btn"><!--<a href="#" class="buy_btn1">立即预约</a>--><a href="{:U('mall/cart/add')}" class="buy_btn2">加入购物车</a></div></li>
+							<notempty name="info.service_promise_arr">
+								<li class="clearfix">
+									<span><font>服务承诺</font></span>
+									<em>
+										<volist name="info.service_promise_arr" id="vo"><b>{$vo}</b></volist>
+									</em>
+								</li>
+							</notempty>
+						</ul>
+						<script src="__PUBLIC__/main/js/jquery.Spinner.js"></script>
+						<script>
+							$(function(){
+								$(".pro_deta_hd_l dl dd ul li em a").click(function(){
+									$(this).toggleClass("on").siblings().removeClass("on")
+									var product_id = $(this).attr('product_id');
+									$('#product_id').val(product_id);
+									
+									//库存
+									$product_list = {:json_encode($info[product_list])};
+									var product = $product_list[product_id];
+									$('#stock_num').html(product.stock_num);
+									$('#product_price').html(product.product_price);
+								})	
+								$(".pro_deta_hd_l dl dd ul li .distribution .distribution_btn").click(function(){
+									$(this).toggleClass("on")	
+								})
+								$(".spinner").Spinner({name:'number', value:1, min:1, len:3, max:99})
+							})
+						</script>
+					</dd>
+				</dl>
+				<div class="shop_deta">
+					<ul class="clearfix">
+						<li>
+							<a href="#">{$distributor.distributor_name}</a>
+							<span>
+								<p class="white_bg"><b><strong style="width:100%"><img src="__PUBLIC__/main/images/icon84.png"></strong></b><font>96.82</font><i></i></p>
+								<p class="select_list">
+									<em>评分详细</em>
+									<ins>描述相符<big>4.9↑</big></ins>
+									<ins>服务态度<big>4.9↑</big></ins>
+									<ins>物流服务<big>4.9↑</big></ins>
+								</p>
+							</span>
+						</li>
+						<li>
+							<span>
+								<p class="white_bg"><img src="__PUBLIC__/main/images/icon85.png" class="icon">联系卖家</p>
+								<p class="select_list">卖家联系电话：<small>{$distributor.distributor_tel}</small></p>
+							</span>
+						</li>
+						<li>
+							<span>
+								<p class="white_bg"><img src="__PUBLIC__/main/images/icon86.png" class="icon">关注店铺</p>
+								<p class="select_list"><img src="__PUBLIC__/main/images/pic62.jpg"></p>
+							</span>
+						</li>
+						<li>
+							<span>
+								<p class="white_bg"><img src="__PUBLIC__/main/images/icon87.png" class="icon">微店</p>
+								<p class="select_list"><img src="__PUBLIC__/main/images/pic62.jpg"></p>
+							</span>
+						</li>
+					</ul>
+					<script>
+						$(function(){
+							$(".pro_deta_hd_l .shop_deta ul li span").hover(function(){
+								$(this).toggleClass("on")	
+							})	
+						})
+					</script>
+				</div>
+			</div>
+			<div class="pro_deta_hd_r fr">
+				<h2>------<span>看了又看</span>------</h2>
+				<div class="scrolllist">
+					<div class="imglist_w">
+						<ul class="imglist">
+							<foreach name="history_list" item="vo" key="k">
+								<lt name="k" value="7">
+									<li><a href="{:U('mall/goods/info', array('id'=>$vo[id_value]))}"><img src="__UPLOAD__/{$vo.goods_image}" width="180" height="180"><p>￥{$vo.goods_price}</p></a></li>
+								</lt>
+							</foreach>
+						</ul>
+					</div>
+					<h3><a class="abtn aleft" href="#left" title="上移"></a><a class="abtn aright" href="#right" title="下移"></a></h3>
+				</div>
+				<script type="text/javascript" src="__PUBLIC__/main/js/slider.js"></script>
+				<script type="text/javascript">
+					$(function(){							
+						$(".scrolllist").xslider({
+							unitdisplayed:3,
+							movelength:3,
+							dir:"V",
+							unitlen:190,
+							autoscroll:5000,
+						});
+					})
+				</script>
+			</div>
+		</div>
+		
+		<div class="shop_recommend">
+			<h2>掌柜推荐</h2>
+			<empty name="recommend_list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<ul class="clearfix">
+					<volist name="recommend_list" id="vo">
+						<li><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"></a><p>￥{$vo.product.product_price}</p></li>
+					</volist>
+				</ul>
+			</empty>
+		</div>
+		
+		<div class="pro_deta_bd clearfix">
+			<div class="pro_deta_bd_l fl">
+				<div class="pro_deta_bd_l_1">
+					<h2>店内搜索</h2>
+					<form action="" onSubmit="">
+						<p><span>关键字：</span><input name="" type="text"></p>
+						<p><button type="submit">搜索</button></p>
+					</form>
+				</div>
+				<div class="pro_deta_bd_l_2">
+					<h2>店内分类</h2>
+					<ul>
+						<volist name="self_cat_list" id="vo">
+							<li>
+								<h3><i></i>{$vo.cat_name}</h3>
+								<div class="deta_subnav">
+									<volist name="vo.children" id="vo2">
+										<p><a href="#">{$vo2.cat_name}</a></p>
+									</volist>
+								</div>
+							</li>
+						</volist>
+					</ul>
+					<script>
+					$(function(){
+						$(".pro_deta_bd_l_2 ul li h3").click(function(){
+							$(this).parent().toggleClass("on")
+							$(this).siblings(".deta_subnav").slideToggle()
+							$(this).parent().siblings().removeClass("on")
+							$(this).parent().siblings().find(".deta_subnav").slideUp()
+						})
+					})
+				</script>
+				</div>
+				<notempty name="ad_list.pc_goods_info_left">
+					<div class="pro_deta_bd_l_3"><a href="{$ad_list.pc_goods_info_left.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_goods_info_left.0.ad_picture}"></a></div>
+				</notempty>
+				<div class="pro_deta_bd_l_4">
+					<div class="pro_deta_tab_hd">
+						<ul class="clearfix">
+							<li><a href="javascript:;" name="#tab1">店铺热销</a></li>
+							<li><a href="javascript:;" name="#tab2">店铺推荐</a></li>
+						</ul>
+					</div>
+					<div class="pro_deta_tab_bd">
+						<div class="con" id="tab1">
+							<empty name="recommend_list">
+								<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+							<else/>
+								<ul>
+									<volist name="hot_list" id="vo">
+										<li><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"></a><p><span>￥{$vo.product.product_price}</span><em>热销{$vo.total_sale_count}件</em></p></li>
+									</volist>
+								</ul>
+							</empty>
+						</div>
+						<div class="con" id="tab2">
+							<empty name="recommend_list">
+								<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+							<else/>
+								<ul>
+									<volist name="recommend_list" id="vo">
+										<li><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"></a><p><span>￥{$vo.product.product_price}</span><em>热销{$vo.total_sale_count}件</em></p></li>
+									</volist>
+								</ul>
+							</empty>
+						</div>
+					</div>
+					<script>
+						function resetTabs(){
+							$(".pro_deta_tab_bd > div.con").hide();
+							$(".pro_deta_tab_hd a").attr("class","");
+						}
+						
+						var myUrl = window.location.href;
+						var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+						var myUrlTabName = myUrlTab.substring(0,4);
+						
+						(function(){
+							$(".pro_deta_tab_bd > div.con").hide();
+							$(".pro_deta_tab_hd li:first a").attr("class","on");
+							$(".pro_deta_tab_bd > div.con:first").fadeIn();
+						
+							$(".pro_deta_tab_hd a").on("click",function(e) {
+								e.preventDefault();
+								if ($(this).attr("class") == "on"){
+									return       
+								}else{             
+									resetTabs();
+									$(this).attr("class","on");
+									$($(this).attr('name')).fadeIn();
+								}
+							});
+						
+							for (i = 1; i <= $(".pro_deta_tab_hd a").length; i++) {
+								if(myUrlTab == myUrlTabName + i){
+									resetTabs();
+									$("a[name='"+myUrlTab+"']").attr("class","on");
+									$(myUrlTab).fadeIn();
+								}
+							}
+						})()
+					</script>
+				</div>
+			</div>
+			<div class="pro_deta_bd_r fr">
+				<div class="pro_deta_bd_r_hd clearfix">
+					<ul class="clearfix fl">
+						<li><a href="javascript:;" name="#tabs1">商品介绍</a></li>
+						<li><a href="javascript:;" name="#tabs2">售后保障</a></li>
+						<li><a href="javascript:;" name="#tabs3">累计评价（{:count($info[comment_list])}）</a></li>
+						<li><a href="javascript:;" name="#tabs4">VR模拟体验</a></li>
+					</ul>
+					<div class="pro_deta_phone fr"><span><em><img src="__PUBLIC__/main/images/icon88.png">手机购买</em><img src="__PUBLIC__/main/images/pic62.jpg" class="phone_code"></span><a href="{:U('mall/cart/add')}" class="buy_btn2">加入购物车</a></div>
+					<script>
+						$(".pro_deta_bd_r_hd .pro_deta_phone span").hover(function(){
+							$(this).toggleClass("on")	
+						})
+					</script>
+				</div>
+				<div class="pro_deta_bd_r_bd">
+					<div class="con clearfix" id="tabs1">
+						<div class="pro_deta_box fl">
+							<div class="pro_deta_box_hd" id="section1">
+								<h2>品牌名称：<a href="#">{$info.brand_name}</a><a href="#" class="gz"><img src="__PUBLIC__/main/images/icon89.png">关注</a></h2>
+								<ul class="clearfix">
+									<volist name="info.spec_list" id="vo">
+										<li>{$vo.spec_name}:{$vo.spec_value}</li>
+									</volist>
+								</ul>
+							</div>
+							<div class="pro_deta_box_bd">
+								<div id="section2">{:htmlspecialchars_decode($info[goods_desc])}</div>
+								<div id="section3"></div>
+								<div id="section4"></div>
+								<div id="section5"></div>
+								<div id="section6"></div>
+								<div id="section7"></div>
+								<div id="section8"></div>
+								<div id="section9"></div>
+								<div id="section10"></div>
+								<div id="section11"></div>
+							</div>
+						</div>
+						<div class="deta_nav">
+							<ul>
+								<li><a href="#section1"><span>●</span>商品参数</a></li>
+								<li><a href="#section2"><span>●</span>商品细节</a></li>
+								<li><a href="#section3"><span>●</span>商品实拍</a></li>
+								<li><a href="#section4"><span>●</span>商品情景</a></li>
+								<li><a href="#section5"><span>●</span>材料解析</a></li>
+								<li><a href="#section6"><span>●</span>商品配件</a></li>
+								<li><a href="#section7"><span>●</span>安装说明</a></li>
+								<li><a href="#section8"><span>●</span>包装图示</a></li>
+								<li><a href="#section9"><span>●</span>配送安装</a></li>
+								<li><a href="#section10"><span>●</span>品质保障</a></li>
+								<li><a href="#section11"><span>●</span>服务质量</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="con" id="tabs2"><img src="__PUBLIC__/main/images/pic78.jpg"></div>
+					<div class="con" id="tabs3">
+						<empty name="info.comment_list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+						<else/>
+							<div class="Evaluation_List">
+								<volist name="info.comment_list" id="vo">
+									<dl class="clearfix">
+										<dt><img src="images/pic45.jpg"><p>GAJ1***6</p></dt>
+										<dd>
+											<div class="name"><em class="five"></em></div>
+											<div class="info">衣柜收到外形简单大方，全家人都喜欢。负责送货安装的师傅对工作认真负责对客户热情，安装之后还帮忙收拾干净，给全部好评</div>
+											<div class="tasting_picture">
+												<span><a href="images/pic21.jpg" rel="lightbox2[plants]"><img src="images/pic21.jpg"></a></span>
+												<span><a href="images/pic11.jpg" rel="lightbox2[plants]"><img src="images/pic11.jpg"></a></span>
+												<span><a href="images/pic12.jpg" rel="lightbox2[plants]"><img src="images/pic12.jpg"></a></span>
+											</div>
+											<div class="time">2016-12-01 12:30 <span>购买后5天评价</span></div>
+										</dd>
+									</dl>
+								</volist>
+								<notempty name="pages"><div class="pages1">{$pages}</div><notempty>
+							</div>
+						</empty>
+						<link href="__PUBLIC__/main/css/lightbox.css" rel="stylesheet" type="text/css"/>
+						<script src="__PUBLIC__/main/js/lightbox.js"></script>
+					</div>
+					<div class="con" id="tabs4"><center><img src="__PUBLIC__/main/images/pic62.jpg"></center></div>
+				</div>
+				<script src="__PUBLIC__/main/js/smooth.js"></script>
+				<script>
+				
+					$(document).ready(function(){
+						$('.deta_nav').onePageNav({
+							filter: ':not(.external)',
+							scrollThreshold: 0.25
+						});
+						
+						var navHeight= $(".deta_nav").offset().top;
+						var navFix=$(".deta_nav");
+						var Left = $(".pro_deta_bd_r").offset().left + 822;
+						
+						if($(this).scrollTop()>navHeight){ 
+							navFix.addClass("fixed");
+							navFix.css("left",Left)
+						} 
+						else{ 
+							navFix.removeClass("fixed"); 
+							navFix.removeAttr("style")
+						}
+						
+						$(window).scroll(function(){ 
+							if($(this).scrollTop()>navHeight){ 
+								navFix.addClass("fixed");
+								navFix.css("left",Left)
+							} 
+							else{ 
+								navFix.removeClass("fixed"); 
+								navFix.removeAttr("style")
+							} 
+						})
+						
+						window.onresize=function(){
+							var navHeight= $(".deta_nav").offset().top;
+							var navFix=$(".deta_nav");
+							var Left = $(".pro_deta_bd_r").offset().left + 822;
+							
+							if($(this).scrollTop()>navHeight){ 
+								navFix.addClass("fixed");
+								navFix.css("left",Left)
+							} 
+							else{ 
+								navFix.removeClass("fixed"); 
+								navFix.removeAttr("style")
+							}
+							
+							$(window).scroll(function(){ 
+								if($(this).scrollTop()>navHeight){ 
+									navFix.addClass("fixed");
+									navFix.css("left",Left)
+								} 
+								else{ 
+									navFix.removeClass("fixed"); 
+									navFix.removeAttr("style")
+								} 
+							})
+						}
+						
+					});
+					
+					function resetTabs1(){
+						$(".pro_deta_bd_r_bd > div.con").hide();
+						$(".pro_deta_bd_r_hd ul li a").attr("class","");
+					}
+					
+					var myUrl = window.location.href;
+					var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+					var myUrlTabName = myUrlTab.substring(0,4);
+					
+					(function(){
+						$(".pro_deta_bd_r_bd > div.con").hide();
+						$(".pro_deta_bd_r_hd ul li:first a").attr("class","on");
+						$(".pro_deta_bd_r_bd > div.con:first").fadeIn();
+					
+						$(".pro_deta_bd_r_hd ul li a").on("click",function(e) {
+							e.preventDefault();
+							if ($(this).attr("class") == "on"){
+								return       
+							}else{             
+								resetTabs1();
+								$(this).attr("class","on");
+								$($(this).attr('name')).fadeIn();
+							}
+						});
+					
+						for (i = 1; i <= $(".pro_deta_bd_r_hd ul li a").length; i++) {
+							if(myUrlTab == myUrlTabName + i){
+								resetTabs1();
+								$("a[name='"+myUrlTab+"']").attr("class","on");
+								$(myUrlTab).fadeIn();
+							}
+						}
+					})()
+				</script>
+				
+				<div class="praise_pro">
+					<h2>本店好评商品</h2>
+					<ul class="clearfix">
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p><a href="#">谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</a></p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p>谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p>谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p>谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p><a href="#">谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</a></p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p>谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p>谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+						<li>
+							<a href="#"><img src="__PUBLIC__/main/images/pic69.jpg"></a>
+							<p>谷安居定制特权定金定制书柜衣柜榻榻米升降榻榻米床组合</p>
+							<p><em>￥1269.00</em><span><a href="javascript:;"><i></i>关注</a></span></p>
+						</li>
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div class="guess_like">
+			<h2><a href="{:U('mall/category/like')}" class="change"><img src="__PUBLIC__/main/images/icon38.png">换一换</a><i></i>我猜你喜欢</h2>
+			<ul class="clearfix like_list">
+				<include file="Mall/Category/guess_like"/>
+			</ul>
+		</div>
+		<script>
+			$(function(){
+				$(".guess_like .change").click(function(){
+					var change_obj = $(this);
+					$.post(change_obj.attr('href'),{},function(d){
+						$('.guess_like .like_list').html(d);
+					},'json');
+					return false;
+				})
+			})
+		</script>
+		
+	</div>
+</div>
+<!-------产品详情结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.buy_btn2').bind('click',function(){
+		var user_id = "{$user.user_id}";
+		var product_id = $('#product_id').val();
+		var number = $('.Amount').val();
+		
+		if(!user_id){
+			layer.open({time:1,content:'请先登录'});
+			window.location.href = "{:U('index/site/login')}";
+		}
+		if(!product_id){
+			layer.open({time:1,content:'请选择规格'});return false;
+		}
+		if(!number){
+			layer.open({time:1,content:'请输入购物数量'});return false;
+		}
+		
+		var data = {
+			'id':product_id,
+			'number':number
+		};
+		$.post($(this).attr('href'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+			if(d.cart_num){
+				//$('.cart_num').html('<i>'+d.cart_num+'</i><img src="__PUBLIC__/v8/images/icon35.png">');
+				$('#cart_num').html(d.cart_num);
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>

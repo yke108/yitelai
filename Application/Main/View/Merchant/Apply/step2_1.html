@@ -1,0 +1,452 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">公司信息提交</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="on">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li>
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li>
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_2">
+	<div class="w1200">
+		<div class="alert-notice">
+			<a href="{:U('article/page/info', array('id'=>21))}" target="_blank" class="alert-notice-btn">审核通过秘诀 >></a>
+			<p>1、信息提交前。请务必了解<a href="{:U('article/page/info', array('id'=>19))}" target="_blank">谷安居开放平台招商资质标准细则；</a></p>
+			<p>2、公司类信息需填项较多，建议先查看<a href="{:U('article/page/info', array('id'=>20))}" target="_blank">公司信息注意事项</a>再进行填写；</p>
+			<p>3、公司信息请严格按照相关证件信息进行确认填写；</p>
+			<p>4、以下所需要上传电子版资质仅支持JPG、CIF、PNG格式 的图片，大小不超过1M。且必须加盖企业彩色公章。</p>
+		</div>
+		
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$info.merchant_id}" />
+			<div class="public_form">
+				<h2>营业执照信息</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>执照类型</label>
+						<div class="public_form_r">
+							  <label><input type="radio" name="license_type" value="普通执照" <empty name="info.license_type">checked="checked"<else/>{:m_checked($info[license_type], '普通执照')}</empty>>普通执照</label>
+							  <label><input type="radio" name="license_type" value="三证合一" {:m_checked($info[license_type], '三证合一')}>三证合一</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司名称</label>
+						<div class="public_form_r">
+							<input name="company_name" value="{$info.company_name}" type="text" class="text">
+							<p class="tip">请按照营业执照上登记的完整名称填写</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>营业执照注册号</label>
+						<div class="public_form_r">
+							<input name="license_no" value="{$info.license_no}" type="text" class="text">
+							<p class="tip">请按照营业执照上的注册号进行填写</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>法定代表人姓名</label>
+						<div class="public_form_r">
+							<input name="legal_person" value="{$info.legal_person}" type="text" class="text">
+							<p class="tip">请按照营业执照上登记的法人填写</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>营业执照所在地</label>
+						<div class="public_form_r">
+							<input type="hidden" value="0" class="region_sel"/>
+							<select name="" class="region_sel"><option>请选择</option></select>
+							<select name="" class="region_sel"><option>请选择</option></select>
+							<select name="license_region"><option>请选择</option></select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>营业执照详细地址</label>
+						<div class="public_form_r">
+							<input name="license_address" value="{$info.license_address}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>成立日期</label>
+						<div class="public_form_r">
+							<input name="license_date" value="{$info.license_date}" type="text" class="data text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>营业期限</label>
+						<div class="public_form_r">
+							<input name="license_period_start" value="{$info.license_period_start}" type="text" class="data text"> - <input name="license_period_end" value="{$info.license_period_end}" type="text" class="data text"> <label><input type="checkbox" name="license_period_long" value="长期" {:m_checked($info[license_period_long], '长期')}>长期</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>注册资本</label>
+						<div class="public_form_r">
+							<input name="license_capital" value="{$info.license_capital}" type="text" class="text" onkeyup="clearNoNum(this)"> 万元
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>经营范围</label>
+						<div class="public_form_r">
+							<textarea name="license_scope" cols="" rows="8" class="text">{$info.license_scope}</textarea>
+							<p class="tip">请与营业执照或企业信息公示网的经营范围保持一致</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司所在地</label>
+						<div class="public_form_r">
+							<input type="hidden" value="0" class="company_region"/>
+							<select name="" class="company_region"><option>请选择</option></select>
+							<select name="" class="company_region"><option>请选择</option></select>
+							<select name="company_region"><option>请选择</option></select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司详细地址</label>
+						<div class="public_form_r">
+							<input name="company_address" value="{$info.company_address}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司电话</label>
+						<div class="public_form_r">
+							<input name="company_tel" value="{$info.company_tel}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司紧急联系人</label>
+						<div class="public_form_r">
+							<input name="emergency_contacter" value="{$info.emergency_contacter}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司紧急联系人手机</label>
+						<div class="public_form_r">
+							<input name="emergency_tel" value="{$info.emergency_tel}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>法定代表人证件类型</label>
+						<div class="public_form_r">
+							  <label><input type="radio" name="legalperson_certificatetype" value="大陆身份证" <empty name="info.legalperson_certificatetype">checked="checked"<else/>{:m_checked($info[legalperson_certificatetype], '大陆身份证')}</empty>>大陆身份证</label>
+							  <label><input type="radio" name="legalperson_certificatetype" value="非大陆证件" {:m_checked($info[legalperson_certificatetype], '非大陆证件')}>非大陆证件</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>法定代表人身份证号</label>
+						<div class="public_form_r">
+							<input name="legalperson_identityno" value="{$info.legalperson_identityno}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>法人身份证电子版</label>
+						<div class="public_form_r">
+							<p><em>请上传法人身份证正反面电子版</em></p>
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="legalperson_certificatepic" type="file" class="hy_upload_single" hy_field="legalperson_certificatepic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="info.legalperson_certificatepic">{$info.legalperson_certificatepic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传2张。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>营业执照电子版</label>
+						<div class="public_form_r">
+							<p><em>营业照复印件需加盖公司红章扫描上传，若营业执照上未体现注册资本、经营范围、请在营业执照后另行上传<a href="{:U('article/page/info', array('id'=>23))}" target="_blank">企业信息公示网</a>上的截图。</em></p>
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="license_pic" type="file" class="hy_upload_single" hy_field="license_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="info.license_pic">{$info.license_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传2张。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>银行开户许可证电子版</label>
+						<div class="public_form_r">
+							<p><em>复印件需加盖公司红章扫描上传</em></p>
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="bank_licencepic" type="file" class="hy_upload_single" hy_field="bank_licencepic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="info.bank_licencepic">{$info.bank_licencepic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式</p>
+						</div>
+					</li>
+				</ul>
+				<div class="org_field">
+					<h2>组织机构代码证</h2>
+					<ul>
+						<li class="clearfix">
+							<label class="span"><font>*</font>组织机构代码</label>
+							<div class="public_form_r">
+								<input name="organization_no" value="{$info.organization_no}" type="text" class="text">
+								<p class="tip">请按照组织机构代码证上的代码填写，不要省略"_"</p>
+							</div>
+						</li>
+						<li class="clearfix">
+							<label class="span"><font>*</font>组织机构代码有效期</label>
+							<div class="public_form_r">
+								<input name="organization_period_start" value="{$info.organization_period_start}" type="text" class="data text"> - <input name="organization_period_end" value="{$info.organization_period_end}" type="text" class="data text"> <label><input type="checkbox" name="organization_period_long" value="长期" {:m_checked($info[organization_period_long], '长期')}>长期</label>
+							</div>
+						</li>
+						<li class="clearfix">
+							<label class="span"><font>*</font>组织机构代码电证子版</label>
+							<div class="public_form_r">
+								<p><em><!--复印件需加盖公司红章扫描上传，三证合一的请此处上传营业执照电子版--></em></p>
+								<div class="upload_img clearfix">
+									<!--<ul>
+										<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+									</ul>-->
+									<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="organization_pic" type="file" class="hy_upload_single" hy_field="organization_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="info.organization_pic">{$info.organization_pic}</notempty>"></div>
+								</div>
+								<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="public_btn">
+				<a href="{:U('article/page/info', array('id'=>22))}" target="_blank">撤销申请？</a>
+				<span><a href="{:U('merchant/apply/step1')}" class="prev">上一步</a><a href="javascript:;" class="next">下一步，完善税务及银行信息</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false,
+			scrollInput:false,
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	
+	<php>$province = intval($info[license_region] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[license_region] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[license_region])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+	
+	<php>$province = intval($info[company_region] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[company_region] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[company_region])};
+	var cobj_company = $('.company_region');
+	function build_sitem_select_company(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('company_region')) build_sitem_select_company(obj);
+	}
+	cobj_company.bind('change', function(){
+		build_sitem_select_company($(this));
+	});
+	$('input.company_region').each(function(){
+		build_sitem_select_company($(this));
+	});
+	
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+	
+	//三证合一
+	$('input[name=license_type]').click(function(){
+		if($(this).val() == '三证合一'){
+			$('.org_field').css('display', 'none');
+		}else{
+			$('.org_field').css('display', 'block');
+		}
+	});
+	if($('input[name=license_type]:checked').val() == '三证合一'){
+		$('.org_field').css('display', 'none');
+	}else{
+		$('.org_field').css('display', 'block');
+	}
+});
+</script>
+
+<style type="text/css">
+.hy_upload_single:before,.hy_upload_single:after{content:" ";position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background-color:#d9d9d9;}
+.hy_upload_single:before{ width:2px; height:50%;}
+.hy_upload_single:after{ width:50%; height:2px;}
+.weui_uploader_input{opacity:1;}
+input:disabled{background:#eee !important;}
+</style>
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script src="__PUBLIC__/main/js/singleupload.js"></script>
+<script src="__PUBLIC__/main/js/multiupload.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	$('.hy_upload_multi').hyMultiUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	
+	$('input[name=license_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			//$('input[name=license_period_start]').val('').attr('disabled', true);
+			$('input[name=license_period_end]').val('').attr('disabled', true);
+		}else{
+			//$('input[name=license_period_start]').attr('disabled', false);
+			$('input[name=license_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=license_period_long]').prop('checked') == true){
+		//$('input[name=license_period_start]').val('').attr('disabled', true);
+		$('input[name=license_period_end]').val('').attr('disabled', true);
+	}else{
+		//$('input[name=license_period_start]').attr('disabled', false);
+		$('input[name=license_period_end]').attr('disabled', false);
+	}
+	
+	$('input[name=organization_period_long]').click(function(){
+		if($(this).prop('checked') == true){
+			//$('input[name=organization_period_start]').val('').attr('disabled', true);
+			$('input[name=organization_period_end]').val('').attr('disabled', true);
+		}else{
+			//$('input[name=organization_period_start]').attr('disabled', false);
+			$('input[name=organization_period_end]').attr('disabled', false);
+		}
+	});
+	if($('input[name=organization_period_long]').prop('checked') == true){
+		//$('input[name=organization_period_start]').val('').attr('disabled', true);
+		$('input[name=organization_period_end]').val('').attr('disabled', true);
+	}else{
+		//$('input[name=organization_period_start]').attr('disabled', false);
+		$('input[name=organization_period_end]').attr('disabled', false);
+	}
+});
+</script>
+
+<script language="JavaScript" type="text/javascript">
+function clearNoNum(obj){
+obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字而不是
+obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+}
+</script>

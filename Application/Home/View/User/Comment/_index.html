@@ -1,0 +1,10 @@
+<volist name="list" id="vo">
+	<li>
+		<h2><span>订单号：{$vo.order_goods.order_id}</span><em>4.7</em></h2>
+		<p><span>订单评价</span>
+			<em><for start="0" end="$vo[stars]"><img src="__PUBLIC__/home/images/icon20.png"></for></em>
+		</p>
+		<p><span>服务评价</span><em><img src="__PUBLIC__/home/images/icon20.png"><img src="__PUBLIC__/home/images/icon20.png"><img src="__PUBLIC__/home/images/icon20.png"><img src="__PUBLIC__/home/images/icon20.png"><img src="__PUBLIC__/home/images/icon20.png"></em></p>
+		<p><i>{$vo.content}</i></p>
+	</li>
+</volist>

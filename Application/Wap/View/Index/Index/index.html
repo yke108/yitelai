@@ -1,0 +1,622 @@
+<style>
+.case_list .hib_con,.desigenr_list .hib_con{display:none;}
+.case_list .hib_con.active{display:block;}
+.home_item_sort ul li.on{background:#ff3452;}
+.home_item_sort ul li.on a{color:#fff;}
+.home_big_sort .swiper-slide a{line-height:24px;height:22px; box-sizing:content-box;}
+.home_big_sort{position:relative;}
+.nav_icon{position:absolute;background-image:url(__PUBLIC__/wap/images/asd_2.png);background-size:100% 100%;height:18px;width:10px;display:inline-block;right:5px;top:0;bottom:0;margin:auto; transform:rotate(180deg); -webkit-transform:rotate(180deg);}
+
+</style>
+<div class="warp">	
+	<div class="home">
+		<div class="fixed">
+			<header>
+				<span><a href="{:U('index/index')}" style="margin-left:0;"><img src="__PUBLIC__/wap/images/logo_2.png" style="width:80px;"></a></span>
+				<!--<span><a href="#"><img src="__PUBLIC__/wap/images/icon13.png"><p>广州</p></a></span>-->
+				<form action="{:U('mall/goods/index')}" method="post"><input name="keyword" type="search" placeholder="产品搜索"><button type="submit"></button></form>
+				<!--<a href="{:U('user/index/index')}"><img src="__PUBLIC__/wap/images/icon12.png"></a>-->
+			</header>
+			<div class="home_big_sort">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<volist name="nav_list" id="vo">
+							<div class="swiper-slide"><a href="<if condition='$vo[build_url] eq ""'>{$vo.url}<else/>{$vo.build_url}</if>">{$vo.name}<eq name="vo.is_hot" value="1"><i><img src="__PUBLIC__/main/images/icon8.png"></i></eq></a></div>
+						</volist>
+					</div>
+				</div>
+				<div class='nav_icon'><i></i></div>
+			</div>
+		</div>
+		<style>
+			.fixed{ position:fixed; top:0; left:0; right:0; z-index: 1000;}
+		</style>
+
+		<div class="home_banner" style="margin-top: 97px">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<volist name="ad_list.wap_index_lunbo" id="vo">
+						<div class="swiper-slide"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></div>
+					</volist>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+		
+		<div class="home_small_sort">
+			<ul class="clearfix">
+				<li><a href="{:U('Mall/Category/groupbuy')}"><i class="i1"></i><p>拼团购</p></a></li>
+				<li><a href="{:U('Mall/Brand/index')}"><i class="i2"></i><p>品牌</p></a></li>
+				<li><a href="{:U('User/Pointgift/index')}"><i class="i3"></i><p>积分奖品</p></a></li>
+				<li><a href="{:U('Story/index/index')}"><i class="i4"></i><p>粉丝故事会</p></a></li>
+				<li><a href="{:U('design/index/index')}"><i class="i5"></i><p>点将服务</p></a></li>
+			</ul>
+		</div>
+		
+		<div class="home_scroll_headlines">
+			<span><img src="__PUBLIC__/wap/images/pic10.jpg"></span>
+			<ul class="line">
+				<volist name='index_story_list' id='val'>
+					<li><a href="{:U('story/index/info',array('id'=>$val['story_id']))}"><p>· {$val.story_title}</p><p><em>HOT</em><em>NEW</em></p></a></li>
+				</volist>
+			</ul>                
+		</div>
+		
+		<div class="home_banner_pic"><a href="{$ad_list.wap_index_1.0.ad_value}"><img src="__UPLOAD__/{$ad_list.wap_index_1.0.ad_picture}"></a></div>
+		
+		<div class="home_scroll_pro">
+			<div class="home_tit"><span>最新活动</span><!--<a href="#">更多<i></i></a>--></div>
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<volist name="ad_list.wap_index_2" id="vo">
+						<div class="swiper-slide"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%"></a></div>
+					</volist>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+		
+		
+		
+		
+		<div class="home_item home_item_first">
+			<div class="home_tit"><span>世界各地家装案例</span><a href="{:U('Design/Index/case')}">更多<i></i></a></div>
+			<div class="home_item_sort case_title common_case_title common_case_title1" style="position:relative;">
+				<div class="swiper-container">
+					<ul class="clearfix swiper-wrapper">
+						<volist name='country_data' id='val'>
+						<li class="swiper-slide"><a href="javascript:;">{$val.country_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="nav_icon" style="z-index:111;"><i></i></div>
+			</div>
+			<script>
+				var swiper5 = new Swiper('.common_case_title1 .swiper-container',{
+					slidesPerView:3,
+					spaceBetween:0,
+					freeMode:true
+				});
+			</script>
+			<div class="home_item_bd case_list">
+				<volist name='country_data' id='vo'>
+				<div class='hib_con'>
+					<empty name="vo.list">
+						<p style="text-align:center;color:#999999;padding:20px;padding-bottom:10px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name='vo.list' id='val'>
+							<li>
+								<a href="{:U('design/index/case_info',array('id'=>$val[case_id]))}">
+									<img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic15.jpg<else/>__UPLOAD__/thumbs/b300/{$val.picture}</if>" class="item_pic">
+									<h2><span><img src="__PUBLIC__/wap/images/icon16.png">{$case_config[$val[country]]}</span><em>{$case_config[$val[decorate_type]]}</em></h2>
+									<p><span>{$val.case_name}</span></p>
+									<p><em>造价: {$val.budget} </em></p>
+								</a>
+							</li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+				</volist>
+			</div>
+		</div>
+		<script>
+			$(".case_title ul li").click(function(){
+				var index=$(this).index();
+				$(this).addClass('on').siblings().removeClass('on');
+				$(".case_list .hib_con").eq(index).fadeIn().siblings('.hib_con').hide();
+			})
+			$(".case_title ul li:first").trigger('click');
+			
+			$(function(){
+				$(".common_case_title").each(function(){
+					if($(this).find("ul li").length==1){
+						$(this).find("ul li").css({'width':'100%'})
+					}else if($(this).find("ul li").length==2){
+						$(this).find("ul li").css({'width':'50%'})
+					}else if($(this).find("ul li").length==3){
+						$(this).find("ul li").css({'width':'33%'})
+					}					
+				})
+			})
+		</script>
+		
+		<div class="home_item">
+			<div class="home_tit"><span>世界各地设计大师</span><a href="{:U('design/index/index')}">更多<i></i></a></div>
+			<div class="home_item_sort desigenr_title common_case_title common_case_title2" style="position:relative;">
+				<div class="swiper-container">
+					<ul class="clearfix swiper-wrapper">
+						<volist name='level_data' id='val'>
+							<li class="swiper-slide"><a href="javascript:;">{$val.level_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="nav_icon" style="z-index:111;"><i></i></div>
+			</div>
+			<script>
+				var swiper6 = new Swiper('.common_case_title2 .swiper-container',{
+					slidesPerView:2,
+					spaceBetween:0,
+					freeMode:true
+				});
+			</script>
+			<div class="home_item_bd desigenr_list">
+				<volist name='level_data' id='vo'>
+					<div class='hib_con'>
+						<empty name="vo.list">
+							<p style="text-align:center;color:#999999;padding:20px;padding-bottom:10px;">暂无相关记录</p>
+						<else/>
+							<ul class="clearfix">
+								<volist name='vo.list' id='val'>
+									<li>
+										<a href="{:U('design/index/info',array('id'=>$val['designer_id']))}">
+											<img src="<if condition='$val[case_list][0][picture] eq ""'>__PUBLIC__/wap/images/pic15.jpg<else/>__UPLOAD__/thumbs/b300/{$val[case_list][0][picture]}</if>" class="item_pic">
+											<h3><span><img src="<if condition='$val.designer_image eq ""'>__PUBLIC__/wap/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b120/{$val.designer_image}</if>">{$val.designer_name}</span></h3>
+											<p><span><img src="__PUBLIC__/wap/images/icon17.png">{$val.region_lang}</span></p>
+											<p><em>{$val.charge_name}</em></p>
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</empty>
+					</div>
+				</volist>
+			</div>
+		</div>
+		<script>
+			$(".desigenr_title ul li").click(function(){
+				var index=$(this).index();
+				$(this).addClass('on').siblings().removeClass('on');
+				$(".desigenr_list .hib_con").eq(index).fadeIn().siblings('.hib_con').hide();
+			})
+			$(".desigenr_title ul li:first").trigger('click');
+			
+		</script>
+		
+		<div class="home_banner_pic"><a href="{$ad_list.wap_index_3.0.ad_value}"><img src="__UPLOAD__/{$ad_list.wap_index_3.0.ad_picture}"></a></div>
+		
+		<div class="home_item">
+			<div class="home_tit"><span>新时尚家居风格</span><a href="{:U('Design/Index/case')}">更多<i></i></a></div>
+			<div class="home_item_sort style_title common_case_title common_case_title3" style="position:relative;">
+				<div class="swiper-container">
+					<ul class="clearfix swiper-wrapper">
+						<volist name='style_data' id='val'>
+						<li class="swiper-slide"><a href="javascript:;">{$val.type_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="nav_icon" style="z-index:111;"><i></i></div>
+			</div>
+			<script>
+				var swiper7 = new Swiper('.common_case_title3 .swiper-container',{
+					slidesPerView:3,
+					spaceBetween:0,
+					freeMode:true
+				});
+			</script>
+			<div class="home_item_bd style_list">
+				<volist name='style_data' id='vo'>
+				<div class='hib_con'>
+					<empty name="vo.list">
+						<p style="text-align:center;color:#999999;padding:20px;padding-bottom:10px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name='vo.list' id='val'>
+							<li>
+								<a href="{:U('design/index/case_info',array('id'=>$val[case_id]))}">
+									<img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic15.jpg<else/>__UPLOAD__/thumbs/b300/{$val.picture}</if>" class="item_pic">
+									<h2><span><img src="__PUBLIC__/wap/images/icon16.png">{$case_config[$val[country]]}</span><em>{$case_config[$val[decorate_type]]}</em></h2>
+									<p><span>{$val.case_name}</span></p>
+									<p><em>造价: {$val.budget} </em></p>
+								</a>
+							</li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+				</volist>
+			</div>
+		</div>
+		<script>
+		$(".style_title ul li").click(function(){
+			var index=$(this).index();
+			$(this).addClass('on').siblings().removeClass('on');
+			$(".style_list .hib_con").eq(index).fadeIn().siblings('.hib_con').hide();
+		})
+		$(".style_title ul li:first").trigger('click');
+		
+		</script>
+		
+		<div class="home_banner_pic"><a href="{$ad_list.wap_index_4.0.ad_value}"><img src="__UPLOAD__/{$ad_list.wap_index_4.0.ad_picture}"></a></div>
+		
+		<div class="home_item">
+			<div class="home_tit"><span>热装户型</span><a href="{:U('Design/Index/case')}">更多<i></i></a></div>
+			<div class="home_item_sort layout_title common_case_title common_case_title4" style="position:relative;">
+				<div class="swiper-container">
+					<ul class="clearfix swiper-wrapper">
+						<volist name='layout_data' id='val'>
+						<li class="swiper-slide"><a href="javascript:;">{$val.type_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="nav_icon" style="z-index:111;"><i></i></div>
+			</div>
+			<script>
+				var swiper8 = new Swiper('.common_case_title4 .swiper-container',{
+					slidesPerView:3,
+					spaceBetween:0,
+					freeMode:true
+				});
+			</script>
+			<div class="home_item_bd layout_list">
+				<volist name='layout_data' id='vo'>
+				<div class='hib_con'>
+					<empty name="vo.list">
+						<p style="text-align:center;color:#999999;padding:20px;padding-bottom:10px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name='vo.list' id='val'>
+							<li>
+								<a href="{:U('design/index/case_info',array('id'=>$val[case_id]))}">
+									<img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic15.jpg<else/>__UPLOAD__/thumbs/b300/{$val.picture}</if>" class="item_pic">
+									<h2><span><img src="__PUBLIC__/wap/images/icon16.png">{$case_config[$val[country]]}</span><em>{$case_config[$val[decorate_type]]}</em></h2>
+									<p><span>{$val.case_name}</span></p>
+									<p><em>造价: {$val.budget} </em></p>
+								</a>
+							</li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+				</volist>
+			</div>
+		</div>
+		<script>
+		$(".layout_title ul li").click(function(){
+			var index=$(this).index();
+			$(this).addClass('on').siblings().removeClass('on');
+			$(".layout_list .hib_con").eq(index).fadeIn().siblings('.hib_con').hide();
+		})
+		$(".layout_title ul li:first").trigger('click');
+		
+		</script>
+		
+		
+		<div class="home_banner_pic"><a href="{$ad_list.wap_index_5.0.ad_value}"><img src="__UPLOAD__/{$ad_list.wap_index_5.0.ad_picture}"></a></div>
+		
+		<div class="home_item">
+			<div class="home_tit"><span>家居区域</span><a href="{:U('Design/Index/case')}">更多<i></i></a></div>
+			<div class="home_item_sort district_title common_case_title common_case_title5" style="position:relative;">
+				<div class="swiper-container">
+					<ul class="clearfix swiper-wrapper">
+						<volist name='district_data' id='val'>
+						<li class="swiper-slide"><a href="javascript:;">{$val.type_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div class="nav_icon" style="z-index:111;"><i></i></div>
+			</div>
+			<script>
+				var swiper9 = new Swiper('.common_case_title5 .swiper-container',{
+					slidesPerView:3,
+					spaceBetween:0,
+					freeMode:true
+				});
+			</script>
+			<div class="home_item_bd district_list">
+				<volist name='district_data' id='vo'>
+				<div class='hib_con'>
+					<empty name="vo.list">
+						<p style="text-align:center;color:#999999;padding:20px;padding-bottom:10px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name='vo.list' id='val'>
+							<li>
+								<a href="{:U('design/index/case_info',array('id'=>$val[case_id]))}">
+									<img src="<if condition='$val.picture eq ""'>__PUBLIC__/wap/images/pic15.jpg<else/>__UPLOAD__/thumbs/b300/{$val.picture}</if>" class="item_pic">
+									<h2><span><img src="__PUBLIC__/wap/images/icon16.png">{$case_config[$val[country]]}</span><em>{$case_config[$val[decorate_type]]}</em></h2>
+									<p><span>{$val.case_name}</span></p>
+									<p><em>造价: {$val.budget} </em></p>
+								</a>
+							</li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+				</volist>
+			</div>
+		</div>
+		<script>
+		$(".district_title ul li").click(function(){
+			var index=$(this).index();
+			$(this).addClass('on').siblings().removeClass('on');
+			$(".district_list .hib_con").eq(index).fadeIn().siblings('.hib_con').hide();
+		})
+		$(".district_title ul li:first").trigger('click');
+		
+		</script>
+		
+		<div class="home_scroll_pro1">
+			<div class="home_tit"><span>谷安居 · 品质生活</span><!--<a href="#">更多<i></i></a>--></div>
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<volist name="ad_list.wap_index_6" id="vo">
+						<div class="swiper-slide"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%"></a></div>
+					</volist>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</div>
+		
+		<foreach name="floor_list" item="vo" key="k">
+			<eq name="k" value="0">
+				<div class="home_item">
+					<div class="home_tit"><span>{$vo.floor_name}</span><a href="{:U('mall/goods/index', array('cat_id'=>$vo[cat_id]))}">更多<i></i></a></div>
+					<div class="home_item_sort home_item_sort{$vo.cat_id}" style="position:relative;">
+						<div class="swiper-container">
+							<ul class="clearfix swiper-wrapper">
+								<foreach name="vo.children" item="vo2" key="k2">
+									
+										<li class="swiper-slide"><a href="{:U('mall/goods/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></li>
+									
+								</foreach>
+							</ul>
+						</div>
+						<div class="nav_icon" style="z-index:111;"><i></i></div>
+					</div>
+					<script>
+						var swiper{$vo.cat_id} = new Swiper('.home_item_sort{$vo.cat_id} .swiper-container',{
+							slidesPerView:4,
+							spaceBetween:0,
+							freeMode:true
+						});
+					</script>
+					<div class="home_item_bd_1">
+						<ul class="clearfix item1">
+							<volist name="ad_list.wap_index_7" id="vo">
+								<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+							</volist>
+						</ul>
+						<ul class="clearfix item2">
+							<volist name="ad_list.wap_index_8" id="vo">
+								<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+							</volist>
+						</ul>
+					</div>
+				</div>
+			<else/>
+				<div class="home_item">
+					<div class="home_tit"><span>{$vo.floor_name}</span><a href="{:U('mall/goods/index', array('cat_id'=>$vo[cat_id]))}">更多<i></i></a></div>
+					<div class="home_item_sort home_item_sort{$vo.cat_id}" style="position:relative;">
+						<div class="swiper-container">
+							<ul class="clearfix swiper-wrapper">
+								<foreach name="vo.children" item="vo2" key="k2">
+									
+										<li class="swiper-slide"><a href="{:U('mall/goods/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></li>
+									
+								</foreach>
+							</ul>
+						</div>
+						<div class="nav_icon" style="z-index:111;"><i></i></div>
+					</div>
+					<script>
+						var swiper{$vo.cat_id} = new Swiper('.home_item_sort{$vo.cat_id} .swiper-container',{
+							slidesPerView:4,
+							spaceBetween:0,
+							freeMode:true
+						});
+					</script>
+					<div class="home_item_bd_2">
+						<ul class="clearfix">
+							<foreach name="vo.goods_list" item="vo2" key="k2">
+								<lt name="k2" value="3">
+									<li><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}"><img src="__UPLOAD__/thumbs/b300/{$vo2.goods_image}"></a></li>
+								</lt>
+							</foreach>
+						</ul>
+					</div>
+				</div>
+			</eq>
+		</foreach>
+		
+		<div class="home_item mb0">
+			<div class="home_tit"><span>为您推荐</span><!--<a href="#">更多<i></i></a>--></div>
+			<div class="home_item_sort home_item_sort10" style="position:relative;">
+				<div class="swiper-container">
+					<empty name="brand_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关品牌</p>
+					<else/>
+						<ul class="clearfix swiper-wrapper">
+							<volist name="brand_list" id="vo">
+								<li class="swiper-slide"><a href="{:U('mall/goods/index', array('brand_id'=>$vo[brand_id]))}">{$vo.brand_name}</a></li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+				<div class="nav_icon" style="z-index:111;"><i></i></div>
+			</div>
+			<script>
+				var swiper10 = new Swiper('.home_item_sort10 .swiper-container',{
+					slidesPerView:4,
+					spaceBetween:0,
+					freeMode:true
+				});
+			</script>
+			<div class="home_item_bd">
+				<ul class="clearfix">
+					<volist name="like_list" id="vo">
+						<li>
+							<a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">
+								<img src="__UPLOAD__/thumbs/b512/{$vo.goods_image}" class="item_pic">
+								<h4><span>{$vo.distributor.distributor_name}</span></h4>
+								<h5>{$vo.goods_name|msubstr=0,14,'utf-8',true}</h5>
+							</a>
+						</li>
+				   </volist>
+				</ul>
+			</div>
+		</div>
+		
+		<!--<div class="copyright">{$sysconfig.copyright}</div>-->
+	</div>
+    
+    <a href="javascript:;" id="service_btn"><img src="__PUBLIC__/wap/images/icon79.png" width="50"></a>
+    <a href="javascript:;" id="go_top"><img src="__PUBLIC__/wap/images/icon72.png" width="50"></a>
+    <style>
+    	#go_top{ position:fixed; bottom:66px; right:10px; z-index:100; display:none;}
+		#service_btn{ position:fixed; bottom:126px; right:10px; z-index:100; transition:all .5s; -webkit-transition:all .5s; }
+		#service_btn img{ opacity:0.9;}
+		#service_btn.scroll{ right:-40px;}
+    </style>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			$(function () {
+				$(window).scroll(function(){
+					
+					if ($(window).scrollTop()>100){
+						$("#go_top").fadeIn(500);
+					}
+					else{
+						$("#go_top").fadeOut(500);
+					}
+				});
+				$("#go_top").click(function(){
+					$('body,html').animate({scrollTop:0},1000);
+					return false;
+				});
+			});
+			$('body').on('touchmove',function(){
+				$("#service_btn").addClass("scroll")	
+			})
+			
+			$('body').on('touchend',function(){
+				$('#service_btn').removeClass('scroll')
+			})
+		});
+	</script>
+	<div class="home_form">
+			<div class="home_form_box">
+				<form action="{:U('design/index/message')}">
+					<!--<h2 class="weui-cells_checkbox">
+						<label class="weui-check__label" for="s1">
+							<input type="radio" class="weui-check" name="checkbox1" id="s1" checked="checked"><i class="weui-icon-checked"></i>0元家装设计
+						</label>
+						<label class="weui-check__label" for="s2">
+							<input type="radio" class="weui-check" name="checkbox1" id="s2"><i class="weui-icon-checked"></i>0元量房设计家具
+						</label>
+					</h2>-->
+					<h2 class="weui-cells_checkbox">
+						<label class="weui-check__label" for="s1">
+							申请定制设计
+						</label>
+					</h2>
+					<p><span>姓名</span><input name="nick_name" type="text"></p>
+					<p><span>电话</span><input name="mobile" type="number" pattern="[0-9]"></p>
+					<p>
+						<input type="hidden" value="0" name='region_code' class="region_code region_sel"/>
+						<span>省</span><select class="region_sel" id='province' name="province"></select>
+					</p>
+					<p>
+						<span>市</span><select class="region_sel" id='city' name="city"><option>广州市</option></select>
+					</p>
+					<p>
+						<span>区</span><select class="region_sel" id='district' name="district"><option>天河区</option></select>
+					</p>
+                    <p>
+                    	<span>类型</span>
+                        <select name="type_id" id="type_id">
+                            <foreach name='message_type_list' key='key' item='val'>
+                                <option value='{$val.type_id}'>{$val.type_name}</option>
+                            </foreach>
+                        </select>
+                    </p>
+					<p><span></span><button type="button" id="inquiry">10秒快速预约</button></p>
+					<p><span></span><em>已有 <c id="story_count">{$story_count}</c> 户预约</em></p>
+				</form>
+				<script src="__PUBLIC__/wap/js/city.min.js"></script>
+				<script src="__PUBLIC__/wap/js/index_city.js"></script>
+				<script type="text/javascript">
+				
+				//$(document).ready(function(){
+//					var region_list = {:json_encode($region_list)};
+//					<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+//					var province = {$province};
+//					<php>$city = intval($info[region_code] / 100) * 100;</php>
+//					var city = {$city};
+//					var district = {:intval($info[region_code])};
+//					var cobj = $('.region_sel');
+//					function build_sitem_select(thisobj){
+//						var region_id = thisobj.val();
+//						var obj = thisobj.next().next();
+//						obj.html('<option value="">请选择</option>');
+//						if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+//							for(var i in region_list){
+//								var bbc = region_list[i];
+//								test_region_id = parseInt(bbc.region_code);
+//								if(region_id == test_region_id){
+//									continue;
+//								}
+//								if(region_id == 0){
+//									if(test_region_id % 10000 > 0) continue;
+//								} else if(region_id % 10000 == 0) {
+//									if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+//								} else if(region_id % 100 == 0) {
+//									if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+//								} else {
+//									break;
+//								}
+//								var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+//								if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+//								opt.appendTo(obj);
+//							}
+//						}
+//						if(obj.hasClass('region_sel')) build_sitem_select(obj);
+//					}
+//					cobj.bind('change', function(){
+//						build_sitem_select($(this));
+//					});
+//					$('input.region_sel').each(function(){
+//						build_sitem_select($(this));
+//					});
+					$(".region_sel").change(function(){
+						var region_code=$(this).val();
+						$(".region_code").val(region_code)
+					})
+					//提交咨询
+					$('#inquiry').click(function(){
+						var form = $(this).parents('form');
+						$.post(form.attr('action'), form.serialize(), function(d){
+							layer.open({time:1,content:d.msg});
+							if(d.error == 0){
+								form[0].reset();
+								$('#story_count').html(res.message_count);
+							}
+						}, 'json');
+					});
+				//});
+				</script>
+			</div>
+		</div>
+	<include file='Public/footer' />
+</div>

@@ -1,0 +1,25 @@
+<volist name="list" id="vo">
+	<!--<dl class="item">
+		<dt>
+			<h2>订单号：{$vo.order_id}</h2>
+			<p>{$vo.add_time|date="Y-m-d H:i:s",###}</p>
+		</dt>
+		<dd>
+			<span>￥{$vo.goods_amount}</span>
+		</dd>
+	</dl>-->
+	<dl class="item" style='display:block;'>
+		<div style='display:flex;width:100%;'>
+			<dt>
+				<h2>订单号：{$vo.order_id}</h2>
+				<p>商品金额：￥{$vo.goods_amount}</p>
+				<p>商品数量：{:count($vo[order_goods])}</p>
+			</dt>
+			<dd>
+				<span><if condition='$vo.commision gt 0'>+{$vo.commision}<else/>&nbsp;</if></span>
+				<p>&nbsp;</p>
+				<p>{$vo.add_time|date="Y-m-d H:i:s",###}</p>
+			</dd>
+		</div>
+	</dl>
+</volist>

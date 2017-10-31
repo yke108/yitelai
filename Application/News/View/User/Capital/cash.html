@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="__PUBLIC__/wap/css/public.css">
+<link rel="stylesheet" href="__PUBLIC__/wap/css/weui.css">
+<div class="warp">
+    	<div class="user_withdraw">
+            <div class="user_donation_hd">
+            	<p>提现金额</p>
+                <p><span>¥</span><input type="number" name="money" id='money' pattern="[0-9]" placeholder="0.00"></p>
+                <p>可用余额:<font style='color:#e30029;'>￥{$user_money}</font></p>
+            </div>
+            
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell weui-cell_select">
+                    <div class="weui-cell__hd"><label class="weui-label">选择银行</label></div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" id='bank' name="bank_id" style="padding:0; height:auto; line-height:normal;">
+							<option value=''>请选择银行</option>
+                            <volist name='bank_list' id='val'>
+							<option value="{$val[bank_id]}">{$val.bank_name}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+				<div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="region_name" id='region_name' type="text" placeholder="请选择所在地区">
+                    	<input class="weui-input" name="region_code" id='region_code' type="hidden" value=''>
+					</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">银行卡号</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="card" id='card' type="number" pattern="[0-9]*" placeholder="请输入银行卡号">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">开户支行</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="open_bank" id='open_bank' type="text" placeholder="请输入开户支行">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">开户名</label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="open_name" id='open_name' type="text" placeholder="请输入开户名">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn"><a class="mui-btn mui-btn-primary mui-btn-block" id='add_apply' href="javascript:;">提交申请</a></div>
+        </div>
+    </div>
+	
+<script src="__PUBLIC__/wap/js/picker.min.js"></script>
+<script src="__PUBLIC__/wap/js/city.min.js"></script>
+<script src="__PUBLIC__/wap/js/index.js"></script>
+<script>
+$("#add_apply").click(function(){
+	var money=$("#money").val();
+	var card=$("#card").val();
+	var bank=$("#bank").val();
+	var open_bank=$("#open_bank").val();
+	var open_name=$("#open_name").val();
+	var card_re=/^[1-9][0-9]{15,18}/;
+	var region_code = $('#region_code').val();
+	
+	if(money==''){
+		layer.open({time:1,content:'请输入提现金额'});
+		$("#money").focus();
+		return;
+	}
+	
+	if(parseInt(money)<=0){
+		layer.open({time:1,content:'提现金额必须大于0'});
+		$("#money").focus();
+		return;
+	}
+	
+	if(card==''){
+		layer.open({time:1,content:'请输入银行卡号'});
+		$("#card").focus();
+		return;
+	}else{
+		if(card_re.test(card)==false){
+			layer.open({time:2,content:'请输入正确16-19位的银行卡号'});
+			$("#card").focus();
+			return; 
+		}
+	}
+	
+	if(bank==''){
+		layer.open({time:1,content:'请选择卡号所属银行'});
+		return;
+	}
+	
+	
+	$.ajax({
+		type:'POST',
+		url:"",
+		data:{money:money,card:card,bank_id:bank,open_bank:open_bank,open_name:open_name,region_code:region_code},
+		dataType:"json",
+		success:function(res){
+			alert(res.msg);
+			if(res.error==0){
+				window.location='{:U("cashapply")}';
+			}
+		}
+	})
+	
+})
+</script>

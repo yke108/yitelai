@@ -1,0 +1,21 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('apply_id'=>$vo[apply_id]))}" class="to_review right-after link">
+		<dl>
+			<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$vo.nick_name} <font>{$vo.user_typename}</font></h2>
+				<time>{:date('Y-m-d H:i', $vo[add_time])}</time>
+			</dd>
+			<dd>
+				<switch name="vo.apply_status">
+					<case value="0"><span>{$vo.status_label}</span></case>
+					<case value="1"><font>{$vo.status_label}</font></case>
+					<case value="2"><em>{$vo.status_label}</em></case>
+					<case value="3"><em>{$vo.status_label}</em></case>
+					<case value="4"><em>{$vo.status_label}</em></case>
+				</switch>
+				<i>提现金额<font>{$vo.money}元</font></i>
+			</dd>
+		</dl>
+	</a>
+</volist>

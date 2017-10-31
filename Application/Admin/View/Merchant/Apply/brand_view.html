@@ -1,0 +1,121 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">详情</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-3">品牌中文名</label>
+					<label class="control-label" style="float:left">{$brand.brand_name}</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">品牌英文名</label>
+					<label class="control-label" style="float:left">{$brand.en_name}</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">品牌商标注册人</label>
+					<label class="control-label" style="float:left">{$brand.register_person}</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">品牌商标注册号</label>
+					<label class="control-label" style="float:left">{$brand.register_no}</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">品牌商标类别</label>
+					<label class="control-label" style="float:left">{$brand.register_type}</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-3">经营类型</label>
+					<label class="control-label" style="float:left">{$brand.manage_type}</label>
+				</div>
+				<notempty name="brand.brand_logo">
+					<div class="form-group">
+						<label class="control-label col-sm-3">品牌LOGO</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.brand_logo}" height="90" /></label>
+					</div>
+				</notempty>
+				
+				<h3 class="heading">品牌资质</h3>
+				<div class="form-group">
+					<label class="control-label col-sm-3">商标注册证有效期</label>
+					<label class="control-label" style="float:left">{$brand.trademark_period_start} - <notempty name="brand.trademark_period_long">{$brand.trademark_period_long}<else/>{$brand.trademark_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.trademark_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">商标注册证图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.trademark_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">销售授权书有效期</label>
+					<label class="control-label" style="float:left">{$brand.certificate_period_start} - <notempty name="brand.certificate_period_long">{$brand.certificate_period_long}<else/>{$brand.certificate_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.certificate_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">销售授权书图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.certificate_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">报关单类有效期</label>
+					<label class="control-label" style="float:left">{$brand.customs_period_start} - <notempty name="brand.customs_period_long">{$brand.customs_period_long}<else/>{$brand.customs_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.customs_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">报关单类图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.customs_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">进货发票有效期</label>
+					<label class="control-label" style="float:left">{$brand.invoice_period_start} - <notempty name="brand.customs_pic">{$brand.invoice_period_long}<else/>{$brand.invoice_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.invoice_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">进货发票图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.invoice_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">质检检疫报告有效期</label>
+					<label class="control-label" style="float:left">{$brand.protection_period_start} - <notempty name="brand.protection_period_long">{$brand.protection_period_long}<else/>{$brand.protection_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.protection_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">质检检疫报告图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.protection_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">3C认证有效期</label>
+					<label class="control-label" style="float:left">{$brand.threec_period_start} - <notempty name="brand.threec_period_long">{$brand.threec_period_long}<else/>{$brand.threec_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.threec_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">3C认证图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.threec_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">食品卫流通许可证有效期</label>
+					<label class="control-label" style="float:left">{$brand.food_period_start} - <notempty name="brand.food_period_long">{$brand.food_period_long}<else/>{$brand.food_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.food_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">食品卫流通许可证图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.food_pic}" height="90" /></label>
+					</div>
+				</notempty>
+				<div class="form-group">
+					<label class="control-label col-sm-3">其他资质有效期</label>
+					<label class="control-label" style="float:left">{$brand.other_period_start} - <notempty name="brand.other_period_long">{$brand.other_period_long}<else/>{$brand.other_period_end}</notempty></label>
+				</div>
+				<notempty name="brand.other_pic">
+					<div class="form-group">
+						<label class="control-label col-sm-3">其他资质图片</label>
+						<label class="control-label" style="float:left"><img src="__UPLOAD__/thumbs/b120/{$brand.other_pic}" height="90" /></label>
+					</div>
+				</notempty>
+			</fieldset>
+		</form>
+	</div>
+</div>

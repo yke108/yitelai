@@ -1,0 +1,208 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------会员中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a>></span>发表文章</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="vip_article">
+				<div class="tabmenu">
+					<span>
+						<a class="ncm-btn-orange" title="发表文章" href="{:U('user/story/index')}">我的发表</a>
+					</span>
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">发表文章</a></li>
+					</ul>
+				</div>
+				<div class="vip_article_form">
+					<form action="{:U('')}" onSubmit="" method="post" enctype="multipart/form-data">
+						<ul>
+							<li>
+								<span>文章类别</span>
+								<select name='cat_id' style='width:150px;border:1px solid #ccc;margin-top:8px;'>
+									<volist name='story_cat_list' id='val'>
+									<option disabled="disabled" value='{$val.cat_id}'>{$val.cat_name}</option>
+										<volist name='val.children' id='val2'>
+										<option <if condition='$info[cat_id] eq $val2[cat_id]'>selected='selected'</if> value='{$val2.cat_id}'>&nbsp;&nbsp;&nbsp;&nbsp;{$val2.cat_name}</option>
+										</volist>
+										
+									</volist>
+								</select>
+							</li>
+							<li><span>文章标题：</span><input name="story_title" value="{$info.story_title}" type="text"><label>文章标题5~20字</label></li>
+							<li>
+								<span>封面图片：</span>
+								<em>
+									<b>添加图片</b>
+									<div>
+										<table width="172" height="172" border="0" cellspacing="0" cellpadding="0" style="border: dashed 1px #e7e7e7; padding: 5px;">
+											<tr>
+												<td id="preview" align="center" valign="middle"><img width="100%" src="<notempty name="info.story_image">{:picurl($info[story_image])}<else/>__PUBLIC__/main/images/pic59.jpg</notempty>"><input type='hidden' name='picture' value="{$info[story_image]}" /></td>
+											</tr>
+										</table>
+										<input name="story_image" type="file" onChange="previewImage(this)">
+									</div>
+									<style type="text/css">
+									.vip_article_form ul li em div {
+										margin-top: -1px;
+										border: solid 1px #a7caed;
+										padding: 10px;
+									}
+									</style>
+								</em>
+							</li>
+							<li>
+								<span>文章简介：</span>
+								<div class="edit_article">
+									<textarea name="story_intro" id='story_intro' style="width:100%;height:100px;border:1px solid #dcdcdc;">{$info.story_intro}</textarea>
+								</div>
+							</li>
+							<li>
+								<span>正文内容：</span>
+								<div class="edit_article">
+									<textarea id="ueditor" name="story_content" style="width:100%;height:300px;">{$info.story_content}</textarea>
+								</div>
+							</li>
+							<li>
+								<button type="button" id="btn_submit">发 表</button>
+								<input type="hidden" name="story_id" value="{$info.story_id}" />
+							</li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-------会员中心结束------->
+</div>
+<!-------粉丝故事会结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+//$(document).ready(function(){
+	var ue = UE.getEditor('ueditor',{maximumWords:15000,initialFrameWidth:800});
+//});
+</script>
+
+<script type="text/javascript">
+//图片上传预览    IE是用了滤镜。
+function previewImage(file)
+{
+  var MAXWIDTH  = 260; 
+  var MAXHEIGHT = 180;
+  var div = document.getElementById('preview');
+  if (file.files && file.files[0])
+  {
+	  div.innerHTML ='<img id=imghead src="__PUBLIC__/wap/images/icon8.png" width="100%" />';
+	  var img = document.getElementById('imghead');
+	  img.onload = function(){
+		var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		//img.width  =  rect.width;
+		//img.height =  rect.height;
+		//img.style.marginLeft = rect.left+'px';
+		//img.style.marginTop = rect.top+'px';
+	  }
+	  var reader = new FileReader();
+	  reader.onload = function(evt){img.src = evt.target.result;}
+	  reader.readAsDataURL(file.files[0]);
+  }
+  else //兼容IE
+  {
+	var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+	file.select();
+	var src = document.selection.createRange().text;
+	div.innerHTML = '<img id=imghead>';
+	var img = document.getElementById('imghead');
+	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+	var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+	status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+	div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+  }
+ // $("input[name='picture']").val('')
+}
+function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+	var param = {top:0, left:0, width:width, height:height};
+	if( width>maxWidth || height>maxHeight )
+	{
+		rateWidth = width / maxWidth;
+		rateHeight = height / maxHeight;
+		 
+		if( rateWidth > rateHeight )
+		{
+			param.width =  maxWidth;
+			param.height = Math.round(height / rateWidth);
+		}else
+		{
+			param.width = Math.round(width / rateHeight);
+			param.height = maxHeight;
+		}
+	}
+	 
+	param.left = Math.round((maxWidth - param.width) / 2);
+	param.top = Math.round((maxHeight - param.height) / 2);
+	return param;
+}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').click(function(){
+		var btn_submit_obj = $(this);
+		var story_title = $("input[name='story_title']").val();
+		var story_image = $('#imghead').attr('src');
+		var story_content =  ue.getContent();//$("#ueditor").html();
+		var story_intro = $("#story_intro").val();
+		var story_id = $("input[name='story_id']").val();
+		var picture = $("input[name='picture']").val();
+		
+		if(picture==undefined){
+			picture='';
+		}
+		
+		if(!story_title){
+			layer.open({time:1,content:'文章标题不能为空'});return false;
+		}
+		if(picture==''){
+			if(!story_image){
+				layer.open({time:1,content:'封面图片不能为空'});return false;
+			}
+		}
+		if(!story_content){
+		//	layer.open({time:1,content:'正文内容不能为空'});return false;
+		}
+		
+		var form = $(this).parents('form');
+		var data = form.serializeArray();
+		data[3] = {name:'story_image', value:story_image};
+		data[4] = {name:'story_title', value:story_title};
+		data[5] = {name:'story_intro', value:story_intro};
+		data[6] = {name:'story_content', value:story_content};
+		data[7] = {name:'story_id', value:story_id};
+		data[8] = {name:'picture', value:picture};
+		
+		
+		btn_submit_obj.attr('disabled', true);
+		$.post("{:U('')}", data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>

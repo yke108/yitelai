@@ -1,0 +1,19 @@
+<volist name="wageList" id="vo">
+    <if condition="$key neq $year">
+    <h2><span>{$key}年<img src="__PUBLIC__/home/images/icon18.png"></span><em>薪酬情况</em></h2>
+    </if>
+    <ul>
+        <volist name="vo" id="v">
+        <li>
+            <h3><i><img src="__PUBLIC__/home/images/{$v[status_image]}"></i><span>{$v[month]}月</span><em>{$v[total_wages]}元</em></h3>
+            <div class="platform_staff_management_deta_sub">
+                <p><span>岗位工资</span><em>{$v[post_salary]}元</em></p>
+                <p><span>法定工资</span><em>{$v[legal_wage]}元</em></p>
+                <p><span>考核工资</span><em>{$v[assessment_wage]}元</em></p>
+                <p><span>奖励</span><em>{$v[reward]}元</em></p>
+                <p><span>提成</span><em>{$v[commission]}元</em></p>
+            </div>
+        </li>
+        </volist>
+    </ul>
+</volist>

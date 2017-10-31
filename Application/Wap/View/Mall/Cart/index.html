@@ -1,0 +1,235 @@
+<style>
+.car{}
+</style>
+<div class="warp">
+	<form action="{:U('')}" method="post">
+		<div class="car" <if condition="$user[rank][discount] gt 0">style='padding-bottom:80px;'<else/>style='padding-bottom:45px;'</if> >
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px; font-size:16px; position:absolute; bottom:100px; left:0; right:0; top:0; display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;"><a href="{:U('index/index/index')}" style=" display:block; text-align:center; width:100%;">购物车为空，<span style="color:red;">前去购物</span></a></p>
+			<else/>
+				<volist name="list" id="vo">
+					<div class="car_item">
+						<h1>{$vo.distributor.distributor_name}</h1>
+						<div class="weui-cells weui-cells_checkbox">
+							<volist name="vo.goods_list" id="vo2">
+								<label class="weui-cell weui-check__label" for="s{$vo2.CartId}">
+									<div class="weui-cell__hd">
+										<input type="checkbox" class="weui-check gsel" id="s{$vo2.CartId}" {:m_checked($vo2[IsChecked],1)} name="gsel[]" value="{$vo2.CartId}" val="{$vo2.GoodsPrice}" service="{$vo2.GoodsService.price|default=0}" oriprice="{$vo2.OriginalPrice}">
+										<i class="weui-icon-checked"></i>
+									</div>
+									<div class="weui-cell__bd">
+										<dl>
+											<dt><a href="{:U('mall/goods/info', array('id'=>$vo2['GoodsId']))}"><img src="__UPLOAD__/thumbs/b200/{$vo2.GoodsImage}"></a></dt>
+											<dd>
+												<h2><a href="{:U('mall/goods/info', array('id'=>$vo2['GoodsId']))}">{$vo2.GoodsName}</a></h2>
+												<p>
+													<span>￥{$vo2.GoodsPrice}<eq name="vo2.IsSeckill" value="1"><font style="color:red">（秒杀）</font></eq></span>
+													<del style="font-size:12px; color:#999; margin-left:10px;">¥{$vo2.OriginalPrice}</del>
+													<div>
+													<volist name="vo2.Sku" id="vo3">
+														<em style='margin-right:8px;'><!--{$vo3.sku_name}：-->{$vo3.sku_value}</em>
+													</volist>
+													</div>
+												</p>
+												<if condition="($vo2[IsSeckill] eq 0) AND ($user[rank][discount] gt 0)"><p><span>会员折扣：{$user[rank][discount]/10}折</span></p></if>
+												<notempty name="vo2.DeliveryTime"><p><span style="color:#999999;">发货时间：付款后{$vo2.DeliveryTime}天内发货</span></p></notempty>
+												<notempty name="vo2.RepairTime"><p><span style="color:#999999;">维修时间：收货后{$vo2.RepairTime}天内可申请维修</span></p></notempty>
+												<notempty name="vo2.GoodsService"><span style="color:#646464">【商品服务】{$vo2.GoodsService.name} ￥{$vo2.GoodsService.price}</span></notempty>
+												<div class="del clearfix">
+													<div class="spinner" id="spinner{$vo2.CartId}"></div>
+													<script>
+														$(function(){
+															var name = "number[{$vo2.CartId}]";
+															var number = "{$vo2.CartNumber}";
+															var stock = "{$vo2.GoodsNumber}";
+															
+															//秒杀
+															var is_seckill = "{$vo2.IsSeckill}";
+															var seckill_num = "{$vo2.SeckillNumber}";
+															if(is_seckill == 1){
+																stock = seckill_num;
+															}
+															
+															$("#spinner{$vo2.CartId}").Spinner({name:name, value:number, min:1, len:3, max:stock})
+														})
+													</script>
+													<a href="{:U('mall/cart/del', array('id'=>$vo2['CartId']))}" class="del_btn"><img src="__PUBLIC__/wap/images/icon9.png"></a>
+												</div>
+											</dd>
+										</dl>
+									</div>
+								</label>
+							</volist>
+						</div>
+					</div>
+				</volist>
+			</empty>
+		</div>
+		<notempty name="list">
+			<div class="shop_car_list_btn weui-cells_checkbox">
+				<!--<if condition="$user[rank][discount] gt 0">
+				<div style='padding:10px;'><div style="color:red;text-align:right;">享受会员折扣：{$user.rank.discount}折</div></div>
+				</if>-->
+				<div class=''>
+					<label class="weui-cell weui-check__label fl" for="all" style='padding:15px 10px;'>
+						<div class="weui-cell__hd">
+							<input type="checkbox" class="weui-check gselall" name="checkbox2" id="all">
+							<i class="weui-icon-checked"></i>
+						</div>
+						<div class="weui-cell__bd">
+							<p>全选</p>
+						</div>
+					</label>
+					<span>
+						<div style="display:inline-block; vertical-align:middle;">
+							<if condition="$user[rank][discount] gt 0">
+							<div style='text-align:right;position:relative;height:44px;'>
+								<p>
+									<font style='color:#ff3451;' id="total_amount"></font>
+									<!--<b style='display:inline-block;border:1px solid #ff3451;padding:3px 12px;border-radius:15px;line-height:13px;font-size:12px;color:#ff3451;'>{$user[rank][discount]/10}折</b>-->
+								</p>
+								<p><em id='cart_ori_amount' style='color:#ccc; text-decoration:line-through;'></em></p>
+							</div>
+							<else/>
+							<div>合计：<font id="total_amount"></font></div>
+							</if>
+						</div>
+						<a class="paycartnow" style='height:54px;line-height:54px;' href="javascript:;">结算（<c id="total_number"></c>）</a>
+					</span>
+				</div>
+			</div>
+		</notempty>
+	</form>
+	
+	<include file="Public/footer"/>
+	
+</div>
+
+<script src="__PUBLIC__/js/jquery.Spinner.js"></script>
+<script>
+	//$(".spinner").Spinner({value:1, min:1, len:3, max:99})
+	/*全选/全不选*/
+	$(".shop_car_list_btn .weui-check__label").click(function () {
+		if($(this).find(".weui-check").prop("checked")){
+			$(".car .weui-check").prop("checked", true);
+		}else{
+			$(".car .weui-check").prop("checked", false);
+		}
+		total();
+	});
+	
+	/*选择单个产品*/
+	$(".car .weui-check__label").click(function(){
+		if($(this).parents(".car").find(".weui-check__label .weui-check:not(:checked)").length > 0){
+			$(".shop_car_list_btn").find(".weui-check").prop("checked", false);
+		}else{
+			$(".shop_car_list_btn").find(".weui-check").prop("checked", true);
+		}
+		total();
+	})
+</script>
+
+<script>
+$(function(){
+	total();
+	
+	if($('.gsel:checked').length == $('.gsel').length){
+		$('.gselall').prop('checked', true);
+	}else{
+		$('.gselall').prop('checked', false);
+	}
+	
+	$('.DisDe').click(function(){
+		total();
+	});
+	$('.Decrease').click(function(){
+		total();
+	});
+	$('.Increase').click(function(){
+		total();
+	});
+	$('.Amount').keyup(function(){
+		total();
+	});
+	
+	$('.ajaxlink').bind('click',function(){
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+	
+	//删除购物车商品
+	$(".del_btn").click(function(){
+		var del_node = $(this);
+		var href = $(this).attr('href');
+		layer.open({
+			content: '确认删除？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(href, {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						if(del_node.parents('.car_item').find('.gsel').length == 1){
+							del_node.parents('.car_item').remove();
+						}else{
+							del_node.parents('label').remove();
+						}
+						if(del_node.parents('.car_item').length == 1){
+							window.location.reload();
+						}
+						total();
+					}
+				}, 'json');
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+	
+	//结算
+	$('.paycartnow').bind('click', function(){
+		if($('.gsel:checked').length < 1){
+			layer.open({time:1,content:'请选择需要购买的商品'});return false;
+		}
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				layer.open({time:1,content:d.info});
+			}
+		}, 'json');
+		return false;
+	})
+})
+
+function total(){
+	var money = 0;
+	var total_number = 0;
+	var cart_amount=0;
+	var ori_amount = 0;
+	
+	$(".gsel:checked").each(function(){
+		var price = parseFloat($(this).attr('val'));
+		var ori_price = parseFloat($(this).attr('oriprice'));
+		var service_price = parseFloat($(this).attr('service'));
+		var amount = $(this).parents('.weui-check__label').find('.Amount').val();
+		total_number += parseInt(amount);
+		cart_amount=money += parseFloat(amount*price) + service_price;
+		ori_amount += parseFloat(amount*ori_price) + service_price;
+		
+	});
+	$('#total_amount').text('￥'+money.toFixed(2));
+	$('#total_number').text(total_number);
+	//$("#cart_ori_amount").text("￥"+cart_amount.toFixed(2));
+	$("#cart_ori_amount").text("￥"+ori_amount.toFixed(2));
+	//$('#cart_num').text(total_number);
+}
+</script>

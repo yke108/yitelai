@@ -1,0 +1,70 @@
+<style type="text/css">
+	.pull-left a {
+		background: #ebebeb;
+		padding: 10px 20px;
+		margin-right: 10px;
+	}
+
+	.pull-left a.selected {
+		background: #85888c;
+		color: #ffffff;
+	}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">平台人员<div style="clear:both"></div></h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<if condition="$department">
+					<a href="{:U('Personnel/Admin/index')}" <if condition="$department_id eq ''">class="selected"</if>>全部</a>
+					<volist name="department" key="key" id="vo">
+						<a <if condition="$vo['department_id'] eq $department_id">class="selected"</if> href="{:U('Personnel/Admin/index', array('department_id' => $vo['department_id']))}">{$vo[department_name]}</a>
+					</volist>
+				</if>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="20%">头像</th>
+							<th width="20%">姓名</th>
+							<th width="20%">职位</th>
+							<th width="20%">手机号码</th>
+							<th width="20%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="department_list" id="vo">
+							<tr class="rowlink top_action">
+								<td><img src="{:picurl($vo['avatar'])}" height="40"></td>
+								<td>{$vo.admin_name}</td>
+								<td>{$vo.role_name}</td>
+								<td>{$vo.mobile}</td>
+								<td><a href="{:U('Personnel/Admin/wagelists', array('admin_id' => $vo['admin_id']))}">看查历史工资</a></td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function (){ 
+	// 选择组别显示岗位
+	$('select[name=group_id]').change(function (){ 
+		$.post('{:U("get_department")}','group_id='+$('select[name=group_id]').val(),function(data)
+		{ 
+			$('select[name=department_id]').html('<option value="">全部岗位</option>'+data);
+		});
+	});
+	// 
+	$.post('{:U("get_department")}','group_id={$get.group_id}&department={$get.department_id}',function(data)
+	{ 
+		$('select[name=department_id]').html('<option value="">全部岗位</option>'+data);
+	});
+})
+</script>

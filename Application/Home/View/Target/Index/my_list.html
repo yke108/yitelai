@@ -1,0 +1,142 @@
+<div class="work_target_record">
+	<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+	<div class="work_target_record_hd">
+		<ul>
+			<li><a href="{:U('', array('type'=>1))}" <eq name="get.type" value="1">class="on"</eq>>日</a></li>
+			<li><a href="{:U('', array('type'=>2))}" <eq name="get.type" value="2">class="on"</eq>>周</a></li>
+			<li><a href="{:U('', array('type'=>3))}" <eq name="get.type" value="3">class="on"</eq>>月</a></li>
+			<li><a href="{:U('', array('type'=>4))}" <eq name="get.type" value="4">class="on"</eq>>年</a></li>
+		</ul>
+	</div>
+	<div class="work_target_record_bd">
+		<empty name="list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+		<else/>
+			<ul>
+				<include file="Target/Index/_my_list"/>
+			</ul>
+			<script>
+				$(function(){
+					$(".work_target_record_bd ul li h2").on("click",function(){
+						$(this).toggleClass("on").siblings(".work_target_content_hd").slideToggle()
+					})
+				})
+			</script>
+		</empty>
+	</div>
+</div>
+
+<div class="filter_new_pop">
+	<h2>选择状态</h2>
+	<ul>
+		<li style="margin:0 -2%;">
+			<foreach name="finish_status_list" item="vo" key="ko">
+				<a href="javascript:;" finish_status="{$ko}" <if condition="$ko eq $get[finish_status]">class="on"</if>>{$vo}</a>
+			</foreach>
+		</li>
+	</ul>
+	<form action="{:U('')}">
+		<input type="hidden" name="finish_status" value="{$get.finish_status}" />
+		<h2>选择日期</h2>
+		<ol>
+			<li><input name="time" value="{$get.time}" type="text" readonly class="time" id="StartTime1" data-options='{"type":"date"}' placeholder="选择日期" style="margin-left:0;"></li>
+		</ol>
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+<script>
+	$(function(){
+		$(".filter_new_pop ul li a").on("click",function(){
+			$(this).addClass("on").siblings().removeClass("on")
+			$('input[name=finish_status]').val($(this).attr('finish_status'))
+		})
+	})
+</script>
+
+<style type="text/css">
+.mui-table-view{background:#fafafa;}
+.filter_new_pop ol li input{background:none; border:1px solid #cccccc; text-align:center;}
+.filter_new_pop ul li a{padding:8px 0px; text-align:center; margin:0 2% 10px; width:21%;}
+</style>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+	$(function(){
+		$("#click").click(function(){
+			$(".filter_new_pop").toggleClass("on")	
+			$(".mask").fadeToggle()
+		})
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary,.mask").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+		
+	})
+	
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+app.setTitleRight('筛选', 'show');
+function show(){
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_new_pop ul li a").removeClass("on")
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+</script>

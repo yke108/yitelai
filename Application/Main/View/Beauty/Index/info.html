@@ -1,0 +1,74 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------投票详情开始----->
+<div class="vote_detaild w1200">
+	<div class="vote_detaild_hd">
+		<dl class="clearfix">
+			<dt><img src="__UPLOAD__/thumbs/b660/{$info.picture}"></dt>
+			<dd>
+				<h2>{$info.name}</h2>
+				<ol>
+					<li>年 龄：{$info.age}</li>
+					<li>星 座：{$info.sign}</li>
+					<li>职 业：{$info.career}</li>
+				</ol>
+				<a href="{:U('vote', array('id'=>$info[beauty_id]))}" class="vote">投TA一票</a>
+				<h3>个人简介</h3>
+				<p>{$info.intro}</p>
+				<div class="ranking">
+					<h4>第<font>{$info.paiming}</font>名</h4>
+					<span class="vote_count">{$info.vote_count}</span>
+					<em>获得票数</em>
+				</div>
+			</dd>
+		</dl>
+	</div>
+	<div class="vote_detaild_bd">
+		<h1><span>展示面</span></h1>
+		<div class="vote_detaild_bd_info">
+			{$info.content}
+		</div>
+	</div>
+</div>
+<!-------投票详情结束----->
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_comment').click(function(){
+		var form = $(this).parents('form')
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.reload()
+			}
+		}, 'json');
+	});
+	
+	$('.vote').bind('click',function(){
+		var obj = $(this);
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				var vote_count = $('.vote_count').html();
+				vote_count = parseInt(vote_count) + 1;
+				$('.vote_count').html(vote_count);
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>

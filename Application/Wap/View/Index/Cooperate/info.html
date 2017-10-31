@@ -1,0 +1,192 @@
+<style>
+.login_box_r ul li input{border-radius:0;padding:7px 0 7px 15px;}
+.login_box_r ul li select{margin-left:-4px;}
+/*2017-03-03*/
+.cooperation .swiper-pagination-bullet{ background:#FFF; opacity:1;}
+.cooperation .swiper-pagination-bullet-active{ background:#ff9276;}
+
+.cooperation_form{margin-bottom:30px;background:url(__PUBLIC__/main/images/bg.jpg) center center no-repeat; background-size:cover; padding:10px;}
+.cooperation_form ul li{ margin-bottom:10px; vertical-align:top; position:relative;}
+.cooperation_form ul li label{ display:block; font-size:14px; color:#969696;}
+.cooperation_form ul li input{ width:100%; padding:8px 10px;}
+.cooperation_form ul li select{ width:100%; padding:8px 10px;}
+.cooperation_form ul li textarea{ width:100%; padding:8px 10px; line-height:24px; height:100px; resize:none;}
+.cooperation_form ul li label font{ color:#e70021;}
+.cooperation_form ul li button{  width:100%; padding:10px 0; font-size:16px; color:#fff; background:#996633;}
+.cooperation_form ul li.after:after{ position:absolute; content:" "; display:inline-block; height:8px; width:8px; border-width:2px 2px 0 0;  border-color:#C8C8CD; border-style:solid; -webkit-transform:matrix(0.71, 0.71, -0.71, 0.71, 0, 0); transform:matrix(0.71, 0.71, -0.71, 0.71, 0, 0); top:-2px; top:50%; margin-top:-5px; right:10px;}
+.cooperation_bd{}
+.cooperation_bd h3{font-size:20px;background:#fff;padding:10px 0;text-align:center;color:#996633;font-weight:normal;}
+.cooperation_bd table{border-spacing:1px;background:#dadada;}
+.cooperation_bd table td{ vertical-align:middle;text-align:center;background:#fff;width:33.33333%;padding:30px 0;font-size:16px;color:#969696;}
+.cooperation_bd table td img{max-width:88px;}
+</style>
+
+<!-------登陆内容开始----->
+<div class="login_box clearfix warp" >
+
+	<div class="cooperation">
+        	<div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <volist name='ad_list.WapCooperate' id='val'>
+					<div class="swiper-slide"><a href="<if condition='$val.ad_value neq ""'>{$val.ad_value}<else/>javascript:;</if>"><img src="__UPLOAD__/{$val.ad_picture}" width="100%"></a></div>
+                    </volist>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="cooperation_form">
+            	<form action="" onSubmit="">
+                    <ul>
+                        <li><label>品牌名<font>*</font></label></li>
+                        <li><input id='brand' name="brand" type="text" placeholder="请输入品牌名"></li>
+                        <li><label>网址（选填）</label></li>
+                        <li><input id='web_url' name="web_url" type="text" placeholder="请输入网址"></li>
+                        <li><label>地区<font>*</font></label></li>
+                        <li><input placeholder="请选择地区" name="district" id='region_name' type="text"><input type='hidden' id='region_code'  /></li>
+                        <li><label>合作方式<font>*</font>（任选1）</label></li>
+                        <li class="after">
+							<select name="type" id='type'>
+								<option value='品牌入驻'>品牌入驻</option>
+								<option value='供应商'>供应商</option>
+								<option value='代运营'>代运营</option>
+								<option value='城市代理'>城市代理</option>
+							</select>
+						</li>
+                        <li><label>联系人<font>*</font></label></li>
+                        <li><input placeholder="请输入联系人姓名" id='consignee' name="consignee" type="text"></li>
+                        <li><label>电话<font>*</font></label></li>
+                        <li><input placeholder="请输入电话" id='tel' name="tel" type="text"></li>
+                        <li><label>建议：（选填）</label></li>
+                        <li><textarea placeholder="请填写您的建议" name="content" id='content' cols="content" rows=""></textarea></li>
+                        <li><button type="button" id='reg_btn'>提交</button></li>
+                    </ul>
+                </form>
+            </div>
+            <div class="cooperation_bd">
+				<h3>合作大牌</h3>
+				<div style='padding:0 10px;'>
+				<table width='100%'>
+					<volist name='brand' id='val'>
+					<if condition='$i%3 eq 1'>
+					<tr>
+						<td>
+							<img src="__UPLOAD__/{$val.brand_logo}" /><br>
+							<span>{$val.brand_name}</span>
+						</td>
+					<elseif condition='($i%3 eq 0) or (count($brand) eq $i)' />
+						<td>
+							<img src="__UPLOAD__/{$val.brand_logo}" /><br>
+							<span>{$val.brand_name}</span>
+						</td>
+					</tr>
+					<else/>
+						<td>
+							<img src="__UPLOAD__/{$val.brand_logo}" /><br>
+							<span>{$val.brand_name}</span>
+						</td>
+					</if>
+					</volist>
+					<!--<tr>
+						<td>
+							<img src="__PUBLIC__/main/images/pic14.jpg" /><br>
+							<span>照明</span>
+						</td>
+						<td>
+							<img src="__PUBLIC__/main/images/pic49.jpg" /><br>
+							<span>装饰</span>
+						</td>
+						<td>
+							<img src="__PUBLIC__/main/images/pic49.jpg" /><br>
+							<span>装饰</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<img src="__PUBLIC__/main/images/pic14.jpg" /><br>
+							<span>照明</span>
+						</td>
+						<td>
+							<img src="__PUBLIC__/main/images/pic49.jpg" /><br>
+							<span>装饰</span>
+						</td>
+						<td>
+							<img src="__PUBLIC__/main/images/pic49.jpg" /><br>
+							<span>装饰</span>
+						</td>
+					</tr>-->
+				</table>
+				</div>
+			</div>
+        </div>
+</div>
+<script src="__PUBLIC__/wap/js/city.min.js"></script>
+<script src="__PUBLIC__/wap/js/picker.min.js"></script>
+<script src="__PUBLIC__/wap/js/index.js"></script>
+<!-------登陆内容结束----->
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(function(){
+	$('#reg_btn').bind('click',function(){
+        var brand = $('#brand').val();
+        var web_url = $('#web_url').val();
+        var district = $('#region_code').val();
+        var type = $('#type').val();
+        var consignee = $('#consignee').val();
+        var tel = $('#tel').val();
+		var content = $('#content').val();
+
+        //$invite
+        
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (brand=='') {
+            layer.open({time:2,content:'请输入品牌'});
+            return false;
+        }
+        //if (web_url=='') {
+//            layer.open({time:1,content:'请输入网址'});
+//            return false;
+//        }
+                
+        if(district==''){
+            layer.open({time:2,content:'请选择地区'});
+            return false;
+        }
+        if(consignee==''){
+            layer.open({time:2,content:'请填写联系人'});
+            return false;
+        }
+        
+        if (reg.test(tel)==false) {
+            layer.open({time:2,content:'请填写正确的手机号'});
+            return false;
+        }
+                
+        $.post("{:U('')}",{brand:brand,web_url:web_url,region_code:district,consignee:consignee,tel:tel,type:type,content:content},function(d){
+			layer.open({time:2,content:d.info});
+            if(d.status == 1){  
+				$('input,textarea').val('');
+				$("select").each(function(){
+					$(this).find("option:first").attr("selected",true)
+				})
+            }
+        },'json');
+        
+        return false;
+
+    });
+})
+$(function(){
+	//$("select option:last").attr('selected',true)
+})
+</script>
+<script>
+	var swiper1 = new Swiper('.cooperation .swiper-container',{
+		pagination:'.cooperation .swiper-pagination',
+		paginationClickable:true,
+		autoplay:5000,
+		autoplayDisableOnInteraction:false,
+	});
+</script>

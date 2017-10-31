@@ -1,0 +1,26 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td><input type="checkbox" value="{$vo.record_id}" class="checkid" name="checkid[]"></td>
+		<td><notempty name="vo.goods_image"><a href="__UPLOAD__/{$vo.goods_image}" target="_blank"><img height="37" src="__UPLOAD__/{$vo.goods_image}"/></a></notempty></td>
+		<td>{$vo.goods_sn}</td>
+		<td>{$vo.goods_name}</td>
+		<td>{$vo.cat_name}</td>
+		<td>{$vo.self_cat_name}</td>
+		<td>{$vo.brand.brand_name}</td>
+		<td>
+			<gt name="vo.is_hot" value="0"><font color="red">爆款推荐</font></gt>
+			<gt name="vo.is_new" value="0"><font color="red">新品推荐</font></gt>
+			<gt name="vo.is_privilege" value="0"><font color="red">特权定金</font></gt>
+			<gt name="vo.is_custom" value="0"><font color="red">定制商品</font></gt>
+		</td>
+		<td>{$vo.sort_order}</td>
+		<td>{:date('Y-m-d', $vo[add_time])}</td>
+		<td><a href='{$vo.url}' target="_blank">点击查看</a></td>
+		<td>
+			<a href="{:U('edit', array('record_id'=>$vo[record_id]))}">编辑</a>   
+			<a href="{:U('del', array('record_id'=>$vo[record_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+			<!--<a href="{:U('Goods/Product/index', array('record_id'=>$vo[record_id]))}">货品管理</a>-->
+			<!--<a href="{:U('Goods/Index/seckill', array('record_id'=>$vo[record_id]))}">秒杀设置</a>-->
+		</td>
+	</tr>
+</volist>

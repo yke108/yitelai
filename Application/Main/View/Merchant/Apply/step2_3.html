@@ -1,0 +1,247 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">公司信息提交</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="on">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li class="pass">
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li>
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_2">
+	<div class="w1200">
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$info.merchant_id}" />
+			<div class="public_form">
+				<h2>经营信息</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>公司类型</label>
+						<div class="public_form_r">
+							<select name="company_type">
+								<volist name="merchant_config.company_type" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[company_type])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">公司官网地址</label>
+						<div class="public_form_r">
+							<input name="company_site" value="{$info.company_site}" type="text" class="text">
+							<p class="tip">形如：http://www.jd.com/</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>最近一年销售额</label>
+						<div class="public_form_r">
+							<input name="company_yearamount" value="{$info.company_yearamount}" type="text" class="text" onkeyup="clearNoNum(this)"> 万元
+							<p class="tip">仅输入不得超过9位数的正整数</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>同类电子商务网站经验</label>
+						<div class="public_form_r">
+							  <label><input type="radio" name="e_experience" value="有" <empty name="info.e_experience">checked="checked"<else/>{:m_checked($info[e_experience], '有')}</empty>>有</label>
+							  <label><input type="radio" name="e_experience" value="无" {:m_checked($info[e_experience], '无')}>无</label>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>网店地址</label>
+						<div class="public_form_r">
+							<input name="store_site" value="{$info.store_site}" type="text" class="text">
+							<p class="tip">形如：http://www.jd.com/，仅输入主要网店地址即可</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>网店运营人数</label>
+						<div class="public_form_r">
+							<input name="operate_num" value="{$info.operate_num}" type="text" class="text"> 人
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">可网售商品数量</label>
+						<div class="public_form_r">
+							<select name="netsale_num">
+								<volist name="merchant_config.netsale_num" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[netsale_num])}>{$vo}</option>
+								</volist>
+							</select>
+							<p class="tip">某一商品的多种颜色、尺码或包装形式不同时，按一件商品计算。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>预计平均客单价</label>
+						<div class="public_form_r">
+							<select name="customer_peramount">
+								<volist name="merchant_config.customer_peramount" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[customer_peramount])}>{$vo}</option>
+								</volist>
+							</select>
+							<p class="tip">用户购物时，单次购买的平均金额。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>仓库情况</label>
+						<div class="public_form_r">
+							<select name="store_status">
+								<volist name="merchant_config.store_status" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[store_status])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>仓库地址</label>
+						<div class="public_form_r">
+							<input name="store_address" value="{$info.store_address}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>常用物流公司</label>
+						<div class="public_form_r">
+							<input name="express_company" value="{$info.express_company}" type="text" class="text">
+							<p class="tip">可填写多个，用逗号分隔，如"申通，圆通"，最大50字。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>ERP类型</label>
+						<div class="public_form_r">
+							<select name="erp_type">
+								<volist name="merchant_config.erp_type" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[erp_type])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">代运营公司名称</label>
+						<div class="public_form_r">
+							<input name="agency_company" value="{$info.agency_company}" type="text" class="text"> 选填
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>是否会选择谷安居仓储</label>
+						<div class="public_form_r">
+							<select name="use_ourstore">
+								<volist name="merchant_config.use_ourstore" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[use_ourstore])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>是否择谷安居物流</label>
+						<div class="public_form_r">
+							<select name="use_ourexpress">
+								<volist name="merchant_config.use_ourexpress" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[use_ourexpress])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+				</ul>
+				<h2>是否收到一下谷安居业务邀请<em>请与营业执照或企业信息公示网的经营范围保持一致</em></h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>业务邀请</label>
+						<div class="public_form_r">
+							<select name="business_invite">
+								<volist name="merchant_config.business_invite" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[business_invite])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="public_btn">
+				<a href="{:U('article/page/info', array('id'=>22))}" target="_blank">撤销申请？</a>
+				<span><a href="{:U('merchant/apply/step2_2')}" class="prev">上一步</a><a href="javascript:;" class="next">下一步，完善店铺信息</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false,
+			scrollInput:false,
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>
+
+<script language="JavaScript" type="text/javascript">
+function clearNoNum(obj){
+obj.value = obj.value.replace(/[^\d]/g,"");
+}
+</script>

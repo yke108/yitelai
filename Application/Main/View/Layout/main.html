@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title><notempty name="page_title">{$page_title} - </notempty>{$sysconfig.name}</title>
+<meta name="keywords" content="{$sysconfig.keywords}">
+<meta name="description" content="{$sysconfig.description}">
+<link href="__PUBLIC__/main/css/public.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/main/css/special.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/main/css/swiper.min.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/main/js/sscr.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/main/js/sscr.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/main/js/Tony_Tab.js"></script>
+
+<link rel="stylesheet" href="__PUBLIC__/v8/css/layer.css" type="text/css">
+<script src="__PUBLIC__/v8/js/layer.m.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.go_out').click(function(){
+		$.post("{:U('index/site/logout')}",{},function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){    
+				window.location.reload();
+			}
+		},'json');
+		return false;
+	});
+});
+</script>
+</head>
+
+<body>
+
+	{__CONTENT__}
+    
+</body>
+</html>

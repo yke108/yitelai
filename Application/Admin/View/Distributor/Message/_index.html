@@ -1,0 +1,15 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td><eq name="vo.type" value="1">私信<else/>公开消息</eq></td>
+		<td>{$vo.title}</td>
+		<!--<td>{$vo.cat_name}</td>-->
+		<td align="center">{$vo.distributor_name|default='---'}</td>
+		<td>{$vo.admin_name}</td>
+		<td>{$vo.read_count}</td>
+		<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+		<td>
+			<a href="{:U('edit', array('id'=>$vo[msg_id]))}">编辑</a> 
+			<a href="{:U('del', array('id'=>$vo[msg_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+		</td>
+	</tr>
+</volist>

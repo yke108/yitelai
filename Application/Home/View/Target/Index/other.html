@@ -1,0 +1,223 @@
+<div class="platform_staff_management">
+	<div class="platform_staff_management_hd"><span id="store">{$distributor_name|default='全部'}</span><span id="target">{$type_name|default='全部'}</span></div>
+	<div class="platform_staff_management_bd">
+		<div class="platform_staff_management_l mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul>
+					<li><a href="{:U('', array('store_id'=>$get[store_id], 'type'=>$get[type], 'time'=>$get[time]))}" <empty name="get.department_id">class="on"</empty>>全部</a></li>
+					<volist name="department_list" id="vo">
+						<li><a href="{:U('', array('department_id'=>$vo[department_id], 'store_id'=>$get[store_id], 'type'=>$get[type], 'time'=>$get[time]))}" <if condition="$vo[department_id] eq $get[department_id]">class="on"</if>>{$vo.department_name}</a></li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+		<div class="platform_staff_management_r mui-scroll-wrapper" id="pullrefresh">
+			<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无记录</p>
+			<else/>
+				<div class="mui-scroll">
+					<div class="div">
+						<include file="Target/Index/_other"/>
+					</div>
+				</div>
+			</empty>
+		</div>
+	</div>
+</div>
+
+<div class="filter_new_pop">
+	<form action="{:U('')}">
+		<input type="hidden" name="store_id" value="{$get.store_id}" id="store_id" />
+		<input type="hidden" name="type" value="{$get.type}" id="type" />
+		<input type="hidden" name="department_id" value="{$get.department_id}" id="department_id" />
+		<!--<div class="mui-input-row mui-search">
+			<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="搜索">
+		</div>-->
+		<h2>选择日期</h2>
+		<ol>
+			<li><input name="time" value="{$get.time}" type="text" readonly class="time" id="StartTime1" data-options='{}' placeholder="选择日期" style="margin-left:0;"></li>
+		</ol>
+		<!--<h2>区域筛选</h2>
+		<ul>
+			<li class="right-after"><select name="region_code"><option>全国</option><option>广东省</option></select></li>
+		</ul>
+		<h2>店铺筛选</h2>
+		<ul>
+			<li class="right-after"><select name="store_id"><option>广州天河店</option><option>广州东圃店</option></select></li>
+		</ul>-->
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+
+	(function($) {
+		$.init();
+		
+		//选择店铺
+		var userPicker1 = new $.PopPicker();
+		userPicker1.setData({$store_list});
+		var showUserPickerButton1 = document.getElementById('store');
+		showUserPickerButton1.addEventListener('tap', function(event) {
+			userPicker1.show(function(items) {
+				//showUserPickerButton1.innerText = (items[0] || {}).text;
+				//document.getElementById('store_id').value = (items[0] || {}).value;
+				window.location.href = (items[0] || {}).value;
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}, false);
+		
+		//普通示例
+		var userPicker = new $.PopPicker();
+		userPicker.setData({$type_list});
+		var showUserPickerButton = document.getElementById('target');
+		showUserPickerButton.addEventListener('tap', function(event) {
+			userPicker.show(function(items) {
+				//showUserPickerButton.innerText = (items[0] || {}).text;
+				//document.getElementById('type').value = (items[0] || {}).value;
+				window.location.href = (items[0] || {}).value;
+				//返回 false 可以阻止选择框的关闭
+				//return false;
+			});
+		}, false);
+		
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+
+	(function($) {
+		$('.mui-scroll-wrapper').scroll({
+			indicators: true //是否显示滚动条
+		});
+	})(mui);
+
+	$(function(){
+		$("#click").click(function(){
+			$(".filter_new_pop").toggleClass("on")	
+			$(".mask").fadeToggle()
+		})
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary,.mask").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+		
+	})
+	
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	//$(".filter_new_pop").addClass("on")	
+	//$(".mask").fadeIn()
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_pop ul li a").removeClass("on")
+	//$(".filter_pop ul li input").val('')
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+
+$(document).ready(function(){
+	$('.mask').click(function(){
+		$(".filter_new_pop").removeClass("on")
+		$(".mask").fadeOut()
+	});
+});
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var store_id = "{$get.store_id}";
+		var type = "{$get.type}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, store_id:store_id, type:type},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .div").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

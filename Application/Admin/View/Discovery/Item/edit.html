@@ -1,0 +1,89 @@
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">项目修改
+		<p style="font-size:12px;"></p>
+		</h3>
+		<?php $action = $info['item_id'] > 0 ? U('',array('id'=>$info['item_id'])) : U(''); ?>
+		
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">标题</label>
+						<div class="col-sm-7 col-md-7">
+							<input name="title"  type="text" value="{$info.item_title}" 
+							class="input-xlarge form-control">
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">副标题</label>
+						<div class="col-sm-10 col-md-10">
+							<input name="brief"  type="text" value="{$info.item_tip}" 
+							class="input-xlarge form-control">
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">备注</label>
+						<div class="col-sm-10 col-md-10">
+							<input name="remark"  type="text" value="{$info.remark}" 
+							class="input-xlarge form-control">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2">图标</label>
+						<div class="col-sm-8">
+							<input class="hy_upload_single" hy_field="icon" value="上传图片" style="width:200px;height:150px;" src="{$info.item_icon}"/>
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">状态</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input value="1" name="is_open"
+								 {:m_checked($info[is_open],1)}  type="radio">开放
+							</label>
+							<label class="radio-inline">
+								<input value="2" name="is_open" 
+								{:m_checked($info[is_open],2)} type="radio">关闭
+							</label>
+							<label class="radio-inline">
+								<input value="3" name="is_open" 
+								{:m_checked($info[is_open],3)} type="radio">内测
+							</label>
+						</div>
+					</div>
+					
+					<div class="form-group col-sm-12">
+						<label class="control-label col-sm-2">终端类型</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input value="0" name="client_type"
+								 {:m_checked($info[client_type],0)}  type="radio">不限
+							</label>
+							<label class="radio-inline">
+								<input value="3" name="client_type" 
+								{:m_checked($info[client_type],3)} type="radio">Android
+							</label>
+							<label class="radio-inline">
+								<input value="4" name="client_type" 
+								{:m_checked($info[client_type],4)} type="radio">IOS
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-12">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div>
+<script type="text/javascript">
+$('.hy_upload_single').hySingleUpload("{:U('site/upload')}", '__UPLOAD__');
+</script>
+	

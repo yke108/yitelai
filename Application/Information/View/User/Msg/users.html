@@ -1,0 +1,23 @@
+<div class="row hy_page_content" href="{:U('',$get)}">
+    <div class="col-sm-12 col-md-12" style="padding:10px 20px 0">       
+        <table class="table table-striped table-bordered hy_idsel_in_iframe">
+            <thead>
+			    <tr>
+					<th></th>
+					<th>用户昵称</th>
+			        <th>用户手机</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+			    	<tr>
+						<td><input type='checkbox' value='{$vo.user_id}' title="{$vo.nick_name}" /></td>
+				        <td>{$vo.nick_name}</td>
+						<td>{$vo.mobile}</td>
+				    </tr>
+				</volist>
+			</tbody>        
+		</table>
+		<div id="pwrap">{$pager}</div>
+    </div>
+</div>

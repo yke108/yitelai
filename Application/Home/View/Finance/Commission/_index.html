@@ -1,0 +1,8 @@
+<volist name="list" id="vo">
+	<li>
+		<a href="{:U('info', array('user_id'=>$vo[user_id]))}">
+			<span><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"><font>{$vo.nick_name}<i>{$vo.user_typename}</i><br><i style="margin-left:0;">{$vo.distributor_name}</i></font></span>
+			<em><i><font>{$vo.commission_money}元</font></i><p>佣金</p></em><em><b>{$vo.pay_points}分</b><p>积分</p></em>
+		</a>
+	</li>
+</volist>

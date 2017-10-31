@@ -1,0 +1,95 @@
+<div class="warp">
+	<div class="cooperation distribution">
+		<div class="cooperation_pic"><img src="__PUBLIC__/wap/images/pic38.jpg"></div>
+		<div class="cooperation_form">
+			<form action="" onSubmit="">
+				<ul>
+					<li><label>所在城市<font>*</font></label></li>
+					<li>
+						<select id='province' name='province' style='display:inline-block;width:50%;'></select>
+						<select id='city' name='city' style='display:inline-block;width:49%;'></select>
+					</li>
+					<li><label>姓名<font>*</font>（真实填写）</label></li>
+					<li><input name="name" id='name' type="text"></li>
+					<li><label>电话<font>*</font></label></li>
+					<li><input name="tel" id='tel' type="number"></li>
+					<li><label>微信号<font>*</font>（可收款）</label></li>
+					<li><input name="" type="text"></li>
+					<li><label>分销品牌<font>*</font></label></li>
+					<li><input name="brand" id='brand' type="text"></li>
+					<li><label>申请理由<font>*</font></label></li>
+					<li><input id='reason' name="reason" type="text"></li>
+					<li><label>建议：（选填）</label></li>
+					<li><textarea id='proposal' name="proposal" cols="" rows=""></textarea></li>
+					<li><button type="button" id='apply_btn'>提 交</button></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="__PUBLIC__/main/js/picker.min.js"></script>
+<script src="__PUBLIC__/main/js/city.min.js"></script>
+<script src="__PUBLIC__/main/js/index_city.js"></script>
+<script>
+$("#apply_btn").click(function(){
+	var city=$("#city").val();
+	var name=$("#name").val();
+	var tel=$("#tel").val();
+	var weixin_account=$("#weixin_account").val();
+	var brand=$("#brand").val();
+	var reason=$("#reason").val();
+	var proposal=$("#proposal").val();
+	var re = /^0?1[1-9][0-9]\d{8}$/;
+	
+	if(city=='' || city==0){
+		layer.open({time:1,content:'请选择所在城市'});
+		return;
+	}
+	
+	
+	if(name==''){
+		layer.open({time:1,content:'请输入姓名'});
+		return;
+	}
+	
+	if(tel==''){
+		layer.open({time:1,content:'请输入手机号码'});
+		return;
+	}else{
+		if(re.test(tel)==false){
+			layer.open({time:1,content:'请输入一个正确的手机号码'});
+			return;
+		}
+	}
+	
+	if(weixin_account==''){
+		layer.open({time:1,content:'请输入微信号'});
+		return;
+	}
+	
+	if(brand==''){
+		layer.open({time:1,content:'请输入分销品牌'});
+		return;
+	}
+	
+	if(reason==''){
+		layer.open({time:1,content:'请填写申请理由'});
+		return;
+	}
+	
+	
+	$.ajax({
+		type:'POST',
+		url:"",
+		data:{city:city,name:name,tel:tel,weixin_account:weixin_account,brand:brand,reason:reason,proposal:proposal},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.info});
+			if(res.status==1){
+				window.location="{:U('user/index/index')}";
+			}
+		}
+	})
+	
+})
+</script>

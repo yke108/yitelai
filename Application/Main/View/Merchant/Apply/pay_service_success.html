@@ -1,0 +1,32 @@
+<!-------头部开始----->
+<include file="Public/cart_header"/>
+<!-------头部结束----->
+
+
+
+<!-------支付成功开始----->
+<div class="main w1200">
+	<div class="pay_result">
+		<h2><img src="__PUBLIC__/main/images/icon117.png">恭喜你，支付成功</h2>
+		<p>付款金额：<span>￥{$info.service_charge}</span></p>
+		<p><a href="{:U('user/capital/index')}" class="pay_result_1">查看记录</a>
+			<if condition="($info[deposit_pay] eq 1) AND ($info[service_charge_pay] eq 1)">
+				<a href="{:U('merchant/apply/step6')}" class="pay_result_2">返回</a>
+			<else/>
+				<a href="{:U('merchant/apply/step5')}" class="pay_result_2">返回</a>
+			</if>
+		</p>
+	</div>
+</div>
+<!-------支付订单结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

@@ -1,0 +1,14 @@
+<volist name="wageList" id="year">
+	 <volist name="year" id="vo">
+		<a href="{:U('info', array('admin_id'=>$vo[admin_id]))}" class="right-after link">
+			<dl>
+				<dt><img src="<notempty name="vo.avatar">__UPLOAD__/thumbs/b90/{$vo.avatar}<else/>__PUBLIC__/main/images/user_default_img.jpg</notempty>"></dt>
+				<dd>
+					<h2>{$vo.admin_name}</h2>
+					<p>{$vo.role_name}</p>
+				</dd>
+				<dt><span class="status_1"><eq name="vo.status" value="1">已审核<else/>未审核</eq></span></dt>
+			</dl>
+		</a>
+	</volist>
+</volist>

@@ -1,0 +1,45 @@
+<style>
+.story_status{position:absolute;right:10px;top:10px;}
+</style>
+<div class="warp">
+	<div class="user_article">
+		<empty name="list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+		<else/>
+			<div class="weui-panel_access">
+				<volist name="list" id="vo">
+					<div class='weui-media-box weui-media-box_appmsg' style='position:relative;'>
+						<div class="weui-media-box__hd">
+							<a href="{:U('story/index/view', array('id'=>$vo[story_id]))}" class="">
+								<img class="weui-media-box__thumb" src="__UPLOAD__/thumbs/b120/{$vo.story_image}" alt="">
+							</a>
+						</div>
+						<div class="weui-media-box__bd">
+							<h4 class="weui-media-box__title">
+								<a href="{:U('story/index/view', array('id'=>$vo[story_id]))}" class="weui-media-box weui-media-box_appmsg">{$vo.story_title}</a>
+							</h4>
+							<p><span><em><img src="__PUBLIC__/wap/images/icon28.png">{$vo.good_num}</em><em><img src="__PUBLIC__/wap/images/icon27.png">{$vo.view_num}</em></span></p>
+							<p class="weui-media-box__desc">{$vo.story_intro}</p>
+						</div>
+						<div class='story_status'>
+							<if condition="$vo.status eq 0">
+								<span class='label label-danger' style='color:#c62626;'>审核不通过</span>
+							<elseif condition="$vo.status eq 1" />
+								<span class='label label-success' style='color:#70a415;'>审核通过</span>
+							<else/>
+								<span class='label label-success' style='color:#70a415;'>待审核</span>
+							</if>
+						</div>
+						<if condition='$vo.status eq 2'>
+						<div style='position:absolute;right:10px;bottom:20px;'>
+							<a style='background:#fd6760;display:inline-block;padding:5px 15px;border-radius:5px;color:#fff;' href="{:U('edit',array('id'=>$vo[story_id]))}">编辑</a>
+						</div>
+						</if>
+					</div>
+					
+				</volist>
+			</div>
+		</empty>
+		<div class="user_article_btn"><a href="{:U('add')}"><img src="__PUBLIC__/wap/images/icon21.png">发布文章</a></div>
+	</div>        
+</div>

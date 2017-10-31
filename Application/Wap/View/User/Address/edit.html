@@ -1,0 +1,101 @@
+<div class="warp">
+	<div class="user_add_address">
+
+		<form action="{:U('')}" method="post">
+
+			<div class="weui-cells weui-cells_form weui-cells_checkbox">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">联系人</label></div>
+					<div class="weui-cell__bd">
+						<input name="consignee" value="{$info.consignee}" class="weui-input" type="text" placeholder="请输入联系人姓名">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">联系电话</label></div>
+					<div class="weui-cell__bd">
+						<input name="mobile" value="{$info.mobile}" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入联系电话">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+					<div class="weui-cell__bd">
+						<input name="district" type='hidden' id='region_code' value='{$info.region_code}'>
+						<input value="{$info.zone}" class="weui-input" type="text" placeholder="请选择所在地区" id="region_name">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<textarea class="weui-textarea" name='address' placeholder="请填写详细地址" id="address" rows="3">{$info.address}</textarea>
+					</div>
+				</div>
+				<label class="weui-cell weui-check__label" for="s11">
+                    <div class="weui-cell__hd">
+                        <input <notempty name="info">{:m_checked($info[is_default], 1)}<else/>checked="checked"</notempty> type="checkbox" class="weui-check" name="is_default" value="1" id="s11">
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <p>设为默认地址</p>
+                    </div>
+                </label>
+			</div>
+			<div class="btn">
+				<a class="weui-btn weui-btn_primary get_page_two" href="javascript:;" id="btn_submit">确定</a>
+				<input type="hidden" name="id" value="{$info.address_id}" />
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/wap/js/picker.min.js"></script>
+	<script src="__PUBLIC__/wap/js/city.min.js"></script>
+	<script src="__PUBLIC__/wap/js/index.js"></script>
+</div>
+
+<script type="text/javascript">
+var not_load=false
+$(function(){
+	//添加收货地址
+	
+	$('#btn_submit').bind('click',function(){
+		
+		var form = $(this).parents('form');
+		//$.post(form.attr('action'), form.serialize(), function(d){
+//			layer.open({time:1,content:d.info});
+//			
+//			if(d.status == 1){
+//				if($(".load_page").length>0){
+//					get_page(d.url);return;
+//				}
+//				window.location.href = d.url;
+//			}
+//		}, 'json');
+		if(not_load==true){return;}
+		$.ajax({
+			type:'POST',
+			url:form.attr('action'),
+			data:form.serialize(),
+			dataType:"json",
+			async:false,
+			beforeSend: function(){not_load=true},
+			success:function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){
+					if($(".load_page").length>0){
+						get_page(d.url);return;
+					}
+					window.location.href = d.url;
+				}
+				not_load=false;
+			}
+		})
+		
+	});
+})
+
+function checkMobile(str) {
+    var re = /^1\d{10}$/
+    if (re.test(str)) {
+    	return true;
+    } else {
+    	return false;
+    }
+}
+</script>

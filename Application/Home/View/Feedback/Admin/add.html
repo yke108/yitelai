@@ -1,0 +1,118 @@
+<div class="add_customer_service">
+	<div id="slider" class="mui-slider mui-fullscreen">
+		<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+			<a class="mui-control-item mui-active" href="#item1mobile">新增人员</a>
+			<a class="mui-control-item" href="#item2mobile">选择人员</a>
+		</div>
+		<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+		<div class="mui-slider-group">
+			<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+				<div id="scroll1" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="add_customer_service_item">
+							<form action="{:U('')}">
+								<div class="mui-input-group">
+									<div class="mui-input-row">
+										<label>姓名：</label>
+										<input type="text" name="name" placeholder="请输入姓名">
+									</div>
+									<div class="mui-input-row">
+										<label>性别：</label>
+										<select name="sex">
+											<option value="1">男</option>
+											<option value="2">女</option>
+										</select>
+									</div>
+									<div class="mui-input-row">
+										<label>手机/账户：</label>
+										<input type="text" name="mobile" placeholder="请输入手机号/账号">
+									</div>
+									<div class="mui-input-row">
+										<label>密码：</label>
+										<input type="password" name="password" placeholder="请输入密码">
+									</div>
+									<div class="mui-input-row">
+										<label>确认密码：</label>
+										<input type="password" name="password2" placeholder="请输入密码">
+									</div>
+									<div class="mui-input-row">
+										<label>客服类型：</label>
+										<select name="admin_type">
+											<foreach name="admin_type_list" item="vo" key="ko">
+												<option value="{$ko}">{$vo}</option>
+											</foreach>
+										</select>
+									</div>
+									<!--<div class="mui-input-row">
+										<label>是否有管理权限：</label>
+										<select name="is_admin">
+											<option value="1">是</option>
+											<option value="0">否</option>
+										</select>
+									</div>-->
+								</div>
+								<div class="btn">
+									<a href="javascript:history.back(-1)" class="mui-btn mui-btn-block mui-btn-default">取消</a>
+									<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary btn_submit">确定</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="item2mobile" class="mui-slider-item mui-control-content">
+				<div id="scroll2" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="add_customer_service_item select_customer_service_item">
+							<form action="{:U('')}">
+								<div class="mui-input-group">
+									<div class="mui-input-row">
+										<label>姓名：</label>
+										<select name="admin_id">
+											<volist name="admin_list" id="vo">
+												<option value="{$vo.admin_id}">{$vo.admin_name}</option>
+											</volist>
+										</select>
+									</div>
+									<div class="mui-input-row">
+										<label>客服类型：</label>
+										<select name="admin_type">
+											<foreach name="admin_type_list" item="vo" key="ko">
+												<option value="{$ko}">{$vo}</option>
+											</foreach>
+										</select>
+									</div>
+								</div>
+								<div class="btn">
+									<a href="javascript:history.back(-1)" class="mui-btn mui-btn-block mui-btn-default">取消</a>
+									<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary btn_submit">确定</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    $('.mui-scroll-wrapper').scroll({
+        indicators: true //是否显示滚动条
+    });
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

@@ -1,0 +1,58 @@
+<div class="personnel_management_list mui-scroll-wrapper" id="pullrefresh">
+	<div class="mui-scroll">
+		<div class="personnel_management_list_hd">
+			<div class="mui-input-row mui-search">
+				<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="搜索">
+			</div>
+		</div>
+		<div class="personnel_management_list_bd">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无记录</p>
+			<else/>
+				<div class="div">
+					<include file="Platform/User/_list"/>
+				</div>
+			</empty>
+		</div>
+	</div>
+</div>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page=2;
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .div").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

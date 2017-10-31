@@ -1,0 +1,38 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的消息详情开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我的消息详情</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_news">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">查看消息</a></li>
+					</ul>
+				</div>
+				<div class="my_news_deta">
+					<h1>{$info.title}</h1>
+					<h2>{$info.add_time|date="Y-m-d H:i",###}</h2>
+					<div class="news_deta_info">
+						{:htmlspecialchars_decode($info[content])}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的消息开始----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

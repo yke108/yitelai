@@ -1,0 +1,23 @@
+<volist name="list" id="vo">
+	<div class="user_address_item item">
+		<div class="address_item_hd">
+			<p><span>{$vo.consignee}</span><span>{$vo.mobile}</span></p>
+			<p>{$vo.zone} {$vo.address}</p>
+		</div>
+		<div class="address_item_bd clearfix">
+			<div class="weui-cells_checkbox fl">
+				<label class="weui-cell weui-check__label" for="s{$vo.address_id}">
+					<div class="weui-cell__hd">
+						<input type="radio" class="weui-check" name="radio1" id="s{$vo.address_id}" {:m_checked($vo[is_default], 1)} onClick="set_defaddr({$vo.address_id})">
+						<i class="weui-icon-checked"></i>
+					</div>
+					<div class="weui-cell__bd"><p>默认地址</p></div>
+				</label>
+			</div>
+			<span>
+				<a href="{:U('edit', array('id'=>$vo['address_id']))}" class='get_page_two'><img src="__PUBLIC__/wap/images/icon55.png">编辑</a>
+				<a href="javascript:;" onClick="del_addr({$vo.address_id},this)"><img src="__PUBLIC__/wap/images/icon56.png">删除</a>
+			</span>
+		</div>
+	</div>
+</volist>

@@ -1,0 +1,78 @@
+<style type="text/css">
+.rowlink2{cursor: pointer;}
+#c_table_list tr td,#c_table_list tr th{border:1px solid #BBB;vertical-align: middle;}
+</style>
+<div class="row hy_page_content" href="{:U('', $get)}">
+    <div class="col-sm-6 col-md-6">
+        <h3 class="heading">权限管理
+			
+			<a href="{:U('add')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal {:CheckPurview('admin_action_add')}">添加权限</a>
+			
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered" id="c_table_list">
+                    <thead>
+                        <tr>
+							<th style="width:40%">权限名称</th>
+							<th>权限码</th>
+							<th style="width:20%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink2 top_action" id='{$vo["action_code"]}'>
+								<td>{$vo.action_name}</td>
+								<td>{$vo.action_code}</td>
+								<td>
+									
+									<a href="{:U('edit', array('id'=>$vo[action_id]))}" class="cs_ajax_link hy_show_modal {:CheckPurview('admin_action_edit')}">编辑</a>
+									
+									<a href="{:U('del', array('id'=>$vo[action_id]))}" class="cs_del_confirm {:CheckPurview('admin_action_del')}"
+										 cs_tip="确定删除？">删除</a>
+									 
+								</td>
+							</tr>
+							<volist name='vo.children' id='child_val'>
+								<tr class="rowlink3  {$vo['action_code']}" style="background-color:#DDD">
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;{$child_val.action_name}</td>
+									<td>{$child_val.action_code}</td>
+									<td>
+										<a href="{:U('edit', array('id'=>$child_val[action_id]))}" class="cs_ajax_link hy_show_modal {:CheckPurview('admin_action_edit')}">编辑</a>										
+										<a href="{:U('del', array('id'=>$child_val[action_id]))}" class="cs_del_confirm {:CheckPurview('admin_action_del')}"
+											 cs_tip="确定删除？">删除</a>
+										
+									</td>
+								</tr>
+							</volist>
+						</volist>
+                    </tbody>
+                </table>
+				<div>{$page}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+	var hors = function(obj){
+		var code=$(obj).attr('id');
+		if($(obj).hasClass('on')){
+			$("."+code).removeClass('collapse');
+			$(obj).removeClass('on')
+		}else{
+			$("."+code).addClass('collapse');
+			$(obj).addClass('on')
+		}
+	}
+	$(".top_action").each(function(){
+		hors(this);
+		$(this).bind('click', function(){hors(this);});
+	});
+});
+</script>

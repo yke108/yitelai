@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">查看详情</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>头像</th>
+							<th>用户</th>
+							<th>内容</th>
+							<th>时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}" height="32" /></td>
+								<td>{$vo.nick_name|default='匿名用户'}</td>
+								<td><div style="width:300px; word-wrap:break-word">{$vo.content}</div></td>
+								<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+							</tr>
+						</volist>
+						<volist name="reply_list" id="vo">
+							<tr class="rowlink">
+								<td><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}" height="32" /></td>
+								<td>{$vo.nick_name|default='匿名用户'}</td>
+								<td><div style="width:300px; word-wrap:break-word">{$vo.content}</div></td>
+								<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

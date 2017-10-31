@@ -1,0 +1,259 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.act_id" value="0">活动修改<else/>活动增加</gt></h3>
+			<php>$action = $info['act_id'] > 0 ? U('edit', array('id'=>$info['act_id'])) : U('add');</php>
+		<form class="form-horizontal" action="{$action}" method="post" enctype="multipart/form-data" onsubmit="return check_form()">
+			<fieldset>			
+				<div class="tabbable">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab1" data-toggle="tab">基础信息</a>
+						</li>
+						<li>
+							<a href="#tab2" data-toggle="tab">阶梯价格</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-group">
+								<label class="control-label col-sm-2">活动名称</label>
+								<div class="col-sm-6 col-md-6">
+									<input name="act_name" class="input-xlarge form-control" type="text" value="{$info.act_name}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">拼团有效天数</label>
+								<div class="col-sm-6 col-md-6">
+									<input name="limit_days" class="input-xlarge form-control" type="text" value="{$info.limit_days}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">活动商品</label>
+								<div class="col-sm-6 col-md-6">
+									<input name="goods_name" id='goods_name' class="input-xlarge form-control cs_ajax_link hy_show_modal modal_type_iframe" hy_add_id='goods_box' hy_w='1000' hy_h='600' href="{:U('goods_list')}"  type="text" value="{$info.goods_name}">
+									<input name="goods_id" id='goods_id' class="input-xlarge form-control" type="hidden" value="{$info.goods_id}">
+									<input name="goods_img" id='goods_img' class="input-xlarge form-control" type="hidden" value="{$info.act_img}">
+								</div>
+							</div>
+							
+							<div class='form-group'>
+								<label class="control-label col-sm-2">商品属性</label>
+								<div class="col-sm-6 col-md-6" style='margin-top:7px;'>
+									<select name='product_id' id='product'>
+										<volist name='product_list' id='val'>	
+										<!--<option <if condition="$info[product_id] eq $val[id]">selected='selected'</if> value='{$val.id}'>{$val.product_name}</option>-->
+										<option  <if condition="$info[product_id] eq $val[id]">selected='selected'</if> value='{$val.id}'>{$val.product_items_name}</option>
+										</volist>
+									</select>
+									<input type='hidden' name='product_name' id='product_name' value='<if condition="$info[product_name] eq ''">{$first_product[product_items_name]}<else/>{$info[product_name]}</if>' />
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-sm-2">活动开始时间</label>
+								<div class="col-sm-6 col-md-6">
+									<input name="start_time" class="input-xlarge form-control"  type="text" value="{:hydate('Y-m-d H:i', $info[start_time])}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">活动结束时间</label>
+								<div class="col-sm-6 col-md-6">
+									<input name="end_time" class="input-xlarge form-control "  type="text" value="{:hydate('Y-m-d H:i', $info[end_time])}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">是否显示拼团列表</label>
+								<div class="col-sm-8">
+									<label class="radio-inline">
+										<input value="1" id="s_yes" name="is_show_page" {:m_checked($info[is_show_page], 1)} type="radio">
+										是
+									</label>
+									<label class="radio-inline">
+										<input value="0" id="s_no" name="is_show_page" {:m_checked($info[is_show_page], 0)} type="radio">
+										否
+									</label>
+								</div>
+							</div>
+			
+							<!--<div class="form-group">
+								<label class="control-label col-sm-2">排序</label>
+								<div class="col-sm-2 col-md-2">
+									<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order}">
+								</div>
+							</div>-->
+						</div>	
+						<div class="tab-pane" id="tab2">
+							<div class="row sepH_c">
+								<div class="col-sm-6 col-md-6">	
+									<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered" id="table_list">
+										<thead>
+											<tr>
+											  <th>最低人数</th>
+											  <th>最高人数</th>
+											  <th>团购价</th>
+											  <th  style="width:30px;"><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_button"
+																	 cs_id="tblc{$gid}">添加</a></th>
+											</tr>
+										</thead>
+										<tbody id="tblc{$gid}">
+											<empty name='info.price_plan_change'>
+											<tr>
+												<td>
+													<input name="min_peoples[]" class="input-xlarge form-control value_clear min_peoples" type="text" value="{$val.min_peoples}">
+												</td>
+												<td>
+													<input name="max_peoples[]" class="input-xlarge form-control value_clear max_peoples" type="text" value="{$val.max_peoples}">  
+												</td>
+												<td>
+													<input name="price[]" class="input-xlarge form-control value_clear price" type="text" value="{$val.price}">
+												</td>  
+												<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+											</tr>
+											<else/>
+											<volist name="info.price_plan_change" id="vo">
+											<tr>
+												<td>
+													<input name="min_peoples[]" class="input-xlarge form-control value_clear min_peoples" type="text" value="{$vo.min_peoples}">
+												</td>
+												<td>
+													<input name="max_peoples[]" class="input-xlarge form-control value_clear max_peoples" type="text" value="{$vo.max_peoples}">  
+												</td>
+												<td>
+													<input name="price[]" class="input-xlarge form-control value_clear price" type="text" value="{$vo.price}">
+												</td>  
+												<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+											</tr>
+											</volist>
+											</empty>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div> 
+
+<script>
+$(function(){
+	$('.cs_row_add_button').unbind('click').bind('click', function(){
+		var refobj = $('#'+$(this).attr('cs_id'));
+		if(refobj == undefined) return;
+		var count = refobj.children('tr').length;
+		
+		var row = refobj.children(':last-child').clone().appendTo(refobj);
+		row.find('.value_clear').each(function(){
+			$(this).val('');
+		});
+		row.find('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				obj.remove();
+			}
+			return false;
+		});
+		row.find('.csimg').bind('click',function(){
+			uploadImage($(this));
+			return false;
+		});
+		//自动完成
+		$( ".goods_relname").autocomplete({
+			source: "{:U('goods')}",
+			minLength:1,
+			select: function( event, ui ) {
+				if(ui.item){
+					$(this).parent().find('.goods_relid').val(ui.item.id);
+					$(this).parent().parent().find('.goods_rel').text(ui.item.id);
+					
+					//$('#goods_id_selected').val(ui.item.id);
+				} else {
+					$(this).parent().find('.goods_relid').val('');
+					$(this).parent().parent().find('.goods_rel').text('');
+					//$('#goods_id_selected').val('');
+				}
+			},
+			change:function(event,ui){
+				if(ui.item){
+					$(this).parent().find('.goods_relid').val(ui.item.id);
+					//$('#goods_id_selected').val(ui.item.id);
+				} else {
+					$(this).parent().find('.goods_relid').val('');
+					//$('#goods_id_selected').val('');
+				}
+			}
+		});
+	});
+	$('.btn_row_del').bind('click', function(){
+		var obj = $(this).parent().parent();
+		if(obj.parent().children().length > 1){
+			obj.remove();
+		}
+		return false;
+	})
+	$(".min_peoples,.max_peoples").live('change click keydown keyup focus blur',function(e){
+		e.stopImmediatePropagation();
+		e.stopPropagation();
+		var val=$(this).val();
+		var re=/\D/i;
+		$(this).val(val.replace(re,''))
+	})
+	$(".price").live('change click keydown keyup focus blur',function(e){
+		e.stopImmediatePropagation();
+		e.stopPropagation();
+		var val=$(this).val();
+		var re=/\d*\.*\d*/i;
+		$(this).val(val.match(re))
+		//alert('a')
+	})
+	
+})
+function check_form(){
+	var error=false;
+	$(".min_peoples").each(function(){
+		if($(this).val()==''){
+			alert('最低人数不能为空');
+			$(this).focus();
+			error=true;
+			return false;
+			
+		}
+	})
+	
+	if(error==true){return false;}
+	
+	$(".max_peoples").each(function(){
+		if($(this).val()==''){
+			alert('最高人数不能为空');
+			$(this).focus();
+			error=true;
+			return false;
+		}
+	})
+	
+	if(error==true){return false;}
+	
+	$(".price").each(function(){
+		if($(this).val()==''){
+			alert('团购价不能为空');
+			$(this).focus();
+			error=true;
+			return false;
+		}
+	})
+	if(error==true){return false;}
+}
+$("#product").change(function(){
+	var product_name=$(this).find('option:selected').html();
+	$("#product_name").val(product_name);
+})
+</script>
+	

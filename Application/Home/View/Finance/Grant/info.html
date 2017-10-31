@@ -1,0 +1,44 @@
+<div class="withdraw_review_detaild">
+	<div class="withdraw_review_detaild_hd">
+		<dl>
+			<dt><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$user.nick_name} <font>{$user.user_typename}</font></h2>
+				<time>{:date('Y-m-d H:i', $info[add_time])}</time>
+			</dd>
+			<dd>
+				<switch name="info.status">
+					<case value="0"><span>{$info.status_label}</span></case>
+					<case value="1"><font>{$info.status_label}</font></case>
+					<case value="2"><em>{$info.status_label}</em></case>
+					<case value="3"><em>{$info.status_label}</em></case>
+					<case value="4"><em>{$info.status_label}</em></case>
+				</switch>
+				<i>佣金金额<font>{$info.money}元</font></i>
+			</dd>
+		</dl>
+	</div>
+	<div class="withdraw_review_detaild_bd">
+		<h2>佣金明细</h2>
+		<volist name="list" id="vo">
+			<p><span>订单号：{$vo.ref_id}</span><em>佣金：<font>{$vo.amount_change}元</font></em></p>
+		</volist>
+		<h3><em>合计：<font>{$total_amount}元</font></em></h3>
+	</div>
+	<div class="withdraw_review_detaild_btn btn">
+		<eq name="info.status" value="2">
+			<a href="{:U('remit', array('apply_id'=>$info[apply_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">填写发放状态</a>
+		</eq>
+	</div>
+</div>
+
+<script>
+mui.init();
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>

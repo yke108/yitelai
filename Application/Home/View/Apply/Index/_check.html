@@ -1,0 +1,21 @@
+
+<volist name="list" id="v">
+	<php>
+		$admin = $admins[$v['admin_id']];
+		$status = $verify_status_list[$v['verify_status']];
+	</php>
+	<li>
+        <a href="{:U('checkdetail',['id'=>$v['verify_id']])}">
+            <h2>
+                <em>{$v.apply_name}</em>
+                <span class="mui-badge mui-badge-{$status.1} mui-badge-inverted">&nbsp;&nbsp;{$status.0} </span>
+                <b><img src="{$admin.avatar}">{$admin.admin_name}</b>
+            </h2>
+            <p>申请理由</p>
+            <p>{$v.content}</p>
+            <time class="right-after">{$v.apply_time|date="Y-m-d H:i:s", ###}</time>
+        </a>
+    </li>
+</volist>
+<empty name="list"><p style="text-align:center;padding:20px;">暂无相关记录</p></empty>
+                        

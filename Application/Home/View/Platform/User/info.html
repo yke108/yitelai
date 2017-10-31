@@ -1,0 +1,22 @@
+<div class="personnel_management_list_detaild">
+	<div class="personnel_management_list_detaild_hd">
+		<dl>
+			<dt><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$info.nick_name}</h2>
+				<time>业务组</time>
+			</dd>
+			<dt><span>{$user_type[$info[user_type]]}</span></dt>
+		</dl>
+	</div>
+	<div class="personnel_management_list_detaild_bd">
+		<ul>
+			<li><span>销售额</span><em>{$info.sales_amount}</em></li>
+			<li><span>工资</span><em>{$info.salary_amount}</em></li>
+			<li><span>提成奖励</span><em>{$info.commission_amount}</em></li>
+			<li><span>差旅费</span><em>{$info.travel_amount}</em></li>
+			<li><span>办公费</span><em>{$info.office_amount}</em></li>
+			<li><span>业绩创收</span><em>{$info.income_amount}</em></li>
+		</ul>
+	</div>
+</div>

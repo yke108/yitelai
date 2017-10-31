@@ -1,0 +1,97 @@
+<div class="apply_management_audit">
+    <div id="slider" class="mui-slider mui-fullscreen">
+        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+            <a class="mui-control-item  mui-active" href="#item1mobile">全部</a>
+            <a class="mui-control-item" href="#item2mobile">未处理</a>
+            <a class="mui-control-item" href="#item3mobile">已批准</a>
+            <a class="mui-control-item" href="#item4mobile">已驳回</a>
+        </div>
+        <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-3"></div>
+        <div class="mui-slider-group">
+            <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+                <div id="scroll1" class="mui-scroll-wrapper">
+                    <div class="mui-scroll" type="1" p="2">
+                        <ul>
+                        <include file="Apply/Index/_check"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item2mobile" class="mui-slider-item mui-control-content">
+            	<php>$list = $list2;</php>
+                <div id="scroll1" class="mui-scroll-wrapper">
+                    <div class="mui-scroll" type="2" p="2">
+                        <ul>
+                        <include file="Apply/Index/_check"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item3mobile" class="mui-slider-item mui-control-content">
+            	<php>$list = $list3;</php>
+                <div id="scroll1" class="mui-scroll-wrapper">
+                    <div class="mui-scroll" type="3" p="2">
+                        <ul>
+                        <include file="Apply/Index/_check"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="item4mobile" class="mui-slider-item mui-control-content">
+            	<php>$list = $list4;</php>
+                <div id="scroll1" class="mui-scroll-wrapper">
+                    <div class="mui-scroll" type="4" p="2">
+                        <ul>
+                        <include file="Apply/Index/_check"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+<script>
+mui.init();
+(function($) {
+    //阻尼系数
+    var deceleration = mui.os.ios?0.003:0.0009;
+    $('.mui-scroll-wrapper').scroll({
+        bounce: true,
+        indicators: true, //是否显示滚动条
+        deceleration:deceleration
+    });
+    $.ready(function() {
+        $.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+        	var ulobj = jQuery(pullRefreshEl).find('ul').children('li');
+        	if(ulobj.length < 1) return;
+    		$(pullRefreshEl).pullToRefresh({
+    			up: {
+    				callback: function() {
+    					var self = this;
+    					setTimeout(function(){
+    						var jqobj = jQuery(pullRefreshEl);
+        					var type = jqobj.attr('type');
+        					var p = jqobj.attr('p');
+        					var data = {type:type,p:p};
+        					mui.get("{:U('checkajax')}",data,function(data){
+        							if(data.html != ''){
+        								jqobj.attr('p', data.p);
+        								var list = jqobj.find('ul');
+        								list.append(data.html);
+        								self.endPullUpToRefresh();
+        							}else{
+        								self.endPullUpToRefresh(true);
+        							}
+        						},'json');
+    					}, 1000);		
+    				}
+    			}
+    		});
+    	});
+    });
+})(mui);
+    
+
+</script>

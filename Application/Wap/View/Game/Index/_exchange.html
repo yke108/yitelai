@@ -1,0 +1,27 @@
+<div class="pay">	
+	<div class="pay_1">
+		<empty name="address">
+			<!---如果没有选择收货地址---->
+			<!--<div class="no_data "><a class='get_page_two' href="{:U('User/Address/index')}">选择收货人</a></div>-->
+			<div class="no_data "><a class='get_page_two' href="{:U('User/Address/add')}">添加收货地址</a></div>
+		<else/>
+			<!---如果已经选择收货地址---->
+			<div class="has_data">
+				<!--<a class='get_page_two' href="{:U('User/Address/index')}">
+					<p><span>{$address.consignee}</span><span>{$address.mobile}</span></p>
+					<p>{$address.zone} {$address.address}</p>
+				</a>-->
+				<a class='get_page_two' href="{:U('User/Address/index')}">
+					<p><span>{$address.consignee}</span><span>{$address.mobile}</span></p>
+					<p>{$address.zone} {$address.address}</p>
+				</a>
+			</div>
+		</empty>
+	</div>
+	<div class="pay_2">
+		<div style='padding:10px;font-size:14px;' class='clearfix'><span class='fl'>奖品：{$info.prize_name}</span><span class='fr' style='color:#ff0000;'>{$info.prize_num}</span></div>
+	</div>
+	<div class="pay_5" style='background:none;text-align:center;'>
+		<a style='background:#ff3451;font-size:14px;padding:8px 0;width:90%;color:#fff;border-radius:5px;text-align:center;display:inline-block;' href="{:U('log_set_address',array('log_id'=>$info[log_id]))}" >设为收货地址</a>
+	</div>
+</div>

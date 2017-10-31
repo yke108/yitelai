@@ -1,0 +1,339 @@
+<style>
+.add_address_pop ul li select{margin-bottom:5px;padding:10px 5px;margin-right:5px;}
+</style>
+<!-------头部开始----->
+<include file="Public/cart_header"/>
+<!-------头部结束----->
+
+
+
+<!-------确认订单开始----->
+<div class="main w1200">
+	<div class="confirm_order">
+		<div class="confirm_order_address">
+			<h2>选择收货地址</h2>
+			<empty name="address_list">
+				<p style="text-align:center;color:#999999;padding:20px;">收货地址为空，<a href="{:U('user/address/add')}" style="color:#F00">添加收货地址</a></p>
+			<else/>
+            	<div class="clearfix">
+                    <ul class="clearfix fl">
+                        <volist name="address_list" id="vo">
+                            <li <eq name="vo.is_default" value="1">class="on"</eq> address_id="{$vo.address_id}">
+                                <i>默认地址</i>
+                                <p><span>{$vo.zone} </span><em>（{$vo.consignee} 收）</em></p>
+                                <p>{$vo.address}<font>{$vo.mobile}</font></p>
+                                <p class="change"><a href="javascript:;" class='save_address_btn' val="{$vo.address_id}">修改</a></p>
+                            </li>
+                        </volist>
+                    </ul>
+                    <div class="fl" style="font-size:14px; background:url(__PUBLIC__/main/images/icon97.png) no-repeat; width:260px; height:106px; text-align:center;"><a href="javascript:;" style="display:block;" class="add_address_btn"><b style="display:block; color:#999; font-size:30px; margin-top:15px;">+</b>添加收货地址</a></div>
+                </div>
+				<div class="more_address"><a href="javascript:;" class="all_address">显示全部地址</a><!--<a href="{:U('user/address/index')}" class="fr">管理收货地址</a>--></div>
+			</empty>
+		</div>
+        
+        <div class='save_address'>
+			<include file='Mall/cart/_address' />
+		</div>
+        <style>
+        	.add_address_pop{width:530px;position:fixed;left:50%;top:50%;background:#FFF;z-index:15;padding-bottom:20px;border:10px solid #b4b4b4;margin:-209px 0 0 -250px; display:none;}
+			.add_address_pop h2{padding:0 10px;font-weight:normal;font-size:14px;background:#e6e6e6;border-bottom:solid 1px #d9d9d9;height:35px;line-height:35px;}
+			.add_address_pop h2 a{font-family:Verdana, Geneva, sans-serif; font-weight:bold; font-size:14px;	}
+			.add_address_pop ul li{ margin-top:10px;}
+			.add_address_pop ul li span{ display:inline-block; text-align:right; width:125px; line-height:25px; margin-right:20px; color:#666;}
+			.add_address_pop ul li button{color:#FFF; background:#ec4f4a; height:40px; font-size:14px; padding:0 20px; margin-left:145px; cursor:pointer;}
+			.add_address_pop ul li em{ display:inline-block; position:relative; width:85px; height:26px; line-height:26px; text-align:center; background:#EEE; border:solid 1px #c9c9c9; cursor:pointer; margin-bottom:5px;}
+			.add_address_pop ul li em input{ position:absolute; left:0; top:0; width:100%; height:100%; cursor:pointer; opacity:0; filter:alpha(opacity=0); }
+			.add_address_pop ul li img{ border-radius:50%; width:90px; height:90px; margin-right:35px;}
+			.add_address_pop ul li input{ width:240px; padding:11px 10px; border:solid 1px #EEE;}
+			.add_address_pop ul li select{ border:solid 1px #EEE; padding:11px 10px; margin-right:10px;}
+			.add_address_pop ul li label{ margin-right:30px;}
+			.add_address_pop ul li label input{ width:auto; height:auto; margin:-2px 5px 0 0;}
+        </style>
+		<script>
+			var add_url="{:U('User/Address/add')}";
+			var edit_url="{:U('User/Address/edit',array('id'=>'address_id'))}";
+			var current_url=add_url;
+			$(function(){
+				
+				$(".add_address_btn").click(function(){
+					current_url=add_url
+					$(".add_address_pop").fadeIn()
+					$(".mask").fadeIn()	
+				})
+				
+				$(".add_address_pop a").live('click',function(){
+					$(".add_address_pop").fadeOut()
+					$(".mask").fadeOut()	
+				})
+				
+				$(".confirm_order_address ul li").click(function(){
+					var liobj = $(this);
+					var address_id = liobj.attr('address_id');
+					$.post("{:U('teamAddressDef')}",{address_id:address_id},function(data){
+						if(data.status == 1){
+							liobj.addClass("on").siblings().removeClass("on");
+						}else{
+							layer.open({time:1,content:data.info});
+						}
+					},'json');
+				})
+				
+				$(".confirm_order_address ul li:nth-child(4n)").addClass("mr")
+				
+				$(".more_address a.all_address").click(function(){
+					if($(this).hasClass("on")){
+						$(this).removeClass("on").html("显示全部地址")
+						$(this).parent().siblings("ul").height("126px")
+					}else{
+						$(this).addClass("on").html("收起全部地址")
+						$(this).parent().siblings("ul").height("auto")	
+					}	
+				})	
+			})
+		</script>
+		<div class="confirm_order_info">
+			<notempty name='team_info'>
+			<h2>团购信息:<font style='color:#ff0000;font-size:14px;'>({$team_info.price_info.min_peoples}-{$team_info.price_info.max_peoples}人团)</font></h2>
+			</notempty>
+			
+			<notempty name='team_post_info'>
+			<h2>团购信息:<font style='color:#ff0000;font-size:14px;'>({$team_post_info.member_num}-{$team_post_info.member_limit}人团)</font></h2>
+			</notempty>
+			
+			
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<th align="left">宝贝</th>
+					<th align="left">商品属性</th>
+					<th align="center">单价</th>
+					<th align="center">数量</th>
+					<!--<th align="center">优惠方式</th>-->
+					<th align="center">小计</th>                                                                                                                         
+				</tr>
+				<notempty name='team_info'>
+				<tr>
+					<td valign="top" align="left">
+						<dl class="clearfix">
+							<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b150/{$team_info.act_img}" width="60" height="60"></a></dt>
+							<dd>
+								<h3><a href="javascript:;">{$team_info.goods_name}</a></h3>
+							</dd>
+						</dl>
+					</td>
+					<td valign="top" align="left">
+						<p>规格：{$team_info.product_name}</p>
+					</td>
+					<td valign="top" align="center">¥{$team_info.price_info.price}</td>
+					<td valign="top" align="center">1</td>
+					<!--<td valign="top" align="center">省¥12345：省钱小生 <a href="#"><img src="__PUBLIC__/main/images/icon98.png"></a></td>-->
+					<td valign="top" align="center"><span>{$team_info.price_info.price}</span></td>
+				</tr>
+				</notempty>
+				
+				<notempty name='team_post_info'>
+				<tr>
+					<td valign="top" align="left">
+						<dl class="clearfix">
+							<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b150/{$team_post_info.act_img}" width="60" height="60"></a></dt>
+							<dd>
+								<h3><a href="javascript:;">{$team_post_info.goods_name}</a></h3>
+							</dd>
+						</dl>
+					</td>
+					<td valign="top" align="left">
+						<p>规格：{$team_post_info.product_name}</p>
+					</td>
+					<td valign="top" align="center">¥{$team_post_info.price}</td>
+					<td valign="top" align="center">1</td>
+					<!--<td valign="top" align="center">省¥12345：省钱小生 <a href="#"><img src="__PUBLIC__/main/images/icon98.png"></a></td>-->
+					<td valign="top" align="center"><span>{$team_post_info.price}</span></td>
+				</tr>
+				</notempty>
+				
+				
+			</table>
+		</div>
+		<form action="{:U('')}">
+			<div class="confirm_order_btn">
+				<a href="javascript:;" class="createordernow">提交</a>
+				<input type="hidden" name="act_type" value="{$get.act_type}" />
+			</div>
+		</form>
+	</div>
+</div>
+<!-------确认订单结束----->
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+
+$(document).ready(function(){
+	$('#use_pay_points').bind('click', function(){
+		if($(this).prop('checked') == true){
+			$('#pay_points').attr('disabled', false);
+		}else{
+			$('#pay_points').attr('disabled', true);
+			$('#pay_points').val('');
+			$('#deduction').html('0.00');
+		}
+	})
+	
+	$('#pay_points').bind('keyup', function(){
+		var user_pay_points = {$user.pay_points};
+		var point_exchange = {$sysconfig.point_exchange};
+		var deduction = 0.00;
+		var pay_points = $(this).val();
+		if(pay_points > user_pay_points){
+			layer.open({time:1,content:'可用积分为'+user_pay_points});
+			$(this).val(user_pay_points);
+			deduction = user_pay_points / point_exchange;
+		}else{
+			deduction = pay_points / point_exchange;
+		}
+		$('#deduction').html(deduction);
+	})
+	
+	
+});
+function change_region(obj,type){
+	var code=$(obj).val();
+	$.ajax({
+		type:'POST',
+		url:"{:U('Index/Site/get_region')}",
+		data:{code:code,type:type},
+		dataType:"json",
+		success:function(res){
+			//alert($("#"+'city').html())
+			$("#"+type).html(res.html)
+		}
+	})
+}
+</script>
+<script>
+<notempty name='team_info'>
+$(".createordernow").click(function(){
+	var url="{:U('mall/cart/pay',array('id'=>'order_str'))}";
+	var act_id="{$act_id}";
+	var person_number="{$num}";
+	$.ajax({
+		type:'POST',
+		url:"{:U('mall/goods/build_team')}",
+		data:{act_id:act_id,person_number:person_number},
+		dataType:"json",
+		success:function(res){
+			if(res.error==0){
+				url=url.replace('order_str',res.general_order)
+				window.location=url;
+			}else if(res.error==2){
+				window.location="{:U('Index/site/login')}";
+			}else{
+				alert(res.msg)
+			}
+		}
+	})
+})
+</notempty>
+
+<notempty name='team_post_info'>
+$(".createordernow").click(function(){
+	var url="{:U('mall/cart/pay',array('id'=>'order_str'))}";
+	var post_id="{$team_post_info.post_id}"
+	$.ajax({
+		type:'POST',
+		url:"{:U('mall/goods/join_team_post')}",
+		data:{post_id:post_id},
+		dataType:"json",
+		success:function(res){
+			if(res.error==0){
+				url=url.replace('order_str',res.general_order)
+				window.location=url;
+			}else if(res.error==2){
+				window.location="{:U('Index/site/login')}";
+			}else{
+				alert(res.msg)
+			}
+		}
+	})
+})
+</notempty>
+
+$("#btn_submit").live('click',function(){
+	var consignee=$("#consignee").val();
+	var province=$("#province_show").val();
+	var city=$("#city_show").val();
+	var district=$("#district_show").val();
+	var address=$("#address").val();
+	var zipcode=$("#zipcode").val();
+	var mobile=$("#mobile").val();
+	var is_default=$("#set_default:checked").val();
+	var address_id=$("#address_id").val();
+	
+	
+	
+	if(consignee==''){
+		layer.open({time:1,content:'请填写收件人'});
+		$("#consignee").focus();
+		return ;
+	}
+	if(address==''){
+		layer.open({time:1,content:'请填写详细地址'});
+		$("#address").focus();
+		return ;
+	}
+	if(mobile==''){
+		layer.open({time:1,content:'请填写联系电话'});
+		$("#mobile").focus();
+		return ;
+	}
+	
+	
+	$.ajax({
+		type:'POST',
+		url:current_url,
+		data:{
+				address_id:address_id,
+				consignee:consignee,
+				region_code:district,
+				district:district,
+				address:address,
+				zipcode:zipcode,
+				mobile:mobile,
+				address:address,		
+				is_default:is_default,		
+			},
+		dataType:"json",
+		success:function(res){
+			alert(res.info)
+			if(res.status==1){
+				window.location.reload();
+			}
+		}
+	})
+	
+})
+</script>
+<script>
+$(".save_address_btn").click(function(){
+	var address_id=$(this).attr('val')
+	edit_url=edit_url.replace('address_id',address_id);
+	current_url=edit_url
+	$.ajax({
+		type:'GET',
+		url:"{:U('save_address')}",
+		data:{address_id:address_id},
+		dataType:"json",
+		success:function(res){
+			$(".save_address").html(res.html)
+			$(".add_address_pop").fadeIn()
+			$(".mask").fadeIn()	
+		}
+	})
+})
+</script>

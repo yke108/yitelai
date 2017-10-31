@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">罚款列表
+        	<a id="rec_add" href="{:U('lists_edit')}" class="btn btn-info btn-sm alink_r" hy_w='600' hy_h='400'>添加</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form form-inline" method="get" action="{:U('')}">
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start}" name='start' class='form-control input-sm hy_dp' /> - <input value="{$get.end}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end' />
+					<select name='fine_type' class='form-control' style="height:30px;padding-top:0;padding-bottom:0">
+						<option value=''>全部类型</option>
+                        <foreach name='fine_type' item='val'>
+                        <option <if condition='$get[fine_type] eq $val[id]'>selected='selected'</if> value='{$val.id}'>{$val['fine_name']}</option>
+						</foreach>
+					</select>
+					<button class="btn btn-default btn-sm" type="submit">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="12%">违规类型</th>
+							<th width="12%">违规品牌</th>
+							<th width="12%">违规店铺</th>
+       	  	  	  	  	  <th width="12%">罚款凭证</th>
+                            <th width="12%">时间</th>
+                            <th width="12%">一审状态</th>
+                            <th width="12%">终审状态</th>
+                            <th width="12%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="12%">{$vo.fine_name}</td>
+                                <td width="12%">{$vo.brand_id}</td>
+								<td width="12%">{$vo.shop_id}</td>
+								<td width="12%"><img src="<?php echo DK_UPLOAD_URL;?>/{$vo.fine_pic}" height="20"></td>
+                                <td width="12%">{$vo.time}</td>
+                                <td width="12%">
+                                <?php
+                                if($vo['status_first'])
+                                { 
+                                	echo $vo['status_first'] == 1 ? '<font color=green>通过</font>' : '<font color=blue>失败</font>';
+                                }
+                                else
+                                { 
+                                	echo '<font color=red>待审核</font>';
+                                }
+                                ?>
+                                </td>
+                                <td width="12%">
+                                <?php
+                                if($vo['status_second'])
+                                { 
+                                	echo $vo['status_second'] == 1 ? '<font color=green>通过</font>' : '<font color=blue>失败</font>';
+                                }
+                                else
+                                { 
+                                	echo '<font color=red>待审核</font>';
+                                }
+                                ?>
+                                </td>
+                                <td width="12%">
+                                <a href="{:U('lists_detail',array('id'=>$vo['id']))}">详情</a>　
+                                <?php
+                                if($vo['status_first'] == '0')
+                                {
+                                ?>
+                                <a class="cs_ajax_link hy_show_modal" href="{:U('lists_check',array('id'=>$vo['id'],'step' => 1))}" hy_w="600" hy_h="250">一审</a>
+                                <?php
+                                }
+                                if($vo['status_first'] == '1' && $vo['status_second'] == '0')
+                                {
+                                ?>   
+                                <a class="cs_ajax_link hy_show_modal" href="{:U('lists_check',array('id'=>$vo['id'],'step' => 2))}" hy_w="600" hy_h="250">终审</a>
+                                <?php
+                                }
+                                ?>
+                                </td>
+						  </tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

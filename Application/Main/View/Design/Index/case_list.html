@@ -1,0 +1,73 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+<!-------装修公司设计师开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('Index/index/index')}">首页</a><span>></span>设计师案例</div>
+	<div class="design_home clearfix">
+		<div class="design_home_l fl">
+			
+			<notempty name='order_list'>
+			<div class="design_home_l_2">
+				<h2><span>活跃会员</span></h2>
+				<volist name='order_list' id='val'>
+				<dl class="clearfix">
+					<dt><a href="javascript:;"><img src="<if condition='$val.user_img eq ""'>__PUBLIC__/main/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b120/{$val.user_img}</if>"></a></dt>
+					<dd>
+						<p><span>【{$val.city}】</span><a href="javascript:;">{$val.user_nick_name|msubstr=0,5}</a></p>
+						<p><em>{$val.status_lang}</em></p>
+					</dd>
+				</dl>
+				</volist>
+			</div>
+			</notempty>
+			
+		</div>
+		<div class="design_home_r fr">
+			
+			<div class="design_home_r_bd">
+				
+				<ul class="clearfix">
+					<volist name='case_list' id='val'>
+					<li>
+						<!--<i>施工中</i>-->
+						<php>$gallery_array = $val[gallery] ? unserialize($val[gallery]) : array();</php>
+						<a href="{:U('case_info',array('id'=>$val['case_id']))}" class="case_pic"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic60.jpg<else/>__UPLOAD__/{$val.picture}</if>"><p>共{:count($gallery_array)}张</p></a>
+						<h3>{$val.case_name}</h3>
+						<!--<h4><a href="#">+加关注</a></h4>-->
+					</li>
+					</volist>
+					
+				</ul>
+				<div class="pages1">
+					{$page}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------装修公司设计师结束----->  
+
+<!-------尾部开始----->  
+<include file='Public/footer' />
+<!-------尾部结束----->
+
+<script>
+function add_follow(designer_id){
+	$.ajax({
+		type:'POST',
+		url:"{:U('Design/Index/add_follow')}",
+		data:{designer_id:designer_id},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.msg});
+			if(res.error==0){
+				window.location.reload();			
+			}else if(res.error==2){
+				window.location="{:U('Index/Site/login')}";
+			}
+		}
+	})
+}
+</script>

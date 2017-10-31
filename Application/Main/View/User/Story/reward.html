@@ -1,0 +1,53 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的打赏开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我的打赏</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_assets">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="{:U('user/story/reward')}">支出打赏</a></li>
+						<li><a href="{:U('user/story/getreward')}">收入打赏</a></li>
+					</ul>
+				</div>
+				<div class="alert">
+					<span class="mr30">支出打赏：<strong class="mr5 red" style="font-size: 18px;">{$user.pay_reward}</strong>元</span>
+					<span class="mr30">收入打赏：<strong class="mr5 red" style="font-size: 18px;">{$user.get_reward}</strong>元</span>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th align="left">文章</th>
+						<th align="left">作者</th>
+						<th align="left">支出/收入(元)</th>
+						<th align="left">支付时间</th>
+					</tr>
+					<volist name="list" id="vo">
+						<tr>
+							<td align="left"><a href="{:U('story/index/info', array('id'=>$vo[story_id]))}">{$vo.story_title}</a></td>
+							<td align="left">{$vo.author_name}</td>
+							<td align="left">￥{$vo.reward_amount}</td>
+							<td align="left">{$vo.pay_time|date="Y-m-d H:i:s",###}</td>
+						</tr>
+					</volist>
+				</table>
+				<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的打赏结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

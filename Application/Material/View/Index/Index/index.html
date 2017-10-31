@@ -1,0 +1,230 @@
+<include file="Public/header"/>
+
+<div class="home_main w1200">
+	<div class="home_main_1 clearfix">
+		<volist name="cat_list" id="vo" key="k">
+			<a href="{:U('list', array('id'=>$vo[cat_id]))}" class="color{$k}">{$vo.cat_name}</a>
+		</volist>
+	</div>
+	<div class="home_main_2 clearfix">
+		<div class="hone_main_2_l fl">
+			<ol class="clearfix">
+				<li id="one1" onMouseOver="setTab('one',1,4)" class="hover"><a href="#">热门</a></li>
+				<volist name="label_list" id="vo" key="k">
+					<lt name="k" value="4">
+						<li id="one{$k+1}" onMouseOver="setTab('one',{$k+1},4)" ><a href="#">{$vo.label_name}</a></li>
+					</lt>
+				</volist>
+			</ol>
+			<div id="con_one_1">
+				<ul class="clearfix">
+					<volist name="label_recommend_list" id="vo" key="k">
+						<lt name="k" value="31">
+							<li><a href="{:U('list', array('label'=>$vo[label_id]))}">{$vo.label_name}</a></li>
+						</lt>
+					</volist>
+				</ul>
+			</div>
+			<volist name="label_list" id="vo" key="k">
+				<lt name="k" value="4">
+					<div id="con_one_{$k+1}" style="display:none;">
+						<ul class="clearfix">
+							<volist name="vo.children" id="vo2" key="k2">
+								<lt name="k2" value="31">
+									<li><a href="{:U('list', array('label'=>$vo2[label_id]))}">{$vo2.label_name}</a></li>
+								</lt>
+							</volist>
+						</ul>
+					</div>
+				</lt>
+			</volist>
+		</div>
+		<div class="hone_main_2_r fr">
+			<div class="hone_main_2_r_hd">
+				<ol class="clearfix">
+					<li id="two1" onMouseOver="setTab('two',1,3)" class="hover"><a href="javascript:;">大V设计师</a></li>
+					<li id="two2" onMouseOver="setTab('two',2,3)"><a href="javascript:;">设计师排行榜</a></li>
+					<li id="two3" onMouseOver="setTab('two',3,3)"><a href="javascript:;">下载排行榜</a></li>
+				</ol>
+				<div id="con_two_1">
+					<ul>
+						<volist name="designer_v_list" id="vo">
+							<li><span>{$vo.down_count}</span><a href="{:U('list', array('designer'=>$vo[designer_id]))}">{$vo.designer_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div id="con_two_2" style="display:none;">
+					<ul>
+						<volist name="designer_list" id="vo">
+							<li><span>{$vo.down_count}</span><a href="{:U('list', array('designer'=>$vo[designer_id]))}">{$vo.designer_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+				<div id="con_two_3" style="display:none;">
+					<ul>
+						<volist name="down_list" id="vo">
+							<li><span>{$vo.down_count}</span><a href="{:U('info', array('id'=>$vo[material_id]))}" target="_blank">{$vo.material_title}</a></li>
+						</volist>
+					</ul>
+				</div>
+			</div>
+			<div class="hone_main_2_r_bd">
+				<ul class="clearfix">
+					<li>设计师：{$designer_count}人</li>
+					<li>门店设计师：{$designer_count}人</li>
+					<li>素材总数：{$material_count}张</li>
+					<li>一周新增：{$material_week_count}张</li>
+					<li>总下载数：{$down_count}次</li>
+					<li>昨日下载：{$down_yesterday_count}张</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="home_main_3">
+		<div class="home_main_tit">
+			<b>热门专题</b>
+			<span>
+				<volist name="cat_recommend_list" id="vo">
+					<a href="{:U('list', array('id'=>$vo[cat_id]))}">{$vo.cat_name}</a>
+				</volist>
+				<a href="{:U('list')}" class="more">更多</a>
+			</span>	
+		</div>
+		<div class="home_group_1">
+			<ul class="clearfix">
+				<volist name="recommend_list" id="vo">
+					<li><a href="{:U('info', array('id'=>$vo[material_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/w220h278/{$vo.material_image}"></a><p><a href="{:U('info', array('id'=>$vo[material_id]))}" target="_blank">{$vo.material_title}</a></p></li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+	<div class="home_main_banner"><a href="{$ad_list.pc_tuku_index.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_tuku_index.0.ad_picture}"></a></div>
+	<volist name="floor_list" id="vo" key="k">
+		<eq name="k" value="2">
+			<div class="home_main_5">
+				<div class="home_main_tit">
+					<b>{$vo.cat_name}</b>
+					<span>
+						<volist name="vo.children" id="vo2">
+							<a href="{:U('list', array('id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a>
+						</volist>
+						<a href="{:U('list', array('id'=>$vo[cat_id]))}" class="more">更多</a>
+					</span>	
+				</div>
+				<div class="home_group_3">
+					<empty name="vo.material_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name="vo.material_list" id="vo2" key="k2">
+								<lt name="k2" value="4">
+									<li>
+										<a href="{:U('info', array('id'=>$vo2[material_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/w388h256/{$vo2.material_image}"></a>
+										<p><a href="{:U('info', array('id'=>$vo2[material_id]))}" target="_blank">{$vo2.material_title}</a></p>
+										<p class="clearfix">
+											<span><a href="{:U('info', array('id'=>$vo2[material_id]))}" title="点击浏览" target="_blank"><img src="__PUBLIC__/material/images/icon11.png">浏览</a></span>
+											<span>
+												<eq name="vo2.is_collect" value="1">
+													<a href="javascript:;" title="已收藏"><img src="__PUBLIC__/material/images/icon9.png"><c class="collect_text">已收藏</c>{$vo2.collect_count}</a>
+												<else/>
+													<a href="{:U('collect', array('id'=>$vo2[material_id]))}" title="点击收藏" class="collect"><img src="__PUBLIC__/material/images/icon9.png"><c class="collect_text">收藏</c><c class="collect_count">{$vo2.collect_count}</c></a>
+												</eq>
+											</span>
+											<span><a href="{:U('downcheck', array('id'=>$vo2[material_id]))}" title="点击下载" class="downcheck"><img src="__PUBLIC__/material/images/icon10.png">下载</a></span>
+										</p>
+									</li>
+								</lt>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+			</div>
+		<else/>
+			<div class="home_main_4">
+				<div class="home_main_tit">
+					<b>{$vo.cat_name}</b>
+					<span>
+						<volist name="vo.children" id="vo2">
+							<a href="{:U('list', array('id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a>
+						</volist>
+						<a href="{:U('list', array('id'=>$vo[cat_id]))}" class="more">更多</a>
+					</span>	
+				</div>
+				<div class="home_group_2">
+					<empty name="vo.material_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name="vo.material_list" id="vo2">
+								<li>
+									<a href="{:U('info', array('id'=>$vo2[material_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/w220h278/{$vo2.material_image}"></a>
+									<p><a href="{:U('info', array('id'=>$vo2[material_id]))}" target="_blank">{$vo2.material_title}</a></p>
+									<p class="clearfix">
+										<span>
+											<eq name="vo2.is_collect" value="1">
+												<a href="javascript:;" title="已收藏"><img src="__PUBLIC__/material/images/icon9.png"><c class="collect_text">已收藏</c>{$vo2.collect_count}</a>
+											<else/>
+												<a href="{:U('collect', array('id'=>$vo2[material_id]))}" title="点击收藏" class="collect"><img src="__PUBLIC__/material/images/icon9.png"><c class="collect_text">收藏</c>{$vo2.collect_count}</a>
+											</eq>
+										</span>
+										<span><a href="{:U('downcheck', array('id'=>$vo2[material_id]))}" title="点击下载" class="downcheck"><img src="__PUBLIC__/material/images/icon10.png">下载</a></span>
+									</p>
+								</li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+			</div>
+		</eq>
+	</volist>
+	<div class="home_main_7">
+		<div class="home_main_tit">
+			<b>{$user_count}人在用云图库</b>
+		</div>
+		<div class="home_group_5">
+			<ul class="clearfix">
+				<volist name="user_list" id="vo">
+					<li>
+						<a href="javascript:;"><img src="__UPLOAD__/thumbs/w220h250/{$vo.user_img}"></a>
+						<div class="name"><span>{$vo.nick_name}</span></div>
+						<div class="em">找设计灵感就来谷安居云图库</div>
+					</li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+</div>    
+
+<include file="Public/footer"/>
+
+<script>
+	$(function(){
+		$(".collect").click(function(){
+			var obj = $(this);
+			$.post(obj.attr('href'), {}, function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){
+					obj.attr('href', 'javascript:;');
+					obj.removeClass('collect');
+					obj.find('.collect_text').html('已收藏');
+					obj.parents('li').find('.collect_count').html(d.collect_count);
+				}
+			}, 'json');
+			return false;
+		})
+		
+		$(".downcheck").click(function(){
+			var obj = $(this);
+			w = window.open("","")
+			$.post(obj.attr('href'), {}, function(d){
+				if(d.status == 1){
+					w.location = d.url;
+				}else{
+					w.close();
+					layer.open({time:1,content:d.info});
+				}
+			}, 'json');
+			return false;
+		})
+	})
+</script>

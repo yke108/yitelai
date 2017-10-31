@@ -1,0 +1,3 @@
+<volist name="list" id="vo">
+	<li><a href="{:U('info', array('user_id'=>$vo[user_id]))}"><span><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$vo.user_name}</span><em><i>￥<font>{$vo.user_money}</font></i><p>余额</p></em><em><b>{$vo.pay_points}</b><p>积分</p></em></a></li>
+</volist>

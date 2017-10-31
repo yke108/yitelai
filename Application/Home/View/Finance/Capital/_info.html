@@ -1,0 +1,29 @@
+<volist name="list" id="vo">
+	<eq name="vo.type" value="1">
+		<dl>
+			<dt>
+				<span>{$vo.change_desc}</span><time>{:date('Y-m-d H:i', $vo[change_time])}</time>
+			</dt>
+			<dd>
+				<gt name="vo.amount_change" value="0">
+					<em>+{$vo.amount_change}元</em>
+				<else/>
+					{$vo.amount_change}元
+				</gt>
+			</dd>
+		</dl>
+	<else/>
+		<dl>
+			<dt>
+				<span>{$vo.change_desc}</span><time>{:date('Y-m-d H:i', $vo[add_time])}</time>
+			</dt>
+			<dd>
+				<gt name="vo.point_change" value="0">
+					<em>+{$vo.point_change}分</em>
+				<else/>
+					{$vo.point_change}分
+				</gt>
+			</dd>
+		</dl>
+	</eq>
+</volist>

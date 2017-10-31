@@ -1,0 +1,58 @@
+<eq name="type.flag_st" value="1">
+<div class="mui-input-row right-after">
+    <label>开始时间</label>
+    <input type="text" placeholder="请选择" name="start" readonly class="time" id="StartTime" data-options='{"type":"date"}'>
+</div>
+</eq>
+<eq name="type.flag_et" value="1">
+<div class="mui-input-row right-after">
+    <label>结束时间</label>
+    <input type="text" placeholder="请选择" name="end" readonly class="time" id="EndTime" data-options='{"type":"date"}'>
+</div>
+</eq>
+<eq name="type.flag_price" value="1">
+<div class="mui-input-row right-after">
+    <label>输入价格</label>
+    <input type="number" placeholder="请输入" name="price">
+</div>
+</eq>
+<eq name="type.flag_amount" value="1">
+<div class="mui-input-row right-after">
+    <label>输入金额</label>
+    <input type="number" placeholder="请输入" name="amount">
+</div>
+</eq>
+
+<script type="text/javascript">
+//时间插件
+(function($) {
+	var btns = $('.time');
+	btns.each(function(i, btn) {
+		btn.addEventListener('tap', function() {
+			var optionsJson = this.getAttribute('data-options') || '{}';
+			var options = JSON.parse(optionsJson);
+			var id = this.getAttribute('id');
+			/*
+			 * 首次显示时实例化组件
+			 * 示例为了简洁，将 options 放在了按钮的 dom 上
+			 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+			 */
+			var picker = new $.DtPicker(options);
+			picker.show(function(rs) {
+				/*
+				 * rs.value 拼合后的 value
+				 * rs.text 拼合后的 text
+				 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+				 * rs.m 月，用法同年
+				 * rs.d 日，用法同年
+				 * rs.h 时，用法同年
+				 * rs.i 分（minutes 的第二个字母），用法同年
+				 */
+				btn.value = rs.text;
+				
+				picker.dispose();
+			});
+		}, false);
+	});
+})(mui);
+</script>

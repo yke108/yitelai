@@ -1,0 +1,46 @@
+<div class="col-sm-12 col-md-12">
+	<h3 class="heading" style="color:red">选择店铺</h3>
+   <div class="well clearfix">
+		<form class="form-horizontal cs_ajax_form" method="get" action="{:U('')}">
+		   <div class="pull-left">
+				店铺名称:
+				<input type="text" class="form-control input-sm" placeholder="名称" style="display:inline-block;width:auto;" value="{$get.keyword}" name='keyword'/>
+				<button class="btn btn-default btn-sm"  style='margin-left:20px;' type="submit">查询</button>
+			</div>
+	   </form>
+   </div>
+	<div class="row sepH_c">
+		<div class="col-sm-12 col-md-12">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th></th>
+						<th>店铺LOGO</th>
+						<th>店铺名称</th>
+					</tr>
+				</thead>
+				<tbody id='tblc'>
+					<volist name="list" id="vo">
+						<tr class="rowlink line_sel" distributor_id="{$vo.distributor_id}" distributor_name="{$vo.distributor_name}">
+							<td><input type="radio" value="{$vo.goods_id}" class="checkid" name="checkid[]"></td>
+							<td><notempty name="vo.distributor_image"><img height="37" src="__UPLOAD__/{$vo.distributor_image}"/></notempty></td>
+							<td>{$vo.distributor_name}</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div id="pwrap">{$pager}</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+//给父页面传值
+$('.line_sel').on('click', function(){
+	var obj = parent.$('#select_wrap');
+	obj.find('input[name=distributor_name]').val($(this).attr('distributor_name'));
+	obj.find('input[name=distributor_id]').val($(this).attr('distributor_id'));
+	parent.layer.close(index);
+});
+</script>

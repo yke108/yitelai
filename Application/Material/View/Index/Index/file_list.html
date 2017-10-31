@@ -1,0 +1,31 @@
+<empty name="file_list">
+	<p style="text-align:center;color:#999999;padding:20px;">暂无相关下载</p>
+<else/>
+	<volist name="file_list" id="vo">
+		<tr>
+			<td align="left">{$vo.file_name}</td>
+			<td align="center">{$vo.file_size}</td>
+			<td align="center">{$vo.file_type}</td>
+			<td align="center"><a href="{:U('download', array('id'=>$vo[file_id]))}" class="bg3">下载</a></td>
+		</tr>
+	</volist>
+</empty>
+
+<script>
+$(function(){
+	$(".bg3").on('click', function(){
+		var obj = $(this);
+		w = window.open("","")
+		$.post(obj.attr('href'), {}, function(d){
+			if(d.status == 1){
+				$('.down_count').html(d.down_count);
+				w.location = d.url;
+			}else{
+				w.close();
+				layer.open({time:1,content:d.info});
+			}
+		}, 'json');
+		return false;
+	})
+})
+</script>

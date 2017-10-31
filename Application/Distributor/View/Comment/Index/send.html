@@ -1,0 +1,86 @@
+<form name="form" method="post" class="cs_ajax_form" action="{:U('')}" onsubmit="return checkform()">
+	<div class="row">
+		<h1 class="invoice_heading" style="font-size:14px;">{$info.status_show}#退货单号：{$info.refund_id}</h1>
+	</div>
+	<div class="row">
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>图片</th>
+						<th>商品名称</th>
+						<th>单价</th>
+						<th>数量</th>
+						<th class="invoice_tar">小计</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><img src="{$info.addon.default_image.images.s}" height="40" /></td>
+						<td>{$info.name} <span style="color:red;margin-left:12px;">({$info.addon.spec_info_show})</span></td>
+						<td>￥{$info.price}</td>
+						<td>{$info.nums}</td>
+						<td class="invoice_tar">￥{$info[nums] * $info[price]}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div style="padding:5px;">
+		<table class="table">
+			<tbody>
+				<tr>
+					<td width="120">退货货品图片：</td>
+					<td align="left"><volist name="info.imagelist" id="vo"> <a href="{$vo.images.l}" target="_blank"><img src="{$vo.images.s}" height="40" style="margin-left:10px" /></a> </volist></td>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 col-md-12">
+			<div  style="padding:5px;">
+				<div>物流方式：<strong>{$info.shipping}</strong></div>
+			</div>
+			<div  style="padding:5px;">
+				<div>物流单号：{$info.shipping_no}</div>
+			</div>
+		</div>
+	</div>
+	<!--<div style="padding:5px;">
+		<select name="refund_status" id="refund_status" class="form-control input-xlarge">
+			<option value="0">选择收货状态</option>
+			<option value="2">拒绝收货</option>
+			<option value="3">同意收货</option>
+		</select>
+	</div>-->
+	<div id="refund_remark_div" style="padding:5px;"> 退款金额：
+		<input id="refund_money" name="refund_money" class="input-xlarge form-control" type="text" value="{$info[nums] * $info[price]}">
+	</div>
+	<div style="padding:5px;">
+		<button type="submit" class="btn btn-info btn-sm">确认收货并退款</button>
+		<input id="refund_id" type="hidden" name="refund_id" value="{$info.refund_id}" />
+	</div>
+</form>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#refund_status').change(function(){
+		if($(this).val() == 2){
+			$('#refund_remark_div').css('display','block');
+		}else{
+			$('#refund_remark_div').css('display','none');
+		}
+	});
+});
+function checkform(){
+	var refund_status = $('#refund_status').val();
+	var refund_remark = $('#refund_remark').val();
+	
+	if(refund_status == 0){
+		alert('选择审核状态');return false;
+	}
+	if(refund_status == 2 && refund_remark == ''){
+		alert('请填写审核不通过原因');return false;
+	}
+	
+	return true;
+}
+</script> 

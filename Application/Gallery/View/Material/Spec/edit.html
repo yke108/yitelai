@@ -1,0 +1,66 @@
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading"><gt name="info.spec_id" value="0">编辑属性<else/>添加属性</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-group">
+								<label class="control-label col-sm-2">属性名称</label>
+								<div class="col-sm-4">
+									<input name="spec_name" class="input-xlarge form-control" type="text"  value="{$info.spec_name}">
+								</div>
+							</div>
+							<!--<div class="form-group">
+								<label for="u_fname" class="control-label col-sm-2">属性录入方式</label>
+								<div class="col-sm-4">
+									<select id="spec_type" name="spec_type" class="form-control input-xlarge">
+										<option {:m_selected($info[spec_type],0)} value="0">手工录入</option>
+										<option {:m_selected($info[spec_type],1)} value="1">从列表选择</option>
+									</select>
+								</div>
+							</div>-->
+							<div class="form-group" id="div_list">
+								<label class="control-label col-sm-2">属性值:</label>
+								<div class="col-sm-4">
+									<textarea id="spec_values" name="spec_values" cols="" rows="" <gt name="info.spec_id" value="0"><eq name="info.spec_type" value="0">disabled="disabled"</eq><else/></gt> style="width:100%; height:150px;">{$info.spec_values}</textarea>
+									<span class="help-block">一行一个值</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">排序</label>
+								<div class="col-sm-4">
+									<input name="sort_order" class="input-xlarge form-control" type="text"  value="{$info.sort_order|default=50}">
+									<span class="help-block">数字小的排在前面</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input name="spec_id"  type="hidden"  value="{$info.spec_id}">
+						<input name="type_id"  type="hidden"  value="{$get.type_id}">
+						<input type="hidden" name="spec_type" value="1" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#spec_type').change(function(){
+		var spec_type = $(this).val();
+		if(spec_type == 1){
+			$('#spec_values').attr('disabled', false);
+		}else{
+			$('#spec_values').attr('disabled', true);
+		}
+	});
+});
+</script>

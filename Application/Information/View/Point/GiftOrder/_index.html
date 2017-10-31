@@ -1,0 +1,25 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+    	
+    	<td>
+        	<a class='view_order cs_ajax_link hy_show_modal' hy_w='1000' hy_h='500' href="{:U('info',array('id'=>$vo[id]))}">{$vo.order_sn}</a>
+        </td>
+    	<td>{$vo.gift_name}</td>
+		<td>
+        	{$vo.nick_name}
+		</td>
+		<td>{:date('Y-m-d H:i', $vo[add_time])}</td>
+        <td>
+        	<if condition="$vo.shipping_status eq 0">
+            待发货
+            <elseif condition="$vo.shipping_status eq 1"/>
+        	已发货
+            </if>
+        </td>
+		<td>
+			{$vo.consignee}
+		</td>
+		<td>{$vo.recommend_points}</td>
+
+	</tr>
+</volist>

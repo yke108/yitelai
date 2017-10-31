@@ -1,0 +1,193 @@
+<style>
+.point_back{border-bottom:1px solid #ececec;background:#fff;padding:10px;margin-bottom:10px;}
+.point_back img{float:left;height:15px;margin-top:2px;}
+.point_back a{font-size:16px;float:left;margin-left:7px;color:#9c9c9c;height:20px;line-height:18px;}
+</style>
+<div class="warp">
+	
+	<div class="pay load_page">
+	
+		<div class="pay_1">
+			<empty name="address">
+				<!---如果没有选择收货地址---->
+				<div class="no_data "><a class='get_page_two' href="{:U('user/address/index')}">选择收货人</a></div>
+			<else/>
+				<!---如果已经选择收货地址---->
+				<div class="has_data">
+					<a class='get_page_two' href="{:U('user/address/index', array('id'=>$address[address_id]))}">
+						<p><span>{$address.consignee}</span><span>{$address.mobile}</span></p>
+						<p>{$address.zone} {$address.address}</p>
+					</a>
+				</div>
+			</empty>
+		</div>
+		
+		<div class="pay_2">
+			<notempty name='team_info'>
+				<dl>
+					<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b150/{$team_info.act_img}"></a></dt>
+					<dd>
+						<h2><a href="javascript:;">{$team_info.goods_name}</a></h2>
+						<p><span>￥{$team_info.price_info.price}</span></p>
+						<div class="type"><em>{$team_info.product_name}</em><span>x1</span></div>
+					</dd>
+				</dl>
+			</notempty>
+			
+			<notempty name='team_post_info'>
+				<dl>
+					<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b150/{$team_post_info.act_img}"></a></dt>
+					<dd>
+						<h2><a href="javascript:;">{$team_post_info.goods_name}</a></h2>
+						<p><span>￥{$team_post_info.price}</span></p>
+						<div class="type"><em>{$team_post_info.product_name}</em><span>x1</span></div>
+					</dd>
+				</dl>
+			</notempty>
+			
+		</div>
+		
+		<form action="{:U('')}">
+			<div class="pay_3">
+				<h2>支付方式</h2>
+				<div class="weui-cells weui-cells_checkbox">
+					<label class="weui-cell weui-check__label" for="s1">
+						<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon10.png" style="width:25px;margin-right:5px;display:block"></div>
+						<div class="weui-cell__bd">
+							<p>余额支付</p>
+						</div>
+						<div class="weui-cell__ft">
+							<span>账户余额<font>{$user.user_money}</font>元</span>
+							<input type="radio" class="weui-check pay_type" name="pay_id" value="1" id="s1" checked>
+							<i class="weui-icon-checked"></i>
+						</div>
+					</label>
+					<label class="weui-cell weui-check__label" for="s2">
+						<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon11.png" style="width:25px;margin-right:5px;display:block"></div>
+						<div class="weui-cell__bd">
+							<p>微信支付</p>
+						</div>
+						<div class="weui-cell__ft">
+							<input type="radio" class="weui-check pay_type" name="pay_id" value="2" id="s2">
+							<i class="weui-icon-checked"></i>
+						</div>
+					</label>
+				</div>
+			</div>
+			<div class="pay_5">
+				<p style='margin-bottom:5px;'>
+					<em><b>支付金额</b></em>
+					<span><font id="total_amount">￥<notempty name='team_info'>{$team_info[price_info][price]}<else/>{$team_post_info[price]}</notempty></font></span>
+				</p>
+				<form action="{:U('')}">
+				<p class="last clearfix"><a href="javascript:;" class="createordernow">立即支付</a><input type="hidden" name="act_type" value="{$get.act_type}" /></p>
+				</form>
+			</div>
+		</form>
+	</div>
+	
+</div>
+
+<div id="pay_page"></div>
+<script>
+$(document).ready(function(){
+	<notempty name='team_info'>
+	$(".createordernow").click(function(){
+		//var url="{:U('mall/cart/team_confirm',array('order_sn'=>'order_str'))}";team_pay
+		var url="{:U('mall/cart/team_pay',array('order_sn'=>'order_str','pay_id'=>'pay_str'))}";
+		var act_id="{$act_id}";
+		var person_number="{$num}";
+		var pay_id=$(".pay_type:checked").val();
+		$.ajax({
+			type:'POST',
+			url:"{:U('mall/goods/build_team')}",
+			data:{act_id:act_id,person_number:person_number},
+			dataType:"json",
+			async:false,
+			success:function(res){
+				if(res.error==0){
+					url=url.replace('order_str',res.general_order)
+					url=url.replace('pay_str',pay_id)
+					window.location=url;
+				}else if(res.error==2){
+					window.location="{:U('Index/site/login')}";
+				}else{
+					alert(res.msg)
+				}
+			}
+		})
+	})
+	</notempty>
+	
+	<notempty name='team_post_info'>
+	$(".createordernow").click(function(){
+		var url="{:U('mall/cart/team_pay',array('order_sn'=>'order_str','pay_id'=>'pay_str'))}";
+		var post_id="{$team_post_info.post_id}"
+		var pay_id=$(".pay_type:checked").val();
+		$.ajax({
+			type:'POST',
+			url:"{:U('mall/goods/join_team_post')}",
+			data:{post_id:post_id},
+			dataType:"json",
+			success:function(res){
+				if(res.error==0){
+					url=url.replace('order_str',res.general_order)
+					url=url.replace('pay_str',pay_id)
+					window.location=url;
+				}else if(res.error==2){
+					window.location="{:U('Index/site/login')}";
+				}else{
+					alert(res.msg)
+				}
+			}
+		})
+	})
+	</notempty>
+});
+</script>
+<script>
+$(".get_page").live('click',function(e){
+	e.preventDefault();
+	e.stopImmediatePropagation()
+	var href=$(this).attr('href');
+	$.ajax({
+		type:'GET',
+		url:href,
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".load_page").html(res.info).fadeIn();
+		}
+	})
+})
+
+$(".get_page_two").live('click',function(e){
+	e.preventDefault();
+	e.stopImmediatePropagation()
+	var href=$(this).attr('href');
+	var html_str="<div class='point_back clearfix'><img src='__PUBLIC__/wap/images/asd(1).png'><a class='get_page' href='__SELF__' style=''>返回拼团支付页</a></div>";
+	$.ajax({
+		type:'GET',
+		url:href,
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".load_page").html(html_str);
+			$(".load_page").append(res.info).fadeIn();
+		}
+	})
+})
+function get_page(href){
+	var html_str="<div class='point_back clearfix'><img src='__PUBLIC__/wap/images/asd(1).png'><a class='get_page' href='__SELF__' style=''>返回拼团支付页</a></div>";
+	$.ajax({
+		type:'GET',
+		url:href,
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".load_page").html(html_str);
+			$(".load_page").append(res.info);
+		}
+	})
+}
+</script>

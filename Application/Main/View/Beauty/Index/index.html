@@ -1,0 +1,80 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------投票列表开始----->
+<div class="vote">
+	<div class="vote_banner" style="background:url(__PUBLIC__/main/special/pic12.jpg) center center no-repeat;"></div>
+	<div class="vote_subnav">
+		<ul class="w1200 clearfix">
+			<li><a href="{:U('index')}" class="on">首页</a></li>
+			<li><a href="{:U('about')}">活动介绍</a></li>
+			<li><a href="{:U('rules')}">投票细则</a></li>
+			<li><a href="{:U('knowledge')}">知识普及</a></li>
+			<li><a href="{:U('feedback')}">违规投诉</a></li>
+		</ul>
+	</div>
+	<volist name="cat_list" id="vo">
+		<div class="vote_item w1200 clearfix">
+			<div class="vote_item_l fl">
+				<h2><span>{$vo.cat_name}</span><a href="#">更多>></a></h2>
+				<empty name="vo.list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关会员</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="vo.list" id="vo2">
+							<li>
+								<a href="{:U('info', array('id'=>$vo2[beauty_id]))}"><img src="__UPLOAD__/thumbs/w260h280/{$vo2.picture}"></a>
+								<p><span>{$vo2.name}</span><em>票数：<c class="vote_count">{$vo2.vote_count}</c></em></p>
+								<a href="{:U('vote', array('id'=>$vo2[beauty_id]))}" class="vote_btn">投票</a>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+			</div>
+			<div class="vote_item_r fr">
+				<h2><img src="__PUBLIC__/main/special/pic3.jpg"></h2>
+				<volist name="vo.top_list" id="vo2" key="ko2">
+					<dl class="clearfix">
+						<dt><a href="{:U('info', array('id'=>$vo2[beauty_id]))}"><img src="__UPLOAD__/thumbs/b90/{$vo2.picture}"></a></dt>
+						<dd>
+							<p><span class="top{$ko}">TOP{$ko2}</span><em>{$vo2.vote_count}票</em></p>
+							<a href="{:U('info', array('id'=>$vo2[beauty_id]))}">{$vo2.name}</a>
+						</dd>
+					</dl>
+				</volist>
+			</div>
+		</div>
+	</volist>
+</div>
+<!-------投票列表结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.vote_btn').bind('click',function(){
+		var obj = $(this);
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				var vote_count = obj.parent().find('.vote_count').html();
+				vote_count = parseInt(vote_count) + 1;
+				obj.parent().find('.vote_count').html(vote_count);
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>

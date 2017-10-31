@@ -1,0 +1,12 @@
+<footer>
+	<ul>
+		<php>$cls=$croot=='index'?'on':'';</php>
+		<li><a href="{:U('index/index')}" class="{$cls}"><i class="i1"></i><p>资讯</p></a></li>
+		<php>$cls=$croot=='video'?'on':'';</php>
+		<li><a href="{:U('video/index')}" class="{$cls}"><i class="i2"></i><p>视频</p></a></li>
+		<php>$cls=$croot=='subject'?'on':'';</php>
+		<li><a href="{:U('subject/index')}" class="{$cls}"><i class="i3"></i><p>专题</p></a></li>
+		<php>$cls=$croot=='user'?'on':'';</php>
+		<li><a href="{:U('user/index')}" class="{$cls}"><i class="i4"></i><p>个人</p></a></li>
+	</ul>
+</footer>

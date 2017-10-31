@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+<script src="__PUBLIC__/wap/js/dropload/dropload.js"></script>
+<link href="__PUBLIC__/wap/js/dropload/dropload.css" rel="stylesheet" type="text/css" />
+<body>
+
+	<div class="warp">
+        <div class="fans">
+            <div class="fans_hd">
+            	<div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <volist name="ad_list.pc_fans_index_lunbo" id="vo">
+                        <div class="swiper-slide"><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"><p>{$vo.ad_name}</p></a></div>
+                        </volist>
+                    </div>
+                    <div class="swiper-pagination"></div>
+					
+                </div>
+            </div>
+            <div class="fans_bd">
+				<div class='get_data'>
+            	<include file='Story/Index/_index' />
+				</div>
+            </div>
+        </div>
+        
+    </div>
+	
+	<div class="pro_filter">
+		<form action="{:U('',$get)}" method="post">
+			<h1>分类<a id="btn_search" href="javascript:;">确定</a></h1>
+			<volist name='fans_catlist' id='val'>
+			<div class="pro_filter_item multi">
+				<h2>{$val.cat_name}</h2>
+				<ul class="clearfix">
+					<volist name='val.children' id='val2'>
+					<li>
+						<a <if condition='in_array($val2[cat_id],$cat_id)'>class='on'</if> val='{$val2.cat_id}' href="javascript:;">
+							{$val2.cat_name}<i><img src="__PUBLIC__/wap/images/icon4.png"></i>
+							<input name="cat_id[]" value="{$val2.cat_id}" style="display:none" type="checkbox">
+						</a>
+					</li>
+					</volist>
+				</ul>
+			</div>
+			</volist>
+		</form>
+	</div>
+	<div class="mask" style=""></div>
+	<div style='height:52px;margin-top:10px;'></div>
+	<div class='add_story' style='padding:10px 0;text-align:center;position:fixed;bottom:0;max-width:720px;width:100%;left:0;right:0;margin:auto;background:#fff;'>
+		<a style='width:80%;display:inline-block;background:#ff3451;color:#fff;border-radius:3px;padding:5px 0;font-size:14px;' href="{:U('user/story/add')}">发布文章</a>
+	</div>
+	<div class='filter_cat_id' style='position:fixed; top:50%;right:5px; z-index:10;'>
+		<a href='javascript:;' class='filter' style='background:#ff3451;padding:2px 5px 7px; display:block;border-radius:4px; color:#FFF; text-align:center;'><img width='30' src="__PUBLIC__/wap/images/icon333.png" style="margin-bottom:-5px;"><p>分类</p></a>
+        <div class="card_menu">
+        	<a href="javascript:;" class="plus">+</a>
+            <a href="{:U('index/index')}" class="card_menu_absolute card_menu_home"><img src="__PUBLIC__/wap/images/icon75.png" width="23"><p>首页</p></a>
+            <a href="{:U('mall/cart')}" class="card_menu_absolute card_menu_car"><img src="__PUBLIC__/wap/images/icon78.png" width="23"><p>购物车</p></a>
+            <a href="{:U('user/index')}" class="card_menu_absolute card_menu_user"><img src="__PUBLIC__/wap/images/icon77.png" width="23"><p>我的</p></a>
+        </div>
+	</div>
+    <style>
+		.card_menu{ margin-top:15px; position:relative;}
+		.card_menu a{ display:block; transition:all 0.5s; -webkit-transition:all 0.5s;}
+		.card_menu a.plus{ border-radius:50%; background:#ff3451; text-align:center; color:#FFF; font-family:Verdana; width:50px; height:50px; line-height:46px; font-size:28px; position:relative; z-index:10;}
+		.card_menu.on a.plus{ transform:rotate(-45deg); -webkit-transform:rotate(-45deg);}
+    	.card_menu a.card_menu_absolute{ position:absolute;border-radius:50%; background:#ff3451; text-align:center; font-size:12px; top:1px; left:1px; color:#FFF; width:48px; height:48px;}
+		.card_menu.on a.card_menu_home{ width:50px; height:50px; left:-60px; top:-60px;}
+		.card_menu.on a.card_menu_home img{ margin-top:2px;}
+		.card_menu.on a.card_menu_close{ width:40px; height:40px; left:-60px; line-height:40px; top:5px;}
+		.card_menu.on a.card_menu_close img{ margin-top:-2px;}
+		.card_menu.on a.card_menu_car{ width:50px; height:50px; left:-60px; top:0;}
+		.card_menu.on a.card_menu_car img{ margin-top:4px;}
+		.card_menu.on a.card_menu_user{ width:50px; height:50px; left:-60px; top:60px;}
+		.card_menu.on a.card_menu_user img{ margin-top:3px;}
+    </style>
+    <script>
+    	$(function(){
+			$(".card_menu a.plus").click(function(){
+				$(".card_menu").toggleClass("on")	
+			})	
+		})
+    </script>
+</body>
+</html>
+<script>
+	var swiper = new Swiper('.fans_hd .swiper-container',{
+		pagination:'.fans_hd .swiper-pagination',
+		paginationClickable:true,
+		autoplay:5000,
+		autoplayDisableOnInteraction:false,
+		autoHeight:true,
+	});
+	
+</script>
+<script>
+function removeByValue(arr, val) {
+  for(var i=0; i<arr.length; i++) {
+    if(arr[i] == val) {
+      arr.splice(i, 1);
+      break;
+    }
+  }
+}
+var page=2;
+var cat_id=<notempty name='cat_id'>{$json_cat_id}<else/>[]</notempty>;
+
+var dropload = $('.fans_bd').dropload({
+	scrollArea : window,
+	loadDownFn : function(me){
+			$.ajax({
+				type:'POST',
+				url:"{:U('')}",
+				data:{p:page,cat_id:cat_id},
+				dataType:"json",
+				success:function(res){
+					if(res.html!=''){
+						setTimeout(function(){
+							$(".get_data").append(res.html);
+							// 每次数据加载完，必须重置
+							me.resetload();
+						},1000);
+						page++;
+					}else{
+						
+						// 数据加载完
+						//tab1LoadEnd = true;
+						// 锁定
+						me.lock('down');
+						// 无数据
+						me.noData();
+						me.resetload();
+						//dropload.lock('down');
+						//dropload.noData();
+						
+					}
+				}
+			})
+		}
+	})
+</script>
+<script>
+		$(function(){
+			$(".filter_cat_id a.filter").click(function(){
+				$(".pro_filter").animate({left:"10%"});
+				$(".mask").fadeIn();
+			});
+			$(".mask").click(function(){
+				$(".pro_filter").animate({left:"100%"});
+				$(".mask").fadeOut();
+			});
+			$(".pro_filter h1 a").click(function(){
+				$(".pro_filter").animate({left:"100%"});
+				$(".mask").fadeOut();
+			});
+			$(".multi ul li a").click(function(){
+				$(this).toggleClass("on")
+				
+				if($(this).hasClass('on')){
+					cat_id.push($(this).attr('val'))
+					$(this).find('input').prop('checked', true);
+				}else{
+					removeByValue(cat_id,$(this).attr('val'))
+					$(this).find('input').prop('checked', false);
+				}
+				
+				
+			})
+			$(".single ul li a").click(function(){
+				$(this).parents('li').siblings().find('a').removeClass('on');
+				$(this).parents('li').siblings().find('input').prop('checked', false);
+				
+				$(this).toggleClass("on")
+				
+				if($(this).hasClass('on')){
+					$(this).find('input').prop('checked', true);
+				}else{
+					$(this).find('input').prop('checked', false);
+				}
+			})
+			
+			$("#btn_search").click(function(){
+				var form = $(this).parents("form");
+				form[0].submit();
+			})
+			//$(".pro_filter,.mask").hide();
+		})
+	</script>

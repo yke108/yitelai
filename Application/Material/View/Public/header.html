@@ -1,0 +1,64 @@
+<div class="top">
+	<div class="top_bar">
+		<div class="w1200 clearfix">
+			<div class="top_bar_l fl">
+				<a href="http://wpa.qq.com/msgrd?v=3&uin=2292828199&site=2292828199&menu=yes" target="_blank"><img src="__PUBLIC__/material/images/icon1.png">QQ交谈</a>
+				<a href="http://wpa.qq.com/msgrd?v=3&uin=2292828199&site=2292828199&menu=yes" target="_blank"><img src="__PUBLIC__/material/images/icon2.png" target="_blank">官方QQ群<img src="__PUBLIC__/material/images/icon3.png"></a>
+			</div>
+			<div class="top_bar_r fr">
+				<empty name="user">
+					<span><a href="{$login_url}" class="login">登录</a><a href="{$reg_url}">注册</a></span>
+				<else/>
+					<span><a href="javascript:;" class="login">{$user.nick_name}</a><a href="{$logout_url}" class="go_out">退出</a></span>
+				</empty>
+				<em><a href="#"><img src="__PUBLIC__/material/images/icon4.png">收藏夹</a></em>
+				<a href="{$distributor_url}" class="login" style="font-size:14px; margin-left:10px;">上传素材</a>
+			</div>
+		</div>
+	</div>
+	<div class="top_menu">
+		<div class="w1200 clearfix">
+			<div class="logo fl"><a href="{:U('index')}"><img src="__PUBLIC__/material/images/logo.png"></a></div>
+			<div class="menu fl">
+				<ul class="clearfix">
+					<li class="<eq name="action_name" value="index">on</eq>"><a href="{:U('index/index')}">首页</a></li>
+					<li class="select_nav <eq name="action_name" value="list">on</eq>">
+						<a href="{:U('list')}">素材库</a>
+						<div class="top_nav">
+							<div class="w1200">
+								<i><img src="__PUBLIC__/material/images/icon5.png"></i>
+								<volist name="cat_list" id="vo">
+									<a href="{:U('list', array('id'=>$vo[cat_id]))}">{$vo.cat_name}</a>
+								</volist>
+							</div>
+						</div>
+					</li>
+					<li><a href="{$url}/mall/category/index/cat_id/1">全屋定制</a></li>
+					<li><a href="{$url}/mall/category/index">私人定制</a></li>
+					<li><a href="{$url}/design/index">设计师店</a></li>
+					<li><a href="{$url}">谷安居商城</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="top_search">
+		<img src="__PUBLIC__/material/images/pic1.jpg">
+		<form action="{:U('list')}">
+			<input name="keyword" value="{$get.keyword}" type="text" placeholder="请输入关键词搜索"><button type="submit">搜索</button>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.go_out').click(function(){
+		$.post($(this).attr('href'),{},function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){    
+				window.location.reload();
+			}
+		},'json');
+		return false;
+	});
+});
+</script>

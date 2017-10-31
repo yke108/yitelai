@@ -1,0 +1,47 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的资产开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>充值记录</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_subordinate">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li><a href="{:U('user/recharge/index')}">在线充值</a></li>
+						<li <if condition="$type eq 1">class="on"</if> ><a href="{:U('user/recharge/log')}">充值记录</a></li>
+						<li <if condition="$type eq 2">class="on"</if> ><a href="{:U('user/recharge/log',array('type'=>2))}">充值增值记录</a></li>
+					</ul>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th>支付方式</th>
+						<th>充值时间</th>
+						<th>充值金额</th>
+					</tr>
+					<volist name='list' id='val'>
+					<tr>
+						<td><if condition="$val.pay_id eq 2">微信充值<elseif condition="$val.pay_id eq 1"/>支付宝充值</if></td>
+						<td align="center">{$val.add_time|date="Y-m-d H:i",###}</td>
+						<td align="center"><span><strong>￥{$val.recharge_amount}</strong></span></td>
+					</tr>
+					</volist>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的资产结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

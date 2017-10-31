@@ -1,0 +1,13 @@
+<div class="warp">
+	<div class="user_account_details">
+		<volist name='list' id='val'>
+		<dl>
+			<dt>
+				<h2><if condition="$val.pay_id eq 2">微信充值<elseif condition="$val.pay_id eq 1"/>支付宝充值</if></h2>
+				<p>{$val.add_time|date="Y-m-d H:i",###}</p>
+			</dt>
+			<dd><span>{$val.recharge_amount}</span></dd>
+		</dl>
+		</volist>
+	</div>
+</div>

@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>日志内容</th>
+					<th>时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<empty name="detail_list">
+					<tr>
+						<td colspan="2">暂无日志</td>
+					</tr>
+				<else/>
+					<volist name="detail_list" id="vo">
+						<tr>
+							<td>{$vo.content}</td>
+							<td>{:date('Y-m-d H:i:s', $vo[add_time])}</td>
+						</tr>
+					</volist>
+				</empty>
+			</tbody>
+		</table>
+	</div>
+</div>

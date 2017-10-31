@@ -1,0 +1,105 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的资产开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>在线充值</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="online_recharge">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="{:U('user/recharge/index')}">在线充值</a></li>
+						<li <if condition="$type eq 1">class="on"</if>><a href="{:U('user/recharge/log')}">充值记录</a></li>
+						<li <if condition="$type eq 2">class="on"</if> ><a href="{:U('user/recharge/log',array('type'=>2))}">充值增值记录</a></li>
+					</ul>
+				</div>
+				<div class="alert alert-error">
+					<form action="{:U('user/recharge/pay')}" onSubmit="">
+						<span>充值金额</span>
+						<input name="money" class='charge_money' type="text"><button type="button" class='charge_value'>普通充值</button>
+					</form>
+				</div>
+				<div class="online_recharge_bd">
+					<h2><span>活动充值</span></h2>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<th align="left" width="150">充值金额</th>
+							<th align="center" width="570">说明</th>
+							<th align="center">操作</th>
+						</tr>
+						<empty name="list">
+							<tr>
+								<td colspan="3"><p style="text-align:center;color:#999999;padding:20px;">暂无充值活动</p></td>
+							</tr>
+						<else/>
+							<volist name='list' id='val'>
+								<tr>
+									<td align="left"><span>￥<font>{$val.limit_money}</font></span></td>
+									<td align="center">
+										<p>{$val.title}</p>
+										<p><em>（{$val.description}）</em></p>
+									</td>
+									<td align="center"><a href="javascript:;" class='activity' val='{$val.activity_id}'>活动充值</a></td>
+								</tr>
+							</volist>
+						</empty>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的资产结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+var activity_id=0;
+var amount=0;
+var recharge_sn_str='';
+var url="{:U('pay',array('recharge_sn'=>'recharge_sn_str'))}";
+$(function(){
+	$(".charge_value").click(function(){
+		amount=$(".charge_money").val();
+		
+		if(amount=='' || isNaN(amount)==true){
+			alert('请输入一个正确的金额')
+			return;
+		}
+		
+		add_recharge();
+	})
+	$(".activity").click(function(){
+		activity_id=$(this).attr('val');
+		add_recharge();
+	})
+})
+function add_recharge(){
+	$.ajax({
+		type:'POST',
+		url:"{:U('index')}",
+		data:{amount:amount,activity_id:activity_id},
+		dataType:"json",
+		success:function(res){
+			if(res.error==0){
+				url=url.replace('recharge_sn_str',res.recharge_sn);
+				
+				window.location=url;
+			}else{
+				alert(res.msg);
+			}
+		}
+	})
+}
+</script>

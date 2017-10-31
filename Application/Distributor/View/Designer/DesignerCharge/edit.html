@@ -1,0 +1,103 @@
+<style>
+a:hover{ text-decoration:none;}
+.gallery{position:realtive;}
+.gallery .g_add{margin-right:10px;float:left;}
+.gallery_add{text-align:right;margin-top:10px;}
+.gallery_add font{font-size:18px;border:1px solid #ccc;padding:3px 0px;width:30px;cursor:pointer;display:inline-block;text-align:center;border-radius:5px;}
+.gallery dl{display:inline-block;border:1px solid #ccc;padding:10px;border-radius:5px;}
+.galllery_close{position:absolute;right:10px;top:5px;line-height:20px;}
+.galllery_close a{font-size:28px;color:#ff0000;}
+
+.g_input{width:30%;display:inline-block;}
+.layout_row{margin:0;margin-top:10px;}
+</style>
+<div class="row layout_row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.designer_id" value="0">修改收费名称<else/>增加空间名称</gt></h3>
+		
+		<form class="form-horizontal cs_ajax_form" action="<if condition='$info.charge_id eq ""'>{:U('add')}<else/>{:U('edit',array('id'=>$info['charge_id']))}</if>" method="post" enctype="multipart/form-data">
+				<fieldset>
+					<div class="form-group">
+						<label class="control-label col-sm-2">收费名称</label>
+						<div class="col-sm-2 col-md-4">
+							<input name="charge_name" class="input-xlarge form-control" type="text" value="{$info.charge_name}">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2">排序</label>
+						<div class="col-sm-2 col-md-4">
+							<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=1}">
+						</div>
+					</div>
+				
+					<input type='hidden' name='space_id' value="{$info.space_id}" />
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+
+<script>
+	function add_gallery(){
+		var html=$("#g_del").html();
+		$(".gallery").append(html);
+	}
+	function del_gallery(obj){
+		if(window.confirm('确定要删除该图片')==false){return;}
+		$(obj).parent(".g_add").remove();
+	} 
+	KindEditor.ready(function(K) {
+		window.editor = K.create('#editor_id', {uploadJson : '{:U("site/upload")}'});
+	});
+	function upload_img(id,img_data,url){
+		var $this=$("#"+id);
+		var $path_obj=$("input[name='gallery']")[0];
+		var img_list=[];
+		var prev="__UPLOAD__//";
+		
+		if(img_data==undefined || img_data==''){
+			img_list=[];
+		}else{
+			img_data=img_data.split(',');
+			for(i in img_data){
+				img_list[img_list.length]="<img height='160' src='"+prev+img_data[i]+"'>";
+			}
+			
+		}
+		$("#"+id).fileinput({
+			uploadExtraData: {kvId: '10'},uploadUrl:"{:U('Site/upload')}",initialPreview: img_list
+		});
+		
+		$("#"+id).on("fileuploaded", function(event, data, previewId, index){
+			//alert(data.response)
+			$path_obj.value=trim($path_obj.value+","+data.response)
+		})
+		
+		$("#"+id).on("fileclear",function(event, data, previewId, index){
+			
+			$path_obj.value='';
+		})
+		
+	}
+	function trim(str,sign){
+		sign=(sign==undefined?',':sign);
+		var first_num=0;
+		var last_num=str.length;
+		if(str.substr(0,1)==sign){
+			first_num=1;
+		}
+		if(str.substr(str.length-1,1)==sign){
+			last_num=str.length-2;
+		}
+		return str.substr(first_num,last_num);
+	}
+	
+	//upload_img("upload_{$info.id}","{$info.gallery}");
+		
+</script>	

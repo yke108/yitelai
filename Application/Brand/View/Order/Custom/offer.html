@@ -1,0 +1,522 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">修改<a href="{:session('back_url')}" class='btn btn-info btn-sm' style='float:right;'>返回列表</a></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$info.order_id}" />
+			<input type="hidden" name="is_check" value="0" />
+			<fieldset>
+				<div class="tabbable">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab1" data-toggle="tab">订单信息</a></li>
+						
+						<li><a href="#tab3" data-toggle="tab">图纸资料</a></li>
+						<li><a href="#tab4" data-toggle="tab">材料明细</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="row">
+								<div class="col-sm-8 col-md-8">
+									<h1 class="invoice_heading">订单 # {$info.order_id}</h1>
+								</div>
+								<div class="col-sm-4 col-md-4">
+									<p class="sepH_a"><span class="sepV_b text-muted">订单号.</span><strong>{$info.order_id}</strong></p>
+									<p class="sepH_a"><span class="sepV_b text-muted">订单生成日期</span><strong>{:date('Y-m-d H:i:s', $info[add_time])}</strong></p>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-3 col-md-3">
+									<p><strong class="text-muted">收货人信息</strong></p>
+									<address>
+										<strong>收货人：{$info.consignee}</strong><br>
+										<strong>收货地址：{$regions[$info[province]]} {$regions[$info[city]]} {$regions[$info[district]]} {$info.address}</strong><br>
+										<strong title="Phone">手机号: {$info.mobile} </strong>
+									</address>
+								</div>
+								<notempty name="info.shipping_id">
+									<div class="col-sm-3 col-md-3">
+										<p><strong class="text-muted">物流信息</strong></p>
+										<address>
+											<strong>快递公司：{$info.shipping_name}</strong><br>
+											<strong>运单号：{$info.shipping_no}</strong><br>
+											<strong>发货时间: {:date('Y-m-d H:i:s', $info[shipping_time])}</strong>
+										</address>
+									</div>
+								</notempty>
+								<notempty name="info.invoice_title">
+									<div class="col-sm-3 col-md-3">
+										<p><strong class="text-muted">发票抬头</strong></p>
+										<address>
+											<strong>{$info.invoice_title}</strong>
+										</address>
+									</div>
+								</notempty>
+								<notempty name="info.buyer_note">
+									<div class="col-sm-3 col-md-3">
+										<p><strong class="text-muted">订单留言</strong></p>
+										<address>
+											<strong>{$info.buyer_note}</strong>
+										</address>
+									</div>
+								</notempty>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-12 col-md-12">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>商品图片</th>
+												<th>商品名称</th>
+												<th>商品货号</th>
+												<th>定金</th>
+												<th>商品服务</th>
+												<th>佣金</th>
+												<th>数量</th>
+												<th class="invoice_tar">小计</th>
+											</tr>
+										</thead>
+										<tbody>
+											<volist name="info.order_goods" id="vo">
+												<tr>
+													<td>
+														<img src="__UPLOAD__/{$vo.goods_img}" height="40" />
+														<gt name="vo.back_status" value="0">
+															<font color="red">退货：
+																<switch name="vo.back_info.status" >
+																	<case value="0">
+																		待审核
+																	</case>
+																	<case value="1">
+																		审核通过<gt name="info.back_info.back_money" value="0">（退款金额：{$.back_infovo.back_money}）</gt>
+																	</case>
+																	<case value="2">
+																		审核不通过（原因：<font color="red">{$vo.back_info.remark}</font>）
+																	</case>
+																	<case value="3">
+																		退货中（快递公司：{$vo.back_info.shipping_name} 物流号：<a href="http://www.kuaidi100.com/chaxun?com={$vo.back_info.shipping_code}&nu={$vo.back_info.shipping_no}" target="_blank">{$vo.back_info.shipping_no}</a>） </case>
+																	<case value="4">
+																		退货不通过（原因：<font color="red">{$vo.back_info.instruction}</font>）
+																	</case>
+																	<case value="5">
+																		退货通过
+																	</case>
+																	<case value="6">
+																		已退款（退款金额：<font color="red">{$vo.back_info.back_money}</font>）
+																	</case>
+																</switch>
+															</font>
+														</gt>
+													</td>
+													<td>{$vo.goods_name}&nbsp;<notempty name="vo[product_name]"> ({$vo.product_name})</notempty></td>
+													<td>{$vo.product_sn}</td>
+													<td>￥{$vo.goods_price} <notempty name="vo.ori_price"><del style="font-size:10px">￥{$vo.ori_price}</del></notempty>
+														<eq name="vo.is_seckill" value="1"><span style="color:red">秒杀</span></eq>
+														<if condition="($vo[is_seckill] eq 0) AND ($info[discount] gt 0)"><font color="red">（会员折扣：{$info[discount]/10}折）</font></if>
+													</td>
+													<td><gt name="vo.service_id" value="0">{$vo.service_name} ￥{$vo.service_price}</gt></td>
+													<td>￥{$vo.commission}（分成比例：{$vo.distribution.distributor_ratio|default=0}%）</td>
+													<td>{$vo.goods_number}</td>
+													<td class="invoice_tar">￥{$vo[goods_number] * $vo[goods_price] + $vo[service_price]}</td>
+												</tr>
+											</volist>
+											<tr>
+												<td colspan="7">&nbsp;</td>
+												<td class="invoice_tar">
+													<p class="sepH_a"><span class="sepV_b text-muted">商品原价</span>￥{$info.goods_amount}</p>
+													<p class="sepH_a"><span class="sepV_b text-muted">运费</span>￥{$info.shipping_fee}</p>
+													<p class="sepH_a"><span class="sepV_b text-muted">积分抵扣</span>￥{$info.points_money}</p>
+													<p class="sepH_a"><span class="sepV_b text-muted">合计</span>￥{$info.order_amount}</p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="form-group nopass_reason" style="display:none">
+								<label class="control-label col-sm-1">不通过理由</label>
+								<div class="col-sm-8">
+									<input type="text" name="nopass_reason" value="" placeholder="" class="form-control" >
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-sm-8">
+									<button class="btn btn-default" type="submit">确认并保存</button>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tab-pane" id="tab3">
+							<div class="form-group div_flash">
+								<label class="control-label col-sm-1">图纸资料</label>
+								<div class="col-sm-11" id="media_list">
+									<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered">
+										<tbody>
+											<tr>
+												<th>图纸名称</th>
+												<th>数量</th>
+												<th>备注</th>
+												<th>下载链接</th>
+											</tr>
+											<volist name="file_list" id="vo" key="ko">
+												<tr>
+													<td>{$vo.upload_path}</td>
+													<td>{$vo.file_size}</td>
+													<td>{$vo.remark}</td>
+													<td><a href="{$vo.file_url}" target="_blank">下载</a></td>
+												</tr>
+											</volist>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-1">
+									<button class="btn btn-default" type="submit">确认并保存</button>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tab-pane" id="tab4">
+							<div class="form-group">
+								<label class="control-label col-sm-1">材料明细</label>
+								<div class="col-sm-11" style="padding:0;">
+									<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered" id="table_list">
+										<thead>
+											<tr>
+												<th width="50">序号</th>
+												<th width="60">图片</th>
+												<th>产品名称</th>
+												<th width="100">产品颜色</th>
+												<th width="80">总宽度</th>
+												<th width="80">总深度</th>
+												<th width="80">总高度</th>
+												<th width="80">立面面积</th>
+												<th width="80">柜体数量</th>
+												<th width="80">趟门扇数</th>
+												<th width="80">成本价</th>
+												<th width="120">备注</th>
+												<th width="100">添加人</th>
+												<th width="100">最后更新</th>
+												<th width="140"><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_button" cs_id="tblc">添加</a></th>
+											</tr>
+										</thead>
+										<tbody id="tblc">
+											<empty name="detail_list">
+												<tr>
+													<td>1</td>
+													<td><input class="hy_upload_single" hy_field="picture[]" value="" style="width:50px;height:50px;" src=""/></td>
+													<td><input type="text" name="goods_name[]" class="form-control"></td>
+													<td><input type="text" name="color[]" class="form-control"></td>
+													<td><input type="text" name="width[]" class="form-control width" placeholder="mm" autocomplete="off"></td>
+													<td><input type="text" name="depth[]" class="form-control" placeholder="mm"></td>
+													<td><input type="text" name="height[]" class="form-control height" placeholder="mm" autocomplete="off"></td>
+													<td><input type="text" name="area[]" class="form-control area" placeholder="m2" disabled="disabled"></td>
+													<td><input type="text" name="goods_number[]" class="form-control goods_number" placeholder="个" autocomplete="off"></td>
+													<td><input type="text" name="door_number[]" class="form-control" placeholder="个"></td>
+													<td><input type="text" name="goods_price[]" class="form-control goods_price" autocomplete="off"></td>
+													<td><input type="text" name="remark[]" class="form-control"></td>
+													<td>{:session('username')}</td>
+													<td></td>
+													<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+												</tr>
+											<else/>
+												<volist name="detail_list" id="vo" key="ko">
+													<tr>
+														<td>{$ko}</td>
+														<td><input class="hy_upload_single" hy_field="goods[{$vo.detail_id}][picture]" value="" style="width:50px;height:50px;" src="{$vo.picture}"/></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][goods_name]" value="{$vo.goods_name}" class="form-control"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][color]" value="{$vo.color}" class="form-control"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][width]" value="{$vo.width}" class="form-control width" autocomplete="off"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][depth]" value="{$vo.depth}" class="form-control"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][height]" value="{$vo.height}" class="form-control height" autocomplete="off"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][area]" value="{$vo.area}" class="form-control area" disabled="disabled"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][goods_number]" value="{$vo.goods_number}" class="form-control goods_number" autocomplete="off"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][door_number]" value="{$vo.door_number}" class="form-control"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][goods_price]" value="{$vo.goods_price}" class="form-control goods_price" autocomplete="off"></td>
+														<td><input type="text" name="goods[{$vo.detail_id}][remark]" value="{$vo.remark}" class="form-control"></td>
+														<td>{$vo.admin_add}</td>
+														<td>{$vo.admin_update}</td>
+														<td>
+															<a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a>
+															<a href="{:U('detail_log_list', array('detail_id'=>$vo[detail_id]))}" class="btn btn-info btn-sm cs_ajax_link hy_show_modal" hy_w="800" hy_h="800">查看日志</a>
+														</td>
+													</tr>
+												</volist>
+											</empty>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="12">出厂价：<span id="floor_price">{$info.floor_price}</span>元</td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-1">
+									<button class="btn btn-default submit_check" type="submit">确认并保存</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<script src="__PUBLIC__/lib/uploadify/jquery.uploadify.js"></script>
+<style>
+.uploadify-button{background:#3993ba;color:#fff;text-align:center;border-radius:5px;}
+.input-xlarge2{width:230px;display:inline-block; margin-left:5px;}
+.uploadify{display:inline-block; margin-left:5px;}
+.uploadify-queue{margin:0;position:absolute;left:462px;top:-8px;width:280px;}
+#media_list .glyphicon{text-decoration:none;}
+
+#division_list td{padding:5px 0;}
+#tblc td{vertical-align:middle;}
+</style>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.cs_row_add_button').unbind('click').bind('click', function(){
+		var refobj = $('#'+$(this).attr('cs_id'));
+		if(refobj == undefined) return;
+		var key = $('#tblc tr').length;
+		key = parseInt(key) + 1;
+		
+		var row = '<tr>'+
+						'<td>'+key+'</td>'+
+						'<td><input class="hy_upload_single" hy_field="picture[]" value="" style="width:50px;height:50px;" src=""/></td>'+
+						'<td><input type="text" name="goods_name[]" class="form-control"></td>'+
+						'<td><input type="text" name="color[]" class="form-control"></td>'+
+						'<td><input type="text" name="width[]" class="form-control width" placeholder="mm" autocomplete="off"></td>'+
+						'<td><input type="text" name="depth[]" class="form-control" placeholder="mm"></td>'+
+						'<td><input type="text" name="height[]" class="form-control height" placeholder="mm" autocomplete="off"></td>'+
+						'<td><input type="text" name="area[]" class="form-control area" placeholder="m2" disabled="disalbed"></td>'+
+						'<td><input type="text" name="goods_number[]" class="form-control goods_number" placeholder="个" autocomplete="off"></td>'+
+						'<td><input type="text" name="door_number[]" class="form-control" placeholder="个"></td>'+
+						'<td><input type="text" name="goods_price[]" class="form-control goods_price" autocomplete="off"></td>'+
+						'<td><input type="text" name="remark[]" class="form-control"></td>'+
+						'<td>{:session(username)}</td>'+
+						'<td></td>'+
+						'<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>'+
+					'</tr>';
+		refobj.append(row);
+		
+		//删除事件
+		$('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				//最后一个才可以删除
+				var num = $(this).parent().parent().nextAll().length;
+				if(num == 0){
+					obj.remove();
+				}
+			}else{
+				return false;
+			}
+		});
+		
+		//计算总价
+		$('.goods_number').keyup(function(){
+			floor_price();
+		});
+		$('.goods_number').blur(function(){
+			floor_price();
+		});
+		$('.goods_price').keyup(function(){
+			floor_price();
+		});
+		$('.goods_price').blur(function(){
+			floor_price();
+		});
+		
+		//计算面积
+		$('.width').keyup(function(){
+			var width = $(this).val();
+			var height = $(this).parents('tr').find('.height').val();
+			if(width > 0 && height > 0){
+				$(this).parents('tr').find('.area').val(width * height);
+			}
+		});
+		$('.width').blur(function(){
+			var width = $(this).val();
+			var height = $(this).parents('tr').find('.height').val();
+			if(width > 0 && height > 0){
+				$(this).parents('tr').find('.area').val(width * height);
+			}
+		});
+		$('.height').keyup(function(){
+			var height = $(this).val();
+			var width = $(this).parents('tr').find('.width').val();
+			if(width > 0 && height > 0){
+				$(this).parents('tr').find('.area').val(width * height);
+			}
+		});
+		$('.height').blur(function(){
+			var height = $(this).val();
+			var width = $(this).parents('tr').find('.width').val();
+			if(width > 0 && height > 0){
+				$(this).parents('tr').find('.area').val(width * height);
+			}
+		});
+	});
+	
+	$('.btn_row_del').unbind('click').bind('click', function(){
+		var obj = $(this).parent().parent();
+		if(obj.parent().children().length > 1){
+			//最后一个才可以删除
+			var num = $(this).parent().parent().nextAll().length;
+			if(num == 0){
+				obj.remove();
+			}
+		}else{
+			return false;
+		}	
+	});
+	
+	//计算总价
+	$('.goods_number').keyup(function(){
+		floor_price();
+	});
+	$('.goods_number').blur(function(){
+		floor_price();
+	});
+	$('.goods_price').keyup(function(){
+		floor_price();
+	});
+	$('.goods_price').blur(function(){
+		floor_price();
+	});
+	
+	//计算面积
+	$('.width').keyup(function(){
+		var width = $(this).val();
+		var height = $(this).parents('tr').find('.height').val();
+		if(width > 0 && height > 0){
+			$(this).parents('tr').find('.area').val(width * height);
+		}
+	});
+	$('.width').blur(function(){
+		var width = $(this).val();
+		var height = $(this).parents('tr').find('.height').val();
+		if(width > 0 && height > 0){
+			$(this).parents('tr').find('.area').val(width * height);
+		}
+	});
+	$('.height').keyup(function(){
+		var height = $(this).val();
+		var width = $(this).parents('tr').find('.width').val();
+		if(width > 0 && height > 0){
+			$(this).parents('tr').find('.area').val(width * height);
+		}
+	});
+	$('.height').blur(function(){
+		var height = $(this).val();
+		var width = $(this).parents('tr').find('.width').val();
+		if(width > 0 && height > 0){
+			$(this).parents('tr').find('.area').val(width * height);
+		}
+	});
+	
+	//是否审核通过
+	$('input[name=custom_order_status]').click(function(){
+		if($('input[name=custom_order_status]:checked').val() == 2){
+			$('.nopass_reason').css('display', 'block');
+		}else{
+			$('.nopass_reason').css('display', 'none');
+		}
+	});
+});
+
+function floor_price(){
+	var floor_price = 0;
+	$('.goods_price').each(function(index,element){
+		var goods_price = parseFloat(element.value);
+		var goods_number = $(this).parents('tr').find('.goods_number').val();
+		if(goods_price > 0 && goods_number > 0){
+			floor_price += goods_price * goods_number;
+		}
+	});
+	$('#floor_price').html(floor_price);
+}
+</script>
+
+<script type="text/javascript">
+/*分期付款*/
+$(document).ready(function(){
+	$('#division').unbind('click').bind('click', function(){
+		var length = $('#division_list').children().length;
+		length += 1;
+		var row = '<tr>'+
+						'<td align="right" style="vertical-align:middle">第'+length+'期：</td>'+
+						'<td><input type="text" name="pay_amount[]" class="form-control payment" placeholder="付款金额" style="width:150px; margin-left:5px;"></td>'+
+						'<td><input type="text" name="remark[]" class="form-control" placeholder="备注" style="width:96%; margin-left:5px;"></td>'+
+						'<td align="center" style="vertical-align:middle">未付款</td>'+
+						'<td><a href="javascript:;" class="glyphicon glyphicon-minus" style="font-size:22px; margin-left:10px; top:3px; text-decoration:none;"></a></td>'+
+				'</tr>';
+		$('#division_list').append(row);
+		//最后一期自动计算
+		//$('#division_list').children('tr').find('input').removeAttr('readonly');
+		//$('#division_list').children('tr:last').find('input').attr('readonly', 'readonly');
+		
+		//删除事件
+		$('#division_list .glyphicon-minus').bind('click',function(){
+			var obj = $(this).parent().parent();
+			//最后一期才可以删除
+			var num = $(this).parent().parent().nextAll().length;
+			if(num == 0){
+				obj.remove();
+			}
+			//最后一期自动计算
+			//$('#division_list').children('tr').find('input').removeAttr('readonly');
+			//$('#division_list').children('tr:last').find('input').attr('readonly', 'readonly');
+		});
+		
+		//计算分期金额
+		$('.payment').bind('keyup',function(){
+			var custom_amount = $('input[name=custom_amount]').val();
+		});
+	});
+
+	
+	//总价
+	$('input[name=custom_amount]').keyup(function(){
+		var custom_amount = $('input[name=custom_amount]').val();
+		var deduction_amount = $('input[name=deduction_amount]').val();
+		var order_amount = "{$info.order_amount}";
+		order_amount = parseFloat(order_amount);
+		var left_amount = custom_amount - deduction_amount - order_amount;
+		if(left_amount > 0){
+			$('#not_pay').html(left_amount+' 元');
+			$('#first').val(left_amount);
+		}
+	});
+	
+	$('input[name=deduction_amount]').keyup(function(){
+		var custom_amount = $('input[name=custom_amount]').val();
+		var deduction_amount = $('input[name=deduction_amount]').val();
+		var order_amount = "{$info.order_amount}";
+		order_amount = parseFloat(order_amount);
+		var left_amount = custom_amount - deduction_amount - order_amount;
+		if(left_amount > 0){
+			$('#not_pay').html(left_amount+' 元');
+			$('#first').val(left_amount);
+		}
+	});
+	
+	//计算分期金额
+	$('.payment').bind('keyup',function(){
+		var custom_amount = $('input[name=custom_amount]').val();
+	});
+});
+</script>

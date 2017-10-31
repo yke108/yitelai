@@ -1,0 +1,97 @@
+<div class="withdraw_review_status">
+	<form action="{:U('')}">
+		<input type="hidden" name="apply_id" value="{$info.apply_id}" />
+		<div class="withdraw_review_status_hd">
+			<span>发放状态</span>
+			<div class="mui-input-group">
+				<div class="mui-input-row mui-radio mui-left">
+					<label for="status1">已发</label>
+					<input name="status" value="3" type="radio" id="status1" checked>
+				</div>
+				<div class="mui-input-row mui-radio mui-left">
+					<label for="status2">未发</label>
+					<input name="status" value="4" type="radio" id="status2">
+				</div>
+			</div>
+		</div>
+		<div class="withdraw_review_status_bd">
+			<div class="UploadFile mui-clearfix">
+				<ul id="Filepreview"></ul>
+				<span>
+					<input id="UploadFile" name="fileselect[]" type="file" multiple>
+					<em></em>
+				</span>
+			</div>
+			<p>上传发放佣金的证明文件</p>
+		</div>
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">确 认</a></div>
+	</form>
+</div>
+
+<script src="__PUBLIC__/home/js/zxxFile.js"></script>
+<script>
+	var params = {
+		fileInput: $("#UploadFile").get(0),
+		filter: function(files){
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				arrFiles.push(file);
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#Filepreview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e){
+						html=html+'<li id="uploadList_1_'+i+'" class="upload_append_list">'+'<em href="javascript:;" class="upload_delete" title="删除" data-index="'+i+'"><i class="mui-icon mui-icon-closeempty"></i></em>'+'<input type="hidden" name="certify[]" value='+e.target.result+'><font>'+file.name+'</font> '+'</li>';
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#Filepreview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").click(function() {
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;	
+						});
+						//提交按钮显示
+						//$("#fileSubmit").show();
+					}
+					//else {
+						//提交按钮隐藏
+						//$("#fileSubmit").hide();
+					//}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file){
+			$("#uploadList_1_" + file.index).remove();
+			$("#UploadFile").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+	
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

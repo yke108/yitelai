@@ -1,0 +1,41 @@
+<volist name="list" id="vo">
+	<li>
+		<h2><span><a href="{:U('info', array('user_id'=>$vo[user_id]))}" class="link"><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$vo.user_name}</a></span><time>{:date('Y-m-d H:i', $vo[reg_time])}</time></h2>
+		<div class="customer_pool_info">
+			<a href="tel:{$vo.mobile}">{$vo.mobile}</a>
+			<p><span>城市：{$vo.city|default='无'}</span><span>客户来源：{$from_list[$vo[from]]}</span></p>
+			<!--<p><span>来源页面：产品页面</span></p>-->
+		</div>
+		
+		<div class="btn">
+			<gt name="Think.session.distributor_id" value="0">
+				<purview name="grab">
+					<a href="{:U('grab', array('user_id'=>$vo[user_id]))}" class="mui-btn mui-btn-primary mui-btn-block grab">抢客户</a>
+				</purview>
+			</gt>
+			<purview name="designate">
+				<a href="{:U('designate', array('user_id'=>$vo[user_id]))}" class="mui-btn mui-btn-primary mui-btn-block link">指派</a>
+			</purview>
+		</div>
+	</li>
+</volist>
+
+<script>
+	$(function(){
+		$(".grab").bind('tap', function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认抢客户吗？', '抢客户', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

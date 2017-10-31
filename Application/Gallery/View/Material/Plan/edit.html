@@ -1,0 +1,280 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<?php $action = $info['material_id'] > 0 ? U('edit',array('id'=>$info['material_id'])):U('add');?>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+			<input type="hidden" name="material_id" value="{$info.material_id}">
+			<h3 class="heading" style="position:fixed; width:73%; z-index:9999; background:#fff; top:40px; padding-top:20px;">
+				<gt name="info.material_id" value="0">编辑方案设计<else/>添加方案设计</gt>
+				<button class="btn btn-default" type="submit" style="float:right; margin-top:3px; margin-right:22px;">确认并保存</button>
+			</h3>
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1"></label>
+					<div class="col-sm-4">
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1"></label>
+					<div class="col-sm-4">
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1"></label>
+					<div class="col-sm-4">
+						
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">方案设计名称</label>
+					<div class="col-sm-8">
+						<input id="material_title" name="material_title" class="input-xlarge form-control" type="text"  value="{$info.material_title}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">方案设计分类</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="cat_id">
+							<option value="">选择分类</option>
+							{$categorys}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">设计师</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="designer_id">
+							<option value="">选择设计师</option>
+							<volist name="designer_list" id="vo">
+								<option value="{$vo.designer_id}" {:m_selected($vo[designer_id], $info[designer_id])}>{$vo.designer_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">方案设计标签</label>
+					<div class="col-sm-9">
+						<foreach name="label_list" key="ko" item="vo">
+							<div class="col-sm-12 purviewwrap" style="padding:5px 0;">
+								<div class="col-sm-1">
+									<label style="display:inline-block;width:120px;"><input class="purviewgroup" type="checkbox" value="{$vo.label_id}"><b>{$vo.label_name}</b></label>
+								</div>
+								<div class="col-sm-10">
+									<foreach name="vo.children" item="vo2">
+										<label style='display:inline-block;width:100px;'>
+											<input {:m_checked($vo2[label_id], $info[label])} class="purview" type="checkbox" name="label[]" value="{$vo2.label_id}">{$vo2.label_name}
+										</label>
+									</foreach>
+								</div>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">下载所需积分</label>
+					<div class="col-sm-2">
+						<input name="down_points" class="input-xlarge form-control" type="text"  value="{$info.down_points}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">排序</label>
+					<div class="col-sm-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text"  value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="row" style="margin-top:12px;padding-top:12px;border-top:1px dashed #CCC;">
+					<input id="mainpic" name="material_image" type="hidden"/>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">方案设计主图</label>
+					<div class="col-sm-4">
+						<div class="uploadify" id="file_img"> <span id="uploadButton22" value="方案设计主图" /></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">方案设计相册</label>
+					<div class="col-sm-10">
+						<div id="file_flash" class="uploadify">
+							<input type="button" id="J_selectImage" value="批量上传" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1"></label>
+					<div class="col-sm-10">
+						<input id="flashpic" name="material_gallery" type="hidden"/>
+					</div>
+				</div>
+				
+				<input type="hidden" name="is_show" value="1" />
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input <empty name="info">checked="checked"<else/>{:m_checked($info[is_show],1)}</empty> type="radio" name="is_show" value="1">
+							是
+						</label>
+						<label class="radio-inline">
+							<input <notempty name="info">{:m_checked($info[is_show],0)}</notempty> type="radio" name="is_show" value="0">
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">是否推荐</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input {:m_checked($info[is_recommend],1)} type="radio" name="is_recommend" value="1">
+							是
+						</label>
+						<label class="radio-inline">
+							<input {:m_checked($info[is_recommend],0)} type="radio" name="is_recommend" value="0">
+							否
+						</label>
+					</div>
+				</div>-->
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<script>
+$(document).ready(function(){
+	var K = KindEditor;
+	
+	var uploadbutton = K.uploadbutton({
+		button : K('#uploadButton22')[0],
+		fieldName : 'imgFile',
+		url : '{:U("site/upload")}',
+		afterUpload : function(data) {
+			if (data.error === 0) {
+				mainPicShow(data.short_url);
+			} else {
+				alert(data.message);
+			}
+		},
+		afterError : function(str) {
+			alert('自定义错误信息: ' + str);
+		}
+	});
+	uploadbutton.fileBox.change(function(e) {
+		uploadbutton.submit();
+	});
+	K('.ke-upload-area').css({width:'100%', height:'100%'});
+	
+	var editor2 = K.editor({
+		uploadJson : '{:U("site/upload")}',
+		allowFileManager : true
+	});
+	K('#J_selectImage').click(function() {
+		editor2.loadPlugin('multiimage', function() {
+			editor2.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					K.each(urlList, function(i, data) {
+						listPicShow(data.short_url);
+					});
+					editor2.hideDialog();
+				}
+			});
+		});
+	});
+	
+	//初始化显示图片
+	<notempty name="info.material_image">
+		mainPicShow('/{$info.material_image}');
+	</notempty>
+	<notempty name="info.material_gallery">
+		<volist name="info.material_gallery" id="vo">
+			listPicShow('/{$vo}');
+		</volist>
+	</notempty>
+});
+
+function mainPicShow(data){
+	var wrap = $('#file_img');
+	wrap.children().hide();
+	wrap.append('<img src="'+'__UPLOAD__/'+data+'" onload="gresize(this)"/>');
+	$('#mainpic').val(data);
+	
+	$('<a class="btn btn-danger" href="#'+data+'">X</a>')
+	.css({'position':'absolute', 'bottom':'1px', 'right':'1px', 'font-size':'12px', 'padding':'3px 5px'})
+	.appendTo(wrap).bind('click',function(){
+		$('#mainpic').val('');
+		var pobj = $(this).parent();
+		$(this).remove();
+		pobj.children('img').remove();
+		pobj.children().show();
+	});
+}
+
+function listPicShow(data){
+	var fp_input = $('#flashpic');
+	var fp_input_val = fp_input.val();
+	if(fp_input_val.length < 1){
+		fp_input_val = '#';
+	}
+	var t = fp_input_val + data + '#';
+	fp_input.val(t);
+	
+	var ref_obj = $('#file_flash');
+	var obj_new = $('<div></div>').css({'width':'130px','height':'130px','border':'1px solid #CCC','padding':'5px','overflow':'hidden','float':'left','margin-right':'15px','position':'relative'}).insertBefore(ref_obj)
+	.append('<img src="__UPLOAD__/'+data+'" onload="gresize(this)"/>');
+	
+	$('<a class="btn btn-danger" href="#'+data+'">X</a>')
+	.css({'position':'absolute', 'bottom':'1px', 'right':'1px', 'font-size':'12px', 'padding':'3px 5px'})
+	.appendTo(obj_new).bind('click',function(){
+		var ci = $(this).attr('href');
+		var pobj = $(this).parent().remove();
+		
+        var flashpic = $('#flashpic'); 
+        var a=flashpic.val().replace(ci,'');
+		flashpic.val(a);
+	});
+}
+
+function gresize(obj){
+	var w = $(obj).width();
+	var h = $(obj).height();
+	if(w > h){
+		$(obj).css({'height':'100%'});
+	} else {
+		$(obj).css({'width':'100%'});
+	}
+}
+
+$(document).ready(function(){	
+	$('.uploadify').css({'width':'130px','height':'130px','border':'1px solid #CCC','padding':'5px','overflow':'hidden'});
+});
+</script>
+
+<script type="text/javascript">
+function purviewgroupchk(obj){
+	var prt = $(obj).parents('.purviewwrap');
+	var chk = prt.find('input.purview').length == prt.find('input.purview:checked').length;
+	var grp = prt.find('.purviewgroup');
+	if(chk) grp.attr('checked', 'checked');
+	else grp.removeAttr('checked');
+}
+$('.purviewgroup').each(function(){
+	purviewgroupchk(this);
+	$(this).bind('click', function(){
+		var obj = $(this);
+		var pls = obj.parents('.purviewwrap').find('.purview');
+		if(obj.is(':checked')) pls.attr('checked', 'checked');
+		else pls.removeAttr('checked');
+	});
+});
+$('.purview').bind('click', function(){
+	purviewgroupchk(this);
+});
+</script>

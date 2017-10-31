@@ -1,0 +1,117 @@
+<div class="apply_management_audit_deta">
+    <div class="audit_deta_1">
+    	<php>
+    		$status = $verify_status_list[$info[apply_info][verify_status]];
+    	</php>
+        <dl>
+            <dt>{$info.apply_info.apply_name}<span class="{$status.1}">&nbsp;&nbsp;（{$status.0}）</span>
+            <time>{$info.apply_info.apply_time|date="Y-m-d H:i:s", ###}</time></dt>
+            <dd>
+                <h2>{$info.apply_info.content}</h2>
+                <p>
+                	<volist name="info.apply_info.pics" id="v">
+                		<span><img src="{$v}" data-preview-src="{$v}" data-preview-group="1"></span>
+                	</volist>                  
+                </p>
+            </dd>
+        </dl>
+    </div>
+    <div class="audit_deta_2">
+    	<php>$admin = $info['admins'][$info[apply_info][admin_id]];</php>
+        <h2>申请人信息</h2>
+        <h1><span><img src="{$admin.avatar}">{$admin.admin_name}</span>
+        <a href="tel:{$admin.mobile}" class="tel">{$admin.mobile}</a></h1>
+        <p>{$info.org_name} {$info.role_name}</p>
+    </div>
+    
+    <volist name="info.verify_list" id="vo">
+    	<php>$status = $verify_status_list[$vo[verify_status]];</php>
+	    <div class="apply_detaild_3">
+	    	<php>$admin = $info['admins'][$vo[admin_id]];</php>
+	     	<h2>审批人</h2>
+	     	<dl>
+	         	<dt><img src="{$admin.avatar}"></dt>
+	             <dd>{$admin.admin_name}</dd>
+	             <dt>
+	             	<span class="{$status.1}">{$status.0}</span>
+	             </dt>
+	         </dl>
+	         <p>{$vo.verify_note}</p>
+	     </div>
+    </volist>
+    <eq name="info.verify_status" value="10">
+    <div class="audit_deta_3">
+        <a href="{:U('checknote', array('verify_id'=>$info['verify_id'], 'status'=>1))}"><img src="__PUBLIC__/target/images/icon7.png">批准</a>
+        <a href="javascript:;" class="Forwarding_btn"><img src="__PUBLIC__/home/images/icon54.png">转报上级</a>
+        <a href="{:U('checknote', array('verify_id'=>$info['verify_id'], 'status'=>2))}"><img src="__PUBLIC__/target/images/icon8.png">驳回</a>
+    </div>
+    </eq>
+</div>
+
+
+<form action="{:U('transfer')}" id="transfer_form">
+	<div class="audit_deta_3_pop" style="z-index:10;">
+		<div class="audit_deta_3_pop_box">
+	        <i><span class="mui-icon mui-icon-close"></span></i>
+	        <p><img src="__PUBLIC__/home/images/icon54.png"></p>
+	        <p><font>*请选择审批人</font></p>
+	        <p><select name="verify_admin_id">
+	        	<volist name="verify_admin_list" id="vo">
+	        		<option value="{$vo.admin_id}">{$vo.admin_name}</option>
+	        	</volist>
+	        </select></p>
+	        <input type="hidden" name="verify_id" value="{$info.verify_id}"/>
+	        <p class="btn" style="margin-top:0;"><a href="#" id="transfer_form_sub" class="mui-btn mui-btn-block mui-btn-primary">提交</a></p>
+	    </div>
+	</div>
+</form>
+    
+<script src="__PUBLIC__/target/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/target/js/mui.previewimage.js"></script>
+<script>
+mui.init();
+mui.previewImage();
+mui('.audit_deta_3').on('tap', 'a', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+$(function(){
+	$(".Forwarding_btn").on("tap",function(){
+		$('.tel').each(function(){
+			if($(this).attr('href2') == undefined){
+				$(this).attr('href2', $(this).attr('href'));
+			}
+			$(this).attr('href', 'javascript:;');
+		});
+		$(".audit_deta_3_pop").addClass("on")	
+	})	
+	$(".audit_deta_3_pop i").on("tap",function(){
+		setTimeout(function(){
+			$('.tel').each(function(){
+				if($(this).attr('href2') != undefined){
+					$(this).attr('href', $(this).attr('href2'));
+				}
+			});
+		}, 200)
+		$(".audit_deta_3_pop").removeClass("on");
+	})
+	$("#transfer_form_sub").on("tap",function(){
+		var frm = $('#transfer_form');
+		$.post(frm.attr('action'), frm.serialize(), function(res){
+			if(res.status == 1){
+				$(".audit_deta_3_pop").removeClass("on");
+				mui.alert('', res.info, function(){
+					$.get('{:U("checkdetail", ["id"=>$info["verify_id"]])}', function(d){
+						$('body').html(d.info);
+					}, 'json');
+				});
+			} else {
+				mui.toast(res.info);
+			}
+		}, 'json');
+	})
+})
+</script>	

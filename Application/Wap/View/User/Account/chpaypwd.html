@@ -1,0 +1,66 @@
+<style>body{ background:#EEE;}</style>
+<div class="verified">
+	<form action="{:U('')}" method="post" class="hy_form">
+	<div class="verified_tips">设置或修改支付密码</div>
+    <div class="verified_bd">
+    	
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">手机号码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="phone" id="phone" type="number" pattern="[0-9]*" class="weui_input" placeholder="请输入手机号码">
+                </div>
+            </div>
+            <div class="weui_cell weui_vcode">
+                <div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="code" class="weui_input" type="number" placeholder="请输入验证码">
+					<input type="hidden" id="ssid" name="ssid">
+                </div>
+                <div class="weui_cell_ft">
+                    <button href="{:U('code3')}" class="hy_code" type="button" val="7">获取验证码</button>
+                </div>
+            </div>
+        </div>
+		
+		<div class="weui_cells weui_cells_form">
+	        <div class="weui_cell">
+	            <div class="weui_cell_hd"><label class="weui_label">支付密码</label></div>
+	            <div class="weui_cell_bd weui_cell_primary">
+	                <input class="weui_input hy_pwd" type="password" placeholder="请输入6位数字"  pattern="[0-9]{6}" title="支付密码为6位数字" id="pwd1">
+					<input type="hidden" name="password" id="pwd11"/>
+	            </div>
+	        </div>
+	        <div class="weui_cell">
+	            <div class="weui_cell_hd"><label class="weui_label">确认密码</label></div>
+	            <div class="weui_cell_bd weui_cell_primary">
+	                <input class="weui_input hy_pwd" type="password" placeholder="请确认支付密码" pattern="[0-9]{6}" title="支付密码为6位数字" id="pwd2">
+					<input type="hidden" name="password2" id="pwd22"/>
+	            </div>
+	        </div>
+		</div>
+		
+    </div>
+    <div class="verified_btn change_password_btn"><button type="button" class="weui_btn weui_btn_warn">确定</button></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.change_password_btn button').bind('click',function(){
+		var val = $("#pwd1").val();
+		var val2 = $('#pwd2').val();
+		var reg=/^\d+$/;
+		if(val.length < 6 || val2.length < 6){
+			alert("密码为6位数")
+			return false;
+		}else if(reg.test(val)==false || reg.test(val2) == false){
+			alert("密码只能是数字")
+			return false;
+		}
+		$('#pwd11').val($.hy.md5($('#pwd1').val()));
+		$('#pwd22').val($.hy.md5($('#pwd2').val()));
+		$(this).parents('form').submit();
+	});
+});
+</script>

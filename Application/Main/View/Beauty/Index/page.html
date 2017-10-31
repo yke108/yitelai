@@ -1,0 +1,33 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------活动介绍开始----->
+<div class="vote">
+	<div class="vote_banner" style="background:url(__UPLOAD__/{$ad_list.pc_beauty_top.0.ad_picture}) center center no-repeat;"></div>
+	<div class="vote_subnav">
+		<ul class="w1200 clearfix">
+			<li><a href="{:U('index')}" <eq name="action_name" value="index">class="on"</eq>>首页</a></li>
+			<li><a href="{:U('about')}" <eq name="action_name" value="about">class="on"</eq>>活动介绍</a></li>
+			<li><a href="{:U('rules')}" <eq name="action_name" value="rules">class="on"</eq>>投票细则</a></li>
+			<li><a href="{:U('knowledge')}" <eq name="action_name" value="knowledge">class="on"</eq>>知识普及</a></li>
+			<li><a href="{:U('feedback')}" <eq name="action_name" value="feedback">class="on"</eq>>违规投诉</a></li>
+		</ul>
+	</div>
+	<div class="vote_rule w1200 clearfix">
+		<h1>{$info.page_title}</h1>
+		<div class="vote_rule_text">
+			{$info.page_content}
+		</div>
+	</div>
+</div>
+<!-------活动介绍结束----->
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

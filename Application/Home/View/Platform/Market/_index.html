@@ -1,0 +1,15 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('user_id'=>$vo[user_id]))}">
+		<dl>
+			<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<h2>{$vo.nick_name}</h2>
+				<time>会员号：{$vo.user_id}</time>
+			</dd>
+			<dt>
+				<span>{$vo.mobile}</span>
+				<p>{$user_type[$vo[user_type]]}</p>
+			</dt>
+		</dl>
+	</a>
+</volist>

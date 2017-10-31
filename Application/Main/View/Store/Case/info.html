@@ -1,0 +1,96 @@
+<!-------头部开始----->
+<include file="Public/store_header"/>
+<!-------头部结束----->
+
+<!-------店铺真实案例开始----->
+<div class="main w1200">
+	<div class="site_position">当前位置：<a href="{:U('Index/index/index')}">首页</a> - 真实案例</div>
+	<div class="shop_case_deta clearfix">
+		<div class="shop_case_l fl">
+			<div class="shop_case_slideshow">
+				<div id="OriginalPic">
+					<div id="aPrev" class="CursorL"></div>
+					<div id="aNext" class="CursorR"></div>
+					<volist name='info.gallery_array' id='val'>
+					<p class="Hidden">
+						<span class="SliderPicBorder"><img src="<if condition='$val.pic eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w820h500/{$val.pic}</if>"></span>
+					</p>
+					</volist>
+				</div>
+				<div class="ThumbPicBorder clearfix">
+					<img src="__PUBLIC__/main/images/icon127.png" id="btnPrev" class="fl" style="cursor:pointer;" />
+					<div class="jCarouselLite fl">
+						<ul id="ThumbPic" class="clearfix">
+							<volist name='info.gallery_array' id='val'>
+							<li rel='{$i}'><img src="<if condition='$val.pic eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w170h145/{$val.pic}</if>"></li>
+							</volist>
+						</ul>
+					</div>
+					<img src="__PUBLIC__/main/images/icon126.png" id="btnNext" class="fr" style="cursor:pointer;" />
+				</div>
+				<script src="__PUBLIC__/main/js/case.js"></script>
+				<script src="__PUBLIC__/main/js/jquery.jcarousellite.min.js"></script>
+				<script>
+					//缩略图滚动事件
+					$(".jCarouselLite").jCarouselLite({
+						btnNext:"#btnNext",
+						btnPrev:"#btnPrev",
+						scroll: 1,
+						speed: 240,
+						circular: false,
+						visible:4
+					});
+				</script>
+			</div>
+			<div class="shop_case_list">
+				<h1>相关案例</h1>
+				<ul class="clearfix">
+					<volist name='case_list' id='val'>
+					<li>
+						<a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}"><img src="<if condition='$val.pic eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w760h610/{$val.pic}</if>" width="250" height="165"></a>
+						<h2><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}">{$val.case_name}</a></h2>
+						<p>
+							<span><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}" class="color_btn">查看详情</a></span>
+							<span><a href="{:U('design/index/info',array('id'=>$val['designer_id'],'store_id'=>$get[store_id]))}" class="gay_btn">预约设计</a></span>
+						</p>
+					</li>
+					</volist>
+				</ul>
+				<div class="pages1">
+					{$page}
+				</div>
+			</div>
+		</div>
+		<div class="shop_case_r fr">
+			<include file='Store/Case/_custom' />
+			<div class="shop_hot_case">
+				<h2>热门案例</h2>
+				<volist name='hot_list' id='val'>
+				<dl class="clearfix">
+					<dt><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}"><img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic76.jpg<else/>__UPLOAD__/thumbs/w250h165/{$val.picture}</if>" width="145" height="100"></a></dt>
+					<dd>
+						<h3><a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}">{$val.case_name}</a></h3>
+						<p>
+							<a href="{:U('info',array('case_id'=>$val['case_id'],'store_id'=>$get[store_id]))}" class="color_btn">查看详情</a>
+							<a href="{:U('design/index/info',array('id'=>$val['designer_id'],'store_id'=>$get[store_id]))}" class="gay_btn">预约设计</a>
+						</p>
+					</dd>
+				</dl>
+				</volist>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				$(".shop_case_sort ul li:last").addClass("last")
+				$(".shop_hot_case dl:last").addClass("last")
+			})
+		</script>
+	</div>
+</div>
+<!-------店铺真实案例结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

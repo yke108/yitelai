@@ -1,0 +1,133 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我推荐的人开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>分销团队</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_subordinate">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">分销团队</a></li>
+					</ul>
+					<!--<div class="fr" style="position:relative;top:4px;left:-5px;font-size:16px;">
+						<img src="/yitelai/Site/public/wap/images/icon6.png" style="position:relative;" height="18">
+						<span style="position:relative;top:2px;margin-left:0px;float:none;">所属店铺：</span>
+						<font style="position: relative; font-size: 16px; top: 2px; color:#e3002b;" class="fr">天河店</font>
+					</div>-->
+				</div>
+				<notempty name='distributor_info'>
+				<div style='border-bottom:1px solid #ededed;padding-bottom:18px;margin-top:15px;font-size:16px;'>
+					<img height='18' src="__PUBLIC__/wap/images/icon6.png" />
+					<span style='position:relative;top:2px;margin-left:0px;'>所属店铺：</span>
+					<font style='font-size:16px;position:relative;top:2px;color:#e3002b;left:-6px;'>{$distributor_info.distributor_name}</font>
+				</div>
+				</notempty>
+				<form action="{:U('')}" method="get">
+					<table class="ncm-search-table" style="margin:0px">
+						<tbody>
+							<tr>
+								<td align="left">
+									<span >
+										<if condition="$user.user_type eq 3">
+										分销员昵称
+										<else/>
+										会员昵称
+										</if>
+									</span>
+									<input type="text" class="text w150" name="nick_name" value="{$get.nick_name}">
+									<!--<span>店铺</span>
+									<select name="store_id">
+										<option value="">所有店铺</option>
+										<volist name="distributor_list" id="vo">
+											<option {:m_selected($get[store_id], $vo[distributor_id])} value="{$vo.distributor_id}">{$vo.distributor_name}</option>
+										</volist>
+									</select>-->
+									<span>注册时间</span>
+									<input type="text" name="start_time" value="{$get.start_time}" readonly class="w70" id="datetimepicker1"><label class="add-on"><i><img src="__PUBLIC__/main/images/icon54.png" style="width:15px; height:15px; margin:0px; border-radius:0px;"></i></label>
+									<span>–</span>
+									<input type="text" name="end_time" value="{$get.end_time}" readonly class="w70" id="datetimepicker2"><label class="add-on"><i><img src="__PUBLIC__/main/images/icon54.png" style="width:15px; height:15px; margin:0px; border-radius:0px;"></i></label>
+									<button type="submit">搜索</button>
+									<notempty name='distributor_info'>
+										<button type="button" style="float:right" id="salesman_view">上级业务员</button>
+									</notempty>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+				<!----日期选择---->
+				<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+				<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+				<script type="text/javascript">
+					$('#datetimepicker1').datetimepicker({
+						lang:'ch',
+						timepicker:false,
+						format:'Y-m-d',
+						formatDate:'Y-m-d',
+						timepicker:false
+					});
+					$('#datetimepicker2').datetimepicker({
+						lang:'ch',
+						timepicker:false,
+						format:'Y-m-d',
+						formatDate:'Y-m-d',
+						timepicker:false
+					});
+				</script>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<th>
+								<if condition="$user.user_type eq 3">
+								分销员昵称
+								<else/>
+								会员昵称
+								</if>
+							</th>
+							<th>注册时间</th>
+							<th>注册状态</th>
+							<th>订单记录</th>
+						</tr>
+						<volist name="list" id="vo">
+							<tr>
+								<td align="left"><img src="<if condition='$vo.user_img neq ""'>__UPLOAD__/thumbs/b120/{$vo.user_img}<else/>__PUBLIC__/main/images/user_default_img.jpg</if>">{$vo.nick_name}</td>
+								<td align="center">{$vo.reg_time|date="Y-m-d H:i",###}</td>
+								<td align="center">已注册</td>
+								<td align="center"><a href="{:U('user/recommend/commission', array('user_id'=>$vo[user_id]))}">查看</a></td>
+							</tr>
+						</volist>
+					</table>
+					<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我推荐的人结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(document).ready(function(){
+	$('#salesman_view').click(function(){
+		layer.open({
+			title: '上级业务员'
+			,content: '<p>业务员昵称：{$salesman.nick_name}</p><p>业务员手机：{$salesman.mobile}</p><p>业务员职责：{$distributor_config.duty}</p>'
+		})
+	})
+})
+</script>

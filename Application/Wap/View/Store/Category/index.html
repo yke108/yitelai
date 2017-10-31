@@ -1,0 +1,25 @@
+<div class="warp">
+	
+	<div class="shop_sort">
+		<h2><a href="{:U('store/goods/index', array('store_id'=>$get[store_id]))}">全部产品</a></h2>
+		<empty name="self_cat_list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+		<else/>
+			<volist name="self_cat_list" id="vo">
+				<div class="shop_sort_item">
+					<h3>{$vo.cat_name}</h3>
+					<ul class="clearfix">
+						<volist name="vo.children" id="vo2">
+							<li><a href="{:U('store/goods/index', array('store_id'=>$get[store_id], 'cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></li>
+						</volist>
+					</ul>
+				</div>
+			</volist>
+		</empty>
+	</div>
+	<script>
+		$(".shop_sort_item ul li a").click(function(){
+			$(this).toggleClass("on")	
+		})
+	</script>
+</div>

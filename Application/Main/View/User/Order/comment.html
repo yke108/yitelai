@@ -1,0 +1,217 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的评论开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>评价</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_Evaluation">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">评价</a></li>
+					</ul>
+				</div>
+				<form action="{:U('')}" method="post" enctype="multipart/form-data" onSubmit="">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="my_Evaluation_form">
+						<tr>
+							<th align="left">商品信息</th>
+						</tr>
+						<tr>
+							<td>
+								<dl class="clearfix">
+									<dt><a href="{:U('mall/goods/info', array('id'=>$info[goods_id]))}" target="_blank"><img src="__UPLOAD__/{$info.goods_img}"></a></dt>
+									<dd>
+										<a href="{:U('mall/goods/info', array('id'=>$info[goods_id]))}" target="_blank">{$info.goods_name}</a>
+										<time>购买时间：{$order.add_time|date="Y-m-d H:i:s", ###}</time>
+									</dd>
+								</dl>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<ul>
+									<li class="clearfix"><span>评价：</span><em><textarea name="content" cols="" rows=""></textarea></em></li>
+									<li class="clearfix">
+                                    	<div class="clearfix">
+                                            <span>晒图：</span>
+                                            <em>
+                                                <i><img src="__PUBLIC__/main/images/icon116.jpg">
+                                                <input id="fileImage" type="file" name="fileselect[]" multiple></i>
+                                            </em>
+                                        </div>
+                                    	<div id="preview" class="upload_preview clearfix"></div>
+										<p>为了帮助我们更好的解决问题，请您上传图片</p>
+										<p>最多可上传3张图片，每张图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</p>
+                                    </li>
+                                    <style>
+                                    	.upload_preview{ margin:10px 0 0 55px;}
+										.upload_append_list{ float:left; margin-right:10px; text-align:center; border:solid 1px #ECECEC;}
+										.upload_append_list p{ display:table-cell; vertical-align: middle; position:relative; width:100px; height:100px;}
+										.upload_append_list p img{ max-width:100%; max-height:100%;}
+										.upload_append_list p a{ position:absolute; top:0; right:0;}
+										
+										.my_Evaluation_form td ul li p {
+											margin-left: 55px;
+											color: #8d8d8d;
+											line-height: 24px;
+										}
+                                    </style>
+									<li class="clearfix">
+										<span>评星：</span>
+										<div id="star" class="fl">
+											<ul>
+												<li><a href="javascript:;">1</a></li>
+												<li><a href="javascript:;">2</a></li>
+												<li><a href="javascript:;">3</a></li>
+												<li><a href="javascript:;">4</a></li>
+												<li><a href="javascript:;">5</a></li>
+											</ul>
+											<span></span>
+											<p></p>
+										</div>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					</table>
+					<div class="my_Evaluation_btn">
+						<button type="button" id="btn_submit">提 交</button>
+						<input type="hidden" name="stars" value="" id="stars" />
+						<input type="hidden" name="id" value="{$info.id}" />
+					</div>
+				</form>
+				<script src="__PUBLIC__/main/js/evaluation.js"></script>                
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的评论结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#star ul li').click(function(){
+		$('#stars').val($(this).find('a').html());
+	});
+});
+</script>
+
+<script src="__PUBLIC__/v8/js/zxxFile.js"></script>
+<script>
+	var params = {
+		fileInput: $("#fileImage").get(0),
+		dragDrop: $("#fileDragArea").get(0),
+		upButton: $("#fileSubmit").get(0),
+		filter: function(files) {
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				if (file.type.indexOf("image") == 0) {
+					if (file.size >= 512000) {
+						alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+					} else {
+						arrFiles.push(file);	
+					}
+				} else {
+					alert('文件"' + file.name + '"不是图片。');
+				}
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#preview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e){
+						html = html + '<div id="uploadList_'+ i +'" class="upload_append_list"><p>'+ 
+							'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'"><img src="__PUBLIC__/main/images/icon4.png"></a>' +
+							'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
+						'</div>';
+						
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#preview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").click(function() {
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;	
+						});
+						//提交按钮显示
+						$("#fileSubmit").show();	
+					} else {
+						//提交按钮隐藏
+						$("#fileSubmit").hide();	
+					}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file) {
+			$("#uploadList_" + file.index).remove();
+			$("#fileImage").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').click(function(){
+		var content = $(":input[name='content']").val();
+		var stars = $("input[name='stars']").val();
+		var id = $("input[name='id']").val();
+		var _image_datas = new Array();
+		$('.upload_image').each(function(){
+			_image_datas.push($(this).attr('src'));
+		});
+		
+		if(!content){
+			layer.open({time:1,content:'评价内容不能为空'});return false;
+		}
+		if(_image_datas.length > 3){
+			layer.open({time:1,content:'最多可上传3张图片'});return false;
+		}
+		if(!stars){
+			layer.open({time:1,content:'请选择评星'});return false;
+		}
+		
+		var data = {
+			content:content,
+			stars:stars,
+			image_datas:_image_datas,
+			id:id,
+		};
+		
+		var btn_submit = $(this);
+		btn_submit.attr('disabled',true);
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				btn_submit.attr('disabled',false);
+			}
+		}, 'json');
+	});
+});
+</script>

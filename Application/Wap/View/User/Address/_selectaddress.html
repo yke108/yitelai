@@ -1,0 +1,16 @@
+<volist name="list" id="vo">
+	<div class="user_address_item item" onClick="set_defaddr({$vo.address_id})" style="position:relative">
+		<div class="address_item_hd">
+			<p><span>{$vo.consignee}</span><span>{$vo.mobile}</span></p>
+			<p>{$vo.zone} {$vo.address}</p>
+		</div>
+		<div class="weui-cells_checkbox fl" style="position:absolute; top:12px; left:0px;">
+			<label class="weui-cell weui-check__label" for="s{$vo.address_id}">
+				<div class="weui-cell__hd">
+					<input type="radio" class="weui-check" name="radio1" id="s{$vo.address_id}" {:m_checked($vo[is_default], 1)}>
+					<i class="weui-icon-checked"></i>
+				</div>
+			</label>
+		</div>
+	</div>
+</volist>

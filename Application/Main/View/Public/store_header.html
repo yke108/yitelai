@@ -1,0 +1,226 @@
+<div class="header">
+	<div class="hd_bar">
+		<div class="w1200">
+			<!--<div class="position fl">送至：<input id="cityChoice" value="广州市"><i></i></div>
+			<link rel="stylesheet" type="text/css" href="__PUBLIC__/main/css/hzw-city-picker.css">
+			<script type="text/javascript" src="__PUBLIC__/main/js/city-data.js"></script>
+			<script type="text/javascript" src="__PUBLIC__/main/js/hzw-city-picker.min.js"></script>
+			<script>
+				var cityPicker = new HzwCityPicker({
+					data: data,
+					target: 'cityChoice',
+					valType: 'k-v',
+					hideCityInput: {
+						name: 'city',
+						id: 'city'
+					},
+					hideProvinceInput: {
+						name: 'province',
+						id: 'province'
+					},
+					//选择后执行
+					callback: function(){
+						$(function(){
+							var Val = $("#cityChoice").val().length
+							$("#cityChoice").width(Val+"em")
+						})
+					}
+				});
+				cityPicker.init();
+			</script>-->
+			<div class="hd_map fr clearfix">
+				<span class="fl">欢迎光临{$sysconfig.name}：
+					<empty name="user">
+						<a href="{:U('index/site/login')}">请登录</a><a href="{:U('index/site/reg')}">注册</a>
+					<else/>
+						<a href="{:U('user/index/index')}">{$user.nick_name}</a><a href="{:U('index/site/logout')}" class="go_out">退出</a>
+					</empty>
+				</span>
+				<ul class="fl">
+					<li><a href="{:U('user/order/index')}">我的订单</a></li>
+					<li><a href="{:U('user/index/index')}">个人中心</a></li>
+					<li><a href="{:U('article/help/index')}">帮助中心</a></li>
+					<li class="last">
+						<a href="javascript:;"><img src="__PUBLIC__/main/images/icon3.png">手机在线<i></i></a>
+						<div class="code"><img src="__PUBLIC__/main/images/pic8.jpg"></div>
+					</li>
+				</ul>
+				<script>
+					$(function(){
+						$(".hd_map ul li.last").hover(function(){
+							$(this).find(".code").toggle()	
+						})
+					})
+				</script>
+			</div>
+		</div>
+	</div>
+	<div class="hd_banner">
+		<neq name="pc_top" value="close">
+			<notempty name="ad_list.pc_top">
+				<a href="{$ad_list.pc_top.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_top.0.ad_picture}" width="100%"></a>
+				<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_top')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+			</notempty>
+		</neq>
+	</div>
+	<script>
+		$(function(){
+			$(".hd_banner .close a").click(function(){
+				$(".hd_banner").slideUp()	
+			})	
+		})
+	</script>
+	
+	<div class="hd_search shop_search" style='background:#fff;'>
+		<div class="w1200 clearfix">
+			<!--<div class="logo fl"><a href="{:U('index/index/index')}"><img  style='max-height:120px;' src="__PUBLIC__/main/images/logo_2.jpg"></a></div>-->
+			<div class="head_shop_name fl" style="margin-left:0;">
+				<dl class="clearfix">
+					<dt>
+						<h2>{$distributor.distributor_name}</h2>
+						<p><span><img src="__PUBLIC__/main/images/icon121.png">品牌授权</span><span><img src="__PUBLIC__/main/images/icon122.png">品质保障</span><span><img src="__PUBLIC__/main/images/icon123.png">无忧服务</span></p>
+					</dt>
+					<!--<dd>
+						<p><em>描述</em><em>服务</em><em>物流</em></p>
+						<b><span>4.9↑</span><span>4.5↑</span><span class="last">4.0↑</span></b>
+					</dd>-->
+				</dl>
+			</div>
+			<div class="search_box fr">
+				<div class="clearfix">
+					<form action="{:U('store/goods/index', array('store_id'=>$get[store_id]))}" onSubmit="" class="fl">
+						<p class="clearfix"><input name="keyword" value="{$get.keyword}" type="search" placeholder="请输入关键字搜索商品"><button type="submit">搜 索</button></p>
+						<p class="code">
+							<a href="{:U('store/index/collect', array('id'=>$distributor[distributor_id]))}" class="collect <notempty name="collect">on</notempty>">
+							<img id="collect_icon" src="<notempty name="collect">__PUBLIC__/main/images/icon119.png<else/>__PUBLIC__/main/images/icon1199.png</notempty>" width="20" height="20">收藏店铺</a>
+							<a href="#"><img src="__PUBLIC__/main/images/icon120.png">用手机逛本店<img src="http://qr.liantu.com/api.php?text={$store_url}" width="100" height="100" class="code_pic"></a>
+						</p>
+					</form>
+					<style type="text/css">
+					.shop_search .search_box p.code a.on{color:#e3002c;}
+					</style>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="hd_menu shop_menu">
+		<div class="w1200 clearfix">
+			<div class="hd_menu_l fl">
+				<h1><a href="{:U('store/goods/index', array('store_id'=>$get[store_id]))}"><!--<i></i>-->所有宝贝</a></h1>
+				<div class="sort_list">
+					<ul>
+						<foreach name="cat_list" item="vo" key="k">
+							<lt name="k" value="5">
+								<li>
+									<h2>
+										<p><b><i class="i{$k+1}"></i>{$vo.cat_name}</b></p>
+										<p>
+											<foreach name="vo.children" item="vo2" key="k2">
+												<lt name="k2" value="4">
+													<a href="{:U('mall/category/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a>
+												</lt>
+											</foreach>
+										</p>
+									</h2>
+									<div class="sort_right clearfix">
+										<div class="sort_right_l fl">
+											<div class="sort_right_l_hd">
+												<volist name="vo.children" id="vo2">
+													<eq name="vo2.is_recommend" value="1"><span><a href="{:U('mall/category/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></span></eq>
+													<volist name="vo2.children" id="vo3">
+														<eq name="vo3.is_recommend" value="1"><span><a href="{:U('mall/category/index', array('cat_id'=>$vo3[cat_id]))}">{$vo3.cat_name}</a></span></eq>
+													</volist>
+												</volist>
+											</div>
+											<div class="sort_right_l_bd">
+												<ul>
+													<volist name="vo.children" id="vo2">
+														<li>
+															<span>{$vo2.cat_name}</span>
+															<notempty name="vo2.children">
+																<em>
+																	<volist name="vo2.children" id="vo3">
+																		<a href="{:U('mall/category/index', array('cat_id'=>$vo3[cat_id]))}">{$vo3.cat_name}</a>
+																	</volist>
+																</em>
+															</notempty>
+														</li>
+													</volist>
+												</ul>
+											</div>
+										</div>
+										<div class="sort_right_r fr">
+											<div class="sort_right_r_hd">
+												<ul class="clearfix">
+													<foreach name="ad_list.pc_index_menu_righttop" item="vo" key="k">
+														<lt name="k" value="6">
+															<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+														</lt>
+													</foreach>
+												</ul>
+											</div>
+											<notempty name="ad_list.pc_index_menu_rightbottom">
+												<div class="sort_right_r_bd"><a href="{$ad_list.pc_index_menu_rightbottom.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_menu_rightbottom.0.ad_picture}"></a></div>
+											</notempty>
+										</div>
+									</div>
+								</li>
+							</lt>
+						</foreach>
+					</ul>
+					<div class="bt_banner"><a href="{$ad_list.pc_index_menu_bottom.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_menu_bottom.0.ad_picture}"></a></div>
+				</div>
+			</div>
+			<script>
+				$(function(){
+					$(".hd_menu .hd_menu_l .sort_list ul li").hover(function(){
+						$(this).toggleClass("hover")
+						$(this).find(".sort_right").toggle()
+					})
+				})
+			</script>
+			<div class="hd_menu_r fl">
+				<ul class="clearfix">
+					<li><a href="{:U('store/index/index', array('store_id'=>$get[store_id]))}">首页</a></li>
+					<!--<li><a href="{:U('store/goods/new', array('store_id'=>$get[store_id]))}">新品</a></li>-->
+					<foreach name="store_nav_list" item="vo" key="k">
+						<li>
+							<a href="<if condition='$vo[build_url] eq ""'>{$vo.url}<else/>{$vo.build_url}</if>">{$vo.name}</a>
+						</li>
+					</foreach>
+					<volist name="goodslabel_list" id="vo">
+						<li><a href="{:U('store/goods/index', array('store_id'=>$get[store_id], 'label_id'=>$vo[label_id]))}">{$vo.name}</a></li>
+					</volist>
+					<!--<li><a href="{:U('store/privilege/index', array('store_id'=>$get[store_id]))}">特权定金</a></li>
+					<li><a href="{:U('store/brand/index', array('store_id'=>$get[store_id]))}">品牌介绍</a></li>
+					
+					<li><a href="{:U('store/case/index', array('store_id'=>$get[store_id]))}">真实案例</a></li>-->
+					<!--<li><a href="#">在线报名</a></li>-->
+					<!--<li><a href="#">加入我们</a></li>-->
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!---->
+
+<script>
+	$(".collect").click(function(){
+		var collect_obj = $(this);
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				if(d.is_collect == 1){
+					collect_obj.addClass("on");
+					$('#collect_icon').attr("src", '__PUBLIC__/main/images/icon119.png');
+				}else{
+					collect_obj.removeClass("on");
+					$('#collect_icon').attr("src", '__PUBLIC__/main/images/icon1199.png');
+				}
+			}
+		}, 'json');
+		return false;
+	})
+</script>

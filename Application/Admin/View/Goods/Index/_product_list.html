@@ -1,0 +1,36 @@
+<volist name="product_list" id="vo">
+	<empty name="vo.product_id">
+		<tr class="rowlink">
+			<td><eq name="vo.is_sku_image" value="1"><input class="hy_upload_single" hy_field="product_image[{$vo.sku_value}]" value="" style="width:50px;height:50px;" src=""/></eq></td>
+			<td>{$vo.sku_value}
+				<input type="hidden" name="product_items[]"  value="{$vo.sku_value}" />
+			</td>
+			<td><input name="product_price[]" class="input-xlarge form-control" type="text"  value="0"></td>
+			<td><input name="market_price[]" class="input-xlarge form-control" type="text"  value="0"></td>
+			<td><input name="stock_price[]" class="input-xlarge form-control" type="text"  value="0"></td>
+			<td><input name="product_weight[]" class="input-xlarge form-control" type="text"  value="0"></td>
+			<td><input name="stock_number[]" class="input-xlarge form-control" type="text"  value="0"></td>
+		</tr>
+	<else/>
+		<tr class="rowlink">
+			<td>
+				<eq name="vo.is_image" value="1">
+					<input class="hy_upload_single" hy_field="products[{$vo.product_id}][product_image]" value="" style="width:50px;height:50px;" src="{$vo.product_image}"/>
+				</eq>
+			</td>
+			<td>{$vo.product_items_name}
+				<input type="hidden" name="products[{$vo.product_id}][product_items]" value="{$vo.product_items}" />
+			</td>
+			<td><input name="products[{$vo.product_id}][product_price]" class="input-xlarge form-control" type="text"  value="{$vo['product_price']}"></td>
+			<td><input name="products[{$vo.product_id}][market_price]" class="input-xlarge form-control" type="text"  value="{$vo['market_price']}"></td>
+			<td><input name="products[{$vo.product_id}][stock_price]" class="input-xlarge form-control" type="text"  value="{$vo['stock_price']}"></td>
+			<td><input name="products[{$vo.product_id}][product_weight]" class="input-xlarge form-control" type="text"  value="{$vo['product_weight']}"></td>
+			<td><input name="products[{$vo.product_id}][stock_number]" class="input-xlarge form-control" type="text"  value="{$vo['stock_number']}"></td>
+		</tr>
+	</empty>
+</volist>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+});
+</script>

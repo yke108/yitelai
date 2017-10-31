@@ -1,0 +1,8 @@
+<volist name="list" id="vo">
+    <li>
+        <a href="javascript:void(0);" class="a_link" rel="{:U('/analysis/shop/shopanalysis', array('distributor_id' => $vo[distributor_id]))}">
+            <span><img src="{$vo[distributor_image]}">{$vo[distributor_name]}</span>
+            <!--<em>{$vo[oderCount]}</em>-->
+        </a>
+    </li>
+</volist>

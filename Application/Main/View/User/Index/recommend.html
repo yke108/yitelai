@@ -1,0 +1,7 @@
+<volist name="recommend_list" id="vo">
+	<li>
+		<a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/thumbs/b512/{$vo.goods_image}"></a>
+		<p><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">{$vo.goods_name|msubstr=0,28,'utf-8',true}</a></p>
+		<p><span>￥{$vo.product.product_price}</span><em>销量：{$vo.total_sale_count}</em></p>
+	</li>
+</volist>

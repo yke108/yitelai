@@ -1,0 +1,203 @@
+<div class="order_produce">
+	<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+	<div class="order_produce_hd">
+		<form action="{:U('')}" onsubmit="formsubmit()">
+			<input type="hidden" name="type" value="{$get.type}" />
+			<div class="mui-input-row mui-search">
+				<input type="search" name="order_id" value="{$get.order_id}" class="mui-input-clear" placeholder="搜索">
+			</div>
+		</form>
+	</div>
+	<div class="order_produce_bd">
+		<div id="slider" class="mui-slider mui-fullscreen">
+			<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="background:#FFF;">
+				<a class="mui-control-item <eq name="get.type" value="7">mui-active</eq>" href="#item1mobile">已安装</a>
+				<a class="mui-control-item <eq name="get.type" value="8">mui-active</eq>" href="#item2mobile">已完成</a>
+			</div>
+			<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+			<div class="mui-slider-group">
+				<div id="item1mobile" class="mui-slider-item mui-control-content <eq name="get.type" value="7">mui-active</eq>" style=" border:none;" type="7">
+					<div id="scroll1" class="mui-scroll-wrapper">
+						<php>$list = $installed_list;</php>
+						<empty name="list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关订单</p>
+						<else/>
+							<div class="mui-scroll" p="2">
+								<div class="div">
+									<include file="Order/Custom/_install_list"/>
+								</div>
+							</div>
+						</empty>
+					</div>
+				</div>
+				<div id="item2mobile" class="mui-slider-item mui-control-content <eq name="get.type" value="8">mui-active</eq>" style="border:none;" type="8">
+					<div id="scroll2" class="mui-scroll-wrapper">
+						<php>$list = $finish_list;</php>
+						<empty name="list">
+							<p style="text-align:center;color:#999999;padding:20px;">暂无相关订单</p>
+						<else/>
+							<div class="mui-scroll" p="2">
+								<div class="div">
+									<include file="Order/Custom/_install_list"/>
+								</div>
+							</div>
+						</empty>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="filter_new_pop">
+	<form action="{:U('')}">
+		<input type="hidden" name="type" value="{$get.type}" />
+		<div class="mui-input-row mui-search">
+			<input type="search" name="order_id" value="{$get.order_id}" class="mui-input-clear" placeholder="搜索">
+		</div>
+		<h2>时间筛选</h2>
+		<ol>
+			<li><span>开始时间：</span><input name="start_time" value="{$get.start_time}" type="text" readonly class="time" id="StartTime1" data-options='{}' placeholder="请选择"></li>
+			<li><span>结束时间：</span><input name="end_time" value="{$get.end_time}" type="text" readonly class="time" id="StartTime2" data-options='{}' placeholder="请选择"></li>
+		</ol>
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+$(document).ready(function(){
+	$('#btn_search').bind('click', function(){
+		$('input[name=type]').val($('#mui-scroll .mui-active').attr('type'))
+		
+		var form = $(this).parents('form')
+		form[0].submit();
+	})
+});
+
+function formsubmit(){
+	$('input[name=type]').val($('.mui-slider-group .mui-active').attr('type'))
+}
+</script>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+<script>
+	mui.init();
+	
+	var order_id = "{$get.order_id}";
+	var start_time = "{$get.start_time}";
+	var end_time = "{$get.end_time}";
+	
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: false,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+		$.ready(function() {
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					up: {
+						callback: function() {
+							var self = this;
+							var jqobj = jQuery(pullRefreshEl);
+							
+							var type = jqobj.attr('type');
+							var p = jqobj.attr('p');
+							
+							var data = {
+								order_id:order_id,
+								start_time:start_time,
+								end_time:end_time,
+								type:type,
+								p:p
+							};
+							mui.post("{:U('')}",data,function(data){
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									if(data.html != ''){
+										jqobj.attr('p', data.p);
+										var list = jqobj.find('ul');
+										list.append(data.html);
+										self.endPullUpToRefresh();
+									}else{
+										self.endPullUpToRefresh(true);
+									}
+								},'json'
+							);
+						}
+					}
+				});
+			});
+		});
+		
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+		
+
+	$(function(){
+		$("#click").click(function(){
+			$(".filter_new_pop").toggleClass("on")	
+			$(".mask").fadeToggle()
+		})
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary,.mask").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+		
+	})
+	
+</script>

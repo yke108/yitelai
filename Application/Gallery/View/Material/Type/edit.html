@@ -1,0 +1,28 @@
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading"><gt name="info.type_id" value="0">商品参数<else/>添加参数</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<div class="form-group">
+								<label class="control-label col-sm-2">参数名称</label>
+								<div class="col-sm-6">
+									<input name="type_name" class="input-xlarge form-control" type="text"  value="{$info.type_name}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input name="type_id"  type="hidden"  value="{$info.type_id}">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

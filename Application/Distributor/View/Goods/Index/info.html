@@ -1,0 +1,342 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<?php $action = $info['goods_id'] > 0 ? U('edit',array('id'=>$info['goods_id'])):U('add');?>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+			<h3 class="heading">商品详情</h3>
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品编号</label>
+					<label class="control-label" style="float:left">
+						{$info['goods_sn']}
+					</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品名称</label>
+					<label class="control-label" style="float:left">
+						{$info['goods_name']}
+					</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品分类</label>
+					<label class="control-label" style="float:left">
+						{$info['cat_name']}
+					</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品场景</label>
+					<div class="col-sm-8" style="padding:0;">
+						<div class="col-sm-12" id="scene_list">
+							<foreach name="scene_list" item="vo" key="k">
+								<label class="checkbox-inline"><input {:m_checked($k, $info[scene_ids])} type="checkbox" name="scene[]" value="{$k}">{$vo}</label>
+							</foreach>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品标签</label>
+					<div class="col-sm-8" style="padding:0;">
+						<div class="col-sm-12" id="label_list">
+							<foreach name="label_list" item="vo" key="k">
+								<label class="checkbox-inline"><input {:m_checked($k, $info[label_ids])} type="checkbox" name="label[]" value="{$k}">{$vo}</label>
+							</foreach>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品属性</label>
+					<div class="col-sm-8" style="padding:0;" id="type_list">
+						<volist name="spec_list" id="vo">
+							<div class="form-group">
+								<label class="control-label col-sm-1">{$vo.spec_name}</label>
+								<div class="col-sm-4">
+									<eq name="vo.spec_type" value="1">
+										<select name="goods_spec[{$vo.spec_id}]" class="form-control input-xlarge">
+											<option value="">请选择</option>
+											<volist name="vo.spec_values" id="vo2">
+												<option {:m_selected($vo2[is_selected], 1)} value="{$vo2.spec_value}">{$vo2.spec_value}</option>
+											</volist>
+										</select>
+									<else/>
+										<input name="goods_spec[{$vo.spec_id}]" class="input-xlarge form-control" type="text" value="{$vo.spec_value}">
+									</eq>
+								</div>
+							</div>
+						</volist>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">所属品牌</label>
+					<label class="control-label" style="float:left">
+						{$info['brand_name']}
+					</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品简介</label>
+					<label class="control-label" style="float:left">
+						{$info['goods_intro']}
+					</label>
+				</div>
+				
+				<gt name="info.delivery_time" value="0">
+					<div class="form-group">
+						<label class="control-label col-sm-1">发货时间</label>
+						<label class="control-label" style="float:left">
+							承诺支付后{$info['delivery_time']}天发货
+						</label>
+					</div>
+				</gt>
+				<div class="form-group">
+					<label class="control-label col-sm-1">服务承诺</label>
+					<div class="col-sm-8" style="padding:0;">
+						<div class="col-sm-12" id="label_list">
+							<volist name="sysconfig.service_promise_arr" id="vo">
+								<label class="checkbox-inline"><input {:m_checked($vo, $info[service_promise_arr])} type="checkbox" name="service_promise[]" value="{$vo}">{$vo}</label>
+							</volist>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品货品</label>
+					<div class="col-sm-11" style="padding:0;">
+						<table class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>货品图片</th>
+									<th>货品名称</th>
+									<th>优惠价</th>
+									<th>原价</th>
+									<th>进货价</th>
+									<th>货品重量（单位kg）</th>
+									<th>库存数量</th>
+								</tr>
+							</thead>
+							<tbody id="tblc">
+								<volist name="product_list" id="vo">
+									<tr class="rowlink">
+										<td><img src="__UPLOAD__/{$vo.product_image}" height="40" border="0"></td>
+										<td>{$vo.product_name}</td>
+										<td>{$vo['product_price']}</td>
+										<td>{$vo['market_price']}</td>
+										<td>{$vo['stock_price']}</td>
+										<td>{$vo['product_weight']}</td>
+										<td>{$vo['stock_number']}</td>
+									</tr>
+								</volist>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<div class="row" style="margin-top:12px;padding-top:12px;border-top:1px dashed #CCC;">
+					<input id="mainpic" name="goods_image" type="hidden"/>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品主图</label>
+					<div class="col-sm-8">
+						<div class="uploadify" id="file_img"> <span id="uploadButton22" value="商品主图" /> </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品相册</label>
+					<div class="col-sm-10">
+						<div id="file_flash" class="uploadify">
+							<!--<input type="button" id="J_selectImage" value="批量上传" />-->
+						</div>
+					</div>
+				</div>
+				<div class="row" style="margin-top:12px;padding-top:12px;border-top:1px dashed #CCC;">
+					<input id="flashpic" name="goods_gallery" type="hidden"/>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品细节</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品实拍</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc1])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品情景</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc2])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">材料解析</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc3])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">商品配件</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc4])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">安装说明</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc5])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">包装图示</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc6])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">配送安装</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc7])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">品质保障</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc8])}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">服务质量</label>
+					<div class="col-sm-10">
+						{:htmlspecialchars_decode($info[goods_desc9])}
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="goods_id" value="{$info.goods_id}">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<style type="text/css">
+#file_flash{display:none;}
+</style>
+
+<css href="__PUBLIC__/uploadify/uploadify.css"/>
+<script>
+$(document).ready(function(){
+	var K = KindEditor;
+	
+	var uploadbutton = K.uploadbutton({
+		button : K('#uploadButton22')[0],
+		fieldName : 'imgFile',
+		url : '{:U("Index/Site/upload")}',
+		afterUpload : function(data) {
+			if (data.error === 0) {
+				mainPicShow(data.short_url);
+			} else {
+				alert(data.message);
+			}
+		},
+		afterError : function(str) {
+			alert('自定义错误信息: ' + str);
+		}
+	});
+	uploadbutton.fileBox.change(function(e) {
+		uploadbutton.submit();
+	});
+	K('.ke-upload-area').css({width:'100%', height:'100%'});
+	
+	var editor2 = K.editor({
+		uploadJson : '{:U("site/upload")}',
+		allowFileManager : true
+	});
+	K('#J_selectImage').click(function() {
+		editor2.loadPlugin('multiimage', function() {
+			editor2.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					K.each(urlList, function(i, data) {
+						listPicShow(data.short_url);
+					});
+					editor2.hideDialog();
+				}
+			});
+		});
+	});
+	
+	//初始化显示图片
+	<notempty name="info.goods_image">
+		mainPicShow('/{$info.goods_image}');
+	</notempty>
+	<volist name="info.goods_gallery" id="vo">
+		listPicShow('/{$vo}');
+	</volist>
+});
+
+function mainPicShow(data){
+	var wrap = $('#file_img');
+	wrap.children().hide();
+	wrap.append('<img src="'+'__UPLOAD__/'+data+'" onload="gresize(this)"/>');
+	$('#mainpic').val(data);
+	
+	/*$('<a class="btn btn-danger" href="#'+data+'">X</a>')
+	.css({'position':'absolute', 'bottom':'1px', 'right':'1px', 'font-size':'12px', 'padding':'3px 5px'})
+	.appendTo(wrap).bind('click',function(){
+		$('#mainpic').val('');
+		var pobj = $(this).parent();
+		$(this).remove();
+		pobj.children('img').remove();
+		pobj.children().show();
+	});*/
+}
+
+function listPicShow(data){
+	var fp_input = $('#flashpic');
+	var fp_input_val = fp_input.val();
+	if(fp_input_val.length < 1){
+		fp_input_val = '#';
+	}
+	var t = fp_input_val + data + '#';
+	fp_input.val(t);
+	
+	var ref_obj = $('#file_flash');
+	var obj_new = $('<div></div>').css({'width':'130px','height':'130px','border':'1px solid #CCC','padding':'5px','overflow':'hidden','float':'left','margin-right':'15px','position':'relative'}).insertBefore(ref_obj)
+	.append('<img src="__UPLOAD__/'+data+'" onload="gresize(this)"/>');
+	
+	/*$('<a class="btn btn-danger" href="#'+data+'">X</a>')
+	.css({'position':'absolute', 'bottom':'1px', 'right':'1px', 'font-size':'12px', 'padding':'3px 5px'})
+	.appendTo(obj_new).bind('click',function(){
+		var ci = $(this).attr('href');
+		var pobj = $(this).parent().remove();
+		
+        var flashpic = $('#flashpic'); 
+        var a=flashpic.val().replace(ci,'');
+		flashpic.val(a);
+	});*/
+}
+
+function gresize(obj){
+	var w = $(obj).width();
+	var h = $(obj).height();
+	if(w > h){
+		$(obj).css({'height':'100%'});
+	} else {
+		$(obj).css({'width':'100%'});
+	}
+}
+
+$(document).ready(function(){	
+	$('.uploadify').css({'width':'130px','height':'130px','border':'1px solid #CCC','padding':'5px','overflow':'hidden'});
+	
+	$('#is_distribution').click(function(){
+		if($(this).prop('checked') == true){
+			$('.distribution').css('display', 'block');
+		}else{
+			$('.distribution').css('display', 'none');
+		}
+	});
+});
+</script>

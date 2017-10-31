@@ -1,0 +1,25 @@
+<div class="personnel_management">
+	<foreach name="list" item="vo" key="ko">
+		<div class="personnel_management_item">
+			<h1>{$ko}<i></i></h1>
+			<foreach name="vo" item="vo2" key="ko2">
+				<div class="item_info">
+					<h2>
+						<span>{$ko2}月</span>
+						<em>
+							<a href="{:U('list')}"><volist name="vo2.user_list" id="vo3"><img src="{$vo3}"></volist>···</a>
+						</em>
+					</h2>
+					<ol>
+						<li><span>总销售额</span><em>￥<font>{$vo2.goods_amount}</font></em></li>
+						<li><span>总差旅费</span><em>￥<font>1300025</font></em></li>
+						<li><span>总工资</span><em>￥<font>1300025</font></em></li>
+						<li><span>总办公费</span><em>￥<font>1300025</font></em></li>
+						<li><span>总提成奖励</span><em>￥<font>1300025</font></em></li>
+						<li><span>总业绩创收</span><em>￥<font>{$vo2.order_amount}</font></em></li>
+					</ol>
+				</div>
+			</foreach>
+		</div>
+	</foreach>
+</div>

@@ -1,0 +1,115 @@
+<form action="{:U('user/address/edit')}" onSubmit="">
+	<h2><a href="javascript:;" class="fr">X</a><c id="pop_title">编辑地址</c></h2>
+	<ul>
+		<li><span>收件人：</span><input name="consignee" value="{$info.consignee}" id="consignee" type="text"></li>
+		<li>
+			<span>地址：</span>
+			<input type="hidden" value="0" class="region_sel"/>
+			<select class="region_sel" name="province" id="province"><option>省</option></select>
+			<select class="region_sel m10" name="city" id="city"><option>市</option></select>
+			<select name="district" id="district"><option>区/县</option></select>
+		</li>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			var region_list = {:json_encode($region_list)};
+			<php>$province = intval($info[region_code] / 10000) * 10000;</php>
+			var province = {$province};
+			<php>$city = intval($info[region_code] / 100) * 100;</php>
+			var city = {$city};
+			var district = {:intval($info[region_code])};
+			var cobj = $('.region_sel');
+			function build_sitem_select(thisobj){
+				var region_id = thisobj.val();
+				var obj = thisobj.next();
+				obj.html('<option value="">请选择</option>');
+				if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+					for(var i in region_list){
+						var bbc = region_list[i];
+						test_region_id = parseInt(bbc.region_code);
+						if(region_id == test_region_id){
+							continue;
+						}
+						if(region_id == 0){
+							if(test_region_id % 10000 > 0) continue;
+						} else if(region_id % 10000 == 0) {
+							if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+						} else if(region_id % 100 == 0) {
+							if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+						} else {
+							break;
+						}
+						var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+						if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+						opt.appendTo(obj);
+					}
+				}
+				if(obj.hasClass('region_sel')) build_sitem_select(obj);
+			}
+			cobj.bind('change', function(){
+				build_sitem_select($(this));
+			});
+			$('input.region_sel').each(function(){
+				build_sitem_select($(this));
+			});
+			
+			$(".add_address_pop a").click(function(){
+				$(".add_address_pop").fadeOut()
+				$(".mask").fadeOut()	
+			})
+		});
+		</script>
+		<li><span>详细地址：</span><input name="address" id="address" value="{$info.address}" type="text"></li>
+		<li><span>邮编：</span><input name="zipcode" value="{$info.zipcode}" id="zipcode" type="text"></li>
+		<li><span>联系电话：</span><input name="mobile" value="{$info.mobile}" id="mobile" type="text"></li>
+		<li><span>&nbsp;</span><label><input name="is_default" type="checkbox" value="1" id="is_default" checked="checked">设为默认地址</label></li>
+		<li>
+			<button type="button" id="btn_submit">保存收货信息</button>
+			<input type="hidden" name="id" value="{$info.address_id}" id="address_id" />
+		</li>
+	</ul>
+</form>
+
+<script type="text/javascript">
+$(function(){
+	//添加收货地址
+	$('#btn_submit').bind('click',function(){
+			if(!$('#consignee').val()){
+				layer.open({time:1,content:'收件人不可为空'});return false;
+			}
+			if(!$('#district').val()){
+				layer.open({time:1,content:'请选择地址'});return false;
+			}
+			if(!$('#address').val()){
+				layer.open({time:1,content:'详细地址不可为空'});return false;
+			}
+			if(!$('#zipcode').val()){
+				layer.open({time:1,content:'邮编不可为空'});return false;
+			}
+			var _mobile = $('#mobile').val();
+			if(!$('#mobile').val()){
+				layer.open({time:1,content:'联系方式不可为空'});return false;
+			}
+			if(!checkMobile(_mobile)){
+				layer.open({time:1,content:'手机号码格式不正确'});return false;
+			}
+			var form = $(this).parents('form');
+			$.post(form.attr('action'), form.serialize(), function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){
+					$(".add_address_pop").fadeOut()
+					$(".mask").fadeOut()
+					window.location.reload();
+				}
+			}, 'json');
+	});
+})
+
+function checkMobile(str) {
+	var re = /^1\d{10}$/
+	if (re.test(str)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+</script>

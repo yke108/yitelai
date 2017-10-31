@@ -1,0 +1,341 @@
+
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+
+
+<!-------装修公司设计师开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('Index/Index/index')}">首页</a><span>></span>设计师列表</div>
+	<div class="design_list clearfix">
+		<div class="design_list_l fl">
+			<div class="design_list_sort">
+				<ul>
+					<li class='filter_province'>
+						<span>所在城市：</span>
+						<em>
+							<!--<a type='city' val='' href="javascript:;" class="on">不限</a>
+							<foreach name='city_list' item='val' key='key'>
+							<a href="javascript:;" type='city' val='{$key}'>{$val}</a>
+							</foreach>
+							<a href="javascript:;" class="other">[ 其他城市 ]</a>-->
+							<!--<select name="" type="city" style="margin-bottom:20px; margin-top:3px;">
+								<option value="">不限</option>
+								<foreach name='city_list' item='val' key='key'>
+									<option value="{$key}">{$val}</option>
+								</foreach>
+							</select>-->
+							<div class="hd_bar">
+								<div class="position fl" style="line-height:24px;"><input id="cityChoice1" value="{$city_choice.region_name}" readonly="readonly" style="margin-top:3px"><i></i></div>
+							</div>
+							<script>
+								var data = {$city_data};
+								var cityPicker = new HzwCityPicker({
+									data: data,
+									target: 'cityChoice1',
+									valType: 'k-v',
+									hideCityInput: {
+										name: 'city1',
+										id: 'city1'
+									},
+									hideProvinceInput: {
+										name: 'province1',
+										id: 'province1'
+									},
+									callback: function(){
+										$(function(){
+											var Val = $("#cityChoice1").val().length
+											$("#cityChoice1").width(Val+"em")
+											
+											var city = $('#city1').val();
+											var arr = city.split('-');
+											region_code = arr[0];
+											
+											filter_city=region_code;
+											get_design();
+										})
+									}
+								});
+								
+								cityPicker.init();
+							</script>
+						</em>
+					</li>
+					<foreach name='type_list' item='vo' key='key'>
+					<li class='filter_charge'>
+						<span>{$vo.name}：</span>
+						<em>
+							<a href="javascript:;" type='{$vo.key}' val='' class="on" >不限</a>
+							<volist name='vo.list' id='val'>
+							<a href="javascript:;" type='{$vo.key}' val='{$val.id}' >{$val.name}</a>
+							</volist>
+						</em>
+					</li>
+					</foreach>
+					<li class='filter_charge'>
+						<span>风格：</span>
+						<em>
+							<a href="javascript:;" type='decorate' val='' class="on" >不限</a>
+							<foreach name='case_list.decorate_style.list' item='vo' key='key'>
+								<a href="javascript:;" type='decorate' val='{$vo.id}' >{$vo.name}</a>
+							</foreach>
+						</em>
+					</li>
+				</ul>
+			</div>
+			<div class="design_list_scroll">
+				
+				<div class="scrolllist clearfix" id="s3">
+					<a class="abtn aleft" href="#left" title="上移"></a>
+					<div class="imglist_w">
+						<ul class="imglist clearfix">
+							<volist name='recommend_list' id='val'>
+							<li><a href="{:U('info',array('id'=>$val['designer_id']))}"><img src="__UPLOAD__/thumbs/b400/{$val.designer_image}" width="110" height="110"><p>{$val.designer_name}</p></a></li>
+							</volist>
+						</ul>
+					</div>
+					<a class="abtn aright" href="#right" title="下移"></a>
+				</div>
+				<script type="text/javascript" src="__PUBLIC__/main/js/slider.js"></script>
+				<script type="text/javascript">
+					$(function(){							
+						$("#s3").xslider({
+							unitdisplayed:6,
+							movelength:1,
+							dir:"H",
+							unitlen:140,
+							autoscroll:5000,
+						});
+					})
+				</script>
+			</div>
+			<div class="design_list_box">
+				<div class='dlb_list'>
+					<include file='Design/Index/_index' />
+				</div>
+				
+				<script>
+					$(function(){
+						$(".design_item ul li:nth-child(4n)").addClass("mr")	
+					})
+				</script>
+				<div class="pages1">
+					{$page}
+				</div>
+			</div>
+		</div>
+		<div class="design_list_r fr">
+			<div class="design_list_r_1">
+				<h2>申请定制设计</h2>
+				<p>快速发布需求 找到专属设计</p>
+				<form action="" onSubmit="">
+					<ul>
+						<li><input name="nick_name" id='nick_name' type="text" placeholder="您的称呼"></li>
+						<li><input name="mobile" id='mobile' type="text" placeholder="手机号码"></li>
+						<li>
+							<select name="province" id='province_show' onchange='change_region(this,"city_show")'>
+								<option value='0'>省</option>
+								<foreach name='province' key='key' item='val'>
+								<option value='{$key}'>{$val}</option>
+								</foreach>
+							</select>
+						</li>
+						<li>
+							<select name="city" id='city_show' onchange='change_region(this,"district_show")'>
+								<option value='0'>市</option>
+							</select>
+						</li>
+						<li><select name="district_show" id='district_show'><option>区/县</option></select></li>
+						<li>
+							<select name="type_id" id="type_id">
+								<option value=''>定制类型</option>
+								<foreach name='message_type_list' key='key' item='val'>
+									<option value='{$val.type_id}'>{$val.type_name}</option>
+								</foreach>
+							</select>
+						</li>
+						<li><button type="button" id='add_design_msg'>立即提交</button></li>
+					</ul>
+				</form>
+				<p>* 谷安居将严格保护您的隐私，请放心填写</p>
+			</div>
+			<div class="design_list_r_2">
+				<h2>找设计上谷安居</h2>
+				<h3>95万设计师为您打造最佳定制<br>在线担保交易保障您的资金安全</h3>
+				<dl class="clearfix">
+					<dt><img src="__PUBLIC__/main/images/icon103.png"></dt>
+					<dd>
+						<p><b>不懂装修设计？</b></p>
+						<p>一对一客服服务，全程跟进解决设计装修疑惑</p>
+					</dd>
+				</dl>
+				<dl class="clearfix">
+					<dt><img src="__PUBLIC__/main/images/icon104.png"></dt>
+					<dd>
+						<p><b>担心设计不满意？</b></p>
+						<p>分阶段确认设计，每个阶段修改至您满意为止</p>
+					</dd>
+				</dl>
+				<dl class="clearfix">
+					<dt><img src="__PUBLIC__/main/images/icon105.png"></dt>
+					<dd>
+						<p><b>不放心在线交易？</b></p>
+						<p>谷安居免费帮您保障资金安全，满意了才付设计费</p>
+					</dd>
+				</dl>
+			</div>
+			<div class="design_list_r_3" id='designer_ad' style='overflow:hidden;height:280px;width:220px;position:relative;'>
+				<ul class='clearfix' style='position:absolute;'>
+					<volist name='ad_list.designerRightBanner' id='val'>	
+					<li style='float:left;position:relative;'><a href="{$val.ad_value}"><img width='220' src="<if condition='$val.ad_picture eq ""'>__PUBLIC__/main/images/pic73.jpg<else/>__UPLOAD__/{$val.ad_picture}</if>"></a></li>
+					</volist>
+				</ul>
+			</div>
+			<script>
+				$(function() {
+					$('#designer_ad').slideFocus();
+				});
+			</script>
+			<!--<div class="design_list_r_4">
+				<h2>设计师专访</h2>
+				<div id="adfocus" class="focus">
+					<ul>
+						<li><a href="javascript:;"><img src="__PUBLIC__/main/images/pic74.jpg"></a><p><span>凯文：</span>空间设计有生命，设计赋予灵魂</p><i>第 123 期</i></li>
+						<li><a href="javascript:;"><img src="__PUBLIC__/main/images/pic74.jpg"></a><p><span>凯文：</span>空间设计有生命，设计赋予灵魂</p><i>第 123 期</i></li>
+						<li><a href="javascript:;"><img src="__PUBLIC__/main/images/pic74.jpg"></a><p><span>凯文：</span>空间设计有生命，设计赋予灵魂</p><i>第 123 期</i></li>
+					</ul>
+				</div>
+				<script type="text/javascript">
+					$(function() {
+						$('#adfocus').slideFocus();
+					});
+				</script>
+			</div>-->
+			<div class="design_list_r_5">
+				<h2>精品推荐</h2>
+				<ul>
+					<volist name="best_list" id="vo">
+						<li>
+							<a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}" class="pic"><img src="__UPLOAD__/thumbs/b300/{$vo.goods_image}" width="210" height="210"><p>{$vo.goods_name|msubstr=0,14,'utf-8',true}</p></a>
+							<p><del>&nbsp;<!--参考价：{$vo.product.market_price}--></del></p>
+							<p><span>售价:￥{$vo.product.product_price}</span><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">立即抢购</a></p>
+						</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var filter_city='';
+var filter_charge='';
+var filter_space='';
+var filter_decorate='';
+$(function(){	
+	$(".design_list_sort ul li em a").click(function(){
+		var filter_type=$(this).attr('type');
+		var val=$(this).attr('val');
+		if(filter_type=='city'){
+			filter_city=val;
+		}else if(filter_type=='charge'){
+			filter_charge=val;
+		}else if(filter_type=='space'){
+			filter_space=val;
+		}else if(filter_type=='decorate'){
+			filter_decorate=val;
+		}
+		$(this).addClass('on').siblings().removeClass('on')
+		get_design();
+	})
+	$(".design_list_sort ul li em select").change(function(){
+		var filter_type=$(this).attr('type');
+		var val=$(this).val();
+		if(filter_type=='city'){
+			filter_city=val;
+		}else if(filter_type=='charge'){
+			filter_charge=val;
+		}else if(filter_type=='space'){
+			filter_space=val;
+		}
+		$(this).addClass('on').siblings().removeClass('on')
+		get_design();
+	})
+	$(".pages1 a").live('click',function(e){
+		e.preventDefault();
+		var href=$(this).attr('href');
+		get_design(href);
+	})
+})
+function get_design(href){
+	
+	var go_href='';
+	if(href!=undefined){go_href=href}
+	$.ajax({
+		type:'POST',
+		url:go_href,
+		data:{demand:filter_space,charge:filter_charge,city_code:filter_city,decorate:filter_decorate},
+		dataType:"json",
+		success:function(res){
+			$(".dlb_list").html(res.html);
+			$(".pages1").html(res.page);
+		}
+	})
+}
+$("#add_design_msg").click(function(){
+	var nick_name=$('#nick_name').val();
+	var mobile=$('#mobile').val();
+	var re=/^1[1|3|5|7|8]\d{9}$/i;
+	var province=$('#province_show').val();
+	var city=$('#city_show').val();
+	var district=$('#district_show').val();
+	var type_id=$('#type_id').val();
+	
+	if(nick_name==''){
+		layer.open({time:1,content:'请输入您的昵称'});
+		$('#nick_name').focus();
+		return;
+	}
+	
+	if(mobile==''){
+		layer.open({time:1,content:'请输入手机号码'});
+		$('#mobile').focus();
+		return;
+	}else{
+		if(re.test(mobile)==false){layer.open({time:1,content:'手机格式不正确'});return;}
+	}
+	
+	$.ajax({
+		type:'POST',
+		url:"{:U('message')}",
+		data:{nick_name:nick_name,mobile:mobile,province:province,city:city,district:district,type_id:type_id},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.msg});
+			if(res.error==0){
+				$('#nick_name,#mobile').val('');
+			}else if(res.error==2){
+				window.location="{:U('Index/site/login')}";
+			}
+		}
+	})
+})
+function change_region(obj,type){
+	var code=$(obj).val();
+	$.ajax({
+		type:'POST',
+		url:"{:U('Index/Site/get_region')}",
+		data:{code:code,type:type},
+		dataType:"json",
+		success:function(res){
+			//alert($("#"+'city').html())
+			$("#"+type).html(res.html)
+		}
+	})
+}
+</script>
+<!-------装修公司设计师结束----->    
+
+<!-------底部开始----->
+<include file='Public/footer' />
+<!-------底部结束----->

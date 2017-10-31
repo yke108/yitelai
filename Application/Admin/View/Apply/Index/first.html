@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">品牌店铺内部申请
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form form-inline" method="get" action="{:U('')}">
+					<input name="keyword" value="{$get.keyword}" type="text" class="form-control input-sm" placeholder="请输入申请人姓名"/>
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start}" name='start' class='form-control input-sm hy_dp' /> - <input value="{$get.end}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end' />
+					<select name='apply_type' class='form-control' style="height:30px;padding-top:0;padding-bottom:0">
+						<option value=''>全部分类</option>
+                        <foreach name='apply_type' item='val'>
+                        <?php
+                        if($val['apply_level'] == 1)
+                        {
+                        ?>
+                        <option <if condition='$get[apply_type] eq $val[id]'>selected='selected'</if> value='{$val.id}'>　{$val['apply_name']}</option>
+                        <?php
+                        }
+                        ?>
+						</foreach>
+					</select>
+					<button class="btn btn-default btn-sm" type="submit">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="12%">申请人</th>
+							<th width="12%">所属品牌</th>
+							<th width="12%">所属店铺</th>
+                            <th width="12%">申请分类</th>
+							<th width="12%">申请理由</th>
+               	  	  	  <th width="12%">申请时间</th>
+                            <th width="12%">区域审批状态</th>
+							<th width="12%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="12%">{$vo.applicant}</td>
+                                <td width="12%">{$vo.brand_id}</td>
+								<td width="12%">{$vo.shop_id}</td>
+                                <td width="12%">{$vo.apply_name}</td>
+								<td width="12%">{$vo.apply_reason}</td>
+                                <td width="12%">{$vo.apply_time}</td>
+                                <td width="12%">
+                                <?php
+                                if($vo['examine_status_area'])
+                                { 
+                                	echo $vo['examine_status_area'] == 1 ? '<font color=green>同意</font>' : '<font color=blue>驳回</font>';
+                                }
+                                else
+                                { 
+                                	echo '<font color=red>待审批</font>';
+                                }
+                                ?>
+                                </td>
+					  	  	  <td width="12%">
+                              		<a href="{:U('lists_detail',array('id'=>$vo['id'],'ac' => 'first'))}">详情</a>　
+                                    <?php
+                                    if($vo['examine_status_area'] == '0')
+                                    {
+                                    ?>
+									<a href="{:U('lists_edit',array('id'=>$vo['id'],'step' => 1 , 'ac' => 'first'))}">区域审批</a>
+                                    <?php
+                                    }
+                                    ?>                          
+							  </td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

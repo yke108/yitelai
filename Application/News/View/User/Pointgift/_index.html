@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<li>
+		<a href="{:U('exchange', array('id'=>$vo[id]))}">
+			<img src="__UPLOAD__/thumbs/b300/{$vo.picture}">
+			<h2>{$vo.name}</h2>
+			<p><span>{$vo.point}</span>积分</p>
+		</a>
+	</li>
+</volist>

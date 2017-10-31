@@ -1,0 +1,295 @@
+<div class="header">
+	<div class="hd_bar">
+		<div class="w1200">
+			<div class="position fl">城市：<input id="cityChoice" value="{$city_choice.region_name}" readonly="readonly"><i></i></div>
+			<link rel="stylesheet" type="text/css" href="__PUBLIC__/main/css/hzw-city-picker.css">
+			<!--<script type="text/javascript" src="__PUBLIC__/main/js/city-data.js"></script>-->
+			<script type="text/javascript" src="__PUBLIC__/main/js/hzw-city-picker.min.js"></script>
+			<script>
+				var data = {$city_data};
+				var cityPicker = new HzwCityPicker({
+					data: data,
+					target: 'cityChoice',
+					valType: 'k-v',
+					hideCityInput: {
+						name: 'city',
+						id: 'city'
+					},
+					hideProvinceInput: {
+						name: 'province',
+						id: 'province'
+					},
+					callback: function(){
+						$(function(){
+							var Val = $("#cityChoice").val().length
+							$("#cityChoice").width(Val+"em")
+							
+							var city = $('#city').val();
+							var arr = city.split('-');
+							region_code = arr[0];
+							$.post("{:U('index/index/defaultcity')}", {region_code:region_code}, function(d){
+								if(d.status == 1){
+									window.location.reload();
+								}else{
+									layer.open({time:1,content:d.info});
+								}
+							}, 'json');
+						})
+					}
+				});
+				
+				cityPicker.init();
+			</script>
+			<style type="text/css">
+			.hzw-city-picker .hzw-hot-wrap ul li{width:auto; padding:0 10px;}
+			</style>
+			<div class="hd_map fr clearfix">
+				<span class="fl">欢迎光临{$sysconfig.name}：
+					<empty name="user">
+						<a href="{:U('index/site/login')}">请登录</a><a href="{:U('index/site/reg')}">注册</a>
+					<else/>
+						<a href="{:U('user/index/index')}">{$user.nick_name}</a><a href="{:U('index/site/logout')}" class="go_out">退出</a>
+					</empty>
+				</span>
+				<ul class="fl">
+					<li><a href="{:U('user/order/index')}">我的订单</a></li>
+					<li><a href="{:U('user/index/index')}">个人中心</a></li>
+					<li><a href="{:U('article/help/index')}">帮助中心</a></li>
+					<li class="wap">
+						<a href="javascript:;"><img src="__PUBLIC__/main/images/icon3.png">手机在线<i></i></a>
+						<div class="code"><img src="__PUBLIC__/main/images/qrcode.jpg"></div>
+					</li>
+					<li><a style='color:#ff0000;' href='{:U("index/cooperate/info")}'>申请合作</a></li>
+					<li class="last"><a style='color:#ff0000;' href='{:U("merchant/index/index")}'>商家入驻</a></li>
+				</ul>
+				<script>
+					$(function(){
+						$(".hd_map ul li.wap").hover(function(){
+							$(this).find(".code").toggle()	
+						})
+					})
+				</script>
+			</div>
+		</div>
+	</div>
+	<div class="hd_banner">
+		<neq name="pc_top" value="close">
+			<notempty name="ad_list.pc_top">
+				<a href="{$ad_list.pc_top.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_top.0.ad_picture}" width="100%"></a>
+				<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_top')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+			</notempty>
+		</neq>
+	</div>
+	<script>
+		$(function(){
+			$(".hd_banner .close a").click(function(){
+				$(".hd_banner").slideUp()	
+			})	
+		})
+	</script>
+	<div class="hd_search" style='background:#fff;'>
+		<div class="w1200 clearfix">
+			<div class="logo fl">
+				<a href="{:U('index/index/index')}"><img style='max-height:120px;' src="__PUBLIC__/main/images/logo_2.jpg"></a>
+				<!--<a href="{:U('merchant/index/index')}"><img style='max-height:120px;' src="__PUBLIC__/main/images/pic95_01.jpg"></a>
+				<a href="{:U('article/page/info', array('id'=>18))}" class="hp">入驻帮助</a>-->
+			</div>
+			<div class="search_box fr">
+				<div class="clearfix">
+					<form action="{:U('mall/search/index')}" method="get" onSubmit="" class="fl">
+						<input type="hidden" name="search_type" value="{$search_type}" id="search_type" />
+						<p class="clearfix">
+                        	<input name="keyword" value="{$get.keyword}" type="search" placeholder="请输入关键字搜索商品">
+                            <button type="submit">搜 索</button>
+                            <span>
+                                <i>{$search_type_text}</i>
+                                <em type="1">搜产品</em>
+								<em type="2">搜店铺</em>
+                                <em type="3">搜文章</em>
+								<em type="4">搜品牌</em>
+								<em type="5">搜楼盘</em>
+                            </span>
+                        </p>
+						<p>
+							<volist name="keyword_list" id="vo">
+								<a <eq name="vo.is_hot" value="1">class="hot"</eq> href="{:U('mall/category/index', array('keyword'=>$vo[keyword]))}">{$vo.keyword}</a>
+							</volist>
+						</p>
+					</form>
+					<div class="hd_car fl"><a href="{:U('mall/cart/index')}"><img src="__PUBLIC__/main/images/icon6.png">购物车(<c id="cart_num">{$cart_num|default=0}</c>)</a></div>
+				</div>
+			</div>
+            <style>
+				.search_box p{ position:relative;}
+            	.search_box p span{ position:absolute; right:92px; top:2px; font-size:14px; z-index:20;}
+				.search_box p span i{ display:block; height:40px; line-height:40px; padding:0 15px; background:#e9585d; margin-bottom:2px; color:#FFF; cursor:pointer;}
+				.search_box p span i:after{ content:""; width:0; height:0;  border-left:5px solid transparent; border-right:5px solid transparent; border-top:5px solid #FFF; display:inline-block; vertical-align:middle; margin-left:5px; transition:.5s; -webkit-transition:.5s; -moz-transition:.5s; -ms-transition:.5s; -o-transition:.5s;}
+				.search_box p span i.on:after{ transform:rotate(-180deg); -webkit-transform:rotate(-180deg); -moz-transform:rotate(-180deg); -o-transform:rotate(-180deg);-ms-transform:rotate(-180deg);}
+				.search_box p span em{ display:none; background:#e9585d; color:#FFF; text-align:center; line-height:40px; cursor:pointer; border-bottom:solid 2px #e3002b;}
+            </style>
+            <script>
+            	$(function(){
+					$(".search_box p span i").click(function(){
+						if($(this).hasClass("on")){
+							$(this).removeClass("on")
+							$(this).siblings().css("display","none")
+						}else{
+							$(this).addClass("on")
+							$(this).siblings().css("display","block")
+						}
+						
+					})
+					$(".search_box p span em").click(function(){
+						var type = $(this).text()
+						$(this).siblings("i").text(type)
+						var search_type = $(this).attr('type')
+						$('input[name=search_type]').val(search_type)
+						$(".search_box p span em").hide()
+						$(".search_box p span i").removeClass("on")
+					})
+				})
+            </script>
+		</div>
+	</div>
+	<div class="hd_menu">
+		<div class="w1200 clearfix">
+			<div class="hd_menu_l fl">
+				<h1><a href="{:U('mall/category/index')}"><i></i>全部商品分类</a></h1>
+				<div class="sort_list" <eq name="croot" value="index">style="display:block"</eq>>
+					<ul>
+						<foreach name="cat_list" item="vo" key="k">
+							<lt name="k" value="5">
+								<li>
+									<h2>
+										<p><b><i class="i{$k+1}"></i><a href="{:U('mall/category/index', array('cat_id'=>$vo[cat_id]))}">{$vo.cat_name}</a></b></p>
+										<p>
+											<foreach name="vo.children" item="vo2" key="k2">
+												<lt name="k2" value="4">
+													<a href="{:U('mall/category/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a>
+												</lt>
+											</foreach>
+										</p>
+									</h2>
+									<div class="sort_right clearfix">
+										<div class="sort_right_l fl">
+											<div class="sort_right_l_hd">
+												<volist name="vo.children" id="vo2">
+													<eq name="vo2.is_recommend" value="1"><span><a href="{:U('mall/category/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></span></eq>
+													<volist name="vo2.children" id="vo3">
+														<eq name="vo3.is_recommend" value="1"><span><a href="{:U('mall/category/index', array('cat_id'=>$vo3[cat_id]))}">{$vo3.cat_name}</a></span></eq>
+													</volist>
+												</volist>
+											</div>
+											<div class="sort_right_l_bd">
+												<ul>
+													<volist name="vo.children" id="vo2">
+														<li>
+															<span><a href="{:U('mall/category/index', array('cat_id'=>$vo2[cat_id]))}">{$vo2.cat_name}</a></span>
+															<notempty name="vo2.children">
+																<em>
+																	<volist name="vo2.children" id="vo3">
+																		<a href="{:U('mall/category/index', array('cat_id'=>$vo3[cat_id]))}">{$vo3.cat_name}</a>
+																	</volist>
+																</em>
+															</notempty>
+														</li>
+													</volist>
+												</ul>
+											</div>
+										</div>
+										<div class="sort_right_r fr">
+											<div class="sort_right_r_hd">
+												<ul class="clearfix">
+													<foreach name="ad_list.pc_index_menu_righttop" item="vo" key="k">
+														<lt name="k" value="6">
+															<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a></li>
+														</lt>
+													</foreach>
+												</ul>
+											</div>
+											<notempty name="ad_list.pc_index_menu_rightbottom">
+												<div class="sort_right_r_bd"><a href="{$ad_list.pc_index_menu_rightbottom.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_menu_rightbottom.0.ad_picture}"></a></div>
+											</notempty>
+										</div>
+									</div>
+								</li>
+							</lt>
+						</foreach>
+					</ul>
+					<div class="bt_banner"><a href="{$ad_list.pc_index_menu_bottom.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_index_menu_bottom.0.ad_picture}"></a></div>
+				</div>
+			</div>
+			<script>
+				$(function(){
+					$(".hd_menu .hd_menu_l .sort_list ul li").hover(function(){
+						$(this).addClass("hover")
+						$(this).find(".sort_right").show()
+					},function () {
+                        $(this).removeClass("hover")
+                        $(this).find(".sort_right").hide()
+                    })
+				})
+			</script>
+			<div class="hd_menu_r fl">
+				<ul class="clearfix">
+					<volist name="nav_list" id="vo">
+						<li>
+							<a href="<if condition='$vo[build_url] eq ""'>{$vo.url}<else/>{$vo.build_url}</if>" <eq name="vo.opennew" value="1">target="_blank"</eq>>{$vo.name}<eq name="vo.is_hot" value="1"><i><img src="__PUBLIC__/main/images/icon8.png"></i></eq></a>
+						</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//写cookies 
+function setCookie(name,value) 
+{ 
+    var Days = 1; 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
+} 
+
+//读取cookies 
+function getCookie(name) 
+{ 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return unescape(arr[2]); 
+    else 
+        return null; 
+} 
+
+//删除cookies 
+function delCookie(name) 
+{ 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() - 1); 
+    var cval=getCookie(name); 
+    if(cval!=null) 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+}
+
+function close_ad(ad_name){
+	setCookie(ad_name, 'close');
+}
+</script>
+
+<neq name="croot" value="index">
+<script>
+	$(function(){
+		//内页分类
+		$(".sort_list").hide();
+		$(".hd_menu_l").hover(function(){
+			$(this).find(".sort_list").show();
+		},function(){
+			$(this).find(".sort_list").hide();	
+		});
+	})
+</script>
+</neq>

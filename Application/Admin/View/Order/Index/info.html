@@ -1,0 +1,118 @@
+<div class="row">
+    <div class="col-sm-8 col-md-8">
+		<h1 class="invoice_heading">订单 # {$info.order_id}</h1>
+	</div>
+	<div class="col-sm-4 col-md-4">
+		<p class="sepH_a"><span class="sepV_b text-muted">订单号.</span><strong>{$info.order_id}</strong></p>
+		<p class="sepH_a"><span class="sepV_b text-muted">订单生成日期</span><strong>{:date('Y-m-d H:i:s', $info[add_time])}</strong></p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-3 col-md-3">
+		<p><strong class="text-muted">收货人信息</strong></p>
+		<address>
+			<strong>收货人：{$info.consignee}</strong><br>
+			<strong>收货地址：{$regions[$info[province]]} {$regions[$info[city]]} {$regions[$info[district]]} {$info.address}</strong><br>
+			<strong title="Phone">手机号: {$info.mobile} </strong>
+		</address>
+	</div>
+	<notempty name="info.shipping_id">
+		<div class="col-sm-3 col-md-3">
+			<p><strong class="text-muted">物流信息</strong></p>
+			<address>
+				<strong>快递公司：{$info.shipping_name}</strong><br>
+				<strong>运单号：{$info.shipping_no}</strong><br>
+				<strong>发货时间: {:date('Y-m-d H:i:s', $info[shipping_time])}</strong>
+			</address>
+		</div>
+	</notempty>
+	<notempty name="info.invoice_title">
+		<div class="col-sm-3 col-md-3">
+			<p><strong class="text-muted">发票抬头</strong></p>
+			<address>
+				<strong>{$info.invoice_title}</strong>
+			</address>
+		</div>
+	</notempty>
+	<notempty name="info.buyer_note">
+		<div class="col-sm-3 col-md-3">
+			<p><strong class="text-muted">订单留言</strong></p>
+			<address>
+				<strong>{$info.buyer_note}</strong>
+			</address>
+		</div>
+	</notempty>
+</div>
+
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>商品图片</th>
+					<th>商品名称</th>
+					<th>商品货号</th>
+					<th>单价</th>
+					<th>商品服务</th>
+					<th>佣金</th>
+					<th>数量</th>
+					<th class="invoice_tar">小计</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+					<tr>
+						<td>
+							<img src="__UPLOAD__/{$vo.goods_img}" height="40" />
+							<gt name="vo.back_status" value="0">
+								<font color="red">退货：
+									<switch name="vo.back_info.status" >
+										<case value="0">
+											待审核
+										</case>
+										<case value="1">
+											审核通过<gt name="info.back_info.back_money" value="0">（退款金额：{$.back_infovo.back_money}）</gt>
+										</case>
+										<case value="2">
+											审核不通过（原因：<font color="red">{$vo.back_info.remark}</font>）
+										</case>
+										<case value="3">
+											退货中（快递公司：{$vo.back_info.shipping_name} 物流号：<a href="http://www.kuaidi100.com/chaxun?com={$vo.back_info.shipping_code}&nu={$vo.back_info.shipping_no}" target="_blank">{$vo.back_info.shipping_no}</a>） </case>
+										<case value="4">
+											退货不通过（原因：<font color="red">{$vo.back_info.instruction}</font>）
+										</case>
+										<case value="5">
+											退货通过
+										</case>
+										<case value="6">
+											已退款（退款金额：<font color="red">{$vo.back_info.back_money}</font>）
+										</case>
+									</switch>
+								</font>
+							</gt>
+						</td>
+						<td>{$vo.goods_name}&nbsp;<notempty name="vo[product_name]"> ({$vo.product_name})</notempty></td>
+						<td>{$vo.product_sn}</td>
+						<td>￥{$vo.goods_price} <notempty name="vo.ori_price"><del style="font-size:10px">￥{$vo.ori_price}</del></notempty>
+							<eq name="vo.is_seckill" value="1"><span style="color:red">秒杀</span></eq>
+							<if condition="($vo[is_seckill] eq 0) AND ($info[discount] gt 0)"><font color="red">（会员折扣：{$info[discount]/10}折）</font></if>
+						</td>
+						<td><gt name="vo.service_id" value="0">{$vo.service_name} ￥{$vo.service_price}</gt></td>
+						<td>￥{$vo.commission}（分成比例：{$vo.distribution.distributor_ratio|default=0}%）</td>
+						<td>{$vo.goods_number}</td>
+						<td class="invoice_tar">￥{$vo[goods_number] * $vo[goods_price] + $vo[service_price]}</td>
+					</tr>
+				</volist>
+			<tr>
+				<td colspan="7">&nbsp;</td>
+				<td class="invoice_tar">
+					<p class="sepH_a"><span class="sepV_b text-muted">商品原价</span>￥{$info.goods_amount}</p>
+					<p class="sepH_a"><span class="sepV_b text-muted">运费</span>￥{$info.shipping_fee}</p>
+					<p class="sepH_a"><span class="sepV_b text-muted">积分抵扣</span>￥{$info.points_money}</p>
+					<p class="sepH_a"><span class="sepV_b text-muted">合计</span>￥{$info.order_amount}</p>
+				</td>
+			</tr>
+		</tbody></table>
+	</div>
+</div>

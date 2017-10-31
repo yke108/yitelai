@@ -1,0 +1,237 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------会员资料开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>会员资料</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="personal_information">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">会员资料</a></li>
+					</ul>
+				</div>
+				<div class="personal_information_box">
+					<form action="{:U('')}" method="post" enctype="multipart/form-data" onSubmit="">
+						<ul>
+							<li>
+								<span>头像：</span>
+								<span id="preview">
+									<img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></span><em>上传图片<input name="user_img" type="file" onChange="previewImage(this)"></em></li>
+							<li><span>昵称：</span><input name="nick_name" value="{$user.nick_name}" type="text"></li>
+							<li><span>真实姓名：</span><input name="real_name" value="{$user.real_name}" type="text"></li>
+							<li><span>性别：</span>
+								<label><input {:m_checked($user[sex], 1)} type="radio" name="sex" value="1" id="RadioGroup1_0">男</label>
+								<label><input {:m_checked($user[sex], 2)} type="radio" name="sex" value="2" id="RadioGroup1_1">女</label>
+							</li>
+							<li>
+								<span>出生日期：</span>
+								<select <notempty name="user.birthday.0">disabled="disabled"</notempty> name="year" data="{$user.birthday.0}"><option>年</option></select>
+								<select <notempty name="user.birthday.0">disabled="disabled"</notempty> name="month" data="{$user.birthday.1}"><option>月</option></select>
+								<select <notempty name="user.birthday.0">disabled="disabled"</notempty> name="day" data="{$user.birthday.2}"><option>日</option></select>
+								<empty name="user.birthday.0">（出生日期只可修改一次）</empty>
+							</li>
+							<!--<li><span>手机：</span><input name="mobile" value="{$user.mobile}" type="text"></li>-->
+							<li><span>QQ邮箱：</span><input name="email" value="{$user.email}" type="text"></li>
+							<li><button type="button" id="btn_submit">提交信息</button></li>
+						</ul>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------会员资料结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$('document').ready(function(){
+	$('#btn_submit').click(function(){
+		var form = $(this).parents('form');
+		var data = form.serializeArray();
+		var user_img = $('#imghead').attr('src');
+		data[6] = {name:'user_img', value:user_img};
+		$.post(form.attr('action'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+
+function checkTel(mobile){
+	var isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+	var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	
+	if(isMob.test(mobile)||isPhone.test(mobile)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function checkEmail(email){
+	var re = /\w@\w*\.\w/
+	email = $.trim(email);
+	if(re.test(email)){
+		return true;
+	}else{
+		return false;
+	}
+}
+</script>
+
+<script type="text/javascript">
+//图片上传预览    IE是用了滤镜。
+function previewImage(file)
+{
+  var MAXWIDTH  = 260; 
+  var MAXHEIGHT = 180;
+  var div = document.getElementById('preview');
+  if (file.files && file.files[0])
+  {
+	  div.innerHTML ='<img id=imghead src="__PUBLIC__/wap/images/icon8.png" width="80" height="80" />';
+	  var img = document.getElementById('imghead');
+	  img.onload = function(){
+		var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		//img.width  =  rect.width;
+		//img.height =  rect.height;
+		//img.style.marginLeft = rect.left+'px';
+		//img.style.marginTop = rect.top+'px';
+	  }
+	  var reader = new FileReader();
+	  reader.onload = function(evt){img.src = evt.target.result;}
+	  reader.readAsDataURL(file.files[0]);
+  }
+  else //兼容IE
+  {
+	var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+	file.select();
+	var src = document.selection.createRange().text;
+	div.innerHTML = '<img id=imghead>';
+	var img = document.getElementById('imghead');
+	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+	var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+	status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+	div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+  }
+}
+function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+	var param = {top:0, left:0, width:width, height:height};
+	if( width>maxWidth || height>maxHeight )
+	{
+		rateWidth = width / maxWidth;
+		rateHeight = height / maxHeight;
+		 
+		if( rateWidth > rateHeight )
+		{
+			param.width =  maxWidth;
+			param.height = Math.round(height / rateWidth);
+		}else
+		{
+			param.width = Math.round(width / rateHeight);
+			param.height = maxHeight;
+		}
+	}
+	 
+	param.left = Math.round((maxWidth - param.width) / 2);
+	param.top = Math.round((maxHeight - param.height) / 2);
+	return param;
+}
+</script>
+
+<script type="text/javascript">
+$('document').ready(function(){
+	/*
+	 * 生成级联菜单
+	 */
+	var i=1970;
+	var date = new Date();
+	year = date.getFullYear();//获取当前年份
+	var dropList = "<option value='' selected>年</option>";
+	
+	var cur_year = $('select[name=year]').attr('data');
+	var cur_month = $('select[name=month]').attr('data');
+	var cur_day = $('select[name=day]').attr('data');
+	
+	for(i;i<=year;i++){
+		if(i == cur_year){
+			dropList = dropList + "<option value='"+i+"' selected>"+i+"</option>";
+		}else{
+			dropList = dropList + "<option value='"+i+"'>"+i+"</option>";
+		}
+	}
+	$('select[name=year]').html(dropList);//生成年份下拉菜单
+	var monthly = "<option value='' selected>月</option>";;
+	for(month=1;month<13;month++){
+		if(month < 10){
+			month = '0'+month;
+		}
+		if(month == cur_month){
+			monthly = monthly + "<option value='"+month+"' selected>"+month+"</option>";
+		}else{
+			monthly = monthly + "<option value='"+month+"'>"+month+"</option>";
+		}
+	}
+	$('select[name=month]').html(monthly);//生成月份下拉菜单
+	var dayly = "<option value='' selected>日</option>";;
+	for(day=1;day<=31;day++){
+		if(day < 10){
+			day = '0'+day;
+		}
+		if(day == cur_day){
+			dayly = dayly + "<option value='"+day+"' selected>"+day+"</option>";
+		}else{
+			dayly = dayly + "<option value='"+day+"'>"+day+"</option>";
+		}
+	}
+	$('select[name=day]').html(dayly);//生成天数下拉菜单
+	/*
+	 * 处理每个月有多少天---联动
+	 */
+	$('select[name=month]').change(function(){
+		var currentDay;
+		var Flag = $('select[name=year]').val();
+		var currentMonth = $('select[name=month]').val();
+		var total;
+		switch(currentMonth){
+			case "1" :
+			case "3" :
+			case "5" :
+			case "7" :
+			case "8" :
+			case "10" :
+			case "12" :total = 31;break;
+			case "4" :
+			case "6" :
+			case "9" :
+			case "11" :total = 30;break;
+			case "2" :
+				if((Flag%4 == 0 && Flag%100 != 0) || Flag%400 == 0){
+					total = 29;
+				}else{
+					total = 28;
+				}
+			default:break;
+		}
+		for(day=1;day <= total;day++){
+			currentDay = currentDay + "<option value='"+day+"'>"+day+"</option>";
+		}
+		$('select[name=day]').html(currentDay);//生成日期下拉菜单
+		})
+})
+</script>

@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.cat_id" value="0">分类修改<else/>分类增加</gt></h3>
+			<php>$action = $info['cat_id'] > 0 ? U('edit', array('id'=>$info['cat_id'])) : U('add');</php>
+		<form class="form-horizontal" action="{$action}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">上级分类</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name='parent_id' id="parent_id">
+							<option value='0'>顶级分类</option>
+							<foreach name='top_cat' item='val' key='key'>
+							<option <if condition="$info['parent_id'] eq $key">selected='selected'</if> value='{$key}'>{$val}</option>
+							</foreach>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">分类名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="cat_name" class="input-xlarge form-control" type="text" value="{$info.cat_name}">
+					</div>
+				</div>
+				
+				<div class="form-group" id="picture_div" <gt name="info.parent_id" value="0">style="display:none;"</gt>>
+					<label class="control-label col-sm-2">分类图片</label>
+					<div class="col-sm-8">
+						<input class="hy_upload_single" hy_field="picture" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.picture">{$info.picture}</notempty>"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" id="s_yes" name="is_show" {:m_checked($info[is_show], 1)} type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="0" id="s_no" name="is_show" {:m_checked($info[is_show], 0)} type="radio">
+							否
+						</label>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order}">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#parent_id').change(function(){
+		var parent_id = $(this).val();
+		if(parent_id == 0){
+			$('#picture_div').css('display', 'block');
+		}else{
+			$('#picture_div').css('display', 'none');	
+		}
+	});
+});
+</script>

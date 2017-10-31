@@ -1,0 +1,205 @@
+<!--<a href="javascript:;" id="click" style=" text-align:center; display:block; height: 40px; line-height: 40px; font-size:15px;">筛选</a>-->
+<div class="new_order_type_list mui-scroll-wrapper" id="pullrefresh">
+    <div class="mui-scroll">
+        <h1><span>标准订单</span><em>订单金额</em></h1>
+        <div class="load-data">
+            <include file="Analysis/Order/_orderlist"/>
+        </div>
+    </div>
+</div>
+<div class="filter_new_pop">
+    <form action="{:U('')}" method="post">
+        <div class="mui-input-row mui-search">
+            <input type="search" name="content" value="{$content}" class="mui-input-clear" placeholder="搜索">
+        </div>
+        <h2>日期</h2>
+        <ol>
+            <li><span>开始时间：</span><input placeholder="请选择时间" name="to_start_time" value="{$to_start_time}" type="text" readonly class="time input-class" id="StartTime" data-options='{}'></li>
+            <li><span>结束时间：</span><input placeholder="请选择时间" name="to_end_time" value="{$to_end_time}" type="text" readonly class="time input-class" id="EndTime" data-options='{}'></li>
+        </ol>
+        <h2>订单金额</h2>
+        <h3>
+            <input name="start_price" value="{$start_price}" type="text" class="input-class" placeholder="最低价"><span>-</span>
+            <input name="end_price" value="{$end_price}" class="input-class" type="text" placeholder="最高价">
+        </h3>
+        <h2>城市筛选</h2>
+        <ul>
+            <li class="right-after" style="background: #ededed;padding: 8px; border-radius: 5px;">
+               <span style="width: 100%;">
+                <input name="province_city_area" style="width: 100%;background: #ededed;" value="{$province_city_area}" type="text" class="text input-class" readonly placeholder="省/市/区" id="city" />
+                <input name="province" type='hidden' id='province' value='{$province}' class="input-class" />
+                <input name="city" type='hidden' id='city2' value='{$city}' class="input-class" />
+                <input name="region_code" type='hidden' id='region_code' value='{$region_code}' class="input-class"/>
+               </span>
+            </li>
+        </ul>
+        <h2>店铺筛选</h2>
+        <ul>
+            <li class="right-after">
+                <select name="shop_id" class="input-class">
+                    <option value="">所有店铺</option>
+                    <volist name="distributorInfoList" id="vo">
+                        <option <if condition="$shop_id eq $vo[distributor_id]">selected</if> value="{$vo[distributor_id]}">{$vo[distributor_name]}</option>
+                    </volist>
+                </select>
+            </li>
+        </ul>
+        <div class="btn">
+            <a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default">清除筛选</a>
+            <input type="submit" value="完成" class="mui-btn mui-btn-block mui-btn-primary input-button-class"/>
+        </div>
+    </form>
+</div>
+<div class="mask"></div>
+<if condition='$count gt count($list)'>
+    <script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+    <script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+    <script type="text/javascript">
+        var page = 2;
+        var area = "{$area}";
+        mui.init({
+            pullRefresh: {
+                container: '#pullrefresh',
+                up: {
+                    contentrefresh: '正在加载...',
+                    contentnomore: '没有更多数据了',
+                    callback: pullupRefresh
+                }
+            }
+        });
+
+        function pullupRefresh() {
+            var $this = this;
+            mui.ajax("{:U('')}", {
+                type: 'post',
+                data: {p: page, area: area},
+                dataType: 'json',
+                success: function (res) {
+                    if (res.html != '') {
+                        $(".load-data").append(res.html);
+                        page++;
+                        $this.endPullupToRefresh();
+                    } else {
+                        $this.endPullupToRefresh(true);
+                    }
+                }
+            })
+        }
+    </script>
+    <else/>
+    <script type="text/javascript">
+        mui('.mui-scroll-wrapper').scroll({});
+    </script>
+</if>
+<!--start 诚市-->
+<script src="__PUBLIC__/home/js/public.js"></script>
+<script src="__PUBLIC__/home/js/city.data-3.js"></script>
+<script type="text/javascript">
+    mui.init();
+    (function($, doc) {
+        $.init();
+        $.ready(function() {
+            var cityPicker = new $.PopPicker({
+                layer: 3
+            });
+            cityPicker.setData(cityData3);
+            var cityPickerButton = doc.getElementById('city');
+            cityPickerButton.addEventListener('tap', function(event) {
+                cityPicker.show(function(items) {
+                    cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+                    doc.getElementById('province').value = (items[0] || {}).text;
+                    doc.getElementById('city2').value = (items[1] || {}).text;
+                    doc.getElementById('region_code').value = (items[2] || {}).value;
+                    //返回 false 可以阻止选择框的关闭
+                    //return false;
+                });
+            }, false);
+        });
+    })(mui, document);
+</script>
+<!--end 诚市-->
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script type="text/javascript">
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+                //var picker = new $.DtPicker(options);
+                var picker = new $.DtPicker({"type": "date"});
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+    app.setTitleRight('筛选', 'showAppSidebar');
+    function showAppSidebar(){
+        $(".filter_new_pop").addClass("on");
+        $(".mask").fadeIn();
+    }
+	$(function(){
+        $('input[type=submit]').click(function () {
+            var to_start_time = $('input[name=to_start_time]').val();
+            var to_end_time = $('input[name=to_end_time]').val();
+            if (to_start_time) {
+                if (to_end_time == "") {
+                    mui.toast('请选择日期结束时间');
+                    return false;
+                } else if (compareDate(to_start_time, to_end_time) == false) {
+                    mui.toast('请重新选择日期时间');
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        $("#click").click(function(){
+            $(".filter_new_pop").addClass("on");
+            $(".mask").fadeIn();
+        });
+
+        $(".filter_new_pop ul li a").click(function(){
+            $(this).addClass("on");
+        });
+
+        $(".mask").click(function () {
+            $(".filter_new_pop").removeClass("on");
+            $(".mask").fadeOut();
+        });
+
+        $(".filter_new_pop a.mui-btn-default").click(function () {
+            $(".filter_new_pop ul li a").removeClass("on");
+            $(".input-class").val('');
+        });
+	})
+</script>
+<script type="text/javascript">
+    mui.init();
+    mui('body').on('tap', '.a_link', function () {
+        var href = this.getAttribute('rel');
+        if (!mui.os.plus) {
+            location.href = href;
+            return;
+        }
+    });
+</script>

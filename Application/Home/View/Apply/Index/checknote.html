@@ -1,0 +1,23 @@
+<div class="apply_management_audit_deta_form">
+    <form action="{:U('')}" method="post">
+    	<input type="hidden" name="status" value="{$get.status}">
+    	<input type="hidden" name="verify_id" value="{$get.verify_id}">
+        <p><textarea name="note" rows="5" placeholder="请输入备注"></textarea></p>
+        <div class="btn"><a href="javascript:dosubmit()" class="mui-btn mui-btn-primary mui-btn-block">提交</a></div>
+    </form>
+</div>
+<script>
+function dosubmit(){ 
+	if(!$('textarea[name=note]').val()){ 
+		mui.toast('请输入备注');
+		return;
+	}
+	
+	var btnArray = ['取消', '确定'];
+	mui.confirm('审批确认', '提交后不能修改，确认立即提交？', btnArray, function(e) {
+		if(e.index == 1){
+			$('form').submit();
+		}
+	});
+}
+</script>

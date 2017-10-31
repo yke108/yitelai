@@ -1,0 +1,15 @@
+<div class="footer w1200">
+	<div class="footer_hd">
+		<span>友情链接</span>
+		<em>
+			<volist name="friendlink_list" id="vo">
+				<a href="{$vo.friendlink_url}" target="_blank">{$vo.friendlink_name}</a>
+			</volist>
+		</em>
+	</div>
+	<div class="footer_bd">
+		<volist name="friendlink_list" id="vo">
+			<a href="{$vo.friendlink_url}" target="_blank">{$vo.friendlink_name}</a>
+		</volist>
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<volist name="list" id="vo">
+	<dl>
+		<dt><a href="{:U('info', array('id'=>$vo[material_id]))}"><img src="__UPLOAD__/thumbs/b300/{$vo.material_image}"></a></dt>
+		<dd>
+			<h2><a href="{:U('info', array('id'=>$vo[material_id]))}">{$vo.material_title}</a></h2>
+			<p><span>所需积分：<font>{$vo.down_points}</font></span><em><i><img src="__PUBLIC__/home/images/icon13.png"><c class="down_count">{$vo.down_count}</c></i><i><img src="__PUBLIC__/home/images/icon14.png"><c class="collect_count">{$vo.collect_count}</c></i></em></p>
+			<p>
+				<purview name="edit">
+				<a href="{:U('edit', array('id'=>$vo[material_id]))}" class="mui-btn mui-btn-primary">修改</a>
+				</purview>
+				<purview name="downcheck">
+				<a href="{:U('downcheck', array('id'=>$vo[material_id]))}" class="mui-btn mui-btn-success">下载</a>
+				</purview>
+				<purview name="del">
+				<a href="{:U('del', array('id'=>$vo[material_id]))}" class="mui-btn mui-btn-default">删除</a>
+				</purview>
+			</p>
+		</dd>
+	</dl>
+</volist>

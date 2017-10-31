@@ -1,0 +1,16 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('id'=>$vo[order_id]))}">
+		<h2 class="right-after"><span>订单号：{$vo.order_id}</span><em><i>{$vo.status}</i></em></h2>
+		<volist name="vo.order_goods" id="vo2">
+			<dl>
+				<dt><img src="__UPLOAD__/thumbs/b300/{$vo2.goods_img}"></dt>
+				<dd>
+					<h3>{$vo2.goods_name}</h3>
+					<p>￥{$vo2.goods_price}</p>
+					<p>数量：{$vo2.goods_number}</p>
+				</dd>
+			</dl>
+		</volist>
+		<h4><time>{:date('Y-m-d H:i', $vo[add_time])}</time><span>共{$vo.total_goods_number}件商品，合计：<font>￥{$vo.order_amount}</font></span></h4>
+	</a>
+</volist>

@@ -1,0 +1,84 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">积分设置</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('update')}" method="post">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">注册送积分</label>
+					<div class="col-sm-3">
+						<input name="c[reg]" class="input-xlarge form-control" type="text" value="{$info.reg}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">登陆送积分</label>
+					<div class="col-sm-3">
+						<input name="c[login]" class="input-xlarge form-control" type="text" value="{$info.login}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">介绍送积分</label>
+					<div class="col-sm-3">
+						<input name="c[introduce]" class="input-xlarge form-control" type="text" value="{$info.introduce}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">点赞送积分</label>
+					<div class="col-sm-3">
+						<input name="c[likes]" class="input-xlarge form-control" type="text" value="{$info.likes}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">生日购买送积分</label>
+					<div class="col-sm-3">
+						<input name="c[birthday]" class="input-xlarge form-control" type="text" value="{$info.birthday}">
+					</div>
+					<div>请输入赠送倍率</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">评论送积分</label>
+					<div class="col-sm-3">
+						<input name="c[comment]" class="input-xlarge form-control" type="text" value="{$info.comment}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">关注送积分</label>
+					<div class="col-sm-3">
+						<input name="c[collect]" class="input-xlarge form-control" type="text" value="{$info.collect}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">阅读文章送积分</label>
+					<label class="control-label" style="float:left">每阅读</label>
+					<div class="col-sm-1">
+						<input name="c[read_num]" class="input-xlarge form-control" type="text" value="{$info.read_num}">
+					</div>
+					<label class="control-label" style="float:left">篇文章，送</label>
+					<div class="col-sm-1">
+						<input name="c[read]" class="input-xlarge form-control" type="text" value="{$info.read}">
+					</div>
+					<label class="control-label" style="float:left">积分</label>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">发表文章送积分</label>
+					<div class="col-sm-3">
+						<input name="c[publish]" class="input-xlarge form-control" type="text" value="{$info.publish}">
+					</div>
+					<div></div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button type="submit" class="btn btn-default">确认并保存</button>
+						<input type="hidden" name="type" value="point">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

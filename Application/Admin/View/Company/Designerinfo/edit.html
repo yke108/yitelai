@@ -1,0 +1,167 @@
+<style>label{display:inline-block;margin-right:5px;}</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.designer_id" value="0">设计师修改<else/>增加设计师</gt></h3>
+			<php>$action = $info['designer_id'] > 0 ? U('edit', array('id'=>$info['designer_id'])) : U('add');</php>
+		<form class="form-horizontal" action="{$action}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="distributor_id" value="{$distributor_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">设计师头像</label>
+					<div class="col-sm-8">
+						<!-- *请上传280*220的图片 -->
+						<input class="hy_upload_single" hy_field="designer_image" value="上传图片" style="width:200px;height:150px;" src="{$info.designer_image}"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">设计师名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="designer_name" class="input-xlarge form-control" type="text" value="{$info.designer_name}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">联系方式</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="tel" class="input-xlarge form-control" type="text" value="{$info.tel}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">擅长空间</label>
+					<div class="col-sm-6 col-md-6" style='padding-top:7px;'>
+						<volist name="type_list['space']['list']" id='val'>
+							<label class="self_label" for="">
+								<input {:m_checked($val[id], $info[demand_arr])} name="demand[]" type="checkbox" value='{$val.id}'>
+								<font>{$val.name}</font>
+							</label>
+						</volist>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">设计师收费</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name='charge'>
+							<option value='0'>请选择设计师收费</option>
+							<volist name="type_list['charge']['list']" id='val'>
+							<option <if condition="$val[id] eq $info['charge']">selected='selected'</if> value='{$val.id}'>{$val.name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">设计师等级</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name='level'>
+							<option value='0'>请选择设计师等级</option>
+							<volist name="type_list['level']['list']" id='val'>
+							<option <if condition="$val[id] eq $info['level']">selected='selected'</if> value='{$val.id}'>{$val.name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">设计师简介</label>
+					<div class="col-sm-9">
+						<textarea name="designer_intro" style="width:66%;height:100px;">{$info.designer_intro}</textarea>
+					</div>
+				</div>
+
+				<!--<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">设计师详情</label>
+					<div class="col-sm-9">
+						<textarea id="editor_id" name="designer_desc" style="width:66%;height:400px;">{$info.designer_desc}</textarea>
+					</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">知名</label>
+					<div class="col-sm-9" style='padding-top:7px;'>
+						<input type='radio' name='is_famous' <if condition="$info.is_famous eq 1">checked='checked'</if> value='1' />&nbsp;&nbsp;是&nbsp;
+						<input type='radio' name='is_famous' <if condition="$info.is_famous eq 0">checked='checked'</if> value='0' />&nbsp;&nbsp;否
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">认证</label>
+					<div class="col-sm-9" style='padding-top:7px;'>
+						<input type='radio' name='is_authentication' <if condition="$info.is_authentication eq 1">checked='checked'</if> value='1' />&nbsp;&nbsp;是&nbsp;
+						<input type='radio' name='is_authentication' <if condition="$info.is_authentication eq 0">checked='checked'</if> value='0' />&nbsp;&nbsp;否
+					</div>
+				</div>
+					
+				<!--<div class="form-group">
+					<label class="control-label col-sm-2">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order}">
+					</div>
+				</div>-->
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script charset="utf-8" src="__PUBLIC__/editor/lang/zh_CN.js"></script>
+<script>
+        KindEditor.ready(function(K) {
+            window.editor = K.create('#editor_id', {uploadJson : '{:U("site/upload")}'});
+        });
+</script>
+
+<script type="text/javascript">
+	window.editor2 = KindEditor.editor({
+		uploadJson : '{:U("site/upload")}',
+		allowFileManager : true
+	});
+	$('#J_selectImage').unbind('click').bind('click',function(){
+		window.editor2.loadPlugin('multiimage', function() {
+			window.editor2.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					KindEditor.each(urlList, function(i, data) {
+						listPicShow(data.short_url);
+					});
+					window.editor2.hideDialog();
+				}
+			});
+		});
+	});
+
+	function gresize(obj){
+		var w = $(obj).width();
+		var h = $(obj).height();
+		if(w > h){
+			$(obj).css({'height':'100%'});
+		} else {
+			$(obj).css({'width':'100%'});
+		}
+	}
+
+	function listPicShow(file){
+		var fp_input = $('#flashpic');
+		var t = fp_input.val() + ',' + file;
+		fp_input.val(t);
+
+		var ref_obj = $('#file_flash');
+		var obj_new = $('<div></div>').css({'width':'130px','height':'130px','border':'1px solid #CCC','padding':'5px','overflow':'hidden','float':'left','margin-right':'15px','position':'relative'}).insertBefore(ref_obj)
+		.append('<img src="__UPLOAD__/'+file+'" onload="gresize(this)"/>');
+		
+		$('<a class="btn btn-danger" ci=",'+file+'" href="#">X</a>')
+		.css({'position':'absolute', 'bottom':'1px', 'right':'1px', 'font-size':'12px', 'padding':'3px 5px'})
+		.appendTo(obj_new).bind('click',function(){
+			var pobj = $(this).parent().remove();
+	        var flashpic = $('#flashpic'); 
+	        var a = flashpic.val().replace($(this).attr('ci'),'');
+			flashpic.val(a);
+		});
+	}
+	<php>$gallery=explode(',', $info['product_duo']);</php>
+	<volist name="gallery" id="vo">
+		<notempty name="vo">listPicShow('{$vo}');</notempty>
+	</volist>
+</script>	

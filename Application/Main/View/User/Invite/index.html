@@ -1,0 +1,39 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的邀请码开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我的邀请码</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_subordinate">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">我的邀请码</a></li>
+					</ul>
+				</div>
+				<div class="alert alert-error">
+					<span class="mr30">提示：通过二维码关注，可获得积分</span>
+				</div>
+				<div class="my_subordinate_code">
+					<!--<p><img src="{$qrcode.qrcode_url}"></p>-->
+					<p><img src="http://qr.liantu.com/api.php?text={$url}"/></p>
+					<p>我的邀请码</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的邀请码结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

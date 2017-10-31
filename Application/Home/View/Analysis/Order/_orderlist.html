@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+    <a class="a_link" href="javascript:void(0);" rel="{$vo[detailUrl]}">
+        <dl>
+            <dt><img src="{$vo[user_img]}"></dt>
+            <dd>
+                <p>{$vo[user_name]}</p>
+                <time>{$vo[add_time]}</time>
+            </dd>
+            <dt>￥{$vo[order_amount]}</dt>
+        </dl>
+    </a>
+</volist>

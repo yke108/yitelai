@@ -1,0 +1,229 @@
+<style type="text/css">
+.user_data .weui-cells img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+</style>
+<div class="warp">
+	<div class="user_data">
+		<form action="{:U('')}" method="post">
+			<div class="weui-cells weui-cells_form" style="margin-top:0;">
+				<div class="weui-cell weui-cell_select" style="padding:10px 15px;">
+					<div class="weui-cell__hd"><label class="weui-label">头像</label></div>
+					<div class="weui-cell__bd" style="text-align:right; padding-right:15px;">
+						<span>
+							<span id="preview" style="background-image:url({$user.avatar})">
+								 <img src="{$user.avatar|default='__PUBLIC__/wap/images/user_default_img.jpg'}">
+							 </span>
+							<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" onChange="previewImage(this)">
+						</span>
+					</div>
+				</div>
+			</div>
+            <style>
+            	#preview{ display:inline-block; width:60px; height:60px; background-size:cover; background-position:center center; border-radius:50%;}
+				#preview img{ display:none;}
+            </style>
+			<div class="weui-cells weui-cells_form color">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">昵称</label></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="text" placeholder="请输入昵称" name="nick_name" value="{$user.nick_name}">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">真实姓名</label></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="text" placeholder="请输入真实姓名" name="real_name" value="{$user.real_name}">
+					</div>
+				</div>
+				<div class="weui-cell  weui-cell_select" style="padding:9px 15px;">
+					<div class="weui-cell__hd"><label for="" class="weui-label">性别</label></div>
+					<div class="weui-cell__bd">
+						<select class="weui-select" name="sex">
+							<option value="0">请选择</option>
+							<option {:m_selected($user[sex], 1)} value="1">男</option>
+							<option {:m_selected($user[sex], 2)} value="2">女</option>
+						</select>
+					</div>
+				</div>  
+			</div>
+			
+			<div class="weui-cells weui-cells_form color">
+				<div class="weui-cell weui-cell_select">
+					<div class="weui-cell__hd"><label for="" class="weui-label">出生日期</label></div>
+					<div class="weui-cell__bd">
+						<input <notempty name="user.birthday.0">disabled="disabled"</notempty> class="weui-input" id="bothday" type="text" placeholder="请选择出生日期" name="birthday" value="<notempty name="user.birthday.0">{$user.birthday.0}-{$user.birthday.1}-{$user.birthday.2}</notempty>">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label for="" class="weui-label">邮箱地址</label></div>
+					<div class="weui-cell__bd">
+						<input class="weui-input" type="text" placeholder="请输入邮箱地址" name="email" value="{$user.email}">
+					</div>
+				</div>
+			</div>
+			
+			<div class="weui-cells">
+				<a class="weui-cell weui-cell_access" href="{:U('user/account/chpwd')}">
+					<div class="weui-cell__bd weui-cell_primary">
+						<p>修改密码</p>
+					</div>
+					<span class="weui-cell__ft"></span>
+				</a>
+			</div>
+			
+			<div class="btn">
+				<a class="weui-btn weui-btn_primary" href="javascript:;" id="btn_submit">保存</a>
+			</div>
+		</form>
+		<link href="__PUBLIC__/wap/css/mobiscroll.css" rel="stylesheet">
+		<link href="__PUBLIC__/wap/css/mobiscroll_date.css" rel="stylesheet">
+		<script src="__PUBLIC__/wap/js/mobiscroll_date.js" charset="gb2312"></script> 
+		<script src="__PUBLIC__/wap/js/mobiscroll.js"></script>
+		<script type="text/javascript">
+			$(function () {
+				var currYear = (new Date()).getFullYear();	
+				var opt={};
+				opt.date = {preset : 'date'};
+				opt.datetime = {preset : 'datetime'};
+				opt.time = {preset : 'time'};
+				opt.default = {
+					theme: 'android-ics light', //皮肤样式
+					display: 'modal', //显示方式 
+					mode: 'scroller', //日期选择模式
+					dateFormat: 'yyyy-mm-dd',
+					lang: 'zh',
+					showNow: true,
+					nowText: "今天",
+					startYear: currYear - 50, //开始年份
+					endYear: currYear + 10 //结束年份
+				};
+				$("#bothday").mobiscroll($.extend(opt['date'], opt['default']));
+			});
+			
+			/*$(function(){
+					$gallery = $("#gallery"), $galleryImg = $("#galleryImg"),
+					$uploaderInput = $("#uploaderInput"),
+					$uploaderFiles = $("#tx")
+					;
+		
+				$uploaderInput.on("change", function(e){
+					var src, url = window.URL || window.webkitURL || window.mozURL, files = e.target.files;
+					for (var i = 0, len = files.length; i < len; ++i) {
+						var file = files[i];
+						if (url) {
+							src = url.createObjectURL(file);
+						} else {
+							src = e.target.result;
+						}
+						$uploaderFiles.attr("src", src);
+					}
+				});
+			});*/
+		</script>
+	</div>
+</div>
+
+<script type="text/javascript">
+//图片上传预览    IE是用了滤镜。
+function previewImage(file)
+{
+  var MAXWIDTH  = 260; 
+  var MAXHEIGHT = 180;
+  var div = document.getElementById('preview');
+  if (file.files && file.files[0])
+  {
+	  div.innerHTML ='<img id=imghead src="__PUBLIC__/wap/images/icon8.png" />';
+	  var img = document.getElementById('imghead');
+	  img.onload = function(){
+		var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		//img.width  =  rect.width;
+		//img.height =  rect.height;
+		//img.style.marginLeft = rect.left+'px';
+		//img.style.marginTop = rect.top+'px';
+	  }
+	  var reader = new FileReader();
+	  reader.onload = function(evt){
+		  img.src = evt.target.result;
+	  	$("#preview").css("background-image","url("+img.src+")")
+		
+	  }
+	  reader.readAsDataURL(file.files[0]);
+  }
+  else //兼容IE
+  {
+	var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+	file.select();
+	var src = document.selection.createRange().text;
+	div.innerHTML = '<img id=imghead>';
+	var img = document.getElementById('imghead');
+	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+	var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+	status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+	div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+  }
+}
+function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+	var param = {top:0, left:0, width:width, height:height};
+	if( width>maxWidth || height>maxHeight )
+	{
+		rateWidth = width / maxWidth;
+		rateHeight = height / maxHeight;
+		 
+		if( rateWidth > rateHeight )
+		{
+			param.width =  maxWidth;
+			param.height = Math.round(height / rateWidth);
+		}else
+		{
+			param.width = Math.round(width / rateHeight);
+			param.height = maxHeight;
+		}
+	}
+	 
+	param.left = Math.round((maxWidth - param.width) / 2);
+	param.top = Math.round((maxHeight - param.height) / 2);
+	return param;
+}
+</script>
+
+<script type="text/javascript">
+$('document').ready(function(){
+	$('#btn_submit').click(function(){
+		var form = $(this).parents('form');
+		var data = form.serializeArray();
+		var user_img = $('#imghead').attr('src');
+		data[6] = {name:'user_img', value:user_img};
+		$.post(form.attr('action'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+
+function checkTel(mobile){
+	var isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+	var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	
+	if(isMob.test(mobile)||isPhone.test(mobile)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+function checkEmail(email){
+	var re = /\w@\w*\.\w/
+	email = $.trim(email);
+	if(re.test(email)){
+		return true;
+	}else{
+		return false;
+	}
+}
+</script>

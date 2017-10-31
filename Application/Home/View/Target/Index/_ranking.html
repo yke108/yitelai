@@ -1,0 +1,8 @@
+<volist name="list" id="vo" key="ko">
+	<li>
+		<a href="{:U('detail', array('id'=>$vo[id]))}">
+			<h2><span><i>{$ko}</i>{$vo.admin_name|default='用户不存在'}</span><em>{$vo.finish_status_label}</em></h2>
+			<p><span>{$vo.time}</span><em>{$vo.region_name}</em></p>
+		</a>
+	</li>
+</volist>

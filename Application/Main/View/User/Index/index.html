@@ -1,0 +1,182 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------会员中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span>会员中心</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div id="member_center_box clearfix"> 
+				<div class="clearfix">
+					<div class="fl" style="width:660px;">
+						<div id="account" class="border">
+							<div class="outline">
+								<div class="user-account">
+									<ul class="clearfix">
+										<li id="pre-deposit">
+											<div class="account_item">
+												<h5>账户余额</h5>
+												<span class="icon"><img src="__PUBLIC__/main/images/icon47.png"></span>
+												<span class="value">￥<em>{$user.user_money}</em></span>
+												<a href="{:U('user/recharge/index')}" class="recharge_btn">充值</a>
+											</div>
+										</li>
+										<li id="voucher">
+											<div class="account_item">
+												<a href="{:U('user/pointgift/index')}">
+													<h5>可用积分</h5>
+													<span class="icon"><img src="__PUBLIC__/main/images/icon48.png"></span>
+													<span class="value"><em>{$user.pay_points}</em>分</span>
+												</a>
+											</div>
+										</li>
+										<li id="points">
+											<div class="account_item">
+												<a href="{:U('user/message/index')}">
+													<h5>未读消息</h5>
+													<span class="icon"><img src="__PUBLIC__/main/images/icon49.png"></span>
+													<span class="value"><em>{$noread}</em>条</span>
+												</a>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div id="transaction" class="border">
+							<div class="outline">
+								<div class="title clearfix">
+									<h3>订单提醒</h3>
+									<ul class="clearfix">
+										<li>待付款<em>{$uon.nopay}</em></li>
+										<li>待收货<em>{$uon.shipping}</em></li>
+										<li>待评价<em>{$uon.nopj}</em></li>
+									</ul>
+								</div>
+								<empty name="order_list">
+									<dl class="null-tip">
+										<dt><img src="__PUBLIC__/main/images/icon50.png"></dt>
+										<dd>
+											<h4>您好久没在商城购物了</h4>
+											<h5>交易提醒可帮助您了解订单状态和物流情况</h5>
+										</dd>
+									</dl>
+								<else/>
+									<div class="order-list">
+										<ul>
+											<volist name="order_list" id="vo">
+												<li>
+													<div class="ncm-goods-thumb"><a href="{:U('user/order/info', array('id'=>$vo[order_id]))}"><img src="__UPLOAD__/thumbs/b120/{$vo.order_goods.0.goods_img}"></a><em>{$i}</em></div>
+													<dl class="ncm-goods-info">
+														<dt><a href="{:U('user/order/info', array('id'=>$vo[order_id]))}">{$vo.order_goods.0.goods_name}</a><span>等<font>{:count($vo[order_goods])}</font>种商品</span></dt>
+														<dd>
+															<span class="order-date">下单时间：{$vo.add_time|date="Y-m-d H:i:s",###}</span>
+															<span class="ncm-order-price">订单金额：<em><font>￥{$vo.order_amount}</font></em></span>
+														</dd>
+														<dd><span class="order-state">订单状态：{$vo.status}</span></dd>
+													</dl>
+													<if condition="($vo[pay_status] eq 0) AND ($vo[order_status] eq 0)">
+														<a href="{:U('user/order/pay', array('id'=>$vo[order_id]))}" class="ncm-btn">订单支付</a>
+													</if>
+													<if condition="($vo[shipping_status] eq 2)">
+														<a href="{:U('user/order/info', array('id'=>$vo[order_id]))}" class="ncm-btn">确认收货</a>
+													</if>
+												</li>
+											</volist>
+										</ul>
+									</div>
+								</empty>
+							</div>
+						</div>
+					</div>
+					<div id="shopping" class="border">
+						<div class="outline">
+							<div class="title clearfix"><h3>购物车</h3></div>
+							<empty name="cart_list">
+								<dl class="null-tip">
+									<dt><img src="__PUBLIC__/main/images/icon51.png"></dt>
+									<dd>
+										<h4>您的购物车还是空的</h4>
+										<h5>将想买的商品放进购物车，一起结算更轻松</h5>
+									</dd>
+								</dl>
+							<else/>
+								<div class="cart-list">
+									<ul>
+										<foreach name="cart_list" item="vo" key="k">
+											<lt name="k" value="5">
+												<li>
+													<div class="ncm-goods-thumb"><a target="_blank" href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"></a></div>
+													<dl class="ncm-goods-info">
+														<dt><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">{$vo.goods_name}</a></dt>
+														<dd><span class="ncm-order-price">商城价：<em>￥{$vo.goods_price}</em></span></dd>
+													</dl>
+												</li>
+											</lt>
+										</foreach>
+									</ul>
+									<div class="more"><a href="{:U('mall/cart/index')}">查看购物车所有商品</a></div>
+								</div>
+							</empty>
+						</div>
+					</div>
+				</div>
+				<div id="favoritesGoods" class="border">
+					<div class="outline">
+						<div class="title clearfix"><h3>商品收藏</h3></div>
+						<empty name="collect_list">
+							<dl class="null-tip">
+								<dt><img src="__PUBLIC__/main/images/icon52.png"></dt>
+								<dd>
+									<h4>您还没有收藏商品</h4>
+									<h5>收藏的商品将显示最新的促销活动和降价情况</h5>
+								</dd>
+							</dl>
+						<else/>
+							<ul class="clearfix">
+                            	<volist name="collect_list" id="vo">
+                                	<li><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}"><img src="__UPLOAD__/{$vo.goods_image}"></a><p><a href="{:U('mall/goods/info', array('id'=>$vo[record_id]))}">{$vo.goods_name|msubstr=0,12,'utf-8',true}</a></p><p><span>￥{$vo.goods_price}</span></p></li>
+                                </volist>
+                            </ul>
+						</empty>
+					</div>
+				</div>
+			</div>
+			<div class="vip_recommend">
+				<h2><a href="{:U('user/index/recommend')}" class="change"><img src="__PUBLIC__/main/images/icon38.png">换一换</a>推荐品类</h2>
+				<ul class="clearfix recommend_list">
+					<include file="User/Index/recommend"/>
+				</ul>
+			</div>
+			<script>
+				$(function(){
+					$(".vip_recommend .change").click(function(){
+						var change_obj = $(this);
+						$.post(change_obj.attr('href'),{},function(d){
+							$('.vip_recommend .recommend_list').html(d);
+						},'json');
+						return false;
+					})
+				})
+			</script>
+		</div>
+	</div>
+	<!-------会员中心结束------->
+</div>
+<!-------粉丝故事会结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.vip_recommend ul li p a{height:40px;}
+</style>

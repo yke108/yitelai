@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">人员管理
+        	<a id="rec_add" href="{:U('lists_edit')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal" hy_w="600" hy_h="650">添加</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form form-inline" method="get" action="{:U('')}">
+					<input name="keyword" value="{$get.keyword}" type="text" class="form-control input-sm" placeholder="请输入姓名或者电话"/>
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start}" name='start' class='form-control input-sm hy_dp' /> - <input value="{$get.end}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end' />
+					<select name='group_id' class='form-control' style="height:30px;padding-top:0;padding-bottom:0">
+						<option value=''>全部组别</option>
+						<foreach name='group' item='val'>
+						<option <if condition='$get[group_id] eq $val[id]'>selected='selected'</if> value='{$val.id}'>{$val.group_name}</option>
+						</foreach>
+					</select>
+					<select name='department_id' class='form-control' style="height:30px;padding-top:0;padding-bottom:0">
+						<option value=''>全部岗位</option>
+						<foreach name='department' item='val'>
+						<option <if condition='$get[department_id] eq $val[id]'>selected='selected'</if> value='{$val.id}'>{$val['department']}</option>
+						</foreach>
+					</select>
+					<button class="btn btn-default btn-sm" type="submit">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="14%">姓名</th>
+							<th width="14%">电话</th>
+							<th width="14%">会员号</th>
+							<th width="14%">组别</th>
+							<th width="14%">岗位</th>
+							<th width="14%">时间</th>
+							<th width="14%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink top_action">
+								<td width="14%">{$vo.fullname}</td>
+								<td width="14%">{$vo.mobile}</td>
+								<td width="14%">{$vo.number}</td>
+								<td width="14%">{$vo.group_name}</td>
+								<td width="14%">{$vo.department}</td>
+                                <td width="14%">{$vo.time}</td>
+							  <td width="14%">
+									<a class='cs_ajax_link hy_show_modal' hy_w='600' hy_h='650' href="{:U('lists_edit',array('id'=>$vo['id']))}">编辑</a>
+                                    <a class='cs_ajax_link hy_show_modal cs_del_confirm' href="{:U('lists_del',array('id'=>$vo['id']))}" cs_tip="删除不可恢复，确认删除！">删除</a>
+							  </td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function (){ 
+	// 选择组别显示岗位
+	$('select[name=group_id]').change(function (){ 
+		$.post('{:U("get_department")}','group_id='+$('select[name=group_id]').val(),function(data)
+		{ 
+			$('select[name=department_id]').html('<option value="">全部岗位</option>'+data);
+		});
+	});
+	// 
+	$.post('{:U("get_department")}','group_id={$get.group_id}&department={$get.department_id}',function(data)
+	{ 
+		$('select[name=department_id]').html('<option value="">全部岗位</option>'+data);
+	});
+})
+</script>

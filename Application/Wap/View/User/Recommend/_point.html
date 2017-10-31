@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<dl class="item">
+		<dt>
+			<h2>{$vo.change_desc}</h2>
+			<p>{$vo.add_time|date="Y-m-d H:i",###}</p>
+		</dt>
+		<dd><span><if condition="$vo.point_change gt 0">+</if>{$vo.point_change}</span></dd>
+	</dl>
+</volist>

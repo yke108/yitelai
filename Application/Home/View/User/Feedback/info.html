@@ -1,0 +1,38 @@
+<div class="client_detaild_advisoryrecord_deta">
+	<div class="speak_window">
+		<div class="speak_box">
+			<div class="answer">
+				<time><span>{$info.user_name}</span>{:date('Y年m月d日 H:i', $info[add_time])}</time>
+				<div class="service_record_box">
+					<div class="heard_img"><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+					<div class="answer_text">
+						<p>{$info.content}</p>
+						<i></i>
+					</div>
+				</div>
+			</div>
+			<volist name="reply_list" id="vo">
+				<eq name="vo.ref_type" value="1">
+					<div class="answer">
+						<time><span>{$vo.user_name}</span>{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}</time>
+						<div class="service_record_box">
+							<div class="heard_img"><img src="__PUBLIC__/home/images/pic1.jpg"></div>
+							<div class="answer_text">
+								<p>{$vo.content}</p>
+								<i></i>
+							</div>
+						</div>
+					</div>
+				<else/>
+					<div class="question">
+						 <time>{:date('Y年m月d日 H:i', $vo[add_time])}<span>{$vo.admin_name}</span></time>
+						<div class="service_record_box">
+							<div class="question_text"><p>{$vo.content}</p><i></i></div>
+							<div class="heard_img"><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+						</div>
+					</div>
+				</eq>
+			</volist>
+		</div>
+	</div>
+</div>

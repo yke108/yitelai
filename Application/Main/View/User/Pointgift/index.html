@@ -1,0 +1,236 @@
+<style>
+.confirm_order_address ul{height:auto;}
+.address_box{width:580px;height:500px;padding:20px;position:fixed;left:0;right:0;top:0;bottom:0;background:#fff;border-radius:5px;margin:auto;border:1px solid #ccc;z-index:999;}
+.ab_close{position:absolute;height:22px;width:22px;top:10px;right:10px;}
+.ab_close img{width:100%;cursor:pointer;}
+.mark{position:fixed;background:rgba(0,0,0,0.5);z-index:99;width:100%;height:100%;left:0;top:0;}
+.address_box,.mark{display:none;}
+</style>
+<style>
+	.add_address_pop{width:800px;position:fixed;left:0;top:0;right:0;bottom:0;background:#FFF;z-index:15;padding-bottom:20px;border:10px solid #b4b4b4;margin:auto; display:none;height:400px;}
+	.add_address_pop h2{padding:0 10px;font-weight:normal;font-size:14px;background:#e6e6e6;border-bottom:solid 1px #d9d9d9;height:35px;line-height:35px;}
+	.add_address_pop h2 a{font-family:Verdana, Geneva, sans-serif; font-weight:bold; font-size:14px;	}
+	.add_address_pop ul li{ margin-top:10px;}
+	.add_address_pop ul li span{ display:inline-block; text-align:right; width:125px; line-height:25px; margin-right:20px; color:#666;}
+	.add_address_pop ul li button{color:#FFF; background:#ec4f4a; height:40px; font-size:14px; padding:0 20px; margin-left:145px; cursor:pointer;}
+	.add_address_pop ul li em{ display:inline-block; position:relative; width:85px; height:26px; line-height:26px; text-align:center; background:#EEE; border:solid 1px #c9c9c9; cursor:pointer; margin-bottom:5px;}
+	.add_address_pop ul li em input{ position:absolute; left:0; top:0; width:100%; height:100%; cursor:pointer; opacity:0; filter:alpha(opacity=0); }
+	.add_address_pop ul li img{ border-radius:50%; width:90px; height:90px; margin-right:35px;}
+	.add_address_pop ul li input{ width:240px; padding:11px 10px; border:solid 1px #EEE;}
+	.add_address_pop ul li select{ border:solid 1px #EEE; padding:11px 10px; margin-right:10px;}
+	.add_address_pop ul li label{ margin-right:30px;}
+	.add_address_pop ul li label input{ width:auto; height:auto; margin:-2px 5px 0 0;}
+</style>
+
+	<!-------头部开始----->
+	<include file='Public/header' />
+    <!-------头部结束----->
+    
+    <!-------积分商城开始----->
+    <div class="main w1200">
+        <div class="site_position">
+			<a href="{:U('Index/Index/index')}">首页</a><span>></span><a href="{:U('User/Index/index')}">会员中心</a><span>></span>积分商城
+		</div>
+        <div class="vip clearfix">
+            <include file="Public/user_sidebar"/>
+            <div class="vip_r fr">
+            	<div class="integral_shop">
+                	<div class="tabmenu">
+                        <ul class="tab pngFix">
+                            <li class="on"><a href="javascript:;">积分商城</a></li>
+                        </ul>
+						<span><a onclick='show_addr_list()' class="ncm-btn ncm-btn-orange" href="javascript:;">设置收货地址</a></span>
+                    </div>
+                    <div class="alert">
+                    	<span class="mr30">我的积分：<strong class="mr5 red" style="font-size: 18px;">{$point}</strong>分</span>
+                    </div>
+                    <div class="integral_shop_list">
+                    	<ul class="clearfix">
+							<volist name='list' id='val'>
+                        	<li>
+								<a href="javascript:;">
+									<img src="<if condition='$val.picture eq ""'>__PUBLIC__/main/images/pic38.jpg<else/>__UPLOAD__/thumbs/w170h145/{$val.picture}</if>">
+                                    <em>剩余：{$val.stock|default=0}个</em>
+								</a>
+								<p>
+									<a href="javascript:;" >{$val.name}</a>
+								</p>
+								<p class='clearfix'>
+									<span style='cursor:pointer;' class='add_gift_order' val='{$val.id}' >{$val.point}分</span>
+									
+								</p>
+							</li>
+                            </volist>
+                        </ul>
+                    </div>
+                    <style>
+                    	.integral_shop_list ul li a{ position:relative;}
+						.integral_shop_list ul li a em{ position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:#FFF; padding:5px; text-indent:5px;}
+                    </style>
+                    <div class="pages1">
+                        {$page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-------积分商城结束----->
+        
+    <!-------底部开始----->
+    <include file='Public/footer' />
+    <!-------底部结束----->
+<div class='address_box'>
+	<div class='ab_close' onclick='close_addr_list()'><img src="__PUBLIC__/main/images/close.png" /></div>
+	<div class='ab_list'>
+		<include file='User/Pointgift/_address_list' />
+	</div>
+	<div class='save_address'>
+		<include file='User/Pointgift/_address' />
+	</div>
+</div>
+<div class='mark'></div>
+<script>
+$(".add_gift_order").click(function(){
+	if(window.confirm('你确认要兑换该商品')==false){return;}
+	var val=$(this).attr('val');
+	$.ajax({
+		type:'POST',
+		url:"{:U('add_gift_order')}",
+		data:{gift_id:val},
+		dataType:"json",
+		success:function(res){
+			if(res.error_code==10000){
+				if(window.confirm('您需要设置默认收货地址，是否现在设置')==true){
+					show_addr_list();
+				}
+				return ;
+			}
+			alert(res.msg);
+			if(res.error==0){
+				window.location.reload();
+			}
+		}
+	})
+})
+function change_region(obj,type){
+	var code=$(obj).val();
+	$.ajax({
+		type:'POST',
+		url:"{:U('Index/Site/get_region')}",
+		data:{code:code,type:type},
+		dataType:"json",
+		success:function(res){
+			//alert($("#"+'city').html())
+			$("#"+type).html(res.html)
+		}
+	})
+}
+var add_url="{:U('User/Address/add')}";
+var edit_url="{:U('User/Address/edit',array('id'=>'address_id'))}";
+var current_url=add_url;
+function close_address(){
+	$(".add_address_pop").hide();
+}
+function add_address(type,address_id){
+	if(type=='add'){
+		current_url=add_url
+	}else{
+		current_url=edit_url.replace('address_id',address_id);
+	}
+	$.ajax({
+		type:'POST',
+		url:"{:U('add_address')}",
+		data:{type:type,address_id:address_id},
+		dataType:"json",
+		async:false,
+		success:function(res){
+			$(".save_address").html(res.html)
+		}
+	})
+	$(".save_address .add_address_pop ").show();
+}
+$(".confirm_order_address ul li").live('click',function(){
+	var liobj = $(this);
+	var address_id = liobj.attr('address_id');
+	$.post("{:U('Mall/Cart/teamAddressDef')}",{address_id:address_id},function(data){
+		if(data.status == 1){
+			liobj.addClass("on").siblings().removeClass("on");
+		}else{
+			layer.open({time:1,content:data.info});
+		}
+	},'json');
+})
+
+$("#btn_submit").live('click',function(){
+	var consignee=$("#consignee").val();
+	var province=$("#province_show").val();
+	var city=$("#city_show").val();
+	var district=$("#district_show").val();
+	var address=$("#address").val();
+	var zipcode=$("#zipcode").val();
+	var mobile=$("#mobile").val();
+	var is_default=$("#is_default:checked").val();
+	var address_id=$("#address_id").val();
+	
+	
+	
+	if(consignee==''){
+		layer.open({time:1,content:'请填写收件人'});
+		$("#consignee").focus();
+		return ;
+	}
+	if(address==''){
+		layer.open({time:1,content:'请填写详细地址'});
+		$("#address").focus();
+		return ;
+	}
+	if(mobile==''){
+		layer.open({time:1,content:'请填写联系电话'});
+		$("#mobile").focus();
+		return ;
+	}
+	
+	
+	$.ajax({
+		type:'POST',
+		url:current_url,
+		data:{
+				address_id:address_id,
+				consignee:consignee,
+				region_code:district,
+				district:district,
+				address:address,
+				zipcode:zipcode,
+				mobile:mobile,
+				address:address,		
+				is_default:is_default,		
+			},
+		dataType:"json",
+		success:function(res){
+			close_address();
+			load_addr_list();
+			$(".ab_list").fadeIn();
+		}
+	})
+	
+})
+function load_addr_list(){
+	$.ajax({
+		type:'POST',
+		url:"{:U('load_address_list')}",
+		data:{},
+		dataType:"json",
+		success:function(res){
+			$(".ab_list").html(res.html)
+		}
+	})
+}
+function close_addr_list(){
+	$(".address_box,.mark").fadeOut();
+}
+
+function show_addr_list(){
+	$(".address_box,.mark").fadeIn();
+}
+
+</script>

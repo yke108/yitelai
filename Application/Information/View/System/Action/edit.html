@@ -1,0 +1,70 @@
+<style>
+.red{color:#ff0000;}
+</style>
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">管理角色增加</h3>
+		<?php $action = $info['action_id'] > 0 ? U('edit',array('id'=>$info['action_id'])) : U('add'); ?>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">顶级权限</label>
+						<div class="col-sm-3">
+							<select name='parent_id'>
+								<option <if condition="$info['parent_id'] eq 0">selected='selected'</if> value='0'>顶级权限</option>
+								<volist name='top_action_list' id='val'>
+								<option <if condition="$info['parent_id'] eq $val[action_id]">selected='selected'</if> value='{$val.action_id}'>{$val.action_name}</option>
+								</volist>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">权限名称</label>
+						<div class="col-sm-3">
+							<input name="action_name" class="input-xlarge form-control" type="text" value="{$info.action_name}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">权限码</label>
+						<div class="col-sm-9">
+							<input name="action_code" class="input-xlarge form-control" type="text"
+							value="{$info.action_code}">
+						</div>
+						<div class='col-sm-8 col-sm-offset-2'>顶级权限的格式为<font class='red'>admin</font><br>二级权限的格式为<font class='red'>index_admin_index</font></div>
+					</div>
+					
+					
+
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+
+<script type="text/javascript">
+function purviewgroupchk(obj){
+	var prt = $(obj).parents('.purviewwrap');
+	var chk = prt.find('input.purview').length == prt.find('input.purview:checked').length;
+	var grp = prt.find('.purviewgroup');
+	if(chk) grp.attr('checked', 'checked');
+	else grp.removeAttr('checked');
+}
+$('.purviewgroup').each(function(){
+	purviewgroupchk(this);
+	$(this).bind('click', function(){
+		var obj = $(this);
+		var pls = obj.parents('.purviewwrap').find('.purview');
+		if(obj.is(':checked')) pls.attr('checked', 'checked');
+		else pls.removeAttr('checked');
+	});
+});
+$('.purview').bind('click', function(){
+	purviewgroupchk(this);
+});
+</script>
+	

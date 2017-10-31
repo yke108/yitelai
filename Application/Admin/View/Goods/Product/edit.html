@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">
+			<gt name="info.product_id" value="0">编辑货品<else/>添加货品</gt>
+		</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 货品名称</label>
+					<div class="col-sm-6">
+						<input name="product_name" class="input-xlarge form-control" type="text"  value="{$info.product_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 优惠价</label>
+					<div class="col-sm-4">
+						<input name="product_price" class="input-xlarge form-control" type="text"  value="{$info['product_price']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 原价</label>
+					<div class="col-sm-4">
+						<input name="market_price" class="input-xlarge form-control" type="text"  value="{$info['market_price']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 进货价</label>
+					<div class="col-sm-4">
+						<input name="stock_price" class="input-xlarge form-control" type="text"  value="{$info['stock_price']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 货品重量</label>
+					<div class="col-sm-4">
+						<input name="product_weight" class="input-xlarge form-control" type="text"  value="{$info['product_weight']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 库存数量</label>
+					<div class="col-sm-4">
+						<input name="stock_number" class="input-xlarge form-control" type="text"  value="{$info['stock_number']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">预警数量</label>
+					<div class="col-sm-4">
+						<input name="notify_number" class="input-xlarge form-control" type="text"  value="{$info['notify_number']}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"><font color="red">*</font> 货品图片</label>
+					<div class="col-sm-9">
+						<input class="hy_upload_single" hy_field="product_image" value="上传图片" style="width:200px;height:150px;" src="<notempty name="info.product_image">{$info.product_image}</notempty>"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input name="product_id" class="input-xlarge form-control" type="hidden"  value="{$info['product_id']}">
+						<input name="goods_id" class="input-xlarge form-control" type="hidden"  value="{$info['goods_id']}">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload')}", '__UPLOAD__');
+});
+</script>

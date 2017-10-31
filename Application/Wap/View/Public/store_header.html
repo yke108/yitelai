@@ -1,0 +1,12 @@
+<div class="shop_home_nav">
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide"><a href="{:U('store/index/index', array('store_id'=>$get[store_id]))}" class="on">首页</a></div>
+			<!--<div class="swiper-slide"><a href="{:U('store/goods/index', array('store_id'=>$get[store_id]))}">全部产品</a></div>
+			<div class="swiper-slide"><a href="{:U('design/index/index',array('store_id'=>$get[store_id]))}">设计师</a></div>-->
+			<foreach name="store_nav_list" item="vo" key="k">
+				<div class="swiper-slide"><a href="<if condition='$vo[build_url] eq ""'>{$vo.url}<else/>{$vo.build_url}</if>">{$vo.name}</a></div>
+			</foreach>
+		</div>
+	</div>
+</div>

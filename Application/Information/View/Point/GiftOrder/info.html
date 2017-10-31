@@ -1,0 +1,119 @@
+<style>
+.modal-content{padding:10px;}
+</style>
+<div class="row">
+    <div class="col-sm-8 col-md-8">
+		<h1 class="invoice_heading">订单 # {$info.order_sn}</h1>
+	</div>
+	<div class="col-sm-4 col-md-4">
+		<p class="sepH_a"><span class="sepV_b text-muted">订单号：</span><strong>{$info.order_sn}</strong></p>
+		<p class="sepH_a">
+        	<span class="sepV_b text-muted">订单生成日期：</span>
+			<strong>{:date('Y-m-d H:i', $info[add_time])}</strong>
+        </p>
+        <p class='send_time' <empty name="info.shipping_time">style='display:none;'</empty>>
+        	<span class="sepV_b text-muted">订单发货日期：</span>
+            <strong>{$info.shipping_time|date="Y-m-d H:i",###}</strong>
+        </p>
+		<!--<p><span class="sepV_b text-muted">订单支付时间</span><strong>{:date('Y-m-d', $info[pay_time])}</strong></p>-->
+	</div>
+</div>
+
+<div class="row">
+	<form  action='{:U("order_send")}' method="post" id='form_order'>
+		<div class="col-sm-3 col-md-3">
+			<p><strong class="text-muted">收货人信息</strong></p>
+			<address>
+				<strong>{$info.consignee}</strong><br>
+				{$regions[$info[province]]} {$regions[$info[city]]} {$regions[$info[district]]} <br>
+				{$info.region_name}{$info.address} <br>
+				<abbr title="Phone">P:</abbr> {$info.mobile} 
+			</address>
+		</div>
+		<div class="col-sm-8 col-md-8">
+			
+			<if condition="($info.shipping_status eq 0)">
+            	<div class='send_order'>
+                <p>快递公司：
+				<select name="shipping_id" style="width:120px;">
+                    <volist name="shipping_list" id="vo">
+                        <option value="{$vo.shipping_id}">{$vo.shipping_name}</option>
+                    </volist>
+                </select></p>
+                <p>快递单号：<input type="text" value="" name="kd_no" style="border:1px solid #CCC;width:120px;"></p>
+                <input type='hidden' name='id' value='{$info[id]}' />
+                <p style="padding-left:50px;"><button class="btn btn-default btn-sm" id='sub_order' type='button'>立即发货</button></p>
+				</div>
+			<elseif condition="$info.shipping_status eq 1" />
+				<div>
+					<div style='margin-bottom:15px;font-size:14px;font-weight:bold;color:#777'>发货信息</div>
+					<p style='margin-bottom:5px;'>快递公司：{$info.shipping_name}</p>
+					<p style='margin-bottom:5px;'>快递单号：{$info.shipping_sn}</p>
+					<p style='margin-bottom:5px;'>发货时间：{$info.shipping_time|date="Y-m-d H:i",###}</p>
+				</div>
+            </if>
+			
+		</div>
+	</form>
+</div>
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>兑换商品图片</th>
+					<th>兑换商品名称</th>
+					<th>数量</th>
+					<th class="invoice_tar">兑换积分</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+					<tr>
+						<td><img src="__UPLOAD__/{$vo.gift_img}" height='60' /></td>
+						<td>{$vo.gift_name}</td>
+						<td>1</td>
+						<td class="invoice_tar">{$vo.recommend_points}</td>
+					</tr>
+				</volist>
+			
+			
+		</tbody></table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<p class="sepH_a"><span class="label label-info"></span></p>
+		<p></p>
+	</div>
+</div>   
+<script>
+	$(function(){
+		$('#sub_order').click(function(){
+			var url=$("#form_order").attr('action');
+			var shipping_id=$('select[name="shipping_id"]').val();
+			var shipping_no=$("input[name='kd_no']").val();
+			var order_id=$('input[name="id"]').val();
+			if(shipping_no==''){
+				alert('请输入快递单号');
+				$("input[name='kd_no']").focus();
+				return ;
+			}
+			$.ajax({
+				type:'POST',
+				url:url,
+				data:{shipping_id:shipping_id,shipping_no:shipping_no,order_id:order_id},
+				dataType:"json",
+				success:function(res){
+					alert(res.msg);
+					if(res.error==0){
+						$(".send_order").remove();
+						$(".send_time").css({display:'block'}).find('strong').html(res.send_time);
+					}
+				}
+			})
+		});
+	})
+</script>
+
+

@@ -1,0 +1,76 @@
+<div class="store_decoration_detaild">
+	<div class="store_decoration_detaild_1">
+		<h2><span>{$info.area}</span><time>发布时间：{:date('Y-m-d', $info[add_time])}</time></h2>
+		<p><span>负责人：{$info.manager}</span><span>店长：{$info.shopkeeper}</span><span>设计师：{$info.designer}</span></p>
+	</div>
+	<div class="store_decoration_detaild_2">
+		<h2>{$info.description}</h2>
+		<p>
+			<volist name="info.pictures" id="vo">
+				<img src="__UPLOAD__/{$vo}" data-preview-src="__UPLOAD__/thumbs/b120/{$vo}" data-preview-group="1">
+			</volist>
+		</p>
+	</div>
+	<div class="store_decoration_detaild_3">
+		<h2>效果图</h2>
+		<ul class="mui-clearfix">
+			<li><em><i></i></em>文件名</li>
+			<li><em><i></i></em>文件名</li>
+		</ul>
+	</div>
+	<div class="store_decoration_detaild_4">
+		<h2>装修流程</h2>
+		<ul>
+			<li>
+				<span><img src="__PUBLIC__/home/images/icon21.png"></span>
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/pic1.jpg"></dt>
+					<dd>
+						<p>店铺</p>
+						<time>06/07 12:00</time>
+					</dd>
+					<dt>发布需求</dt>
+				</dl>
+			</li>
+			<li>
+				<span><img src="__PUBLIC__/home/images/icon21.png"></span>
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/pic1.jpg"></dt>
+					<dd>
+						<p>谷安居平台</p>
+						<time>06/07 12:00</time>
+					</dd>
+					<dt>开始装修</dt>
+				</dl>
+			</li>
+			<li>
+				<span><img src="__PUBLIC__/home/images/icon21.png"></span>
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/pic1.jpg"></dt>
+					<dd>
+						<p>谷安居平台</p>
+						<time>06/07 12:00</time>
+					</dd>
+					<dt>开始装修</dt>
+				</dl>
+			</li>
+			<li>
+				<span><img src="__PUBLIC__/home/images/icon21.png"></span>
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/pic1.jpg"></dt>
+					<dd>
+						<p>店铺</p>
+					</dd>
+					<dt><em>等待验收</em></dt>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	<div class="store_decoration_detaild_5 btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">确认验收</a></div>
+</div>
+
+<script src="__PUBLIC__/home/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/home/js/mui.previewimage.js"></script>
+<script>
+	mui.previewImage();
+</script>

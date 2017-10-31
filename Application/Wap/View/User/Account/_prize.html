@@ -1,0 +1,14 @@
+<volist name='list' id='val'>
+<dl style='position:relative;'>
+	<dt val='{$val.log_id}'>
+		<h2>{$val.chance_brief}</h2>
+		<p>{$val.play_time|date="Y-m-d H:i",###}</p>
+	</dt>
+	<dd style='color:#ff0000;'>{$val.prize_name}{$vo.prize_type}</dd>
+	<if condition='$val.prize_type eq 100 and $val.is_select eq 0'>
+	<div style='position:absolute;height:38px;left:0;right:0;bottom:0;top:0;margin:auto;padding:5px 0;text-align:center;'>
+		<a style='background:#e30029;display:inline-block;color:#fff;padding:5px 10px;' href='{:U("game/index/exchange",array("log_id"=>$val[log_id]))}'>设置地址</a>
+	</div>
+	</if>
+</dl>
+</volist>

@@ -1,0 +1,48 @@
+<style>body{ background:#EEE;}</style>
+<div class="verified">
+	<form action="{:U('real')}" method="post" class="hy_form">
+	<div class="verified_tips">{$tips.before_real}</div>
+    <div class="verified_bd">
+    	<div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">真实姓名</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="real_name" name="real_name" type="text" class="weui_input" placeholder="请输入开户真实姓名">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">身份证号码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="id_no" name="id_no" type="number" class="weui_input" placeholder="请输入18位身份证号码">
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">银行卡号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="bank_card" name="bank_card" type="number" pattern="[0-9]*"  class="weui_input" placeholder="请输入银行卡号">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label">预留手机号</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="phone" id="phone" type="number" pattern="[0-9]*" class="weui_input" placeholder="请输入银行预留手机号码">
+                </div>
+            </div>
+            <div class="weui_cell weui_vcode">
+                <div class="weui_cell_hd"><label class="weui_label">验证码</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input name="code" class="weui_input" type="number" placeholder="请输入验证码">
+					<input type="hidden" id="ssid" name="ssid">
+                </div>
+                <div class="weui_cell_ft">
+                    <button href="{:U('code2')}" id="hy_get_code_2" type="button" val="9">获取验证码</button>
+                </div>
+            </div>
+        </div>
+		
+    </div>
+    <div class="verified_btn"><button type="submit" class="weui_btn weui_btn_warn">确定</button></div>
+	</form>
+</div>

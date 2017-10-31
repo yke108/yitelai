@@ -1,0 +1,80 @@
+<div class="warp">
+	<style>
+		body{ background:#f3f3f3;}
+	</style>
+	<div class="user_center mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<div class="user_center_hd">
+				<dl>
+					<dt><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+					<dd>{$user.nick_name}</dd>
+				</dl>
+			</div>
+			<div class="user_center_bd">
+				<ol>
+					<li><a href="{:U('user/collect')}"><i><img src="__PUBLIC__/news/images/icon20.png"></i><p>收藏</p></a></li>
+					<li><a href="{:U('user/history')}"><i><img src="__PUBLIC__/news/images/icon21.png"></i><p>浏览记录</p></a></li>
+					<li><a href="{:U('user/message')}"><i><em></em><img src="__PUBLIC__/news/images/icon22.png"></i><p>消息</p></a></li>
+				</ol>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell"><a href="{:U('user/news/add')}" class="right-after"><img src="__PUBLIC__/news/images/icon23.png">发布话题</a></li>
+					<li class="mui-table-view-cell"><a href="{:U('user/top')}" class="right-after"><img src="__PUBLIC__/news/images/icon24.png">排行榜</a></li>
+					<li class="mui-table-view-cell"><a href="{:U('user/capital/point')}" class="right-after"><img src="__PUBLIC__/news/images/icon25.png">我的积分</a></li>
+					<li class="mui-table-view-cell"><a href="{:U('user/pointgift')}" class="right-after"><img src="__PUBLIC__/news/images/icon26.png">积分商城</a></li>
+					<li class="mui-table-view-cell"><a href="{:U('user/address')}" class="right-after"><img src="__PUBLIC__/news/images/icon27.png">地址管理</a></li>
+					<li class="mui-table-view-cell"><a href="{:U('user/news/reward')}" class="right-after"><img src="__PUBLIC__/main/images/icon31.png">我的打赏</a></li>
+					<li class="mui-table-view-cell"><a href="{:U('user/capital/cashapply')}" class="right-after"><img src="__PUBLIC__/wap/images/icon40.png">我的提现</a></li>
+				</ul>
+				<style type="text/css">
+				.others_login {
+					position: relative;
+					width: 100%;
+					padding: 15px;
+					left: 0;
+					bottom: inherit;
+				}
+				.others_login a {
+					background: #FFF;
+					font-size: 14px;
+					padding: 5px 0;
+					display:block;
+					text-align:center;
+				}
+				.weui_btn_plain_default {
+					color: #5a5a5a;
+					border: 1px solid #5a5a5a;
+				}
+				</style>
+				<div class="others_login"><a href="{:U('index/site/logout')}" class="weui_btn weui_btn_plain_default ajaxlink">退出</a></div>
+			</div>
+		</div>
+	</div>
+	<include file="Public/footer"/>
+</div>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.ajaxlink').bind('click',function(){
+		$.post($(this).attr('href'), {}, function(d){
+			mui.toast(d.info)
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>

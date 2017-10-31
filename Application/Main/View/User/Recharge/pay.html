@@ -1,0 +1,105 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------在线充值开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="#">首页</a><span>></span><a href="#">会员中心</a><span>></span>在线充值</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="online_recharge">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="{:U('user/recharge/index')}">在线充值</a></li>
+						<li <if condition="$type eq 1">class="on"</if> ><a href="{:U('user/recharge/log')}">充值记录</a></li>
+						<li <if condition="$type eq 2">class="on"</if> ><a href="{:U('user/recharge/log',array('type'=>2))}">充值增值记录</a></li>
+					</ul>
+				</div>
+				<div class="online_recharge_bank">
+					<form action="{:U('')}" method="post" onSubmit="">
+						<ul>
+							<li>
+								<span>充值金额</span>
+								<b>{$recharge_info.recharge_amount}</b>元
+							</li>
+							<li>
+								<span>支付平台支付</span>
+								<em>
+									<!--<a href="javascript:;" title="支付宝支付" pay_id="1">
+										<img src="__PUBLIC__/main/images/alipay_icon_03.png">
+										<i><img src="__PUBLIC__/main/images/icon72.png"></i>
+									</a>-->
+									<a href="javascript:;" title="微信支付" pay_id="2">
+										<img src="__PUBLIC__/main/images/weixin_pay_icon_03.png">
+										<i><img src="__PUBLIC__/main/images/icon72.png"></i>
+									</a>
+									<!--<a href="javascript:;" title="快捷支付" pay_id="3" class="on">
+										<img src="__PUBLIC__/main/images/pic64.jpg">
+										<i><img src="__PUBLIC__/main/images/icon72.png"></i>
+									</a>-->
+									
+									<!--<a href="javascript:;" title="网银支付" pay_id="3"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" title="翼支付" pay_id="4"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>-->
+								</em>
+							</li>
+							<!--<li>
+								<span>银行卡支付</span>
+								<em>
+									<a href="javascript:;" pay_id="5"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="6"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="7"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="8"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="9"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="10"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="11"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+									<a href="javascript:;" pay_id="12"><img src="__PUBLIC__/main/images/pic64.jpg"><i><img src="__PUBLIC__/main/images/icon72.png"></i></a>
+								</em>
+							</li>-->
+							<li>
+								<a href="javascript:;" class="online_recharge_btn">充值</a>
+								<input type="hidden" name="pay_id" value="2" id="pay_id" />
+								<input type='hidden' name='recharge_sn' value='{$recharge_info.recharge_sn}'  />
+								<input type="hidden" name="money" value="{$get.money}" />
+							</li>
+						</ul>
+						<script>
+							$(function(){
+								$(".online_recharge_bank ul li em a").click(function(){
+									$(this).addClass("on").siblings().removeClass("on")
+									$(this).parent().parent().siblings().find("em a").removeClass("on")
+									$('#pay_id').val($(this).attr('pay_id'));
+								})
+							})
+						</script>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------在线充值结束----->
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.online_recharge_btn').click(function(){
+		var form = $(this).parents('form');
+		form.submit();
+		/*$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				form[0].reset();
+			}
+		}, 'json');*/
+	});
+});
+</script>

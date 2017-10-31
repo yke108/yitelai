@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<li class="read">
+		<a href="{:U('info', array('id'=>$vo[msg_id]))}">
+			<h1>{$vo.title}</h1>
+			<p>{:strip_tags($vo[content])}</p>
+			<h2 class="right-after"><time>{$vo.add_time|date="Y-m-d H:i",###}</time><span>查看详情</span></h2>
+		</a>
+	</li>
+</volist>

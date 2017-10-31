@@ -1,0 +1,37 @@
+<div class="apply_management">
+    <div class="apply_management_hd">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a class="right-after" href="{:U('add')}">申请</a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="right-after" href="{:U('history')}">申请记录</a>
+            </li>
+            <li class="mui-table-view-cell">
+                <a class="right-after" href="{:U('check')}">审批
+                	<gt name="wait_number" value="0"><span class="mui-badge mui-badge-primary">{$wait_number}</span></gt>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="apply_management_bd">
+        <h1><span>最近3次申请记录</span></h1>
+		<empty name="three">
+			<p style="text-align:center;color:#999999;padding:20px;">还没有申请记录</p>
+		<else/>
+			<ul>
+				<volist name="three" id="v">
+					<php>$warning = in_array($v['verify_status'], [10, 50, 150]) ? 'warning' : '';</php>
+					<li>
+						<a href="{:U('detail','id='.$v['apply_id'])}">
+							<h2><em>{$v.apply_name}<font class="{$warning}">{$v.status_label}</font></em>
+							<time>{$v.apply_time|date="Y-m-d H:i:s", ###}</time></h2>
+							<p>申请理由</p>
+							<p>{$v.content}</p>
+						</a>
+					</li>
+				</volist>
+			</ul>
+		</empty>
+    </div>
+</div>

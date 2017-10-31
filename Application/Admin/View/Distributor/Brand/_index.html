@@ -1,0 +1,18 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+	    <td>
+			<notempty name="vo.brand_logo">
+				<a href='__UPLOAD__/{$vo.brand_logo}' target="_blank"><img src="__UPLOAD__/{$vo.brand_logo}"  height="40" border="0"></a>
+			</notempty>
+		</td>
+		<td>{$vo.brand_name}</td>
+		<td>{$vo.cat_name}</td>
+		<td>
+			<if condition="$vo['is_use'] eq 1">
+				<a class='cs_ajax_link label label-success cs_flesh_page'  href="{:U('st',array('brand_id'=>$vo[brand_id], 'distributor_id'=>$get[distributor_id]))}">是</a>			
+			<else/>
+				<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('st',array('brand_id'=>$vo[brand_id], 'distributor_id'=>$get[distributor_id]))}">否</a>
+			</if>
+		</td>
+	</tr>
+</volist>

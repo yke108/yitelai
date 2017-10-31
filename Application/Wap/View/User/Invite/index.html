@@ -1,0 +1,36 @@
+<div class="warp">
+	<div class="user_recommended_code">
+		<div class="recommended_code_hd">
+			<dl>
+				<!--<dt><img src="{$qrcode.qrcode_url}" width="100" height="100"></dt>-->
+				<dt><img src="http://qr.liantu.com/api.php?text={$url}" width="100" height="100"/></dt>
+			</dl>
+		</div>
+		<div class="recommended_code_bd">
+			<ul class="clearfix">
+				<li><a href="javascript:;"><i class="i1"></i><p>QQ好友</p></a></li>
+				<li><a href="javascript:;"><i class="i2"></i><p>Qzone</p></a></li>
+				<li><a href="javascript:;"><i class="i3"></i><p>微信好友</p></a></li>
+				<li><a href="javascript:;"><i class="i4"></i><p>朋友圈</p></a></li>
+				<!--<li><a href="javascript:;"><i class="i5"></i><p>人人网</p></a></li>
+				<li><a href="javascript:;"><i class="i6"></i><p>QQ微博</p></a></li>
+				<li><a href="javascript:;"><i class="i7"></i><p>新浪微博</p></a></li>
+				<li><a href="javascript:;"><i class="i8"></i><p>豆瓣</p></a></li>-->
+			</ul>
+		</div>
+	</div>
+	
+	<div class="share_pop"><img src="__PUBLIC__/wap/images/icon59.png"></div>
+	<div class="mask"></div>
+	<script>
+		$(".mask").hide()
+		$(".recommended_code_bd ul li a").click(function(){
+			$(".share_pop").show()	
+			$(".mask").show()
+		})
+		$(".mask").click(function(){
+			$(".share_pop").hide()	
+			$(".mask").hide()
+		})
+	</script>
+</div>

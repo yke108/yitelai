@@ -1,0 +1,98 @@
+<link href="__PUBLIC__/css/fsgallery.css" rel="stylesheet" />
+<script src="__PUBLIC__/js/fs_forse.js"></script>
+<style type="text/css">
+#gallery a {border:none; border-radius:inherit; padding:0; margin:0 5% 5% 0;}
+.user_wap_home_3 ul.process_list li p img{width:100%;}
+.user_wap_home_3 ul.process_list li p img{margin:0;}
+</style>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">设计师案例列表
+			<a id="rec_add" href="{:U('company/designerinfo/index', array('distributor_id'=>$info[distributor_id]))}" class="btn btn-info btn-sm alink_r">返回上一页</a>
+			<a id="rec_add" href="{:U('add',array('designer_id'=>$info['designer_id']))}" class="btn btn-info btn-sm alink_r">添加案例</a>
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<!--<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>-->
+		<!-- end搜索 -->
+		<div style='margin-bottom:20px;font-size:16px;'>设计师：<font style='color:#ff0000;font-weight:bold;'>{$info.designer_name}</font></div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>封面图</th>
+							<th>项目名称</th>
+							<th>装饰风格</th>
+							<th>户型</th>
+							<th>国家</th>
+							<th>家居区域</th>
+							<th>定制模式</th>
+							<th>进度</th>
+							<th>面积</th>
+							<th>预算</th>
+							<th>排序</th>
+							<th>是否热门</th>
+							<th>添加时间</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="gallery">
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td><if condition="$vo[picture] neq null"><a href="__UPLOAD__/{$vo.picture}"><img src="__UPLOAD__/thumbs/b90/{$vo.picture}" height="32" /></a></if></td>
+								<td>{$vo.case_name}</td>
+							    <td>{$type_key_list[$vo[decorate_type]][name]}</td>
+								<td>{$type_key_list[$vo[layout_type]][name]}</td>
+								<td>{$type_key_list[$vo[country]][name]}</td>
+								<td>{$type_key_list[$vo[district]][name]}</td>
+								<td>
+									<switch name="vo.custom_type">
+										<case value="1">半包</case>
+										<case value="2">全包</case>
+										<case value="3">清包</case>
+									</switch>
+								</td>
+								<td>
+									<switch name="vo.progress">
+										<case value="0">预约中</case>
+										<case value="1">准备开工</case>
+										<case value="2">水电阶段</case>
+										<case value="3">泥木阶段</case>
+										<case value="4">油漆阶段</case>
+										<case value="5">竣工阶段</case>
+									</switch>
+								</td>
+								<td>{$vo.area}</td>
+								<td>{$vo.budget}</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<if condition="$vo.is_hot eq 1">
+									<a class='cs_ajax_link label label-success cs_flesh_page' href="{:U('is_hot',array('id'=>$vo['case_id']))}">是</a>
+									<else/>
+									<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('is_hot',array('id'=>$vo['case_id']))}">否</a>
+									</if>
+								</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td>
+									<a href="{:U('edit', array('designer_id'=>$vo[designer_id],'id'=>$vo['case_id']))}">编辑</a>
+									<a href="{:U('del', array('designer_id'=>$vo[designer_id],'id'=>$vo['case_id']))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

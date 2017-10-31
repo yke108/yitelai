@@ -1,0 +1,84 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------外链接开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('')}">家居服务</a><notempty name="cat"><span>></span>{$cat.cat_name}</notempty></div>
+	<div class="links">
+		<div class="links_hd">
+			<ul class="clearfix">
+				<volist name="catlist" id="vo">
+					<li><a <if condition="$vo[cat_id] eq $get[cat_id]">class="on"</if> href="{:U('', array('cat_id'=>$vo[cat_id]))}">{$vo.cat_name}</a></li>
+				</volist>
+			</ul>
+		</div>
+		<div class="links_bd">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<volist name="list" id="vo">
+					<div class="links_item">
+						<dl class="clearfix">
+							<dt><img src="__UPLOAD__/thumbs/b300/{$vo.serve_image}"></dt>
+							<dd>
+								<h2><a href="{$vo.serve_url}" target="_blank">{$vo.serve_name}</a></h2>
+								<p style="word-wrap:break-word;">{$vo.serve_content|msubstr=0,100,'utf-8',true}<a href="{$vo.serve_url}" target="_blank">[更 多]</a></p>
+							</dd>
+						</dl>
+						<h3>
+							<span><img src="__PUBLIC__/main/images/icon30.png">{$vo.serve_tel}</span>
+							<span style="margin-left:10px;"><a href="javascript:;" serve_id="{$vo.serve_id}" class="like"><img src="__PUBLIC__/main/images/icon60.png"><c class="good_num">{$vo.good_num}</c></a></span>
+							<span style="margin-left:10px;"><a href="javascript:;" serve_id="{$vo.serve_id}" class="clap"><img src="__PUBLIC__/main/images/icon136.png"><c class="bad_num">{$vo.bad_num}</c></a></span>
+						</h3>
+					</div>
+				</volist>
+				<div class="pages1">
+					{$pages}
+				</div>
+			</empty>
+		</div>
+	</div>
+</div>
+<!-------外链接结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.like').click(function(){
+		var like = $(this);
+		var serve_id = $(this).attr('serve_id');
+		$.post("{:U('like')}",{serve_id:serve_id},function(data){
+			layer.open({time:1,content:data.info});
+			if(data.status == 1){
+				like.find('.good_num').html(data.good_num);
+			}
+			if(data.url){
+				window.location.href = data.url;
+			}
+		},'json');
+	});
+	$('.clap').click(function(){
+		var clap = $(this);
+		var serve_id = $(this).attr('serve_id');
+		$.post("{:U('clap')}",{serve_id:serve_id},function(data){
+			layer.open({time:1,content:data.info});
+			if(data.status == 1){
+				clap.find('.bad_num').html(data.bad_num);
+			}
+			if(data.url){
+				window.location.href = data.url;
+			}
+		},'json');
+	});
+});
+</script>

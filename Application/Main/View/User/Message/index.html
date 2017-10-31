@@ -1,0 +1,68 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的消息开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我的消息</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_news">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li <eq name="get.type" value="0">class="on"</eq>><a href="{:U('user/message/index')}">系统消息({$system_count})</a></li>
+						<li <eq name="get.type" value="1">class="on"</eq>><a href="{:U('user/message/index', array('type'=>1))}">私信({$private_count})</a></li>
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="20"></td>
+							<td width="480" align="left">标题</td>
+							<!--<td width="480" align="left">内容</td>-->
+							<td width="225" align="center">时间</td>
+							<td align="center">操作</td>
+						</tr>
+						<volist name="list" id="vo">
+							<tr>
+								<td width="20"></td>
+								<td align="left">
+									<eq name="vo.is_read" value="1">
+										<a href="{:U('info',array('id'=>$vo[msg_id]))}">{$vo.title}</a>
+									<else/>
+										<a href="{:U('info',array('id'=>$vo[msg_id]))}"><b>{$vo.title}</b></a>
+									</eq>
+								</td>
+								<!--<td align="left"><span>{$info.content}</span></td>-->
+								<td align="center">{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+								<td align="center">
+									<a href="{:U('info',array('id'=>$vo[msg_id]))}"><img src="__PUBLIC__/main/images/icon63.png" width="24" height="14"><br>查看</a>
+									<!--<a href="{:U('info',array('id'=>$vo[msg_id]))}"><img src="__PUBLIC__/main/images/icon58.png" height="14"><br>删除</a>-->
+								</td>
+							</tr>
+						</volist>
+					</table>
+					<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的消息开始----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.my_news table td a b{color:#000;}
+</style>

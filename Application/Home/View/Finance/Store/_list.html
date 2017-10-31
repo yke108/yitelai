@@ -1,0 +1,16 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('apply_id'=>$vo[apply_id]))}" class="right-after">
+		<dl>
+			<dt><img src="__UPLOAD__/thumbs/b90/{$vo.distributor_image}"></dt>
+			<dd>
+				<h2>{$vo.distributor_name}</h2>
+				<p>订单数：<span>{$vo.order_count}</span></p>
+				<p>提现金额：<em>{$vo.money}</em></p>
+			</dd>
+			<dt>
+				<time>{:date('Y-m-d', $vo[add_time])}</time>
+				<span>{$vo.status_label}</span>
+			</dt>
+		</dl>
+	</a>
+</volist>

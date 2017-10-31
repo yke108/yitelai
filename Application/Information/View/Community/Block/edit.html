@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.block_id" value="0">修改板块<else/>添加板块</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<input type="hidden" name="block_id" value="{$info.block_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">上级板块</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="parent_id">
+							<option value="">顶级板块</option>
+							<volist name="toplist" id="vo">
+								<option {:m_selected($vo[block_id], $info[parent_id])} value="{$vo.block_id}">{$vo.name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">板块名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="name" class="input-xlarge form-control" type="text" value="{$info.name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">排序</label>
+					<div class="col-sm-2 col-md-2">
+						<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否显示</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input type="radio" name="is_show" value="1" <gt name="info.block_id" value="0">{:m_checked($info[is_show], 1)}<else/>checked="checked"</gt> />
+							是
+						</label>
+						<label class="radio-inline">
+							<input type="radio" name="is_show" value="0" <gt name="info.block_id" value="0">{:m_checked($info[is_show], 0)}</gt> />
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+
+</div>
+

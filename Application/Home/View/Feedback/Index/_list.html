@@ -1,0 +1,13 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('log_id'=>$vo[log_id]))}">
+		<h2>客户 {$vo.user_name}</h2>
+		<h2><span><img src="__PUBLIC__/home/images/icon62.png">{$vo.city|default='无'}</span><span><img src="__PUBLIC__/home/images/icon63.png">{$vo.client_label}</span><span><img src="__PUBLIC__/home/images/icon64.png">{$vo.mobile|default='无'}</span></h2>
+		<dl>
+			<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+			<dd>
+				<p>{$vo.content}</p>
+			</dd>
+		</dl>
+		<h4><span>{$vo.status_label}</span><time>{:date('Y-m-d H:i', $vo[add_time])}</time></h4>
+	</a>
+</volist>

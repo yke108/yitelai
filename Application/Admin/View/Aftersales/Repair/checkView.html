@@ -1,0 +1,82 @@
+<form name="form" method="post" class="cs_ajax_form" action="{:U('')}" onsubmit="return checkform()">
+	<div class="row">
+		<h1 class="invoice_heading" style="font-size:14px;">{$info.status_show}#维修单号：{$info.id}</h1>
+	</div>
+	<div class="row">
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>图片</th>
+						<th>商品名称</th>
+						<th>单价</th>
+						<th>数量</th>
+						<th>小计</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><img src="__UPLOAD__/{$info.item.goods_img}" height="40" /></td>
+						<td>{$info.item.goods_name}</td>
+						<td>￥{$info.item.goods_price}</td>
+						<td>{$info.item.goods_number}</td>
+						<td>￥{$info[item][goods_price] * $info[item][goods_number]}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div style="padding:5px;">
+		<table class="table">
+			<tbody>
+				<tr>
+					<td width="120">用户名：</td>
+					<td align="left">{$user.nick_name}</td>
+				</tr>
+				<tr>
+					<td width="120">维修数量：</td>
+					<td align="left">{$info.amount}</td>
+				</tr>
+				<tr>
+					<td width="120">维修货品图片：</td>
+					<td align="left">
+						<volist name="info.pictures" id="vo">
+							<a href="__UPLOAD__/{$vo}" target="_blank"><img src="__UPLOAD__/{$vo}" height="40" style="margin-left:10px" /></a>
+						</volist>
+					</td>
+				</tr>
+				<tr>
+					<td width="120">问题描述：</td>
+					<td align="left"><div style="width:750px; word-wrap:break-word;">{$info.reason}</div></td>
+				</tr>
+				<tr>
+					<td width="120">审核状态：</td>
+					<td align="left">
+						<switch name="info.status" >
+							<case value="0">
+								待审核
+							</case>
+							<case value="1">
+								审核通过<gt name="info.back_money" value="0">（退款金额：{$info.back_money}）</gt>
+							</case>
+							<case value="2">
+								审核不通过（原因：<font color="red">{$info.remark}</font>）
+							</case>
+							<case value="3">
+								维修中（快递公司：{$info.shipping_name} 物流号：<a href="http://www.kuaidi100.com/chaxun?com={$info.shipping_code}&nu={$info.shipping_no}" target="_blank">{$info.shipping_no}</a>） </case>
+							<case value="4">
+								维修不通过（原因：<font color="red">{$info.instruction}</font>）
+							</case>
+							<case value="5">
+								维修通过
+							</case>
+							<case value="6">
+								已退款（退款金额：<font color="red">{$info.back_money}</font>）
+							</case>
+						</switch>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</form>

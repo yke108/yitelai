@@ -1,0 +1,133 @@
+<div class="up_case_form">
+        	<form action="{:U('')}">
+                <div class="weui_cells weui_cells_form">
+                    <div class="weui_cell after">
+                        <div class="weui_cell_hd"><label class="weui_label">就诊时间</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" name="case_time" type="date" placeholder="--请选择就诊时间--">
+                        </div>
+                    </div>
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">年龄</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" name="age" type="number" placeholder="请输入年龄">
+                        </div>
+                    </div>
+                    <div class="weui_cell after">
+                        <div class="weui_cell_hd"><label class="weui_label">性别</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <select name="sex" class="weui_input"><option value="1">男</option><option value="2">女</option></select>
+                        </div>
+                    </div>
+                    <div class="weui_cell after">
+                        <div class="weui_cell_hd"><label class="weui_label">所属科室</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <select name="office_id" class="weui_input">
+								<option value=''>--请选择科室--</option>
+								<volist name='office_list' id='val'>	
+								<option value="{$val.office_id}">{$val.office_name}</option>
+								</volist>
+							</select>
+                        </div>
+                    </div>
+                    <div class="weui_cell after">
+                        <div class="weui_cell_hd"><label class="weui_label">病例类型</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <select name="case_type" class="weui_input">
+								<option value=''>--请选择病例类型--</option>
+								<volist name='type_list' id='val'>	
+								<option value="{$val.type_id}">{$val.type_name}</option>
+								</volist>
+							</select>
+                        </div>
+                    </div>
+                </div>
+                <ul>
+                	<li><textarea name="symptom" cols="" rows="4" placeholder="请输入病例症状"></textarea></li>
+                    <li><textarea name="measure" cols="" rows="4" placeholder="请输入解决方法"></textarea></li>
+                    <li>
+                    	<div class="weui_uploader">
+                            <div class="weui_uploader_bd">
+                                <ul class="weui_uploader_files upload_preview" id="preview"></ul>
+                                <style>
+                                    .upload_preview li{ text-align:center; line-height:77px;  border:1px solid #d9d9d9; background-color:#FFF;}
+                                    .upload_preview li img{ max-width:77px; max-height:77px; vertical-align:middle; margin-top:-4px;}
+                                </style>
+                                <div class="weui_uploader_input_wrp">
+                                    <input id="fileImage" name="fileselect[]" class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="btn"><a href="javascript:;" class="weui_btn weui_btn_primary caseadd">上传病例</a></div>
+            </form>
+        <script>
+			$(document).ready(function(){
+				$('.caseadd').bind('click', function(){
+					var form = $(this).parents('form');
+					$.post(form.attr('action'), form.serialize(), function(d){
+						layer.open({time:1,content:d.info});
+						if(d.status == 1 && d.url != undefined) window.location.href = d.url;
+					}, 'json');
+					return false;
+				})
+			});
+        </script>
+			<script src="__PUBLIC__/v8/js/zxxFile.js"></script>
+			<script>
+				var params = {
+					fileInput: $("#fileImage").get(0),
+					dragDrop: $("#fileDragArea").get(0),
+					upButton: $("#fileSubmit").get(0),
+					url: $("#uploadForm").attr("action"),
+					filter: function(files) {
+						var arrFiles = [];
+						for (var i = 0, file; file = files[i]; i++) {
+							if (file.type.indexOf("image") == 0) {
+								arrFiles.push(file);
+							} else {
+								alert('文件"' + file.name + '"不是图片。');
+							}
+						}
+						return arrFiles;
+					},
+					onSelect: function(files) {
+						var html = '', i = 0;
+						$("#preview").html('<div class="upload_loading"></div>');
+						var funAppendImage = function() {
+							file = files[i];
+							if (file) {
+								var reader = new FileReader()
+								reader.onload = function(e) {
+									html = html + '<li id="uploadList_'+ i +'" class="upload_append_list weui_uploader_file">'+
+										'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" />'+
+										'<input type="hidden" name="images[]" value="'+e.target.result+'"/>'+
+									'</li>';
+									i++;
+									funAppendImage();
+								}
+								reader.readAsDataURL(file);
+							} else {
+								$("#preview").html(html);
+								if (html) {
+									//删除方法
+									$(".upload_delete").click(function() {
+										ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+										return false;
+									});
+									//提交按钮显示
+									$("#fileSubmit").show();	
+								} else {
+									//提交按钮隐藏
+									$("#fileSubmit").hide();
+								}
+							}
+						};
+						funAppendImage();		
+					}
+				};
+				ZXXFILE = $.extend(ZXXFILE, params);
+				ZXXFILE.init();
+			</script>
+        </div>

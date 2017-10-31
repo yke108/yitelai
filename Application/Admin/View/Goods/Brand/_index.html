@@ -1,0 +1,26 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+	    <td>
+			<notempty name="vo.brand_logo">
+				<a href='__UPLOAD__/{$vo.brand_logo}' target="_blank"><img src="__UPLOAD__/{$vo.brand_logo}"  height="40" border="0"></a>
+			</notempty>
+		</td>
+		<td>{$vo.brand_name}</td>
+		<td>{$vo.cat_name}</td>
+		<td><eq name="vo.is_recommend" value="1">推荐<else/></eq></td>
+		<td><eq name="vo.is_show" value="0">不显示<else/>显示</eq></td>
+		<td>{$vo.sort_order}</td>
+		<td>{:date('Y-m-d H:i:s', $vo[add_time])}</td>
+		<td>
+			<if condition="$vo['is_recommend'] eq 1">
+				<a class='cs_ajax_link label label-success cs_flesh_page'  href="{:U('is_recommend',array('brand_id'=>$vo[brand_id]))}">是</a>			
+			<else/>
+				<a class='cs_ajax_link label label-danger cs_flesh_page' href="{:U('is_recommend',array('brand_id'=>$vo[brand_id]))}">否</a>
+			</if>
+		</td>
+		<td>
+			<a href="{:U('edit', array('brand_id'=>$vo[brand_id]))}">编辑</a>
+			<a href="{:U('del', array('brand_id'=>$vo[brand_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+		</td>
+	</tr>
+</volist>

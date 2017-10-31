@@ -1,0 +1,25 @@
+<style>
+.confirm_order_address ul li.even{margin-right:0;}
+</style>
+<div class="confirm_order_address">
+	<h2>选择收货地址</h2>
+	<empty name="address_list">
+		<p style="text-align:center;color:#999999;padding:20px;">收货地址为空，<a href="{:U('user/address/add')}" style="color:#F00">添加收货地址</a></p>
+	<else/>
+		<div class="clearfix">
+			<ul class="clearfix fl">
+				<volist name="address_list" id="vo">
+					<li class="<eq name="vo.is_default" value="1">on</eq> <if condition='$i%2 eq 0'>even</if>" address_id="{$vo.address_id}">
+						<i>默认地址</i>
+						<p><span>{$vo.zone} </span><em>（{$vo.consignee} 收）</em></p>
+						<p>{$vo.address}<font>{$vo.mobile}</font></p>
+						<p class="change"><a href="javascript:;" onclick='add_address("edit",{$vo.address_id})' class="add_address_btn">修改</a></p>
+					</li>
+				</volist>
+				<div class="fl" style="font-size:14px; background:url(__PUBLIC__/main/images/icon97.png) no-repeat; width:260px; height:106px; text-align:center;"><a href="javascript:;" onclick='add_address("add")' style="display:block;" class="add_address_btn"><b style="display:block; color:#999; font-size:30px; margin-top:15px;">+</b>添加收货地址</a></div>
+			</ul>
+			
+		</div>
+		<div class="more_address" style="margin-top:10px;"><!--<a href="javascript:;" class="all_address">显示全部地址</a>--><!--<a href="{:U('user/address/index')}" class="fr">管理收货地址</a>--></div>
+	</empty>
+</div>

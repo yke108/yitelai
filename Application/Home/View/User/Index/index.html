@@ -1,0 +1,295 @@
+<form action="{:U('')}" style="position:absolute; top:0; left:0; width:100%;">
+	<div class="mui-input-row mui-search" style="margin:10px; padding:0;">
+		<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="请输入会员名称/手机号码搜索">
+	</div>
+</form>
+<style>
+	.mui-search .mui-placeholder{ border-radius:20px;}
+	.mui-input-row.mui-search.mui-active:before{ top:50%; margin-top:-11px;}
+	.mui-search input[type=search]{ border-radius:20px;}
+</style>
+
+<div class="client_management mui-scroll-wrapper" id="pullrefresh" style="top:54px;">
+	<div class="mui-scroll">
+		<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+		<!--<div class="account_details_hd">
+			<form action="{:U('')}">
+				<div class="mui-input-row mui-search">
+					<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="请输入会员名称/手机号码搜索">
+				</div>
+			</form>
+		</div>-->
+		<empty name="list">
+			<p style="text-align:center;color:#999999;padding:20px;">暂无客户</p>
+		<else/>
+			<div class="client_management_list">
+				<div class="div">
+					<include file="User/Index/_index"/>
+				</div>
+			</div>
+		</empty>
+	</div>
+	<purview name="add">
+		<div class="client_management_btn btn"><a href="{:U('add')}" class="mui-btn mui-btn-block mui-btn-primary link">新增客户</a></div>
+	</purview>
+</div>
+
+<div class="filter_pop">
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<form action="{:U('')}">
+				<input type="hidden" name="city" value="{$get.city}" />
+				<input type="hidden" name="from" value="{$get.from}" />
+				<input type="hidden" name="brand_id" value="{$get.brand_id}" />
+				<input type="hidden" name="store_id" value="{$get.store_id}" />
+				<ul>
+					<notempty name="city_list">
+						<li>
+							<h2><a href="javascript:;" class="right-after">城市</a></h2>
+							<div class="material_sort_list">
+								<input name="" value="" type="search" placeholder="请输入关键字搜索" id="search_city">
+								<div class="material_sort_list_sub" id="city_list">
+									<include file="User/Index/_city_list"/>
+								</div>
+							</div>
+						</li>
+					</notempty>
+					<li>
+						<h2><a href="javascript:;" class="right-after">来源</a></h2>
+						<div class="material_sort_list">
+							<a href="{:U('', array('city'=>$get[city], 'store_id'=>$get[store_id]))}" class="link <if condition="$get[from] eq ''">on</if>">全部</a>
+							<foreach name="from_list" item="vo" key="ko">
+								<a href="{:U('', array('from'=>$ko, 'city'=>$get[city], 'store_id'=>$get[store_id]))}" class="link <if condition="$ko eq $get[from]">on</if>">{$vo}</a>
+							</foreach>
+						</div>
+					</li>
+					<li>
+						<h2><a href="javascript:;" class="right-after">品牌</a></h2>
+						<div class="material_sort_list">
+							<input name="" value="" type="search" placeholder="请输入关键字搜索" id="search_brand">
+							<div class="material_sort_list_sub" id="brand_list">
+								<include file="User/Index/_brand_list"/>
+							</div>
+						</div>
+					</li>
+					<notempty name="distributor_list">
+						<li>
+							<h2><a href="javascript:;" class="right-after">店铺</a></h2>
+							<div class="material_sort_list">
+								<input name="" value="" type="search" placeholder="请输入关键字搜索" id="search_store">
+								<div class="material_sort_list_sub" id="store_list">
+									<include file="User/Index/_distributor_list"/>
+								</div>
+							</div>
+						</li>
+					</notempty>
+					<li>
+						<h2><a href="javascript:;" class="right-after">时间</a></h2>
+						<div class="material_sort_list">
+							<input name="start_time" value="{$get.start_time}" type="text" readonly="readonly" class="time" placeholder="开始时间" data-options='{}'>
+							<input name="end_time" value="{$get.end_time}" type="text" readonly="readonly" class="time" placeholder="结束时间" data-options='{}'>
+						</div>
+					</li>
+				</ul>
+				<div class="btn">
+					<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+					<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="mask" id="cloase_pop"></div>
+
+<style type="text/css">
+.client_management_btn{z-index:9999;}
+.material_sort_list input{ width:100%; margin-bottom:10px; background:#e0e0e0; font-size:14px; height:37px; padding:0 10px;}
+.filter_pop .btn{display:-webkit-box; display:-webkit-flex; display:flex;-webkit-box-align:center; -webkit-align-items:center; align-items:center; border-bottom:solid 1px #E4E4E4;}
+.filter_pop .btn a{ border-radius:0; font-size:15px;  -webkit-box-flex:1; -webkit-flex:1; flex:1; }
+.filter_pop .btn a.mui-btn-default{ background:none; border:none;}
+.filter_pop ul li .material_sort_list a.on{background:#21a3ff; color:#fff;}
+.material_sort_list_sub{display:-webkit-box; display:-webkit-flex; display:flex;-webkit-box-align:center; -webkit-align-items:center; align-items:center; flex-wrap:wrap;justify-content: space-between; width:100%;}
+.material_sort_list_sub a{ width:48%; background:#e0e0e0; white-space:nowrap; text-align:center; border-radius:5px; font-size:13px; padding:10px 0; margin-bottom:15px;}
+.material_sort_list_sub a.on{ background:#21a3ff; color:#fff;}
+.mui-pull-bottom-pocket{bottom:44px;}
+</style>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+</script>
+
+<script>
+	mui.init();
+	
+	mui('body').on('tap', 'a.link', function() {
+		var href = this.getAttribute('href');
+		//非plus环境，直接走href跳转
+		if(!mui.os.plus){
+			location.href = href;
+			return;
+		}
+	});
+	
+	//(function($) {
+//		//阻尼系数
+//		var deceleration = mui.os.ios?0.003:0.0009;
+//		$('.mui-scroll-wrapper').scroll({
+//			bounce: true,
+//			indicators: true, //是否显示滚动条
+//			deceleration:deceleration
+//		});
+//	})(mui);
+	
+	mui(".filter_pop ul li h2").on("tap","a",function(){
+		if($(this).hasClass("on")){
+			$(this).removeClass("on")
+			$(this).parent().siblings(".material_sort_list").css({"display":"none"})
+		}else{
+			$(this).addClass("on")
+			$(this).parent().siblings(".material_sort_list").css({"display":"flex"})
+		}
+	})
+	
+	document.getElementById("click").addEventListener("tap",function(event){
+	   $(".filter_pop").addClass("show")
+	   $(".mask").fadeIn()
+	})
+	
+	document.getElementById("cloase_pop").addEventListener("tap",function(event){
+	   $(".filter_pop").removeClass("show")
+	   $(".mask").fadeOut()
+	})
+	
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var keyword = "{$get.keyword}";
+		var city = "{$get.city}";
+		var from = "{$get.from}";
+		var brand_id = "{$get.brand_id}";
+		var store_id = "{$get.store_id}";
+		var start_time = "{$get.start_time}";
+		var end_time = "{$get.end_time}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, keyword:keyword, city:city, from:from, brand_id:brand_id, store_id:store_id, start_time:start_time, end_time:end_time},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$("#pullrefresh .mui-scroll .div").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	//$(".filter_pop").addClass("show")
+	//$(".mask").fadeIn()
+	$(".filter_pop").toggleClass("show")	
+	$(".mask").fadeToggle()
+}
+
+$('#search_city').keyup(function(){
+	var keyword = $(this).val();
+	$.post("{:U('search_city')}", {keyword:keyword}, function(d){
+		$('#city_list').html(d.html);
+	}, 'json');
+});
+
+$('#search_brand').keyup(function(){
+	var keyword = $(this).val();
+	$.post("{:U('search_brand')}", {keyword:keyword}, function(d){
+		$('#brand_list').html(d.html);
+	}, 'json');
+});
+
+$('#search_store').keyup(function(){
+	var keyword = $(this).val();
+	$.post("{:U('search_store')}", {keyword:keyword}, function(d){
+		$('#store_list').html(d.html);
+	}, 'json');
+});
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_pop ul li a").removeClass("on")
+	//$(this).parents('form').find(":input").val('')
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+
+$(document).ready(function(){
+	$('.mask').click(function(){
+		$(".filter_new_pop").removeClass("on")
+		$(".mask").fadeOut()
+	});
+});
+</script>

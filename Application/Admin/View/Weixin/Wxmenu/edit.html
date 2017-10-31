@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">菜单详情</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<fieldset>
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab1" data-toggle="tab">基本信息</a></li>
+				</ul>
+				<div class="tab-content" id="cs-tab-content" style='position:relative;'>
+					<div class="tab-pane active" id="tab1">
+						<div class="form-group">
+							<label class="control-label col-sm-2">菜单名称</label>
+							<div class="col-sm-4">
+								<input name="menu_name" class="input-xlarge form-control" type="text"  value="{$info['menu_name']}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">所属菜单</label>
+							<div class="col-sm-4">
+								<select class="form-control" id="menu_pid" name="menu_pid">
+									<option {:m_selected($info[menu_pid],0)} value="0">一级栏目</option>
+									<volist name="menu" id="vo">
+										<option {:m_selected($vo[menu_id],$info[menu_pid])} value="{$vo.menu_id}">{$vo.menu_name}</option>
+									</volist>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">菜单类型</label>
+							<div class="col-sm-4">
+								<select class="form-control" id="menu_type" name="menu_type">
+									<option {:m_selected($info[menu_type],1)} value="1">按钮</option>
+									<option {:m_selected($info[menu_type],2)} value="2">链接</option>
+									<option {:m_selected($info[menu_type],3)} value="3">地理位置</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">菜单值</label>
+							<div class="col-sm-4">
+								<input name="menu_value"  class="input-xlarge form-control" type="text" value="{$info['menu_value']}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">排序</label>
+							<div class="col-sm-4">
+								<input name="menu_sort" class="input-xlarge form-control" type="text" value="{$info.menu_sort|default=50}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">状态</label>
+							<div class="col-sm-4">
+								<label class="checkbox-inline">
+									<input value="1" <gt name="info.menu_id" value="0">{:m_checked($info[menu_status],1)}<else/>checked='checked'</gt> name="menu_status" type="checkbox">启用
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="menu_id" value="{$info.menu_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<p>1、自定义菜单最多包括3个一级菜单，每个一级菜单最多包含5个二级菜单。</p>
+<p>2、一级菜单最多4个汉字，二级菜单最多7个汉字，多出来的部分将会以"..."代替。</p>
+<p>3、创建自定义菜单后，由于微信客户端缓存，需要24小时微信客户端才会展现出来。测试时可以尝试取消关注公众账号后再次关注，则可以看到创建后的效果。</p>

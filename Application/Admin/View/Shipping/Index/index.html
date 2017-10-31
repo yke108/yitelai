@@ -1,0 +1,45 @@
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">配送方式
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加配送方式</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>配送方式名称</th>
+							<th>快递公司</th>
+							<th width="300">描述</th>
+							<th>状态</th>
+							<th>排序</th>
+							<th class="center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblc">
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.shipping_name}</td>
+								<td>{$shipping_code_list[$vo[shipping_code]]}</td>
+								<td>{$vo.shipping_desc}</td>
+								<td>
+									<eq name="vo.enabled" value="1"> 
+										<span class="label label-success">启用</span> 
+									<else /> 
+										<span class="label label-danger">禁用</span>
+									</eq>
+								</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<a href="{:U('edit', array('shipping_id'=>$vo[shipping_id]))}">编辑</a>
+									<a href="{:U('del', array('shipping_id'=>$vo[shipping_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a></td>
+							</tr>
+						</volist>
+					</tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

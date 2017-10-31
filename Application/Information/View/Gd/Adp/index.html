@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">广告位
+			<!--<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加广告位</a>-->
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered dTableR" id="dt_a">
+                    <thead>
+                        <tr>
+							<th>广告位名称</th>
+							<th>广告位编码</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.position_name}</td>
+								<td>{$vo.position_code}</td>
+								<td>
+									<a href="{:U('ad/index/index', array('position_code'=>$vo[position_code]))}">广告管理</a>
+									<!--<a href="{:U('edit', array('position_id'=>$vo[position_id]))}">编辑</a>
+									<a href="{:U('del', array('position_id'=>$vo[position_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>-->
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

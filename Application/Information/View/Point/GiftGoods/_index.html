@@ -1,0 +1,18 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td><img src="__UPLOAD__/{$vo.picture}" height="32" /></td>
+    	<td>{$vo.name}</td>
+		<td>{$vo.point}</td>
+        <td><font style='color:#ff0000;'><if condition="$vo.stock eq 0">库存不足<else/>{$vo.stock}</if></font></td>
+		<td align='center'>{$vo.sort_order}</td>
+		<td>{:date('Y-m-d H:i:s',$vo[add_time])}</td>
+		<td>{:date('Y-m-d H:i:s',$vo[start_time])}</td>
+		<td>{:date('Y-m-d H:i:s',$vo[end_time])}</td>
+		<td align='center' valign='middle'>
+        	<!--<a href="javascript:;" onclick='add_stock()'>添加库存</a> -->
+        	<a href="{:U('edit',array('id'=>$vo['id']))}">编辑</a>
+            <a href="javascript:if(window.confirm('确定要删除该礼品'))window.location='{:U('del',array('id'=>$vo['id']))}';">删除</a>
+        </td>
+        <!--<td><span title='{$vo.content}'>{$vo.content|msubstr=0,15}</span></td>-->
+	</tr>
+</volist>

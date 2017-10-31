@@ -1,0 +1,152 @@
+<include file="Public/header"/>
+
+<div class="page_main w1200">
+	<div class="position">当前位置：<a href="{:U('index/index')}">首页</a> > <a href="{:U('')}">素材库</a> > {$cat.cat_name|default='全部素材'}</div>
+	<div class="page_main_sort">
+		<ol class="clearfix">
+			<li class="<empty name="get.id">on</empty>"><a href="{:U('index/index/list', array('is_free'=>$get[is_free], 'sort_order'=>$get[sort_order]))}">全部</a></li>
+			<volist name="cat_list" id="vo">
+				<li <if condition="$vo[cat_id] eq $parent[cat_id]">class="on"</if>><a href="{:U('', array('id'=>$vo[cat_id], 'is_free'=>$get[is_free], 'sort_order'=>$get[sort_order]))}">{$vo.cat_name}</a></li>
+			</volist>
+		</ol>
+		<ul>
+			<li class="clearfix">
+				<span>分类：</span>
+				<em>
+					<a href="{:U('', array('id'=>$parent[cat_id], 'is_free'=>$get[is_free], 'sort_order'=>$get[sort_order]))}" <eq name="cat.parent_id" value="0">class="on"</eq>>全部<font>({$parent.material_count|default=$material_count})</font></a>
+					<empty name="cat">
+						<volist name="cat_list" id="vo">
+							<volist name="vo.children" id="vo2">
+								<a href="{:U('', array('id'=>$vo2[cat_id], 'is_free'=>$get[is_free], 'sort_order'=>$get[sort_order]))}">{$vo2.cat_name}<font>({$vo2.material_count})</font></a>
+							</volist>
+						</volist>
+					<else/>
+						<volist name="sub_list" id="vo">
+							<a href="{:U('', array('id'=>$vo[cat_id], 'is_free'=>$get[is_free], 'sort_order'=>$get[sort_order]))}" <if condition="$vo[cat_id] eq $cat[cat_id]">class="on"</if>>{$vo.cat_name}<font>({$vo.material_count})</font></a>
+						</volist>
+					</empty>
+				</em>
+			</li>
+			<li class="clearfix">
+				<span>筛选：</span>
+				<em>
+					<a href="{:U('', array('id'=>$get[id], 'filter_attr'=>$get[filter_attr], 'sort_order'=>$get[sort_order]))}" <notpresent name="get.is_free">class="on"</notpresent>>全部</a>
+					<a href="{:U('', array('id'=>$get[id], 'is_free'=>1, 'filter_attr'=>$get[filter_attr], 'sort_order'=>$get[sort_order]))}" <eq name="get.is_free" value="1">class="on"</eq>>免费</a>
+					<a href="{:U('', array('id'=>$get[id], 'is_free'=>0, 'filter_attr'=>$get[filter_attr], 'sort_order'=>$get[sort_order]))}" <eq name="get.is_free" value="0">class="on"</eq>>积分</a>
+				</em>
+			</li>
+			<volist name="filter_attr_list" id="vo">
+				<li class="clearfix">
+					<span>{$vo.attr_value}：</span>
+					<em>
+						<volist name="vo.attr_list" id="vo2">
+							<a href="{$vo2.url}" <eq name="vo2.selected" value="1">class="on"</eq>>{$vo2.attr_value}</a>
+						</volist>
+					</em>
+				</li>
+			</volist>
+			<li class="clearfix">
+				<span>排序：</span>
+				<em>
+					<a href="{:U('', array('id'=>$get[id], 'is_free'=>$get[is_free], 'filter_attr'=>$get[filter_attr]))}" <empty name="get.sort_order">class="on"</empty>><i class="i1"></i>上传时间</a>
+					<a href="{:U('', array('id'=>$get[id], 'is_free'=>$get[is_free], 'filter_attr'=>$get[filter_attr], 'sort_order'=>'down'))}" <eq name="get.sort_order" value="down">class="on"</eq>><i class="i2"></i>下载数量</a>
+					<a href="{:U('', array('id'=>$get[id], 'is_free'=>$get[is_free], 'filter_attr'=>$get[filter_attr], 'sort_order'=>'collect'))}" <eq name="get.sort_order" value="collect">class="on"</eq>><i class="i3"></i>收藏最多</a>
+				</em>
+			</li>
+		</ul>
+	</div>
+	<div class="page_main_list">
+		<ul class="clearfix">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<volist name="list" id="vo">
+					<li>
+						<div class="down_btn">
+							<eq name="vo.is_collect" value="1">
+								<a href="{:U('uncollect', array('id'=>$vo[material_id]))}" class="down_btn1">已收藏</a>
+							<else/>
+								<a href="{:U('collect', array('id'=>$vo[material_id]))}" class="down_btn1">收藏</a>
+							</eq>
+							<a href="{:U('downcheck', array('id'=>$vo[material_id]))}" target="_blank" class="down_btn2">下载</a>
+							<!--<a href="{:U('info', array('id'=>$vo[material_id]))}" target="_blank" class="down_btn2">下载</a>-->
+						</div>
+						<div class="down_img"><a href="{:U('info', array('id'=>$vo[material_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/w230h240/{$vo.material_image}"></a></div>
+						<div class="down_tit">{$vo.material_title}</div>
+						<div class="down_need">
+							<span>所需积分：<font>{$vo.down_points}</font></span>
+							<em><i><img src="__PUBLIC__/material/images/icon13.png"><span class="down_count">{$vo.down_count}</span></i><i><img  src="__PUBLIC__/material/images/icon14.png"><span class="collect_count">{$vo.collect_count}</span></i></em>                    	
+						</div>
+						<div class="down_name"><a href="javascript:;">{$vo.designer_name}<img src="__UPLOAD__/thumbs/b90/{$vo.designer_image}"></a></div>
+					</li>
+				</volist>
+			</empty>
+		</ul>
+		<div class="page_pages">{$pages}</div>
+	</div>
+</div>
+
+<include file="Public/footer"/>
+
+<!---下载弹窗--->
+<div class="down_pop">
+	<i><img src="__PUBLIC__/material/images/icon18.png"></i>
+	<h2>下载选项</h2>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="file_list">
+		
+	</table>
+</div>
+<div class="mask"></div>
+
+<style type="text/css">
+.page_main_sort ul li span{margin-top:10px;}
+</style>
+
+<script>
+	$(function(){
+		$(".down_btn1").click(function(){
+			var obj = $(this);
+			$.post(obj.attr('href'), {}, function(d){
+				layer.open({time:1,content:d.info});
+				if(d.status == 1){
+					obj.html(d.collect_text);
+					obj.attr('href', d.url);
+					obj.parents('li').find('.collect_count').html(d.collect_count);
+				}
+			}, 'json');
+			return false;
+		})
+		
+		/*$(".down_btn2").click(function(){
+			var obj = $(this);
+			w = window.open("","")
+			$.post(obj.attr('href'), {}, function(d){
+				if(d.status == 1){
+					obj.parents('li').find('.down_count').html(d.down_count);
+					w.location = d.url;
+				}else{
+					w.close();
+					layer.open({time:1,content:d.info});
+				}
+			}, 'json');
+			return false;
+		})*/
+		
+		$(".down_btn2").click(function(){
+			var obj = $(this);
+			$.post(obj.attr('href'), {}, function(d){
+				if(d.status == 1){
+					$('#file_list').html(d.html);
+					$(".down_pop").show()	
+					$(".mask").show()
+				}else{
+					layer.open({time:1,content:d.info});
+					if(d.url){
+						window.location.href = d.url
+					}
+				}
+			}, 'json');
+			return false;
+		})
+	})
+</script>

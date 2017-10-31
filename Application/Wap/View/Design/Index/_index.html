@@ -1,0 +1,22 @@
+<volist name='list' id='val'>
+<a class="weui-cell" href="{:U('info',array('id'=>$val['designer_id']))}">
+	<div class="weui-cell__hd"><img src="<if condition='$val.designer_image eq ""'>__PUBLIC__/wap/images/user_default_img.jpg<else/>__UPLOAD__/thumbs/b120/{$val.designer_image}</if>" alt="" ></div>
+	<div class="weui-cell__bd">
+		<h2>{$val.designer_name}</h2>
+		<h3>
+			<if condition="$val.is_famous eq 1">
+			<span>f 知名</span>
+			</if>
+			<if condition="$val.is_authentication eq 1">
+			<em>V 认证</em>
+			</if>
+		</h3>
+		<p>{$val.region}</p>
+		<p><font>预约数 {$val.bespoke_count|default=0}</font><font>作品 {$val.case_count}</font></p>
+	</div>
+	<div class="weui-cell__ft">
+		<p><span>{$val.charge_name}</span></p>
+		<!--<p>元/m2</p>-->
+	</div>
+</a>
+</volist>

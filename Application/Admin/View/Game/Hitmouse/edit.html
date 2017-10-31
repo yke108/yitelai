@@ -1,0 +1,56 @@
+<style>
+.red{color:#ff0000;}
+.self_label{display:inline-block;margin-right:17px;margin-bottom:11px;}
+</style>
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">积分<if condition="$Think.const.ACTION_NAME eq 'reduct'">赠送<else/>扣除</if></h3>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">积分</label>
+						<div class="col-sm-3">
+							<input name="point" class="input-xlarge form-control" placeholder="请输入积分" type="text" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">会员</label>
+						<div class="col-sm-3">
+							<input name="menu_name" class="input-xlarge form-control cs_ajax_link hy_show_modal user_name_box" href='{:U("select_user")}' placeholder="点击选择会员" type="text" value="{$info.menu_name}">
+							<input type='hidden' name='user_id' class='user_id_box' value='' />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+
+<script type="text/javascript">
+function purviewgroupchk(obj){
+	var prt = $(obj).parents('.purviewwrap');
+	var chk = prt.find('input.purview').length == prt.find('input.purview:checked').length;
+	var grp = prt.find('.purviewgroup');
+	if(chk) grp.attr('checked', 'checked');
+	else grp.removeAttr('checked');
+}
+$('.purviewgroup').each(function(){
+	purviewgroupchk(this);
+	$(this).bind('click', function(){
+		var obj = $(this);
+		var pls = obj.parents('.purviewwrap').find('.purview');
+		if(obj.is(':checked')) pls.attr('checked', 'checked');
+		else pls.removeAttr('checked');
+	});
+});
+$('.purview').bind('click', function(){
+	purviewgroupchk(this);
+});
+</script>
+	

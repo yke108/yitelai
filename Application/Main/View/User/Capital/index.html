@@ -1,0 +1,84 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的资产开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我的资产</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_assets">
+				<div class="tabmenu">
+					<span>
+                    	<eq name="user.user_type" value="2">
+                        <a href="{:U('user/capital/cash')}" class="ncm-btn ncm-btn-red" style="margin-right:15px;"><img src="__PUBLIC__/main/images/icon55.png">申请提现</a>
+                      	</eq>
+                        <a href="{:U('user/recharge/index')}" class="ncm-btn ncm-btn-orange"><img src="__PUBLIC__/main/images/icon55.png">在线充值</a>
+                    </span>
+					<ul class="tab pngFix">
+						<li class="on"><a href="{:U('user/capital/index')}">资金明细</a></li>
+						<eq name="user.user_type" value="2">
+							<li><a href="{:U('user/capital/comission')}">获得分利</a></li>
+                            <li><a href="{:U('user/capital/cashapply')}">提现记录</a></li>
+						</eq>
+					</ul>
+				</div>
+				<div class="alert">
+					<span class="mr30">可用金额：<strong class="mr5 red" style="font-size: 18px;">{$user.user_money}</strong>元</span>
+					<span class="mr30">冻结金额：<strong class="mr5 red" style="font-size: 18px;">{$user.frozen_money}</strong>元</span>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th>时间</th>
+						<th>支出/收入(元)</th>
+						<th>变更说明</th>
+					</tr>
+					<volist name="list" id="vo">
+						<tr>
+							<td align="center">{$vo.change_time|date="Y-m-d H:i:s",###}</td>
+							<td align="center">
+								<switch name="vo.change_type" >
+									<case value="10"><em>{$vo.amount_change}</em></case>
+									<case value="11"><em>+{$vo.amount_change}</em></case>
+									<case value="12"><em>{$vo.amount_change}</em></case>
+									<case value="13"><em>+{$vo.amount_change}</em></case>
+									<case value="14"><em>+{$vo.amount_change}</em></case>
+									<case value="15"><em>+{$vo.amount_change}</em></case>
+									<case value="16"><em>+{$vo.amount_change}</em></case>
+									<case value="17"><em>+{$vo.amount_change}</em></case>
+									<case value="18"><em>{$vo.amount_change}</em></case>
+									<case value="19"><em>+{$vo.amount_change}</em></case>
+									<case value="20"><em>{$vo.amount_change}</em></case>
+									<case value="21"><em>{$vo.amount_change}</em></case>
+								</switch>
+							</td>
+							<td align="center">
+								<switch name="vo.change_type" >
+									<case value="10"></case>
+									<case value="11"><!--{$vo.ref_user}购买商品--></case>
+									<case value="12"></case>
+									<case value="13"></case>
+									<case value="14"></case>
+								</switch>
+								{$vo.change_desc}
+							</td>
+						</tr>
+					</volist>
+				</table>
+				<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的资产结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

@@ -1,0 +1,56 @@
+<div class="warp">
+	<style>
+		body{ background:#F3F3F3;}
+	</style>
+	<div class="integral_shop_deta mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<div class="integral_shop_deta_hd">
+				<h1><img src="__UPLOAD__/{$info.picture}"></h1>
+				<div class="shop_deta_hd_info">
+					<h2><span>{$info.name}</span><em>剩余:{$info.stock|default=0}</em></h2>
+					<h3><b>{$info.point}</b>积分</h3>
+					<p>我的积分<span>{$user.pay_points}</span></p>
+				</div>
+			</div>
+			<div class="integral_shop_deta_bd">
+				<h2>收货地址</h2>
+				<empty name="address">
+					<a href="{:U('user/address/add')}" class="right-after" style="text-align:center">
+						<h3>添加新地址</h3>
+					</a>
+				<else/>
+					<a href="{:U('user/address')}" class="right-after">
+						<h3><span>{$address.consignee}</span><em>{$address.mobile}</em></h3>
+						<p>{$address.zone} {$address.address}</p>
+					</a>
+				</empty>
+			</div>
+		</div>
+	</div>
+	<div class="integral_shop_deta_btn btn"><a href="{:U('add_gift_order', array('gift_id'=>$info[id], 'address_id'=>$address[address_id]))}" class="mui-btn mui-btn-primary mui-btn-block">立即兑换</a></div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+	
+	mui(".integral_shop_deta_btn").on('tap','a',function(){
+		var obj = $(this);
+		$.post(obj.attr('href'), {}, function(d){
+			mui.toast(d.msg);
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+</script>

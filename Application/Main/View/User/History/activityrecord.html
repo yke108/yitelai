@@ -1,0 +1,81 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+<script>
+	$(function(){
+		//内页分类
+		$(".sort_list").hide();
+		$(".hd_menu_l").hover(function(){
+			$(this).find(".sort_list").toggle()	
+		})
+	})
+</script>
+<!-------建议投诉----->
+<div class="main w1200">
+	<div class="site_position">
+		<a href="{:U('index/index/index')}">首页</a><span>></span>
+		<a href="{:U('user/index/index')}">会员中心</a><span>></span>{$user_title}
+	</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_comment">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">{$user_title}</a></li>
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr style="font-size: 14px;">
+							<th align="left">活动标题</th>
+							<th width="120">姓名</th>
+							<th width="120">联系电话</th>
+							<th width="120">添加时间</th>
+						</tr>
+						<volist name="list" id="vo">
+							<tr style="font-size: 12px;">
+								<td align="left">{$vo.activity_title}</td>
+								<td align="center">{$vo.name}</td>
+								<td align="center">{$vo.mobile}</td>
+								<td align="center">{$vo.inputtime}</td>
+							</tr>
+						</volist>
+					</table>
+					<div class="pages1">{$pages}</div>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------建议投诉----->
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".commentdel").click(function(){
+		var url = $(this).attr('href');
+		layer.open({
+			content: '确定删除吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(url, {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						window.location.reload();
+					}
+				}, 'json');
+				return false;
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+});
+</script>

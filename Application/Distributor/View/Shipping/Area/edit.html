@@ -1,0 +1,118 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.shipping_area_id" value="0">修改配送区域<else/>添加配送区域</gt>
+			<a href="{:U('index')}" class="btn btn-info btn-sm alink_r cs_ajax_link">返回</a>
+		</h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}">
+			<fieldset>
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">模板名称</label>
+					<div class="col-sm-5">
+						<input name="shipping_area_name" class="input-xlarge form-control" type="text" value="{$info.shipping_area_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">计费模式</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="0" name="fee_mode" <gt name="info.shipping_area_id" value="0">{:m_checked($info[fee_mode],0)}<else/>checked="checked"</gt> type="radio">
+							按重量计
+						</label>
+						<label class="radio-inline">
+							<input value="1" name="fee_mode" <gt name="info.shipping_area_id" value="0">{:m_checked($info[fee_mode],1)}</gt> type="radio">
+							按件计
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">
+						<span class="">首重量</span>
+					</label>
+					<div class="col-sm-3">
+						<input name="item_value" class="input-xlarge form-control" type="text"
+						value="{$info[item_value]}">
+					</div>
+					<div class="col-sm-3" style="padding:7px 0;">kg</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">
+						<span class="">首重费用</span>
+					</label>
+					<div class="col-sm-3">
+						<input name="item_fee" class="input-xlarge form-control" type="text"
+						value="{$info[item_fee]}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">
+						<span class="">续重量</span>
+					</label>
+					<div class="col-sm-3">
+						<input name="step_value" class="input-xlarge form-control" type="text"
+						value="{$info[step_value]}">
+					</div>
+					<div class="col-sm-3" style="padding:7px 0;">kg</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">
+						<span class="">续重费用</span>
+					</label>
+					<div class="col-sm-3">
+						<input name="step_fee" class="input-xlarge form-control" type="text"
+						value="{$info[step_fee]}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">
+						<span class="">免邮的最小订单金额</span>
+					</label>
+					<div class="col-sm-3">
+						<input name="free_shipping" class="input-xlarge form-control" type="text"
+						value="{$info[free_shipping]}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">是否开启</label>
+					<div class="col-sm-8">
+						<label class="radio-inline">
+							<input value="1" name="status" <gt name="info.shipping_area_id" value="0">{:m_checked($info[status],1)}<else/>checked="checked"</gt> type="radio">
+							是
+						</label>
+						<label class="radio-inline">
+							<input value="0" name="status" <gt name="info.shipping_area_id" value="0">{:m_checked($info[status],0)}</gt> type="radio">
+							否
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">配送区域</label>
+					<div class="col-sm-9">
+						<div class="col-sm-10">
+							<?php $area_array = explode(',', $info['region_code_list']);?>
+							<foreach name="province_list" key="kp" item="vp">
+								<label style='display:inline-block;width:130px;'>
+									<input {:m_checked($kp, $area_array)} type="checkbox" name="region_code_list[]" value="{$kp}">{$vp}
+								</label>
+							</foreach>
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="shipping_area_id" value="{$info.shipping_area_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

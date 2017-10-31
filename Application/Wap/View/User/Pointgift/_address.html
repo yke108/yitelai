@@ -1,0 +1,40 @@
+<div class="add_address_pop ">
+	<form action="{:U('user/address/add')}" onSubmit="">
+		<h2><a href="javascript:;" onclick='close_address()' class="fr">X</a>新增地址</h2>
+		<ul>
+			<li><span>收件人：</span><input name="consignee" value="{$info.consignee}" id="consignee" type="text"></li>
+			<li>
+				<span>地址：</span>
+				<input type="hidden" value="0" class="region_sel"/>
+				<select name="province" id='province_show' onchange='change_region(this,"city_show")'>
+					<option value='0'>省</option>
+					<foreach name='province' key='key' item='val'>
+					<option <if condition="$province_code eq $key">selected='selected'</if> value='{$key}'>{$val}</option>
+					</foreach>
+				</select>
+				<select name="city" id='city_show' onchange='change_region(this,"district_show")'>
+					<option value='0'>市</option>
+					<foreach name='city' key='key' item='val'>
+					<option <if condition="$city_code eq $key">selected='selected'</if> value='{$key}'>{$val}</option>
+					</foreach>
+				</select>
+				<select name="district_show" id='district_show'>
+					<option>区/县</option>
+					<foreach name='district' key='key' item='val'>
+					<option <if condition="$info[region_code] eq $key">selected='selected'</if> value='{$key}'>{$val}</option>
+					</foreach>
+				</select>
+			</li>
+			<li><span>详细地址：</span><input name="address" id="address" value="{$info.address}" type="text"></li>
+			<li><span>邮编：</span><input name="zipcode" value="{$info.zipcode}" id="zipcode" type="text"></li>
+			<li><span>联系电话：</span><input name="mobile" value="{$info.mobile}" id="mobile" type="text"></li>
+			<li><span>&nbsp;</span><label><input id='is_default' name="" type="checkbox" value="1"  <if condition="$info.is_default eq 1">checked="checked"</if> >设为默认地址</label></li>
+			<li>
+				<button type="button" id="btn_submit">保存收货信息</button>
+				<input type="hidden" name="id" value="{$info.address_id}" id="address_id" />
+				<!--<input type="hidden" name="is_default" value="1" id="is_default" />-->
+			</li>
+		</ul>
+	</form>
+</div>
+

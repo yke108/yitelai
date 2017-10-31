@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">查看消息</h3>
+		<form class="form-horizontal" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">推送类型</label>
+					<label class="control-label" style="float:left"><eq name="info.type" value="1">私信<else/>公开消息</eq></label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">消息主题</label>
+					<label class="control-label" style="float:left">{$info.title}</label>
+				</div>
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">分类</label>
+					<label class="control-label" style="float:left">{$info.cat_name}</label>
+				</div>-->
+				<div class="form-group">
+					<label class="control-label col-sm-1">发送人</label>
+					<label class="control-label" style="float:left">{$info.admin_name}</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">详细内容</label>
+					<label class="control-label" style="float:left">{$info.content}</label>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

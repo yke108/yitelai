@@ -1,0 +1,40 @@
+<div class="shop">
+        	<header>
+            	<!--<div class="logo"><a href="#"><img src="__PUBLIC__/v8/images/logo.png"></a></div>-->
+                <div class="search"><a href="#"><img src="__PUBLIC__/v8/images/icon13.png">搜索</a></div>
+            </header>
+        </div>
+        
+        <div class="sort_l">
+        	<ul>
+        		<!--<php>$cls=1==$get['spec']?'on':'';</php>
+            	<li><a class="{$cls}" href="{:U('mall/category/index', array('spec'=>1))}">秒杀</a></li>-->
+            	<volist name="tclist" id="vo">
+            		<php>$cls=$vo['cat_id']==$get['cat_id']?'on':'';</php>
+                    <li><a class="{$cls}" href="{:U('mall/category/index', array('cat_id'=>$vo[cat_id]))}">{$vo.cat_name}</a></li>
+                </volist>
+            </ul>
+        </div>
+        
+        <div class="sort_r">
+        	<volist name="list" id="vo">
+        	<a href="{:U('mall/goods/info', array('id'=>$vo['goods_id']))}">
+            	<dl>
+                	<dt>
+                		<notempty name="vo.GoodsImage">
+                           	<img src="__UPLOAD__/thumbs/b120/{$vo.product.product_image}">
+                         <else/>
+                           	<img src="__PUBLIC__/v8/pic3.jpg">
+                         </notempty>
+                	</dt>
+                    <dd>
+                    	<h2>{$vo.product.product_name}</h2>
+                        <p><!--<span>评论 {$vo.comment_count}条</span>--><em>月销 {$vo.total_sale_count}笔</em></p>
+                        <p><font>{$vo.product.product_price}元</font><!--<del>￥{$vo.MarketPrice}</del>--></p>
+                    </dd>
+                </dl>
+            </a>
+            </volist>
+        </div>
+        
+        <include file="Public/footer"/>

@@ -1,0 +1,37 @@
+
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">部门增加</h3>
+		<?php $action = $info['department_id'] > 0 ? U('edit',array('id'=>$info['department_id'])) : U('add'); ?>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">部门名称</label>
+						<div class="col-sm-3">
+							<input name="department_name" class="input-xlarge form-control" type="text" value="{$info.department_name}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">部门图标</label>
+						<div class="col-sm-8">
+							<input class="hy_upload_single" hy_field="department_image" value="上传图标" style="width:80px;height:80px;" src="{$info.department_image}"/>
+						</div>
+					</div>
+					
+					
+
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+
+<script type="text/javascript">
+$('.hy_upload_single').hySingleUpload("/admin/index.php?s=/site/upload/index.html", '/upload');
+</script>
+
+	

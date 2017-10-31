@@ -1,0 +1,88 @@
+<style>
+.user_assets_hd span{display:block;}
+.user_assets_hd p a{font-size:18px;padding:2px 15px;margin-top:5px;}
+.user_assets_hd p a.cash{background:#1ba100;margin-left:5px;}
+.assets_bd_hd ul li{width:33%;}
+</style>
+<div class="warp">
+	<div class="user_assets">
+		<div class="user_assets_hd clearfix">
+			<form action="{:U('user/recharge/pay')}" onSubmit="">
+				<div class='fl'>
+					<span>可用金额：<font>{$user.user_money|default=0}</font>元</span>
+					<span>冻结金额：<em>{$user.frozen_money|default=0}</em>元</span>
+				</div>
+				<div class='fr'>
+					<p>
+						<a href="{:U('user/recharge/index')}">充值</a>
+						<if condition='$user.user_type gt 1'>
+						<a class='cash' href="{:U('user/capital/cash')}">提现</a>
+						</if>
+					</p>
+				</div>
+			</form>
+		</div>
+		<div class="user_assets_bd">
+			<div class="assets_bd_hd">
+				<ul class="clearfix">
+					
+					<li <if condition='$user.user_type eq 1'>style='width:100%;'</if> ><a <if condition='$user.user_type eq 1'>style='border-radius:8px;'</if> href="{:U('user/capital/index')}" class="on">资金明细</a></li>
+					<if condition='$user.user_type gt 1'>
+					<li><a href="{:U('user/capital/commission')}">获得分利</a></li>
+					<li><a href="{:U('user/capital/cashapply')}">提现记录</a></li>
+					</if>
+				</ul>
+			</div>
+			<div class="assets_bd_bd">
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<div class="more_content">
+						<include file="User/Capital/_index"/>
+					</div>
+					<div id="pages" class="more"><a id="load_more" href="javascript:;"><img src="__PUBLIC__/editor/themes/common/loading.gif"></a></div>
+					<div class="loading"></div>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style type="text/css">
+	#pages{display:none; text-align:center;}
+	.loading{text-align: center;font-size: 14px;padding:20px 0}
+</style>
+<script src="__PUBLIC__/js/debug.js"></script>
+<script src="__PUBLIC__/js/jquery.infinitescroll.js"></script>
+<script type="text/javascript">
+	$('.more_content').infinitescroll({
+		loading: {
+			msgText: "",
+			img: "__PUBLIC__/editor/themes/common/loading.gif",
+			finishedMsg: '没有新数据了哦...',
+			selector: '.loading' //loading选择器
+		},
+		navSelector: "#pages", //导航的选择器，会被隐藏
+		nextSelector: "#load_more", //包含下一页链接的选择器
+		itemSelector: ".item", //你将要取回的选项(内容块)
+		debug: false, //启用调试信息，若启用必须引入debug.js
+		dataType: 'html', //格式要和itemSelector保持一致
+		maxPage: 10, //最大加载的页数
+			//animate: true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
+		extraScrollPx: 150, //滚动条距离底部多少像素的时候开始加载，默认150
+			//bufferPx: 40, //载入信息的显示时间，时间越大，载入信息显示时间越短
+		errorCallback: function() { //加载完数据后的回调函数
+			
+		},
+		path: function(index) { //获取下一页方法
+			
+			var url = "{:U('',array('p'=>'sp'))}";
+			url = url.replace('sp', index);
+			
+			return url;
+		},
+	}, function(newElements, data, url) { //回调函数
+		//console.log(data);
+		//alert(url);
+	});
+</script>

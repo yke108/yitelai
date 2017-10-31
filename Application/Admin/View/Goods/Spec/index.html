@@ -1,0 +1,45 @@
+<div class="row search_page">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">商品属性
+			<a id="rec_add" href="{:U('add', array('type_id'=>$get[type_id]))}" class="btn btn-info btn-sm alink_r cs_ajax_link cs_show_modal" cs_id="spec_modal">添加属性</a>
+		</h3>
+	</div>
+	<div class="row sepH_c">
+		<div class="col-sm-12 col-md-12 dataTables_wrapper">
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr class="sort">
+						<th>属性名称</th>
+						<!--<th>属性录入方式</th>-->
+						<th>属性值</th>
+						<th>排序</th>
+						<th class="center">操作</th>
+					</tr>
+				</thead>
+				<tbody id="tblc">
+					<volist name="list" id="vo">
+						<tr class="rowlink">
+							<td>{$vo.spec_name}</td>
+							<!--<td><eq name="vo.spec_type" value="0">手工录入<else/>从列表中选择</eq></td>-->
+							<td>{$vo.spec_values}</td>
+							<td>{$vo.sort_order}</td>
+							<td style="text-align:center;">
+								<a href="{:U('edit', array('type_id'=>$get['type_id'], 'spec_id'=>$vo['spec_id']))}" class="cs_ajax_link cs_show_modal" cs_id="spec_modal">编辑</a><br />
+								<a href="{:U('del', array('spec_id'=>$vo[spec_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+							</td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div id="pwrap">{$pager}</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="spec_modal" href="{$Think.server.request_uri}">
+	<div class="modal-dialog" style="width:1000px;">
+		<div class="modal-content" style="height:800px;overflow-y:scroll;">
+			
+		</div>
+	</div>
+</div>

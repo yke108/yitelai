@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="__PUBLIC__/editor/themes/default/default.css">
+
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active">
+							<div class="form-group">
+								<label class="control-label col-sm-1">规格项</label>
+								<div class="col-sm-4">
+									<input type="text" name="sku_name" value="" class="form-control value_clear">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-4">
+									<table ellpadding="3" cellspacing="1"  class="table table-striped table-bordered" id="table_list">
+										<thead>
+											<tr>
+												<th>规格值</th>
+												<th>规格图片</th>
+												<th style="width:30px;"><a href="javascript:;" class="btn btn-info btn-sm cs_row_add_button"  cs_id="tblc">添加</a></th>
+											</tr>
+										</thead>
+										<tbody id="tblc">
+											<empty name="list">
+												<tr>
+													<td><input type="text" name="sku_value[]" class="form-control value_clear"></td>
+													<td><input class="hy_upload_single" hy_field="sku_image[]" value="" style="width:50px;height:50px;" src=""/></td>
+													<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+												</tr>
+											<else/>
+												<volist name="list" id="vo" key="k">
+													<tr>
+														<td><input type="text" name="sku_value[]" class="form-control value_clear" value='{$vo.sku_value}'></td>
+														<td><input class="hy_upload_single" hy_field="sku_image[]" value="" style="width:50px;height:50px;" src="<notempty name="vo.sku_image">{$vo.sku_image}</notempty>"/></td>
+														<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+													</tr>
+												</volist>
+											</empty>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="button" id="btn_submit">确认并保存</button>
+						<input type="hidden" name="tmpid" value="{$get.tmpid}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.cs_row_add_button').unbind('click').bind('click', function(){
+		var tr = '<tr>'+
+					'<td><input type="text" name="sku_value[]" class="form-control value_clear"></td>'+
+					'<td><input class="hy_upload_single" hy_field="sku_image[]" value="" style="width:50px;height:50px;" src=""/></td>'+
+					'<td><a href="javascript:;" class="btn btn-danger btn-sm btn_row_del">删除</a></td>'+
+					'</tr>';
+        var row = $('#tblc').append(tr);
+		
+		row.find('.btn_row_del').bind('click',function(){
+			var obj = $(this).parent().parent();
+			if(obj.parent().children().length > 1){
+				obj.remove();
+			}
+			return false;
+		});
+		row.children(':last-child').find('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	});
+    
+	$('.btn_row_del').unbind('click').bind('click', function(){
+		var obj = $(this).parent().parent();
+		if(obj.parent().children().length > 1){
+			obj.remove();
+		}
+		return false;
+	});
+});
+</script>
+
+<script type="text/javascript">
+var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+//给父页面传值
+$('#btn_submit').on('click', function(){
+	var form = $(this).parents('form');
+	var table_list = parent.$('#table_list');
+	var product_list_obj = parent.$('#product_list');
+	$.post(form.attr('action'), form.serialize(), function(d){
+		if(d.status == 0){
+			layer.msg(d.info);
+			return false;
+		}
+		table_list.html(d.table_list);
+		product_list_obj.html(d.product_list);
+		parent.layer.close(index);
+	},'json');
+});
+</script>

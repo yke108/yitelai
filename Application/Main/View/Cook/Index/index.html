@@ -1,0 +1,121 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+<style type="text/css">
+.cooking .focus ul li{background:none;}
+</style>
+
+<!-------在线秀厨艺开始----->
+<div class="cooking">
+	<div class="cooking_1">
+		<div id="focus" class="focus">
+			<ul>
+				<volist name="ad_list.pc_cook_lunbo" id="vo">
+					<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%"></a></li>
+				</volist>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$('#focus').slideFocus();
+				$(".cooking #focus ul li").width($("#focus").width())
+				window.onresize=function(){
+					$(".cooking #focus ul li").width($("#focus").width())	
+				}
+			});
+		</script>
+	</div>
+	<notempty name="recommend_list">
+		<div class="cooking_2_tit">今日早餐推荐：饼就是早餐界的女王</div>
+		<div class="cooking_2">
+			<div class="swiper-container">
+				<div class="swiper-wrapper">                	
+					<!---开始--->
+					<volist name="recommend_list" id="vo">
+						<div class="swiper-slide">
+							<a href="{:U('info', array('id'=>$vo[book_id]))}">
+								<img src="__UPLOAD__/thumbs/w390h430/{$vo.picture}">
+								<div class="cooking_2_info">
+									<i>{$vo.cat_name}</i>
+									<h2>{$vo.name}</h2>
+									<p>{$vo.description}</p>
+								</div>
+							</a>
+						</div>
+					</volist>
+				</div>
+			</div>
+			<div class="swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+			<script src="__PUBLIC__/main/js/swiper.min.js"></script>
+			<script>
+				var swiper = new Swiper('.swiper-container', {
+					slidesPerView:5,
+					spaceBetween:0,
+					nextButton:'.swiper-button-next',
+					prevButton:'.swiper-button-prev',
+					loop:true,
+				});
+			</script>
+		</div>
+	</notempty>
+	<div class="cooking_3 clearfix w1200">
+		<div class="release"><a href="{:U('add')}">我要<br>发布</a></div>
+		<div class="cooking_3_tit">今日最受欢迎菜谱</div>
+		<div class="cooking_3_l fl">
+			<ul class="clearfix">
+				<volist name="today_list" id="vo">
+					<li>
+						<a href="{:U('info', array('id'=>$vo[book_id]))}">
+							<img src="__UPLOAD__/thumbs/b660/{$vo.picture}" class="cooking_pic">
+							<h2><span>{$vo.name}</span><em>{$vo.cat_name}</em></h2>
+							<p><span><img src="{$vo.avatar}">{$vo.nick_name}</span><b><em>{$vo.comment_count}评论</em><em>{$vo.read_count}人气</em></b></p>
+						</a>
+					</li>
+				</volist>
+			</ul>
+		</div>
+		<div class="cooking_3_r fr">
+			<div class="cooking_3_r_1">
+				<h2>热门栏目推荐</h2>
+				<ul class="clearfix">
+					<foreach name="label_list" item="vo" key="ko">
+						<li><a href="{:U('list', array('label_id'=>$ko))}">{$vo}</a></li>
+					</foreach>
+				</ul>
+			</div>
+			<div class="cooking_3_r_2">
+				<h1><img src="__PUBLIC__/main/special/pic3.jpg"></h1>
+				<volist name="top_list" id="vo" key="ko">
+					<lt name="ko" value="4">
+						<dl class="clearfix top{$ko}">
+							<dt>
+								<p><span>TOP{$ko}</span></p>
+								<p><a href="{:U('info', array('id'=>$vo[book_id]))}">{$vo.name}</a></p>
+								<p><em>人气{$vo.read_count}</em></p>
+							</dt>
+							<dd><a href="{:U('info', array('id'=>$vo[book_id]))}"><img src="__UPLOAD__/thumbs/b90/{$vo.picture}"></a></dd>
+						</dl>
+					</lt>
+				</volist>
+				<ul>
+					<volist name="top_list" id="vo" key="ko">
+						<gt name="ko" value="3">
+							<li><a href="{:U('info', array('id'=>$vo[book_id]))}"><em>{$ko}</em><span>{$vo.name}</span><time>{$vo.read_count}</time></a></li>
+						</gt>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>      
+</div>
+<!-------在线秀厨艺结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

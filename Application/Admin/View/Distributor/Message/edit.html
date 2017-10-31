@@ -1,0 +1,124 @@
+ <style type="text/css">
+div.idsel_list div{display:inline-block;width:20%;margin-bottom:7px;margin-right:10px;padding:7px;}
+div.idsel_list div a{float:right;display:inline-block;background:red;border-radius:50% 50%;width:16px;height:16px;line-height:16px;text-align:center;color:white;}
+div.idsel_list div span{display:inline-block;line-height:16px;}
+</style>	
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.msg_id" value="0">添加消息<else/>编辑消息</gt></h3>
+		<form class="form-horizontal cs_ajax_form" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">推送类型</label>
+					<div class="col-sm-4 col-md-4">
+						<select class="form-control" id="type" name="type" <gt name="info.msg_id" value="0">disabled="disabled"</gt>>
+                     	 	<option value="0" <eq name="info.type" value="0">selected="1"</eq>>公开消息</option>
+                     	 	<option value="1" <eq name="info.type" value="1">selected="1"</eq>>私信</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">消息主题</label>
+					<div class="col-sm-8 col-md-8">
+						<input name="title" class="input-xlarge form-control" type="text" value="{$info.title}">
+					</div>
+				</div>
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">分类</label>
+					<div class="col-sm-4 col-md-4">
+						<select class="form-control" name="cat_id">
+							<option value="">选择分类</option>
+							{$cat_list}
+						</select>
+					</div>
+				</div>-->
+				
+				<div class="form-group" id="tax">
+					<label class="control-label col-sm-1">会员账户</label>
+					<gt name="info.msg_id" value="0">
+						<label class="control-label" style="float:left; margin-left:15px">{$info.distributor_name}</label>
+					<else/>
+					<div class="col-sm-4 col-md-5 idsel_list">
+						<a href="{:U('distributors')}" hy_w='1000' hy_h='600' class="btn btn-default hy_iframe_sel hy_ajax_link cs_show_modal" hy_field="distributor_ids[]">添加</a>
+					</div>
+					</gt>
+					<!--<div class="col-sm-4 col-md-4">请输入用户名或者用户手机号</div>-->
+				</div>
+				
+				<!--<div class="form-group">
+					<label class="control-label col-sm-1">链接地址</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="link" class="input-xlarge form-control" type="text" value="{$info.link}">
+					</div>
+					<div class="col-sm-4 col-md-4">选填，链接外部地址。填写时必须带上http://</div>
+				</div>-->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">详细内容</label>
+					<div class="col-sm-9">
+						<textarea id="usermsg" name="content" style="width:100%;height:300px;">
+							{$info.content}
+						</textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div> 
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script charset="utf-8" src="__PUBLIC__/editor/lang/zh_CN.js"></script>
+<script>
+	KindEditor.ready(function(K) {
+		//window.editor = K.create('#editor_id', {uploadJson : '{:U("site/upload")}'});
+	});
+	$(function(){
+		var ue = UE.getEditor('usermsg',{maximumWords:15000,initialFrameWidth:1000});
+		var type = $('#type').val();
+		if(type==1){
+			$('#tax').show();
+		}else{
+			$('#tax').hide();
+		}
+		$('#type').change(function() {
+			var attr_id=$('#type').val();
+			if(attr_id=='1'){
+				$('#tax').show();
+			}else{
+				$('#tax').hide();
+			}
+		});
+	});
+</script>
+
+<link rel="stylesheet" href="__PUBLIC__/css/jquery.bigautocomplete.css?v=1" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/js/jquery.bigautocomplete.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#keyword").bigAutocomplete({
+		width:543,
+		/*data:[{title:"中国好声音",result:{ff:"qq"}},
+		{title:"中国移动网上营业厅"},
+		{title:"中国银行"},
+		{title:"中国移动"},
+		{title:"中国好声音第三期"},
+		{title:"中国好声音 第一期"},
+		{title:"中国电信网上营业厅"},
+		{title:"中国工商银行"},
+		{title:"中国好声音第二期"},
+		{title:"中国地图"}],*/
+		url:"{:U('user/index/list')}",
+		callback:function(data){
+			//alert(data.title);
+			$('#mobile').val(data.title);
+		}
+	});
+})
+</script>

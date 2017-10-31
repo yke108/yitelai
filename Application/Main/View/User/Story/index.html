@@ -1,0 +1,80 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+<style>
+.vip_article_list dl dd h3 font{font-size:14px;color:#1ba100;position:relative;top:-48px;}
+</style>
+
+<!-------会员中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a>></span>文章发表</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="vip_article">
+				<div class="tabmenu">
+					<span>
+						<a class="ncm-btn-orange" title="发表文章" href="{:U('user/story/add')}"><img src="__PUBLIC__/main/images/icon53.png">发表文章</a>
+					</span>
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">我的发表</a></li>
+					</ul>
+				</div>
+				<div class="vip_article_list">
+					<empty name="list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<volist name="list" id="vo">
+							<dl class="clearfix">
+								<dt><img src="__UPLOAD__/{$vo.story_image}" width="130" height="97"></dt>
+								<dd style='position:relative;'>
+									<h2>
+										<a href="{:U('story/index/view', array('id'=>$vo[story_id]))}">{$vo.story_title}
+											<switch name="vo.story_type">
+												<case value="0"></case>
+												<case value="1"><font color="green"><img src="__PUBLIC__/main/images/icon34.png"></font></case>
+												<case value="2"><font color="red"><img src="__PUBLIC__/main/images/icon35.png"></font></case>
+											</switch>
+										</a>
+										<span>
+											<a href="javascript:;"><img src="__PUBLIC__/main/images/icon36.png">{$vo.good_num}</a>
+											<a href="javascript:;"><img src="__PUBLIC__/main/images/icon37.png">{$vo.bad_num}</a>
+										</span>
+									</h2>
+									<h3 class='clearfix'>
+										<span>{$vo.nick_name}</span>于{$vo.add_time|date="Y-m-d H:i",###}发表
+										<if condition="$vo.status eq 0">
+											<font class='fr'>审核不通过</font>
+										<elseif condition="$vo.status eq 1" />
+											<font class='fr'>审核通过</font>
+										<else/>
+											<font class='fr'>待审核</font>
+										</if>
+									</h3>
+									<p>{$vo.story_intro}</p>
+									<if condition='$vo.status eq 2'>
+									<div class='edit_button' style='position:absolute;right:0;top:44px;'>
+										<a style='display:inline-block;padding:5px 15px;background:#ec4f4a;color:#fff;border-radius:5px;' href='{:U("edit",array("id"=>$vo[story_id]))}'>编辑</a>
+									</div>
+									</if>
+								</dd>
+							</dl>
+						</volist>
+						<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+					</empty>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-------会员中心结束------->
+</div>
+<!-------粉丝故事会结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

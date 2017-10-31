@@ -1,0 +1,105 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">在线合同协议确认</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="pass">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li class="on">
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li>
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_2">
+	<div class="w1200">
+		
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$info.merchant_id}" />
+			<input type="hidden" name="agreement" value="1" />
+			<div class="protocol">
+				<div class="protocol_info">
+					<h2>{$page_info.page_title}</h2>
+					{$page_info.page_content}
+				</div>
+			</div>
+			
+			<div class="public_btn">
+				<a href="{:U('article/page/info', array('id'=>22))}" target="_blank">撤销申请？</a>
+				<span><a href="{:U('merchant/apply/step3_3')}" class="prev">上一步</a><a href="javascript:;" class="next">下一步，完善店铺信息</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>

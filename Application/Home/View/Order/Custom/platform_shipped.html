@@ -1,0 +1,89 @@
+<div class="order_produce_form">
+	<div class="order_produce_form_hd">
+		<h2><span>订单号：{$info.order_id}</span><time>{$info.add_time|date="Y-m-d H:i:s",###}</time></h2>
+		<volist name="info.order_goods" id="vo">
+			<a href="javascript:;">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></dt>
+					<dd>
+						<h3>{$vo.goods_name}</h3>
+						<p>￥{$vo.goods_price}</p>
+					</dd>
+				</dl>
+			</a>
+		</volist>
+	</div>
+	<form action="{:U('')}">
+		<input type="hidden" name="id" value="{$info.order_id}" />
+		<div class="order_produce_form_bd">
+			<ul>
+				<li>
+					<label>物流公司</label>
+					<p class="right-after">
+						<select name="shipping_id">
+							<volist name="shipping_list" id="vo">
+								<option value="{$vo.shipping_id}" {:m_selected($vo[shipping_id], $info[shipping_id])}>{$vo.shipping_name}</option>
+							</volist>
+						</select>
+					</p>
+				</li>
+				<li>
+					<label>物流单号</label>
+					<p><input name="kd_no" value="{$info.shipping_no}" type="text" placeholder="请填写物流单号"></p>
+				</li>
+				<li>
+					<label>上传凭证</label>
+					<div class="picture_box">
+						<div id="fileUploadContent" class="fileUploadContent mui-clearfix picture"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="order_produce_form_btn btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">提交</a>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/home/js/fileUpload.js"></script>
+<script type="text/javascript">
+    $("#fileUploadContent").initUpload({
+        "uploadUrl":"#",//上传文件信息地址
+        //"progressUrl":"#",获取进度信息地址，可选，注意需要返回的data格式如下（{bytesRead: 102516060, contentLength: 102516060, items: 1, percent: 100, startTime: 1489223136317, useTime: 2767}）
+        //"showSummerProgress":false,//总进度条，默认限制
+        //"size":350,//文件大小限制，单位kb,默认不限制
+        "maxFileNumber":5,//文件个数限制，为整数
+        //"filelSavePath":"",//文件上传地址，后台设置的根目录
+        //"beforeUpload":beforeUploadFun,//在上传前执行的函数
+        //"onUpload":onUploadFun，//在上传后执行的函数
+        //autoCommit:true,//文件是否自动上传
+        "fileType":['png','jpg','gif'] //文件类型限制，默认不限制，注意写的是文件后缀
+    })
+	
+    function beforeUploadFun(opt){
+        opt.otherData =[{"name":"你要上传的参数","value":"你要上传的值"}];
+    }
+	
+    function onUploadFun(opt,data){
+        alert(data);
+        uploadTools.uploadError(opt);//显示上传错误
+    }
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var btnElem = this;
+		mui(btnElem).button('loading');//切换为loading状态
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui(btnElem).button('reset');//切换为reset状态(即重置为原始的button)
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url;
+				}
+			},'json'
+		);
+	})
+});
+</script>

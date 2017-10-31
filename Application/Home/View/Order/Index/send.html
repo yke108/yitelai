@@ -1,0 +1,36 @@
+<div class="orders_management_detaild_form">
+	<form action="{:U('')}">
+		<input type="hidden" name="order_id" value="{$info.order_id}" />
+		<div class="mui-input-group">
+			<div class="mui-input-row">
+				<label>选择快递</label>
+				<select name="shipping_id">
+					<option value="">请选择物流公司</option>
+					<foreach name="shipping_list" key="ko" item="vo">
+						<option value="{$ko}">{$vo}</option>
+					</foreach>
+				</select>
+			</div>
+			<div class="mui-input-row">
+				<label>快递单号</label>
+				<input type="text" name="kd_no" value="" placeholder="请输入">
+			</div>
+		</div>
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">确认</a></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

@@ -1,0 +1,158 @@
+<include file="Public/header"/>
+
+<style type="text/css">
+.page_main_detaild_l_img img{max-width:100%;}
+</style>
+
+<div class="page_main w1200">
+	<div class="position">当前位置：<a href="{:U('index/index')}">首页</a> > <a href="{:U('index/index/list')}">素材库</a> > <a href="{:U('index/index/list', array('id'=>$cat[cat_id]))}">{$cat.cat_name}</a> > {$info.material_title}</div>
+	<div class="page_main_detaild clearfix">
+		<div class="page_main_detaild_l fl">
+			<div class="page_main_detaild_l_tit">
+				<empty name="collect">
+					<a href="{:U('collect', array('id'=>$info[material_id]))}" class="collect"><img src="__PUBLIC__/material/images/icon15.png"><span class="collect_text">收藏</span></a>
+				<else/>
+					<a href="javascript:;"><img src="__PUBLIC__/material/images/icon15.png">已收藏</a>
+				</empty>
+				<h2>{$info.material_title}</h2>
+				<p><span>已下载：<em class="down_count">{$info.down_count}</em></span><span>查看人数：<em>{$info[view_count] + 1}</em></span><span>收藏作品：<em class="collect_count">{$info.collect_count}</em></span></p>
+			</div>
+			<div class="page_main_detaild_l_img">
+				<volist name="info.material_gallery" id="vo">
+					<p><img src="__UPLOAD__/{$vo}"></p>
+				</volist>
+			</div>
+		</div>
+		<div class="page_main_detaild_r fr">
+			<div class="page_main_detaild_r_1">
+				<h2>所需积分<span>{$info.down_points}</span></h2>
+				<p><a href="{:U('downcheck', array('id'=>$info[material_id]))}" class="bg1"><img src="__PUBLIC__/material/images/icon16.png">立即下载</a></p>
+				<empty name="collect">
+					<p><a href="{:U('collect', array('id'=>$info[material_id]))}" class="bg2 collect"><img src="__PUBLIC__/material/images/icon17.png"><span class="collect_text">收藏图片</span></a></p>
+				<else/>
+					<p><a href="javascript:;" class="bg2"><img src="__PUBLIC__/material/images/icon17.png">已收藏</a></p>
+				</empty>
+				<ul>
+					<li><span>编号</span><em>{$info.material_id}</em></li>
+					<li><span>格式</span><em>{$info.type}</em></li>
+					<li><span>模式</span><em><eq name="info.pattern" value="1">单图<else/>多图</eq></em></li>
+					<li><span>体积</span><em>{$info.size} KB</em></li>
+					<li><span>上传时间</span><em>{$info.add_time|date="Y-m-d H:i:s",###}</em></li>
+				</ul>
+				<div class="tags">
+					<volist name="info.label_list" id="vo">
+						<em>{$vo.label_name}</em>
+					</volist>
+				</div>
+			</div>
+			<div class="page_main_detaild_r_2">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b90/{$designer_info.designer_image}" width="50" height="50"></dt>
+					<dd>
+						<p>{$designer_info.designer_name}</p>
+						<p><span>设计师</span></p>
+					</dd>
+				</dl>
+				<ul>
+					<volist name="designer_material_list" id="vo">
+						<li>
+							<p><a href="{:U('', array('id'=>$vo[material_id]))}"><img src="__UPLOAD__/thumbs/b300/{$vo.material_image}"></a></p>
+							<p><a href="{:U('', array('id'=>$vo[material_id]))}">{$vo.material_title}</a></p>
+						</li>
+					</volist>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="page_main_recomment">
+		<h2>相关图片</h2>
+		<ul class="clearfix">
+			<volist name="rela_list" id="vo">
+				<li>
+					<p><a href="{:U('', array('id'=>$vo[material_id]))}"><img src="__UPLOAD__/thumbs/w220h278/{$vo.material_image}"></a></p>
+					<p><a href="{:U('', array('id'=>$vo[material_id]))}">{$vo.material_title}</a></p>
+				</li>
+			</volist>
+		</ul>
+	</div>
+</div>
+
+<include file="Public/footer"/>
+
+<!---下载弹窗--->
+<div class="down_pop">
+	<i><img src="__PUBLIC__/material/images/icon18.png"></i>
+	<h2>下载选项</h2>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="file_list">
+		
+	</table>
+</div>
+<div class="mask"></div>
+
+<script>
+$(function(){
+	$(".collect").click(function(){
+		var obj = $(this);
+		$.post(obj.attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				$('.collect_count').html(d.collect_count);
+				$('.collect_text').html('已收藏');
+				obj.attr('href', 'javascript:;');
+			}
+		}, 'json');
+		return false;
+	})
+	
+	/*$(".bg1").click(function(){
+		var obj = $(this);
+		w = window.open("","")
+		$.post(obj.attr('href'), {}, function(d){
+			if(d.status == 1){
+				$('.down_count').html(d.down_count);
+				w.location = d.url;
+			}else{
+				w.close();
+				layer.open({time:1,content:d.info});
+			}
+		}, 'json');
+		return false;
+	})*/
+	
+	$(".bg1").click(function(){
+		var obj = $(this);
+		$.post(obj.attr('href'), {}, function(d){
+			if(d.status == 1){
+				$('#file_list').html(d.html);
+				$(".down_pop").show()	
+				$(".mask").show()
+			}else{
+				layer.open({time:1,content:d.info});
+				if(d.url){
+					window.location.href = d.url
+				}
+			}
+		}, 'json');
+		return false;
+	})
+	
+	/*$(".bg3").on('click', function(){
+		var obj = $(this);
+		w = window.open("","")
+		$.post(obj.attr('href'), {}, function(d){
+			if(d.status == 1){
+				$('.down_count').html(d.down_count);
+				w.location = d.url;
+			}else{
+				w.close();
+				layer.open({time:1,content:d.info});
+			}
+		}, 'json');
+		return false;
+	})*/
+})
+</script>
+
+<script src="__PUBLIC__/main/js/jquery-1.8.3.min.js"></script>
+<script src="__PUBLIC__/main/js/sscr.min.js"></script>
+<script src="__PUBLIC__/main/js/main.js"></script>

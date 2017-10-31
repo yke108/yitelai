@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-sm-6 col-md-6">
+        <h3 class="heading"><gt name="info.type_id" value="0">修改类型<else/>添加类型</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="type_id" value="{$info.type_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">上级分类</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="parent_id" id="parent_id">
+							<option value="0">顶级分类</option>
+							<volist name="top_list" id="vo">
+								<option value="{$vo.type_id}" {:m_selected($vo[type_id], $info[parent_id])}>{$vo.type_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">类型名称</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="type_name" class="input-xlarge form-control" type="text" value="{$info.type_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">保证金</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="deposit" class="input-xlarge form-control" type="text" value="{$info.deposit}">
+					</div>
+					<label class="control-label" style="float:left">元</label>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">技术服务费</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="service_charge" class="input-xlarge form-control" type="text" value="{$info.service_charge}">
+					</div>
+					<label class="control-label" style="float:left">元/年</label>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">平台销售扣点</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="platform_take" class="input-xlarge form-control" type="text" value="{$info.platform_take}">
+					</div>
+					<label class="control-label" style="float:left">%</label>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并修改</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

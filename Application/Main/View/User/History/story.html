@@ -1,0 +1,65 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+<!-------我的收藏开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>浏览记录</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_Collection">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li><a href="{:U('user/history/browse')}">商品浏览记录</a></li>
+						<li class="on"><a href="javascript:;">文章浏览记录</a></li>
+						<!--<li><a href="{:U('user/collect/store')}">收藏店铺</a></li>-->
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<div class="Collection_pro">
+						<ul class="clearfix">
+							<volist name="list" id="vo">
+								<li>
+									<a href="{:U('story/index/info', array('id'=>$vo['id_value']))}" target="_blank"><img src="{$vo.story_image}"></a>
+									<p><a href="{:U('story/index/info', array('id'=>$vo['id_value']))}" target="_blank">{$vo.story_title|msubstr=0,38,'utf-8',true}</a></p>
+								</li>
+							</volist>
+						</ul>
+					</div>
+					<div class="pages1">{$pages}</div>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的收藏结束----->
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+<style type="text/css">
+.Collection_pro ul li p{height:38px;}
+</style>
+<script type="text/javascript">
+function del_collect(id)
+{
+	layer.open({
+		content: '确认要删除该记录吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('delcollect')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){	
+					window.location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+</script>

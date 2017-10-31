@@ -1,0 +1,149 @@
+﻿	<div class="wap_service">
+        <div class="wap_service_shop">
+            <img src="__UPLOAD__/thumbs/b90/{$distributor.distributor_image}">{$distributor.distributor_name}<span>店铺</span>
+        </div>
+        <div class="wap_service_scroll">
+            <div class="speak_window" id="scroll">
+                <div class="speak_box">
+                    <div class="answer">
+                        <div class="service_record_box">
+                            <div class="answer_text">
+                                <p>Hi 亲爱的用户，有什么能够问您服务？</p>
+                                <i></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="wap_service_send">
+            <textarea rows="3" placeholder="请输入您要咨询的问题"></textarea>
+            <button type="button" class="send">发送</button>
+            <p><a href="javascript:;"><img src="__PUBLIC__/wap/service/icon1.png"></a><span><img src="__PUBLIC__/wap/service/icon2.png"><input type="file"></span></p>
+        </div>
+        <div class="wap_service_comment">
+            <i><img src="__PUBLIC__/wap/service/icon3.png"></i>
+            <form action="{:U('comment')}">
+                <h2>请对此次服务进行评价 :</h2>
+                <div id="star1"></div>
+                <p><textarea name="comment" rows="3" onKeyUp="keyup()"  placeholder="请输入您的评价"></textarea></p>
+                <p><button type="button" id="comment">提交</button></p>
+            </form>
+        </div>
+        <div class="wap_service_mask"></div>
+    </div>
+    
+<script src="__PUBLIC__/wap/js/jquery.raty.min.js"></script>
+<script>
+$(function(){
+	if($.chat == undefined) $.chat = {};
+	$.chat.fmanual = "{$manual_flag}";
+	var ssay = function(){
+		if($.chat.fmanual != 1) return;
+		$.post("{:U('chat/ask/ssay')}", {}, function(d){
+			if(d.status == 2){
+				answer(d.info);
+			} else if(d.info == 'end') {
+				$.chat.fmanual = 0;
+			}
+		}, 'json');
+	}
+	$.chat.ftime = setInterval(ssay, 10000);
+});
+</script>
+<script>
+    $('#star1').raty({
+        cancel:false,
+        width:"auto",
+        starOff: "__PUBLIC__/wap/service/icon1.png",
+        starOn: "__PUBLIC__/wap/service/icon4.png",
+    });
+
+    function scroll(){
+        var Goscroll = document.getElementById('scroll');
+        Goscroll.scrollTop = Goscroll.scrollHeight;
+    }
+    $(".wap_service_send").on('click','.send',function(){
+        $('.write_list').remove();
+        var text = $('.wap_service_send textarea').val(),
+            str  = '<div class="question"><div class="service_record_box">';
+        str += '<div class="question_text"><p>'+text+'</p><i></i></div>';
+        str += '</div>';
+        if(text == ''){
+            alert('发送内容不能为空!请重新输入');
+            $('.write_box textarea').focus();
+        }else{
+            $('.speak_box').append(str);
+            $('.wap_service_send textarea').val('');
+            $('.wap_service_send textarea').focus();
+            $.post("{:U('chat/ask/question')}", {'message':text}, function(d){
+				if(d.status == 2){
+					answer(d.info);
+				}
+			}, 'json');
+            scroll();
+        }
+    });
+    
+    function answer(strVar){
+ 	   $('.speak_box').append(strVar);
+ 	   $('.chat-qs').find('.q').bind('click', function(){
+ 		   $.post("{:U('chat/ask/detail')}", {'qid':$(this).attr('value')}, function(d){
+ 				if(d.status == 2){
+ 					answer(d.info);
+ 				}
+ 			}, 'json');
+ 	   });
+ 	   $('.chat-qs').find('.m').bind('click', function(){
+ 		   $.post("{:U('chat/ask/mbegin')}", {}, function(d){
+ 				if(d.status == 2){
+ 					$.chat.fmanual = 1;
+ 					answer(d.info);
+ 				}
+ 			}, 'json');
+ 	   });
+ 	   $('.chat-qs').removeClass('chat-qs');
+ 	  scroll();
+ 	};
+
+    function keyup(){
+        var footer_height = $('.wenwen-footer').outerHeight(),
+            text = $('.service_bd textarea').val(),
+            str = '<div class="write_list">'+text+'</div>';
+        if (text == '' || text == undefined){
+            $('.write_list').remove();
+        }else{
+            $('.wenwen-footer').append(str);
+            $('.write_list').css('bottom',footer_height);
+        }
+    }
+    
+    $(function () {
+        $(".wap_service_send p a").click(function () {
+            $(".wap_service_comment").addClass("on");
+            $(".wap_service_mask").fadeIn();
+        });
+        $(".wap_service_comment i,.wap_service_mask").click(function () {
+            $(".wap_service_comment").removeClass("on");
+            $(".wap_service_mask").fadeOut();
+        })
+    })
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#comment').click(function(){
+		var form = $(this).parents('form')
+		$.post(form.attr('action'),form.serialize(),function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					$(".wap_service_comment").removeClass("on");
+            		$(".wap_service_mask").fadeOut();
+				}
+			},'json'
+		);
+	});
+});
+</script>

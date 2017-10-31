@@ -1,0 +1,97 @@
+<div class="bank_list">
+	<a href="javascript:;" id="edit" style=" text-align:center; display:block; padding-top:10px; font-size:15px;">编辑</a>
+	<ul>
+		<li>
+			<i><span class="mui-icon mui-icon-closeempty"></span></i>
+			<a href="#">
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/icon19.png"></dt>
+					<dd>
+						<h2>中国工商银行</h2>
+						<p>储蓄卡</p>
+					</dd>
+				</dl>
+				<h1>6222 ···· ···· ···· 1234</h1>
+			</a>
+		</li>
+		<li>
+			<i><span class="mui-icon mui-icon-closeempty"></span></i>
+			<a href="#">
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/icon19.png"></dt>
+					<dd>
+						<h2>中国工商银行</h2>
+						<p>储蓄卡</p>
+					</dd>
+				</dl>
+				<h1>6222 ···· ···· ···· 1234</h1>
+			</a>
+		</li>
+		<li>
+			<i><span class="mui-icon mui-icon-closeempty"></span></i>
+			<a href="#">
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/icon19.png"></dt>
+					<dd>
+						<h2>中国工商银行</h2>
+						<p>储蓄卡</p>
+					</dd>
+				</dl>
+				<h1>6222 ···· ···· ···· 1234</h1>
+			</a>
+		</li>
+		<li>
+			<i><span class="mui-icon mui-icon-closeempty"></span></i>
+			<a href="#">
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/icon19.png"></dt>
+					<dd>
+						<h2>中国工商银行</h2>
+						<p>储蓄卡</p>
+					</dd>
+				</dl>
+				<h1>6222 ···· ···· ···· 1234</h1>
+			</a>
+		</li>
+		<li>
+			<i><span class="mui-icon mui-icon-closeempty"></span></i>
+			<a href="#">
+				<dl>
+					<dt><img src="__PUBLIC__/home/images/icon19.png"></dt>
+					<dd>
+						<h2>中国工商银行</h2>
+						<p>储蓄卡</p>
+					</dd>
+				</dl>
+				<h1>6222 ···· ···· ···· 1234</h1>
+			</a>
+		</li>
+	</ul>
+	<div class="bank_list_btn btn"><a href="{:U('add')}" class="mui-btn mui-btn-block mui-btn-primary">新加银行卡</a></div>
+</div>
+<script>		
+	mui(".bank_list").on("tap","#edit",function(){
+		$(".bank_list ul li i").toggle()
+	})
+	
+	mui(".bank_list ul li").on("tap","a",function(){
+		var href = this.getAttribute('href');
+		//非plus环境，直接走href跳转
+		if(!mui.os.plus){
+			location.href = href;
+			return;
+		}
+	})
+	
+	mui(".bank_list ul li").on("tap","i",function(){
+		var btnArray = ['否', '是'];
+		mui.confirm('是否删除?', '提示', btnArray, function(e) {
+			if (e.index == 1) {
+				//是
+			} else {
+				//否
+			}
+		})
+	})
+			
+</script>

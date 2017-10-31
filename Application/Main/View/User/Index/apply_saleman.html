@@ -1,0 +1,94 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------获得积分开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>审核情况</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_subordinate">
+				<div class="tabmenu">
+					<if condition='$info[status] eq 2 or $info[status] eq 4'>
+					<span><a class='ncm-btn ncm-btn-orange' id='apply_saleman2' href="javascript:;">重新提交申请</a></span>
+					</if>
+					<ul class="tab pngFix">
+						<!--<li><a href="{:U('user/recommend/index')}">我推荐的人</a></li>
+						<li><a href="{:U('user/capital/comission')}">获得分利</a></li>-->
+						<li class="on"><a href="javascript:;">审核情况</a></li>
+					</ul>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th width="33%">审核状态</th>
+						<th width="33%">申请时间</th>
+						<th>审核反馈信息</th>
+					</tr>
+					
+					<tr>
+						<td align="center">
+						
+							<if condition='$apply_info.type eq 2'>
+								<switch name="apply_info.status">
+									<case value="0">未审核</case>
+									<case value="1"><font color="green">店铺审核通过，等待平台审核</font></case>
+									<case value="2"><font color="red">店铺审核不通过</font></case>
+									<case value="3"><font color="red">平台审核通过</font></case>
+									<case value="4"><font color="red">平台审核不通过</font></case>
+								</switch>
+								<elseif condition='$apply_info.type eq 1' />
+								<switch name="apply_info.status">
+									<case value="1"><font color="green">等待平台审核</font></case>
+									<case value="3"><font color="red">平台审核通过</font></case>
+									<case value="4"><font color="red">平台审核不通过</font></case>
+								</switch>
+							</if>
+						</td>
+						<td align="center">{$apply_info.add_time|date="Y-m-d H:i",###}</td>
+						<td align="center">
+							<span>{$apply_info.feedback}</span>
+						</td>
+					</tr>
+					
+				</table>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<!-------获得积分结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#apply_saleman2").click(function(e){
+		e.stopImmediatePropagation();
+		e.stopPropagation();
+		//e.prelatedTarget();
+		
+		$.ajax({
+			type:'POST',
+			url:"{:U('apply_saleman')}",
+			data:{},
+			dataType:"json",
+			success:function(res){
+				if(res.status==1){
+					layer.open({time:1,content:res.info});
+					window.setTimeout(function(){window.location.reload();},1000)
+				}else{
+					layer.open({time:1,content:res.info});
+				}
+			}
+		})
+	})
+});
+</script>

@@ -1,0 +1,34 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td><a href="{:U('info', array('id'=>$vo[order_id]))}" class="cs_ajax_link cs_show_modal" cs_id="order_info" >{$vo.order_id}</a></td>
+		<td class="c">{:date('Y-m-d H:i:s', $vo[add_time])}</td>
+		<td>
+			<!--<switch name="vo.order_status" >
+				<case value="0"><neq name="vo.pay_status" value="0">等待买家付款</neq></case>
+				<case value="1">待发货</case>
+				<case value="2">待收货</case>
+				<case value="3">已收货</case>
+				<case value="4">退货中</case>
+				<case value="5">交易完成</case>
+				<case value="6">交易关闭</case>
+			</switch>-->
+			{$vo.status}
+		</td>
+		<td class="c">{$vo.consignee}</td>
+		<td>{$vo[goods_amount] + $vo[shipping_fee] - $vo[discount]}</td>
+		<!--
+		<td>
+			<a href="{:U('note', array('id'=>$vo[order_id]))}" class="cs_smoke_note" note="{$vo.admin_note}"><empty name="vo.admin_note">添加<else/>{$vo.admin_note}</empty></a>
+		</td>
+		-->
+		<td class="c">
+			<if condition="($vo[pay_status] eq 1) AND ($vo[shipping_status] eq 0)">
+				<a class="cs_ajax_link cs_show_modal" cs_id="order_send" href="{:U('send', array('id'=>$vo[order_id]))}" >发货</a>
+			</if>
+			<if condition="$vo[order_status] eq 0">
+				<a class="cs_del_confirm" cs_tip="确定取消？" href="{:U('close', array('id'=>$vo[order_id]))}" >取消订单</a>
+			</if>
+
+		</td>
+	</tr>
+</volist>

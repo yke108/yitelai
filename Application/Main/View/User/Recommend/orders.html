@@ -1,0 +1,59 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的资产开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>订单记录</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_assets">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">订单记录</a></li>
+					</ul>
+				</div>
+				<div class="alert">
+					<span class="mr30">分利总金额：<strong class="mr5 red" style="font-size: 18px;">{$user.commission_money}</strong>元</span>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th>订单号</th>
+						<th>时间</th>
+						<th>商品数量</th>
+						<th>商品金额(元)</th>
+						<th>获利金额(元)</th>
+					</tr>
+					<empty name="list">
+						<tr>
+							<td align="center" colspan="5"><p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p></td>
+						</tr>
+					<else/>
+						<volist name="list" id="vo">
+							<tr>
+								<td align="center">{$vo.order_id}</td>
+								<td align="center">{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+								<td align="center">{$vo.total_goods_number}</td>
+								<td align="center">{$vo.goods_amount}</td>
+								<td align="center">{$vo.commission}</td>
+							</tr>
+						</volist>
+					</empty>
+				</table>
+				<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的资产结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">设计师案例列表
+			<a id="rec_add" href="{:U('designer/designerinfo/index')}" class="btn btn-info btn-sm alink_r">返回上一页</a>
+			<!--<a id="rec_add" href="{:U('add',array('designer_id'=>$info['designer_id']))}" class="btn btn-info btn-sm alink_r">添加案例</a>-->
+			<div style="clear:both"></div>
+		</h3>
+		<!-- and搜索 -->
+		<!--<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">关键词:<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="名称" style="display:inline-block;width:auto;" type="text">
+			<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>-->
+		<!-- end搜索 -->
+		<div style='margin-bottom:20px;font-size:16px;'>设计师：<font style='color:#ff0000;font-weight:bold;'>{$info.designer_name}</font></div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>案例名称</th>
+							<th>封面图</th>
+							<th>装饰风格</th>
+							<th>户型</th>
+							<th>面积</th>
+							<th>预算</th>
+							<th>添加时间</th>
+							<th>排序</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.case_name}</td>
+								<td><if condition="$vo[picture] neq null"><img src="__UPLOAD__/{$vo.picture}" alt="" style="width:100px;height:100px;"></if></td>
+							    <td>{$type_key_list[$vo[decorate_type]][name]}</td>
+								<td>{$type_key_list[$vo[layout_type]][name]}</td>
+								<td>{$vo.area}</td>
+								<td>{$vo.budget}</td>
+								<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<a class='cs_ajax_link hy_show_modal' hy_w='1000' hy_h='600' href="{:U('edit', array('designer_id'=>$vo[designer_id],'id'=>$vo['case_id']))}">查看</a>
+									
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

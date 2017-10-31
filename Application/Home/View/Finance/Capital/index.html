@@ -1,0 +1,216 @@
+<div class="account_details mui-scroll-wrapper" id="pullrefresh">
+	<div class="mui-scroll">
+		<a href="javascript:;" id="click" style=" text-align:center; display:block; padding-top:10px; font-size:15px; display:none;">筛选</a>
+		<div class="account_details_hd">
+			<form action="{:U('')}">
+				<div class="mui-input-row mui-search">
+					<input type="search" name="keyword" value="{$get.keyword}" class="mui-input-clear" placeholder="请输入会员名称/手机号码搜索">
+				</div>
+			</form>
+		</div>
+		<div class="account_details_bd">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无记录</p>
+			<else/>
+				<ul>
+					<include file="Finance/Capital/_index"/>
+				</ul>
+			</empty>
+		</div>
+	</div>
+</div>
+
+<script>
+mui.init();
+mui('body').on('tap', 'a', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<div class="filter_new_pop">
+	<form action="{:U('')}">
+		<h2>城市筛选</h2>
+        <ul>
+        	<li class="right-after">
+				<span>
+					<input value="{$region_name}" type="text" class="text" readonly placeholder="省/市" id="region">
+					<input type="hidden" name="province" id="province" value="{$get.province}">
+					<input type="hidden" name="city" id="city" value="{$get.city}">
+					<!--<input type="hidden" name="district" id="district" value="{$get.region_code}">-->
+				</span>
+			</li>
+        </ul>
+		<notempty name="distributor_list">
+			<h2>店铺筛选</h2>
+			<ul>
+				<li class="right-after">
+					<select name="store_id">
+						<option value="">所有店铺</option>
+						<volist name="distributor_list" id="vo">
+							<option value="{$vo.distributor_id}" {:m_selected($vo[distributor_id], $get[store_id])}>{$vo.distributor_name}</option>
+						</volist>
+					</select>
+				</li>
+			</ul>
+		</notempty>
+		<div class="btn">
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-default" id="btn_reset">清除筛选</a>
+			<a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_search">完成</a>
+		</div>
+	</form>
+</div>
+<div class="mask"></div>
+
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script>
+	(function($) {
+		$.init();
+		var btns = $('.time');
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					btn.value = rs.text;
+					
+					picker.dispose();
+				});
+			}, false);
+		});
+	})(mui);
+	
+	$(function(){
+		$("#click").click(function(){
+			$(".filter_new_pop").addClass("on")	
+			$(".mask").fadeIn()
+		})
+		
+		$(".filter_new_pop ul li a").click(function(){
+			$(this).addClass("on")	
+		})
+		
+		$(".filter_new_pop a.mui-btn-primary,.mask").click(function(){
+			$(".filter_new_pop").removeClass("on")	
+			$(".mask").fadeOut()
+		})
+		
+		$(".filter_new_pop a.mui-btn-default").click(function(){
+			$(".filter_new_pop ul li a").removeClass("on")
+			$(".filter_new_pop ol li input").val('')
+		})
+	})
+</script>
+
+<!---城市选择--->
+<script src="__PUBLIC__/home/js/mui.poppicker.js"></script>
+<script src="__PUBLIC__/home/js/city.data-3.js"></script>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($, doc) {
+		$.init();
+		$.ready(function() {
+			var cityPicker = new $.PopPicker({
+				layer: 2
+			});
+			
+			cityPicker.setData(cityData3);
+			var cityPickerButton = doc.getElementById('region');
+			cityPickerButton.addEventListener('tap', function(event) {
+				cityPicker.show(function(items) {
+					cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text// + " " + (items[2] || {}).text;
+					doc.getElementById('province').value = (items[0] || {}).text;
+					doc.getElementById('city').value = (items[1] || {}).text;
+					//doc.getElementById('district').value = (items[2] || {}).value;
+					//返回 false 可以阻止选择框的关闭
+					//return false;
+				});
+			}, false);
+		});
+	})(mui, document);
+</script>
+
+<php>$jscall = \Common\Basic\JsConst::tbar('筛选', 'show');</php>
+<script type="text/javascript">
+//搜索
+app.setTitleRight('筛选', 'show');
+function show(){
+	$(".filter_new_pop").toggleClass("on")	
+	$(".mask").fadeToggle()
+}
+
+document.getElementById("btn_reset").addEventListener("tap",function(event){
+	$(".filter_pop ul li a").removeClass("on")
+	$(this).parents('form').find(":input").val('')
+})
+
+document.getElementById("btn_search").addEventListener("tap",function(event){
+	var form = $(this).parents('form')
+	form[0].submit();
+})
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var keyword = "{$get.keyword}";
+		var city = "{$get.city}";
+		var store_id = "{$get.store_id}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, keyword:keyword, city:city, store_id:store_id},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll ul").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

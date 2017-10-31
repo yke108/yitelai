@@ -1,0 +1,41 @@
+<div class="person_select">
+	<form action="{:U('')}">
+		<input type="hidden" name="id" value="{$info.order_id}" />
+		<div class="mui-input-group">
+			<volist name="admin_list" id="vo">
+				<div class="mui-input-row mui-checkbox mui-left">
+					<label>
+						<dl>
+							<dt><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></dt>
+							<dd>
+								<h2>{$vo.admin_name}</h2>
+								<p>{$vo.mobile}</p>
+							</dd>
+							<dt>{$vo.role_name}</dt>
+						</dl>
+						<input name="admin_ids[]" value="{$vo.admin_id}" type="checkbox">
+					</label>
+				</div>
+			</volist>
+		</div>
+		<div class="person_select_btn btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">去安装</a></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var btnElem = this;
+		mui(btnElem).button('loading');//切换为loading状态
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui(btnElem).button('reset');//切换为reset状态(即重置为原始的button)
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url;
+				}
+			},'json'
+		);
+	})
+});
+</script>

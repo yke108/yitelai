@@ -1,0 +1,229 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------在线秀厨艺详情开始----->
+<div class="cooking_detaild w1200">
+	<div class="special_position"><a href="{:U('index')}">首页</a> > <a href="{:U('list')}">在线厨艺秀</a>  > 在线厨艺秀详情</div>
+	<div class="cooking_detaild_info">
+		<dl class="clearfix">
+			<dt><img src="__UPLOAD__/{$info.picture}"></dt>
+			<dd>
+				<h1>{$info.name}</h1>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td width="140">
+							<p>工艺</p>
+							<span>{$info.tech}</span>
+						</td>
+						<td width="295">
+							<p>难度</p>
+							<p>
+								<img src="__PUBLIC__/main/special/icon8.png">
+								<em>
+									<for start="0" end="10">
+										<i <lt name="i" value="$info[difficulty]">class="on"</lt>></i>
+									</for>
+								</em>
+								<b>新手尝试</b>
+							</p>
+						</td>
+						<td>
+							<p>人数</p>
+							<p>
+								<img src="__PUBLIC__/main/special/icon9.png">
+								<em>
+									<for start="0" end="10">
+										<i <lt name="i" value="$info[number]">class="on"</lt>></i>
+									</for>
+								</em>
+								<b>两人份</b>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>口味</p>
+							<span>{$info.taste}</span>
+						</td>
+						<td>
+							<p>准备时间</p>
+							<p>
+								<img src="__PUBLIC__/main/special/icon10.png">
+								<em>
+									<for start="0" end="10">
+										<i <lt name="i" value="$info[prepare_time]">class="on"</lt>></i>
+									</for>
+								</em>
+								<b>{$info.prepare_time}分钟</b>
+							</p>
+						</td>
+						<td>
+							<p>烹饪时间</p>
+							<p>
+								<img src="__PUBLIC__/main/special/icon11.png">
+								<em>
+									<for start="0" end="10">
+										<i <lt name="i" value="$info[cook_time]">class="on"</lt>></i>
+									</for>
+								</em>
+								<b>{$info.cook_time}分钟</b>
+							</p>
+						</td>
+					</tr>
+				</table>
+				<div class="landlord clearfix">
+					<div class="landlord_l fl"><img src="__UPLOAD__/{$info.user_img|default='__PUBLIC__/main/user_default_img.jpg'}"></div>
+					<div class="landlord_r fl">
+						<p><span>{$info.nick_name|default='谷安居'}</span></p>
+						<p>菜谱：{$info.book_count}<!--<i>/</i>关注：{$info.collect_count}<i>/</i>粉丝：{$info.fans_count}--></p>
+						<p><em><!--{:date('Y-m-d')}  / -->{$info.read_count}看过</em></p>
+					</div>
+				</div>
+			</dd>
+		</dl>
+	</div>
+	<div class="material">
+		<h1>用料</h1>
+		<dl class="clearfix">
+			<dt><span>主料</span></dt>
+			<dd>
+				<volist name="info.material.main_material" id="vo" key="ko">
+					<span><img src="__UPLOAD__/thumbs/b90/{$vo.picture}">{$vo.name} <em>{$vo.dosage}</em></span>
+				</volist>
+			</dd>
+		</dl>
+		<notempty name="info.material.sub_material">
+			<dl class="clearfix">
+				<dt><span>辅料</span></dt>
+				<dd>
+					<volist name="info.material.sub_material" id="vo" key="ko">
+						<span><img src="__UPLOAD__/thumbs/b90/{$vo.picture}">{$vo.name} <em>{$vo.dosage}</em></span>
+					</volist>
+				</dd>
+			</dl>
+		</notempty>
+	</div>
+	<div class="cooking_detaild_step">
+		<h1>我的厨艺过程</h1>
+		<div class="cooking_detaild_step_list">
+			<volist name="info.steps" id="vo" key="ko">
+				<p><span>{$ko}.</span>{$vo.description}</p>
+				<p><img src="__UPLOAD__/{$vo.picture}"></p>
+			</volist>
+		</div>
+	</div>
+	<div class="cooking_detaild_comment">
+		<h1>最新评论</h1>
+		<div class="cooking_detaild_comment_hd">
+			<form action="{:U('comment')}">
+				<input type="hidden" name="book_id" value="{$info.book_id}" />
+				<dl class="clearfix">
+					<dt><img src="__UPLOAD__/thumbs/b90/{$user.user_img}"><p>{$user.nick_name}</p></dt>
+					<dd>
+						<p><textarea name="content" cols="" rows="" placeholder="想说点什么..."></textarea></p>
+						<p>
+							<!--<span>上传成功作品</span>-->
+							<input class="hy_upload_multi" hy_field="pictures" value="上传成功作品" style="width:200px;height:150px;" src=""/>
+							<em><a href="javascript:;" id="btn_comment">提交</a></em>
+						</p>
+					</dd>
+				</dl>
+			</form>
+		</div>
+		<div class="cooking_detaild_comment_bd">
+			<volist name="comment_list" id="vo">
+				<dl class="clearfix">
+					<dt><img src="__UPLOAD__/thumbs/b90/{$vo.user_img}"><p>{$vo.nick_name}</p></dt>
+					<dd>
+						<a href="{:U('like', array('comment_id'=>$vo[comment_id]))}" class="like"><img src="__PUBLIC__/main/special/icon12.png"><p class="like_count">{$vo.like_count}</p></a>
+						<h2>{$vo.content}</h2>
+						<div class="tasting_picture">
+							<volist name="vo.pictures" id="vo2">
+								<span><a href="__UPLOAD__/{$vo2}" rel="lightbox2[plants]"><img src="__UPLOAD__/thumbs/b90/{$vo2}"></a></span>
+							</volist>
+						</div>
+						<time>{:date('Y-m-d', $vo[add_time])}</time>
+					</dd>
+				</dl>
+			</volist>
+		</div>
+	</div>
+</div>
+<!-------在线秀厨艺详情结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.cooking_detaild_step_list img{margin:inherit;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_comment').click(function(){
+		var form = $(this).parents('form')
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.reload()
+			}
+		}, 'json');
+	});
+	
+	$('.like').bind('click',function(){
+		var obj = $(this);
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				var like_count = obj.find('.like_count').html();
+				like_count = parseInt(like_count) + 1;
+				obj.find('.like_count').html(like_count);
+			}
+		}, 'json');
+		return false;
+	});
+});
+</script>
+
+<link href="__PUBLIC__/main/css/lightbox.css" rel="stylesheet" type="text/css"/>
+<script src="__PUBLIC__/main/js/lightbox.js"></script>
+
+<style type="text/css">
+.hy_upload_multi:before,.hy_upload_single:after{content:" ";position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background-color:#d9d9d9;}
+.hy_upload_multi:before{ width:2px; height:50%;}
+.hy_upload_multi:after{ width:50%; height:2px;}
+.weui_uploader_input{opacity:1;}
+input:disabled{background:#eee !important;}
+
+.cooking_detaild_comment_bd dl dd .tasting_picture{ margin:10px 0;}
+.cooking_detaild_comment_bd dl dd .tasting_picture span{ margin-right:10px; display:inline-block;}
+.cooking_detaild_comment_bd dl dd .tasting_picture a{ display:table-cell; width:50px; height:50px; border:solid 1px #e2e2e2; text-align:center; vertical-align:middle;}
+.cooking_detaild_comment_bd dl dd .tasting_picture a img{ max-width:50px;  max-height:50px; vertical-align:middle;}
+.cooking_detaild_comment_bd dl dd .tasting_picture a{position:inherit;}
+</style>
+<link rel="stylesheet" href="__PUBLIC__/editor/themes/default/default.css">
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script src="__PUBLIC__/main/special/js/singleupload.js"></script>
+<script src="__PUBLIC__/main/special/js/multiupload.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$.hySingleImage.uploadUrl = "{:U('site/upload/index')}";
+	$.hySingleImage.baseUrl = "__UPLOAD__";
+	$.hyMultiImage.uploadUrl = "{:U('site/upload/index')}";
+	$.hyMultiImage.baseUrl = "__UPLOAD__";
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	$('.hy_upload_multi').hyMultiUpload("{:U('site/upload/index')}", '__UPLOAD__');
+});
+</script>

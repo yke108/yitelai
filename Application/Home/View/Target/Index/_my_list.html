@@ -1,0 +1,18 @@
+<volist name="list" id="v">
+	<li>
+		<h2><a href="javascript:;" class="right-after"><span>{$v.time}</span><em class="status_1">{$v.finish_status_label}</em></a></h2>
+		<div class="work_target_content_hd">
+			<ol>
+				<li><span>名称</span><span>计划数</span><span>完成数</span><span>完成率</span></li>
+			</ol>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell"><span>会员增量</span><em>{$v.plan_user_add}</em><b><input name="" type="text" value="{$v.true_user_add}" disabled></b><i><?=floor(($v['true_user_add'] / $v['plan_user_add'])*100)?>%</i></li>
+				<li class="mui-table-view-cell"><span>准客户增量</span><em>{$v.plan_consumer_add}</em><b><input name="" type="text" value="{$v.true_consumer_add}" disabled></b><i><?=floor(($v['true_consumer_add'] / $v['plan_consumer_add'])*100)?>%</i></li>
+				<li class="mui-table-view-cell"><span>邀约数</span><em>{$v.plan_invitation}</em><b><input name="" type="text" value="{$v.true_invitation}" disabled></b><i><?=floor(($v['true_invitation'] / $v['plan_invitation'])*100)?>%</i></li>
+				<li class="mui-table-view-cell"><span>报名数</span><em>{$v.plan_sign_up}</em><b><input name="" type="text" value="{$v.true_sign_up}" disabled></b><i><?=floor(($v['true_sign_up'] / $v['plan_sign_up'])*100)?>%</i></li>
+				<li class="mui-table-view-cell"><span>成交客户量</span><em>{$v.plan_deal}</em><b><input name="" type="text" value="{$v.true_deal}" disabled></b><i><?=floor(($v['true_deal'] / $v['plan_deal'])*100)?>%</i></li>
+				<li class="mui-table-view-cell"><span>销售额</span><em>{$v.plan_sales}</em><b><input name="" type="text" value="{$v.true_sales}" disabled></b><i><?=floor(($v['true_sales'] / $v['plan_sales'])*100)?>%</i></li>
+			</ul>
+		</div>
+	</li>
+</volist>

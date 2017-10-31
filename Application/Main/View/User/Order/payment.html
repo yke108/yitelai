@@ -1,0 +1,124 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+<!-------支付订单开始----->
+<div class="main w1200">
+	<form action="{:U('')}" method="post">
+		<div class="pay_order">
+			<h1>选择支付方式</h1>
+			<div class="pay_way">
+				<ul>
+					<li><label><input type="radio" class="pay_id" name="pay_id" id="RadioGroup1_0" checked value="1">账户余额支付：当前账户余额 <span>{$user.user_money}</span> 元</label></li>
+					<li>
+						<label><input type="radio" class="pay_id" name="pay_id" id="RadioGroup1_1" value="">支付宝/微信</label>
+						<div class="pay_list">
+							<ol class="clearfix">
+								<!--<li pay_id="3"><a href="javascript:;"><img src="__PUBLIC__/main/images/pic79.jpg"></a></li>-->
+								<li pay_id="2"><a href="javascript:;"><img src="__PUBLIC__/main/images/pic80.jpg"></a></li>
+							</ol>
+						</div>
+					</li>
+					<!--<li class="last">
+						<label><input type="radio" class="pay_id" name="pay_id" id="RadioGroup1_2" value="">网上银行</label>
+						<div class="pay_list">
+							<ol class="clearfix">
+								<li pay_id="3"><a href="javascript:;"><img src="__PUBLIC__/main/images/pic81.jpg"></a></li>
+							</ol>
+						</div>
+					</li>-->
+				</ul>
+			</div>
+			<script>
+				//支付方式切换
+				$(function(){
+					$(".pay_list ol li").click(function(){
+						$(this).addClass("on").siblings().removeClass("on")
+						$(this).parent().parent().parent().siblings().find(".pay_list ol li").removeClass("on")
+						
+						var pay_id = $(this).attr('pay_id');
+						$(this).parents('li').find('.pay_id').val(pay_id);
+					})
+				})
+				
+				$(function(){
+					$(".pay_way ul li label").click(function(){
+						$(this).siblings().show()
+						$(this).parent().siblings().find(".pay_list").hide()
+						//$(this).parent().siblings().find(".pay_list ol li").removeClass("on")
+					})
+				})
+			</script>
+			<h1>确认支付项目</h1>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<th align="left">商品名称</th>
+					<th align="center">价格</th>
+					<th align="center">数量</th>
+					<th align="center">小计</th>                                                                                                                         
+				</tr>
+				<tr>
+					<td class="shop_tit" colspan="6" height="30">店铺：{$order_info.distributor.distributor_name}</td>
+				</tr>
+				<volist name="detail_list" id="vo">
+					<tr>
+						<td valign="top" align="left">
+							<dl class="clearfix">
+								<dt><a href="javascript:;"><img src="__UPLOAD__/{$vo.picture}" width="60" height="60"></a></dt>
+								<dd>
+									<h3><a href="javascript:;">{$vo.goods_name}</a></h3>
+								</dd>
+							</dl>
+						</td>
+						<td valign="top" align="center">¥{$vo.user_price}</td>
+						<td valign="top" align="center"><div class="spinner">X{$vo.goods_number}</div></td>
+						<td valign="top" align="center"><span>¥{$vo[user_price] * $vo[goods_number]}</span></td>
+					</tr>
+				</volist>
+			</table>
+			<div class="pay_order_btn">
+				<p>支付金额：<span>￥{$order_info.custom_amount}</span></p>
+				<p>
+					<em>实付金额：</em>
+					<font>￥{$payment_info[pay_amount]}</font>
+					<a href="javascript:;" class="payordernow">确认付款</a>
+					<input type="hidden" name="payment_id" value="{$get.payment_id}" />
+				</p>
+			</div>
+		</div>
+	</form>
+</div>
+<!-------支付订单结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(document).ready(function(){
+	$('.payordernow').bind('click', function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				 window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+	
+	var pay_id = $('.pay_id:checked').val();
+	if(pay_id == 3 || pay_id == 2){
+		$('.pay_list').css('display', 'block');
+	}
+});
+</script>

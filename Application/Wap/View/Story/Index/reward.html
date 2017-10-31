@@ -1,0 +1,90 @@
+<div class="warp">
+	
+	<div class="pay">
+		
+		<div class="pay_2">
+			<h1>作者：{$story_user.nick_name}</h1>
+			<dl>
+				<dt><a href="{:U('info', array('id'=>$info[story_id]))}"><img src="__UPLOAD__/thumbs/b150/{$info.story_image}"></a></dt>
+				<dd>
+					<h2><a href="{:U('info', array('id'=>$info[story_id]))}">{$info.story_title}</a></h2>
+					<p><span>{$info.story_intro}</span></p>
+				</dd>
+			</dl>
+		</div>
+		
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$get.id}" />
+			<div class="pay_3">
+				<h2>支付方式</h2>
+				<div class="weui-cells weui-cells_checkbox">
+					<label class="weui-cell weui-check__label" for="s1">
+						<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon10.png" style="width:25px;margin-right:5px;display:block"></div>
+						<div class="weui-cell__bd">
+							<p>余额支付</p>
+						</div>
+						<div class="weui-cell__ft">
+							<span>账户余额<font>{$user.user_money}</font>元</span>
+							<input type="radio" class="weui-check" name="pay_id" value="1" id="s1" checked>
+							<i class="weui-icon-checked"></i>
+						</div>
+					</label>
+					<eq name="is_weixin" value="1">
+						<label class="weui-cell weui-check__label" for="s2">
+							<div class="weui-cell__hd"><img src="__PUBLIC__/wap/images/icon11.png" style="width:25px;margin-right:5px;display:block"></div>
+							<div class="weui-cell__bd">
+								<p>微信支付</p>
+							</div>
+							<div class="weui-cell__ft">
+								<input type="radio" class="weui-check" name="pay_id" value="2" id="s2">
+								<i class="weui-icon-checked"></i>
+							</div>
+						</label>
+					</eq>
+				</div>
+			</div>
+			<div class="pay_4">
+				<div class="pay_4_bd">
+					<p>打赏金额<input id="reward_amount" name="reward_amount" type="text" placeholder="请输入打赏金额" style='width:130px; text-align:left;' onkeyup="clearNoNum(this)"></p>
+				</div>
+			</div>
+			<div class="pay_5">
+				<p class=" clearfix"><a href="javascript:;" class="createordernow">立即支付</a></p>
+			</div>
+		</form>
+	</div>
+	
+</div>
+
+<div id="pay_page"></div>
+
+<script>
+$(document).ready(function(){
+	$('.createordernow').bind('click', function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			if(d.status == 0){
+				layer.open({time:1,content:d.info});
+			}else if(d.status == 1){
+				layer.open({time:1,content:d.info});
+			}else if(d.status == 2){
+				$('#pay_page').html(d.info);
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+});
+</script>
+
+<script language="JavaScript" type="text/javascript">
+function clearNoNum(obj){
+obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字而不是
+obj.value = obj.value.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的
+obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+}
+</script>

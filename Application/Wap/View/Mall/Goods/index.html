@@ -1,0 +1,228 @@
+<div class="warp">
+	
+	<div class="pro_list">
+		<div class="pro_search">
+			<form action="{:U('')}" method="post"><input name="keyword" value="{$get.keyword}" placeholder="商品搜索" type="search"><button type="submit"></button></form>
+			<a href="javascript:;"><img src="__PUBLIC__/wap/images/icon3.png">筛选</a>
+		</div>
+		<div class="pro_sort">
+			<ul class="clearfix">
+				<li><a <eq name="get.order" value="">class="on"</eq> href="{:U('', array('cat_id'=>$get[cat_id], 'keyword'=>$get[keyword]))}">综合</a></li>
+				<li><a <eq name="get.order" value="view">class="on"</eq> href="{:U('', array('cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'order'=>'view', 'sort'=>$sort_view))}">人气</a></li>
+				<li><a <eq name="get.order" value="sale">class="on"</eq> href="{:U('', array('cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'order'=>'sale', 'sort'=>$sort_sale))}">销量</a></li>
+				<li><a <eq name="get.order" value="new">class="on"</eq> href="{:U('', array('cat_id'=>$get[cat_id], 'keyword'=>$get[keyword], 'order'=>'new', 'sort'=>$sort_new))}">新品</a></li>
+			</ul>
+		</div>
+		<div class="pro_box">
+			<empty name="list">
+				<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+			<else/>
+				<ul class="clearfix more_content">
+					<include file="Mall/Goods/_index"/>
+				</ul>
+				<div id="pages" class="more"><a id="load_more" href="javascript:;"><img src="__PUBLIC__/editor/themes/common/loading.gif"></a></div>
+				<div class="loading"></div>
+			</empty>
+		</div>
+	</div>
+	
+	<!-----筛选弹窗----->
+	<div class="pro_filter">
+		<form action="__SELF__" method="post">
+			<h1>筛选<a id="btn_search" href="javascript:;">确定</a></h1>
+			<div class="pro_filter_price">
+				<h2>价格区间</h2>
+				<p><input name="min_price" value="{$get.min_price}" class="weui-input" type="number" placeholder="最低价"><span>—</span><input class="weui-input" name="max_price" value="{$get.max_price}" type="number" placeholder="最高价"></p>
+			</div>
+			<div class="pro_filter_item multi">
+				<h2>品牌</h2>
+				<empty name="brand_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关品牌</p>
+				<else/>
+					<ul class="clearfix">
+						<volist name="brand_list" id="vo">
+							<li>
+								<a <eq name="vo.selected" value="1">class="on"</eq> href="javascript:;">
+									{$vo.brand_name}<i><img src="__PUBLIC__/wap/images/icon4.png"></i>
+									<input <eq name="vo.selected" value="1">checked="checked"</eq> type="checkbox" name="brand_id[]" value="{$vo.brand_id}" style="display:none" />
+								</a>
+							</li>
+						</volist>
+					</ul>
+				</empty>
+			</div>
+			<div class="pro_filter_item multi">
+				<h2>地区</h2>
+				<ul class="clearfix">
+					<volist name="region_list" id="vo">
+						<li>
+							<a <eq name="vo.selected" value="1">class="on"</eq> href="javascript:;">
+								{$vo.region_name}<i><img src="__PUBLIC__/wap/images/icon4.png"></i>
+								<input <eq name="vo.selected" value="1">checked="checked"</eq> type="checkbox" name="region_code[]" value="{$vo.region_code}" style="display:none" />
+							</a>
+						</li>
+					</volist>
+				</ul>
+			</div>
+			<foreach name="filter_attr_list" item="vo" key="k">
+				<div class="pro_filter_item single">
+					<h2>{$vo.attr_value}</h2>
+					<ul class="clearfix">
+						<volist name="vo.attr_list" id="vo2">
+							<li>
+								<a <eq name="vo2.selected" value="1">class="on"</eq> href="javascript:;">{$vo2.attr_value}<i>
+									<img src="__PUBLIC__/wap/images/icon4.png"></i>
+									<input <eq name="vo2.selected" value="1">checked="checked"</eq> type="checkbox" name="filter_attr[{$k}]" value="{$vo2.goods_spec_value_id}" style="display:none" />
+								</a>
+							</li>
+						</volist>
+					</ul>
+				</div>
+			</foreach>
+		</form>
+	</div>
+	<div class="mask"></div>
+	<script>
+		$(function(){
+			$(".pro_search a").click(function(){
+				$(".pro_filter").animate({left:"10%"});
+				$(".mask").fadeIn();
+			});
+			$(".mask").click(function(){
+				$(".pro_filter").animate({left:"100%"});
+				$(".mask").fadeOut();
+			});
+			$(".pro_filter h1 a").click(function(){
+				$(".pro_filter").animate({left:"100%"});
+				$(".mask").fadeOut();
+			});
+			$(".multi ul li a").click(function(){
+				$(this).toggleClass("on")
+				
+				if($(this).hasClass('on')){
+					$(this).find('input').prop('checked', true);
+				}else{
+					$(this).find('input').prop('checked', false);
+				}
+			})
+			$(".single ul li a").click(function(){
+				$(this).parents('li').siblings().find('a').removeClass('on');
+				$(this).parents('li').siblings().find('input').prop('checked', false);
+				
+				$(this).toggleClass("on")
+				
+				if($(this).hasClass('on')){
+					$(this).find('input').prop('checked', true);
+				}else{
+					$(this).find('input').prop('checked', false);
+				}
+			})
+			
+			$("#btn_search").click(function(){
+				var form = $(this).parents("form");
+				form[0].submit();
+			})
+		})
+	</script>
+	
+</div>
+
+<style type="text/css">
+	#pages{display:none; text-align:center;}
+	.loading{text-align: center;font-size: 14px;padding:20px 0}
+</style>
+<script src="__PUBLIC__/js/debug.js"></script>
+<script src="__PUBLIC__/js/jquery.infinitescroll.js"></script>
+<script type="text/javascript">
+	var cat_id = "{$get.cat_id}";
+	var keyword = "{$get.keyword}";
+	
+	var min_price = "{$get.min_price}";
+	var max_price = "{$get.max_price}";
+	
+	var brand_id = "{$get.brand_id}";
+	var region_code = "{$get.region_code}";
+	var filter_attr = "{$get.filter_attr}";
+	
+	var order = "{$get.order}";
+	var sort = "{$get.sort}";
+	
+	$('.more_content').infinitescroll({
+		loading: {
+			msgText: "",
+			img: "__PUBLIC__/editor/themes/common/loading.gif",
+			finishedMsg: '没有新数据了哦...',
+			selector: '.loading' //loading选择器
+		},
+		navSelector: "#pages", //导航的选择器，会被隐藏
+		nextSelector: "#load_more", //包含下一页链接的选择器
+		itemSelector: ".item", //你将要取回的选项(内容块)
+		debug: false, //启用调试信息，若启用必须引入debug.js
+		dataType: 'html', //格式要和itemSelector保持一致
+		maxPage: 10, //最大加载的页数
+			//animate: true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
+		extraScrollPx: 150, //滚动条距离底部多少像素的时候开始加载，默认150
+			//bufferPx: 40, //载入信息的显示时间，时间越大，载入信息显示时间越短
+		errorCallback: function() { //加载完数据后的回调函数
+			
+		},
+		path: function(index) { //获取下一页方法
+			
+			var url = "{:U('',array('p'=>'sp','cat_id'=>'scat_id','keyword'=>'skeyword','min_price'=>'smin_price','max_price'=>'smax_price','brand_id'=>'sbrand_id','region_code'=>'sregion_code','filter_attr'=>'sfilter_attr','order'=>'sorder','sort'=>'ssort'))}";
+			url = url.replace('sp', index);
+			if(cat_id){
+				url = url.replace('scat_id', cat_id);
+			}else{
+				url = url.replace('/cat_id/scat_id', '');
+			}
+			if(keyword){
+				url = url.replace('skeyword', keyword);
+			}else{
+				url = url.replace('/keyword/skeyword', '');
+			}
+			
+			if(min_price){
+				url = url.replace('smin_price', min_price);
+			}else{
+				url = url.replace('/min_price/smin_price', '');
+			}
+			if(max_price){
+				url = url.replace('smax_price', max_price);
+			}else{
+				url = url.replace('/max_price/smax_price', '');
+			}
+			
+			if(brand_id){
+				url = url.replace('sbrand_id', brand_id);
+			}else{
+				url = url.replace('/brand_id/sbrand_id', '');
+			}
+			if(region_code){
+				url = url.replace('sregion_code', region_code);
+			}else{
+				url = url.replace('/region_code/sregion_code', '');
+			}
+			if(filter_attr){
+				url = url.replace('sfilter_attr', keyword);
+			}else{
+				url = url.replace('/filter_attr/sfilter_attr', '');
+			}
+			
+			if(order){
+				url = url.replace('sorder', order);
+			}else{
+				url = url.replace('/order/sorder', '');
+			}
+			if(sort){
+				url = url.replace('ssort', sort);
+			}else{
+				url = url.replace('/sort/ssort', '');
+			}
+			
+			return url;
+		},
+	}, function(newElements, data, url) { //回调函数
+		//console.log(data);
+		//alert(url);
+	});
+</script>

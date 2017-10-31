@@ -1,0 +1,148 @@
+<div class="row">
+	<div class="col-sm-12 col-md-12">
+		<h3 class="heading">商家入驻设置</h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('update')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab1" data-toggle="tab">公司信息</a></li>
+						<li><a href="#tab2" data-toggle="tab">店铺信息</a></li>
+						<li><a href="#tab3" data-toggle="tab">入驻审核</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab1">
+							<!--<div class="form-group">
+								<label class="control-label col-sm-2">执照类型</label>
+								<div class="col-sm-4">
+									<textarea name="c[license_type]" class="input-xlarge form-control" style="height:150px">{$info.license_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">法定代表人证件类型</label>
+								<div class="col-sm-4">
+									<textarea name="c[certificate_type]" class="input-xlarge form-control" style="height:150px">{$info.certificate_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>-->
+							<div class="form-group">
+								<label class="control-label col-sm-2">纳税人类型</label>
+								<div class="col-sm-4">
+									<textarea name="c[tax_type]" class="input-xlarge form-control" style="height:150px">{$info.tax_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">纳税类型税码</label>
+								<div class="col-sm-4">
+									<textarea name="c[tax_code]" class="input-xlarge form-control" style="height:150px">{$info.tax_code}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">公司类型</label>
+								<div class="col-sm-4">
+									<textarea name="c[company_type]" class="input-xlarge form-control" style="height:150px">{$info.company_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">可网售商品数量</label>
+								<div class="col-sm-4">
+									<textarea name="c[netsale_num]" class="input-xlarge form-control" style="height:150px">{$info.netsale_num}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">预计平均客单价</label>
+								<div class="col-sm-4">
+									<textarea name="c[customer_peramount]" class="input-xlarge form-control" style="height:150px">{$info.customer_peramount}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">仓库情况</label>
+								<div class="col-sm-4">
+									<textarea name="c[store_status]" class="input-xlarge form-control" style="height:150px">{$info.store_status}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">ERP类型</label>
+								<div class="col-sm-4">
+									<textarea name="c[erp_type]" class="input-xlarge form-control" style="height:150px">{$info.erp_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">是否会选择谷安居仓储</label>
+								<div class="col-sm-4">
+									<textarea name="c[use_ourstore]" class="input-xlarge form-control" style="height:150px">{$info.use_ourstore}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">是否择谷安居物流</label>
+								<div class="col-sm-4">
+									<textarea name="c[use_ourexpress]" class="input-xlarge form-control" style="height:150px">{$info.use_ourexpress}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">业务邀请</label>
+								<div class="col-sm-4">
+									<textarea name="c[business_invite]" class="input-xlarge form-control" style="height:150px">{$info.business_invite}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+						</div><!--end tab1-->
+						
+						<div class="tab-pane" id="tab2">
+							<div class="form-group">
+								<label class="control-label col-sm-2">品牌商标类别</label>
+								<div class="col-sm-4">
+									<textarea name="c[register_type]" class="input-xlarge form-control" style="height:150px">{$info.register_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">经营类型</label>
+								<div class="col-sm-4">
+									<textarea name="c[manage_type]" class="input-xlarge form-control" style="height:150px">{$info.manage_type}</textarea>
+								</div>
+								<span id="help-block">一行一个值</span>
+							</div>
+						</div><!--end tab2-->
+						
+						<div class="tab-pane" id="tab3">
+							<div class="form-group">
+								<label class="control-label col-sm-2">入驻投诉邮箱</label>
+								<div class="col-sm-4">
+									<input name="c[email]" class="input-xlarge form-control" value="{$info.email}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">服务电话</label>
+								<div class="col-sm-4">
+									<input name="c[tel]" class="input-xlarge form-control" value="{$info.tel}"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">在线咨询</label>
+								<div class="col-sm-4">
+									<input name="c[qq]" class="input-xlarge form-control" value="{$info.qq}"/>
+								</div>
+							</div>
+						</div><!--end tab3-->
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="type" value="merchant">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>

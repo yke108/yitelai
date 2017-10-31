@@ -1,0 +1,23 @@
+<div class="store_activities">
+	<empty name="list">
+		<p style="text-align:center;color:#999999;padding:20px;">暂无活动</p>
+	<else/>
+		<foreach name="list" item="vo" key="ko">
+			<foreach name="vo" item="vo2" key="ko2">
+				<h2>{$ko}年{$ko2}月<i></i></h2>
+				<ul>
+					<volist name="vo2" id="vo3">
+						<li>
+							<a href="{:U('info', array('activity_id'=>$vo3[activity_id]))}">
+								<h3>{$vo3.title}</h3>
+								<p><img src="__PUBLIC__/home/images/pic1.jpg">负责人：李敏镐</p>
+								<p>活动时间：{:date('Y-m-d', $vo3[start_time])}至{:date('Y-m-d', $vo3[end_time])}</p>
+								<p>推广渠道：地推</p>
+							</a>
+						</li>
+					</volist>
+				</ul>
+			</foreach>
+		</foreach>
+	</empty>
+</div>

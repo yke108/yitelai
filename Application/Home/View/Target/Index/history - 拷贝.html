@@ -1,0 +1,24 @@
+<div class="work_target_record">
+    <ul>
+    	<?php
+        $finish = array('mui-badge-primary','mui-badge-success','mui-badge-success','mui-badge-warning');
+        $finish_status = array('进行中','已完成','超额完成','未完成');
+        $type = array('','天','周','月','年');
+        if($list)
+        {
+        	foreach($list as $v)
+            {
+        ?>
+        <li>
+            <a href="{:U('detail','id='.$v['id'])}">
+                <h2><em>{$type[$v[type]]}目标</em><span class="mui-badge <?=$finish[$v['finish_status']]?> mui-badge-inverted">（<?=$finish_status[$v['finish_status']]?>）</span></h2>
+                <p>开始时间：{$v.start}</p>
+                <p>结束时间：{$v.end}</p>
+            </a>
+        </li>
+        <?php
+        	}
+        }
+        ?>
+    </ul>
+</div>

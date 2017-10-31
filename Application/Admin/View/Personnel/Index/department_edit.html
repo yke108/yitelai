@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><?php if($info['id']){?>编辑<?php }else{?>添加<?php }?></h3>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{:U('department_edit')}">
+				<fieldset>
+					<input type="hidden" name="id" value="{$info.id}">
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">所属组别</label>
+						<div class="col-sm-8">
+							<select name="group_id" class="form-control" required>
+                            	<option value="">请选择组别</option>
+                                <?php
+                                if($group)
+                                {
+                                	foreach($group as $v)
+                                    {
+                                ?>
+                                <option value="{$v.id}" <?php if($info['group_id'] == $v['id']){?>selected<?php }?>>{$v.group_name}</option>
+                                <?php
+                                	}
+                                }
+                                ?>
+                            </select>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">岗位名称</label>
+						<div class="col-sm-8">
+							<input name="department" class="input-xlarge form-control" type="text" value="{$info.department}" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+	

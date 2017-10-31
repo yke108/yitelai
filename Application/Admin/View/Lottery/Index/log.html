@@ -1,0 +1,55 @@
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">奖品列表
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered dTableR" id="dt_a">
+                    <thead>
+                        <tr>
+							<th>奖品名称</th>
+							<th>奖品类型</th>
+							<th>中奖时间</th>
+							<th>领取人</th>
+							<th>头像</th>
+							<th>收货地址</th>
+                        </tr>
+                    </thead>
+                
+                    <tbody>
+						<volist name="list" id="vo">
+							<php>$user = $user_list[$vo['user_id']];</php>
+							<tr class="rowlink">
+							    <td>{$vo.prize_name}</td>
+								<td>{$prize_type_list[$vo['prize_type']]}</td>
+								<td><gt name="vo.play_time" value="0">{:date('Y-m-d H:i:s', $vo['play_time'])}</gt></td>
+								<td>{$user.nick_name}</td>
+								<td>
+								<notempty name="user.user_img">
+								<img src="__UPLOAD__/thumbs/b32/{$user.user_img}" style="border-radius:50% 50%;"/>
+								</notempty>
+								</td>
+								<td>
+									<if condition='$vo[prize_type] eq 100'>
+										<if condition='$vo[is_select] eq 1'>
+										<p>联系人：{$vo.consignee}</p>
+										<p>联系电话：{$vo.tel}</p>
+										<p>地区：{$regions[$vo[region_code]]}</p>
+										<p>详细地址：{$vo.address}</p>
+										<else/>
+										未设置收货地址
+										</if>
+									</if>
+									
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+			</div>
+			<div>{$page}</div>
+		</div>
+	</div>
+</div>
+	

@@ -1,0 +1,129 @@
+<style>
+th.cur{cursor: pointer;}
+
+</style>
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">定制订单列表
+			<div style="clear:both"></div>
+		</h3>
+		 <div class="well clearfix">
+			<div class="pull-left">
+				<form class="form-horizontal cs_ajax_form" method="get" action="{:U('')}">
+					订单号:
+					<input name="order_id" value="{$get.order_id}" type="text" class="form-control input-sm" placeholder="订单号" style="display:inline-block;width:auto;" />
+					购买人:
+					<input name="consignee" value="{$get.consignee}" type="text" class="form-control input-sm" placeholder="购买人" style="display:inline-block;width:auto;" />
+					购买人手机号:
+					<input name="mobile" value="{$get.mobile}" type="text" class="form-control input-sm" placeholder="手机号" style="display:inline-block;width:auto;" />
+					<span class="sepV_c">订单状态：
+						 <select class="form-control input-sm" name="custom_order_status">
+								<option value="">全部状态</option>
+								<foreach name="status_list" item="vo" key="ko">
+									<option value="{$ko}" {:m_selected($ko, $get[custom_order_status])}>{$vo}</option>
+								</foreach>
+						  </select>
+					</span>
+					下单时间：
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start_time}" name='start_time' class='form-control input-sm hy_dp' /> - <input value="{$get.end_time}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end_time' />
+					<button class="btn btn-default btn-sm" type="submit" style='margin-left:20px;'>搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 dataTables_wrapper cs_flesh_info" href="{$Think.server.request_uri}">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr class="sort">
+							<th>订单号</th>
+							<th>会员</th>
+							<th>购买人</th>
+							<th>付款信息</th>
+							<th>订单状态</th>
+							<th>下单时间</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblc">
+						 <volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>
+									<a href="{:U('info', array('id'=>$vo[order_id]))}">{$vo.order_id}
+										<eq name="vo.is_seckill" value="1"><font color="red">（秒杀）</font></eq>
+									</a>
+								</td>
+								<td>{$vo.nick_name}</td>
+								<td>{$vo.consignee}（{$vo.mobile}）</td>
+								<td>
+									<p>订单金额：{$vo.custom_amount}元</p>
+									<p>预付金额：{$vo.order_amount}元<font color="#FF0000">（{$vo.pay_status_label}）</font></p>
+									<p>抵扣金额：{$vo.deduction_amount}元</p>
+									<php>$not_pay = $vo[custom_amount] - $vo[order_amount] - $vo[deduction_amount];</php>
+									<p>未付金额：<gt name="not_pay" value="0">{$not_pay}<else/>0</gt>元</p>
+								</td>
+								<td>{$vo.status}</td>
+								<td>
+									<p>{:date('Y-m-d H:i:s', $vo[add_time])}</p>
+									<p>距下单时间已过：<font color="#FF0000">{:round(diffBetweenTwoDays($vo[add_time], time()))}天</font></p>
+								</td>
+								<td>
+									<switch name="vo.custom_order_status" >
+										<case value="0">
+											<a href="{:U('drawing', array('id'=>$vo[order_id]))}">管理</a>
+										</case>
+										<case value="1">
+											<a href="{:U('drawing', array('id'=>$vo[order_id]))}">更新</a>
+										</case>
+										<case value="2">
+											<a href="{:U('drawing', array('id'=>$vo[order_id]))}">更新</a>
+										</case>
+										<case value="5">
+											<a href="{:U('confirm_price', array('id'=>$vo[order_id]))}">确认报价</a>
+										</case>
+										<case value="8">
+											<notempty name="vo.shipping_no">
+												<a href="{$vo.pc_ship_url}" class="mui-btn mui-btn-block mui-btn-primary" target="_blank">查看物流</a>
+											</notempty>
+											<a href="{:U('confirm_shipped', array('id'=>$vo[order_id]))}" class="confirm" tips="确认发货吗？">确认发货</a>
+										</case>
+										<case value="10">
+											<empty name="vo.admin_ids">
+												<a href="{:U('confirm_installer', array('id'=>$vo[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">指派安装</a>
+											<else/>
+												<eq name="is_admin" value="1">
+													<a href="{:U('confirm_installed', array('id'=>$vo[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">上传安装凭证</a>
+												<else/>
+													<in name="admin_id" value="$vo[admin_ids]">
+														<a href="{:U('confirm_installed', array('id'=>$vo[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">上传安装凭证</a>
+													</in>
+												</eq>
+											</empty>
+										</case>
+									</switch>
+									<a href="{:U('info', array('id'=>$vo[order_id]))}" class="cs_ajax_link">查看</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+                <div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.confirm').click(function(){
+		if(confirm($(this).attr('tips'))){
+			$.post($(this).attr('href'), {}, function(d){
+				layer.msg(d.info);
+				if(d.status == 1){
+					window.location.reload();
+				}
+			},'json');
+		}
+		return false;
+	});
+});
+</script>

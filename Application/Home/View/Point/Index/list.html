@@ -1,0 +1,87 @@
+<div class="integral_management_deta mui-scroll-wrapper" id="pullrefresh">
+	<div class="mui-scroll">
+		<div class="integral_management_deta_hd">
+			<h2><span><img src="{$user.avatar}"></span><em>{$user.user_name}<br /><i>{$user.mobile}</i></em></h2>
+			<dl>
+				<dt>
+					<h3><span>会员等级:<font>{$user.rank.rank_name|default='普通会员'}</font></span><em>{$user.pay_points}</em></h3>
+					<p><span>微信昵称:{$user.nick_name|default='无'}</span><em>剩余积分</em></p>
+				</dt>
+				<dd>
+					<p>备注：{$user.remark}</p>
+				</dd>
+			</dl>
+		</div>
+		<div class="integral_management_deta_bd">
+			<h2>积分明细</h2>
+			<div class="integral_deta_list">
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无积分记录</p>
+				<else/>
+					<div class="mui-table-view">
+						<include file="Point/Index/_list"/>
+					</div>
+				</empty>
+			</div>
+		</div>
+	</div>
+	<div class="integral_management_deta_btn"><a href="{:U('remark', array('user_id'=>$user[user_id]))}" class="mui-btn mui-btn-block link">备注</a></div>
+</div>
+
+<style type="text/css">
+.mui-pull-bottom-pocket{bottom:57px;}
+.integral_management_deta_btn{z-index:9999;}
+</style>
+
+<script>
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>
+
+<if condition='$count gt count($list)'>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.js"></script>
+	<script src="__PUBLIC__/home/js/mui.pullToRefresh.material.js"></script>
+	<script>
+		var page = 2;
+		var user_id="{$get.user_id}";
+		//var keyword="{$get.keyword}";
+		
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('')}",{
+				type:'post',
+				data:{p:page, user_id:user_id},
+				dataType:'json',
+				success:function(res){
+					if(res.html != ''){
+						$(".mui-scroll .mui-table-view").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

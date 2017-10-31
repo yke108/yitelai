@@ -1,0 +1,192 @@
+<div class="warp">
+	<div class="news_detaild mui-scroll-wrapper" id="pullrefresh">
+		<div class="mui-scroll">
+			<eq name="info.content_type" value="1">
+				{$info.content}
+			<else/>
+				<video src="__UPLOAD__/{$info.content}" controls width="100%" poster="__UPLOAD__/{$info.picture}"></video>
+			</eq>
+			<h1 class="news_detaild_tit">{$info.title}</h1>
+			<h2 class="news_detaild_sub"><span><img src="__UPLOAD__/thumbs/b90/{$info.author_img}">{$info.author_name}</span><time>{$info.date_time}</time><em>{$info.read_count}播放</em></h2>
+			<div class="video_detaild_info">
+				{$info.description}
+			</div>
+			<div class="video_detaild_btn">
+				<a href="{:U('like', array('id'=>$info[news_id]))}" class="like"><img src="__PUBLIC__/news/images/icon17.png"><span class="like_count">{$info.like_count}</span>人喜欢</a>
+			</div>
+			<div class="news_detaild_recommend">
+				<h1>相关新闻</h1>
+				<empty name="news_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关视频</p>
+				<else/>
+					<volist name="news_list" id="vo">
+						<div class="item_type_2">
+							<dl>
+								<dt><a href="{:U('info', array('id'=>$vo[news_id]))}"><img src="__UPLOAD__/thumbs/w175h125/{$vo.picture}"></a></dt>
+								<dd>
+									<h2><a href="{:U('info', array('id'=>$vo[news_id]))}">{$vo.title}</a></h2>
+									<p>
+										<span>{$vo.cat_name}</span>
+										<time>{$vo.read_count}播放</time>
+									</p>
+								</dd>
+							</dl>
+						</div>
+					</volist>
+				</empty>
+			</div>
+			<div class="news_detaild_comment">
+				<h1>评论</h1>
+				<div class="comment_list">
+					<empty name="comment_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无评论</p>
+					<else/>
+						<include file="Index/Index/_comment_list"/>
+					</empty>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="news_detaild_bottom">
+		<h2><a href="javascript:;">评论:</a><span><img src="__PUBLIC__/news/images/icon8.png"><c class="comment_count">{$info.comment_count}</c></span><em <notempty name="collect_info">class="on"</notempty> url="{:U('collect', array('id'=>$info[news_id]))}"></em></h2>
+		<div class="news_detaild_comment_form">
+			<form action="{:U('comment')}">
+				<input type="hidden" name="news_id" value="{$info.news_id}" />
+				<h3><a href="javascript:;" class="cancel">取消</a><a href="javascript:;" class="release">发布</a></h3>
+				<p><textarea name="content" cols="" rows="" placeholder="写评论"></textarea></p>
+			</form>
+		</div>
+	</div>
+	<div class="mask"></div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	
+	mui('body').on('tap', 'a', function() {
+		var href = this.getAttribute('href');
+		//非plus环境，直接走href跳转
+		if(!mui.os.plus){
+			location.href = href;
+			return;
+		}
+	});
+	
+	mui(".news_detaild_bottom h2").on('tap','em',function(){
+		var obj = $(this);
+		$.post(obj.attr('url'), {}, function(d){
+			if(d.status == 1){
+				if(obj.hasClass("on")){
+					mui.toast('取消收藏');
+					obj.removeClass("on")
+				}else{
+					mui.toast('收藏成功');
+					obj.addClass("on")
+				}
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	})
+	mui(".news_detaild_bottom h2").on('tap','a',function(){
+		$(".news_detaild_bottom .news_detaild_comment_form").addClass("on")
+		$(".news_detaild_bottom .news_detaild_comment_form p textarea").focus()
+		$(".mask").fadeIn()
+	})
+	mui(".news_detaild_bottom .news_detaild_comment_form h3").on('tap','a.cancel',function(){
+		$(".news_detaild_bottom .news_detaild_comment_form").removeClass("on")
+		$(".news_detaild_bottom .news_detaild_comment_form p textarea").blur()
+		$(".mask").fadeOut()
+	})
+	mui("body").on('tap','.mask',function(){
+		$(".news_detaild_bottom .news_detaild_comment_form").removeClass("on")
+		$(".news_detaild_bottom .news_detaild_comment_form p textarea").blur()
+		$(".mask").fadeOut()
+	})
+	
+	mui(".video_detaild_btn").on('tap','a.like',function(){
+		var obj = jQuery(this);
+		$.post(obj.attr('href'), {}, function(d){
+			mui.toast(d.info)
+			if(d.status == 1){
+				obj.find('.like_count').html(d.like_count);
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+	mui(".comment_list").on('tap','span',function(){
+		var obj = jQuery(this);
+		$.post(obj.attr('url'), {}, function(d){
+			mui.toast(d.info)
+			if(d.status == 1){
+				obj.find('.like_count').html(d.like_count);
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+	mui(".news_detaild_bottom .news_detaild_comment_form h3").on('tap','a.release',function(){
+		var form = jQuery(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			mui.toast(d.info)
+			if(d.status == 1){
+				$(".news_detaild_bottom .news_detaild_comment_form").removeClass("on")
+				$(".news_detaild_bottom .news_detaild_comment_form p textarea").blur()
+				$(".mask").fadeOut()
+				
+				$(".comment_list").prepend(d.html);
+				$('.comment_count').html(d.comment_count);
+				form[0].reset();
+			}
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	})
+</script>
+
+<if condition='$comment_count gt count($comment_list)'>
+	<script>
+		var page = 2;
+		var news_id = {$info.news_id};
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				up: {
+					contentrefresh: '正在加载...',
+					contentnomore:'没有更多数据了',
+					callback: pullupRefresh
+				}
+			}
+		});
+		
+		function pullupRefresh() {
+			var $this=this;
+			mui.ajax("{:U('comment_list')}",{
+				type:'post',
+				data:{p:page, news_id:news_id},
+				dataType:'json',
+				success:function(res){
+					if(res.html!=''){
+						$(".comment_list").append(res.html)
+						page++;
+						$this.endPullupToRefresh();
+					}else{
+						$this.endPullupToRefresh(true);
+					}
+				}
+			})
+		}
+	</script>
+<else/>
+	<script>
+		mui('.mui-scroll-wrapper').scroll({});
+	</script>
+</if>

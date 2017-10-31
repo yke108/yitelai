@@ -1,0 +1,40 @@
+<div class="vip_nav">
+	<ul class="top">
+		<li><a href="{:U('Design/Index/bespeak',array('store_id'=>$get[store_id]))}"><em>在线报名</em><i class="i9"></i></a></li>
+		<li><a href="{:U('chat/ask/index', array('store_id'=>$get[store_id]))}"><em>在线客服</em><i class="i6"></i></a></li>
+		<li><a href="{:U('user/collect/index')}"><em>购物车</em><i class="i2"></i></a></li>
+		<!--<li><a href="#"><em>我的足迹</em><i class="i4"></i></a></li>-->
+		<li><a href="{:U('user/collect/index')}"><em>收藏产品</em><i class="i3"></i></a></li>
+		<li><a href="{:U('user/order/index')}"><em>订单查询</em><i class="i11"></i></a></li>
+		<li><a href="{:U('user/index/index')}"><em>个人中心</em><i class="i1"></i></a></li>
+	</ul>
+	<ul class="bot">
+		<li><a href="javascript:;" class="top"><em>顶部</em><i class="i7"></i></a></li>
+		<!--<li><a href="#"><em>反馈</em><i class="i8"></i></a></li>-->
+	</ul>
+</div>
+<script>
+	$(function(){
+		$(".vip_nav ul.top li a").hover(function(){
+			$(this).addClass("on")
+			$(this).find("em").animate({left:"-60px"})
+		},function(){
+			$(this).removeClass("on")
+			$(this).find("em").animate({left:"0"})	
+		})
+		
+		$(".vip_nav ul.bot li a").hover(function(){
+			$(this).addClass("on")
+			$(this).find("em").animate({left:"-50px"})
+		},function(){
+			$(this).removeClass("on")
+			$(this).find("em").animate({left:"0"})	
+		})
+		
+		//返回顶部
+		$(".vip_nav ul.bot li a.top").click(function(){
+			$('body,html').animate({scrollTop:0},1000);
+			return false;
+		});
+	})
+</script>

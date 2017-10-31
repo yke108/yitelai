@@ -1,0 +1,223 @@
+<div class="warp">
+	<div class="user_article_form">
+		<style>
+			body{ background:#eee;}
+			.user_article_form .upload-button span{color:#ff3451;}
+			.user_article_form .upload-button button{background:#ff3451;}
+			.article_form_hd .weui-uploader__bd,.article_form_hd .article_form_tit{border-bottom:1px solid #ccc;}
+			.user_article_form .upload-button{background:#fff;}
+		</style>
+		<form action="{:U('')}" onSubmit="" method="post" enctype="multipart/form-data">
+			<div class="article_form_hd">
+				<div class="weui-uploader__bd">
+					<span class="fl">上传封面</span>
+					<ul class="weui-uploader__files upload_preview" id="preview">
+						<if condition='$info.story_image neq ""'>
+						<li id="uploadList_1" class="weui-uploader__file">
+							<a href="javascript:" class="upload_delete del_picture" title="删除" data-index="1"><img src="__PUBLIC__/wap/images/icon51.png"></a>
+							<img not_upload='1' id="uploadImage_1" src="__UPLOAD__/{$info.story_image}" class="upload_image" />
+							<input type='hidden' name='story_picture' value='{$info.story_image}' />
+						</li>
+						</if>
+					</ul>
+					<div class="weui-uploader__input-box">
+						<input id="fileImage" class="weui-uploader__input" type="file" accept="image/*" multiple>
+					</div>
+				</div>
+				<div class="article_form_tit" style='position:relative;'>
+					<select name='cat_id' style='width:150px;border:1px solid #eee;width:100%;background:#eee;'>
+						<option value='0'>请选择文章分类</option>
+						<volist name='story_cat_list' id='val'>
+						<option disabled="disabled" value='{$val.cat_id}'>{$val.cat_name}</option>
+							<volist name='val.children' id='val2'>
+							<option <if condition='$info[cat_id] eq $val2[cat_id]'>selected='selected'</if> value='{$val2.cat_id}'>&nbsp;&nbsp;&nbsp;&nbsp;{$val2.cat_name}</option>
+							</volist>
+						
+						</volist>
+					</select>
+					<img src="__PUBLIC__/wap/images/asd_2_2.png" width='8' style='position:absolute;top:0;bottom:0;margin:auto;right:7px;' />
+				</div>
+				<div class="article_form_tit"><input name="story_title" class="weui-input" type="text" style='font-size:14px;' value='{$info.story_title}' placeholder="请输入标题"></div>
+			</div>
+			<div class="article_form_bd" style='border-bottom:1px solid #ccc;margin:10px;padding:0;'>
+				<div class="publish-article-content">
+					<textarea name='story_intro' id='story_intro' placeholder="请输入文章简介" style='width:100%;background:#eee;'>{$info.story_intro}</textarea>
+				</div>
+			</div>
+			<div class="article_form_bd">
+				<div class="publish-article-content">
+					<input type="hidden" id="target">
+					<div class="article-content" id="content">{:htmlspecialchars_decode($info[story_content])}</div>
+				</div>
+			</div>
+			<div class="upload-button">
+				<span class="upload">
+					<img src="__PUBLIC__/wap/images/icon60_2.png">插入图片
+					<input class="input-file" id="imageUpload" type="file" name="imgFile" capture="camera" accept="image/*">
+				</span>
+				<button type="button" id="btn_submit">立即发布</button>
+				<input type="hidden" name="story_id" value="{$info.story_id}" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="__PUBLIC__/wap/js/textarea.min.js"></script>
+<!--<script src="__PUBLIC__/wap/js/textarea.js"></script>-->
+<script src="__PUBLIC__/wap/js/zxxFile.js"></script>
+<script>
+	var params = {
+		fileInput: $("#fileImage").get(0),
+		dragDrop: $("#fileDragArea").get(0),
+		upButton: $("#fileSubmit").get(0),
+		filter: function(files){
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				if (file.type.indexOf("image") == 0) {
+					arrFiles.push(file);
+				} else {
+					alert('文件"' + file.name + '"不是图片。');
+				}
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#preview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e){
+						html = html + '<li id="uploadList_'+ i +'" class="weui-uploader__file">'+
+							'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'"><img src="__PUBLIC__/wap/images/icon51.png"></a>' +
+							'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" />'+ 
+						'</li>';
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#preview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").live('click',function(e) {
+							e.stopImmediatePropagation();
+							e.stopPropagation();
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;	
+						});
+						//提交按钮显
+						$("#fileSubmit").show();	
+					} else {
+						//提交按钮隐藏
+						$("#fileSubmit").hide();	
+					}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file) {
+			$("#uploadList_" + file.index).remove();
+			$("#fileImage").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+</script>
+
+<script>
+$(function () {
+    "use strict";
+    $('#content').artEditor({
+        imgTar: '#imageUpload',
+        limitSize: 5,   // 兆
+        showServer: true,
+        uploadUrl: "{:U('upload')}",
+        data: {},
+        uploadField: 'image',
+        placeholader: '<p style="color:#999;">请输入文章正文内容</p>',
+        validHtml: ["<br/>"],
+        formInputId: 'target',
+        uploadSuccess: function (res) {
+            // 这里是处理返回数据业务逻辑的地方
+            // `res`为服务器返回`status==200`的`response`
+            // 如果这里`return <path>`将会以`<img src='path'>`的形式插入到页面
+            // 如果发现`res`不符合业务逻辑
+            // 比如后台告诉你这张图片不对劲
+            // 麻烦返回 `false`
+            // 当然如果`showServer==false`
+            // 无所谓咯
+            var result = JSON.parse(res)
+            if (result['code'] == '100') {
+                return result['data']['url'];
+            } else {
+                switch (result['code']) {
+                    case '101': {
+                        alert('上传失败')
+                    }
+                }
+            }
+            return false;
+        },
+        uploadError: function (status, error) {
+            //这里做上传失败的操作
+            //也就是http返回码非200的时候
+            alert('网络异常' + status)
+        }
+    });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".del_picture").live("click",function(e){
+		e.stopImmediatePropagation();
+		e.stopPropagation();
+		$(this).parents('li').remove();
+	})
+	
+	$('#btn_submit').click(function(){
+		var btn_submit_obj = $(this);
+		var story_title = $("input[name='story_title']").val();
+		var upload_image = $('.upload_image');
+		var story_content = $("#content").html();
+		var story_intro = $("#story_intro").val();
+		var story_id=$("input[name='story_id']").val();
+		
+		if(!story_title){
+			layer.open({time:1,content:'文章标题不能为空'});return false;
+		}
+		if(upload_image.length == 0){
+			layer.open({time:1,content:'封面图片不能为空'});return false;
+		}
+		if(upload_image.length > 1){
+			layer.open({time:1,content:'只能上传一张封面图片'});return false;
+		}
+		if(!story_content){
+			layer.open({time:1,content:'正文内容不能为空'});return false;
+		}
+		
+		var form = $(this).parents('form');
+		var data = form.serializeArray();
+		data[2] = {name:'story_content', value:story_content};
+		if(upload_image.attr('not_upload')!=1){
+			data[3] = {name:'story_image', value:upload_image.attr('src')};
+		}else{
+			data[3] = {name:'story_image', value:$("input[name='story_picture']").val()};
+		}
+		data[4] = {name:'story_id',value:story_id};
+		data[5] = {name:'story_title',value:story_title};
+		data[6] = {name:'story_intro',value:story_intro};
+		
+		
+		btn_submit_obj.attr('disabled', true);
+		$.post("{:U('')}", data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>

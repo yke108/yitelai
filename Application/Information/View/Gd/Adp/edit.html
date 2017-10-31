@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.position_id" value="0">修改广告位<else/>增加广告位</gt></h3>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{:U('')}" enctype="multipart/form-data">
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">广告位标题</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="position_name" class="input-xlarge form-control" type="text" value="{$info.position_name}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2">广告位编码</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="position_code" class="input-xlarge form-control" type="text" value="{$info.position_code}">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+						<input type="hidden" name="position_id" value="{$info.position_id}" />
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

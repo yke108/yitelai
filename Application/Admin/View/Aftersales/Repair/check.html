@@ -1,0 +1,89 @@
+<form name="form" method="post" class="cs_ajax_form" action="{:U('')}" onsubmit="return checkform()">
+	<div class="row">
+		<h1 class="invoice_heading" style="font-size:14px;">{$info.status_show}#维修单号：{$info.id}</h1>
+	</div>
+	<div class="row">
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>图片</th>
+						<th>商品名称</th>
+						<th>单价</th>
+						<th>数量</th>
+						<th>小计</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><img src="__UPLOAD__/{$info.item.goods_img}" height="40" /></td>
+						<td>{$info.item.goods_name}</td>
+						<td>￥{$info.item.goods_price}</td>
+						<td>{$info.item.goods_number}</td>
+						<td>￥{$info[item][goods_price] * $info[item][goods_number]}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div style="padding:5px;">
+		<table class="table">
+			<tbody>
+				<tr>
+					<td width="120">用户名：</td>
+					<td align="left">{$info.nick_name}</td>
+				</tr>
+				<tr>
+					<td width="120">维修数量：</td>
+					<td align="left">{$info.amount}</td>
+				</tr>
+				<tr>
+					<td width="120">维修货品图片：</td>
+					<td align="left">
+						<volist name="info.pictures" id="vo">
+							<a href="__UPLOAD__/{$vo}" target="_blank"><img src="__UPLOAD__/{$vo}" height="40" style="margin-left:10px" /></a>
+						</volist>
+					</td>
+				</tr>
+				<tr>
+					<td width="120">问题描述：</td>
+					<td align="left">{$info.reason}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div style="padding:5px;">
+		<select name="status" id="status" class="form-control input-xlarge">
+			<option value="">选择审核状态</option>
+			<option value="1">审核通过</option>
+			<option value="2">审核不通过</option>
+		</select>
+	</div>
+	<div id="money_div" style="padding:5px; display:none"> 退款金额：
+		<input name="money" class="input-xlarge form-control" type="text" value="">
+	</div>
+	<div id="remark_div" style="padding:5px; display:none"> 审核不通过原因：
+		<input name="remark" class="input-xlarge form-control" type="text" value="">
+	</div>
+	<div style="padding:5px;">
+		<button type="submit" class="btn btn-info btn-sm">确认审核</button>
+		<input id="id" type="hidden" name="id" value="{$info.id}" />
+	</div>
+</form>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#status').change(function(){
+		if($(this).val() == 1){
+			$('#money_div').css('display','block');
+		}else{
+			$('#money_div').css('display','none');
+		}
+		
+		if($(this).val() == 2){
+			$('#remark_div').css('display','block');
+		}else{
+			$('#remark_div').css('display','none');
+		}
+	});
+});
+</script> 

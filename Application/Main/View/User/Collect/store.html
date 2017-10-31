@@ -1,0 +1,82 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------店铺收藏开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>店铺收藏</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_Collection">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li><a href="{:U('user/collect/index')}">收藏商品</a></li>
+						<li class="on"><a href="{:U('user/collect/store')}">收藏店铺</a></li>
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<div class="Collection_shop">
+						<volist name="list" id="vo">
+							<dl class="clearfix">
+								<dt>
+									<p><img src="__UPLOAD__/thumbs/w362h94/{$vo.distributor_image}" width="181" height="47"></p>
+									<p><b>{$vo.distributor_name}</b></p>
+									<p><span><!--<img src="__PUBLIC__/main/images/icon60.png">2356--></span><span><!--<img src="__PUBLIC__/main/images/icon61.png">{$vo.collect_count}--></span></p>
+									<style type="text/css">
+									.Collection_shop dl dt p span{margin:0 15px;}
+									</style>
+									<p><a href="{:U('store/index/index/', array('store_id'=>$vo[distributor_id]))}"><img src="__PUBLIC__/main/images/icon62.png">进入店铺</a></p>
+								</dt>
+								<dd>
+									<h2><a href="javascript:;" onClick="del_collect({$vo.collect_id})"><img src="__PUBLIC__/main/images/icon58.png" width="20"></a></h2>
+									<ul class="clearfix">
+										<volist name="vo.hot_list" id="vo2">
+											<li><a href="{:U('mall/goods/info', array('id'=>$vo2[record_id]))}"><img src="__UPLOAD__/thumbs/b200/{$vo2.goods_image}" width="100" height="100"><p>¥{$vo2.product.product_price}</p></a></li>
+										</volist>
+									</ul>
+								</dd>
+							</dl>
+						</volist>
+					</div>
+					<div class="pages1">{$pages}</div>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------店铺收藏结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+function del_collect(id)
+{
+	layer.open({
+		content: '确认要删除该收藏吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('delcollect')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){	
+					location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+</script>

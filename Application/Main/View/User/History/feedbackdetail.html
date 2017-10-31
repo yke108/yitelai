@@ -1,0 +1,99 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+<script>
+	$(function(){
+		//内页分类
+		$(".sort_list").hide();
+		$(".hd_menu_l").hover(function(){
+			$(this).find(".sort_list").toggle()	
+		})
+	})
+</script>
+<!-------建议投诉----->
+<div class="main w1200">
+	<div class="site_position">
+		<a href="{:U('index/index/index')}">首页</a><span>></span>
+		<a href="{:U('user/index/index')}">会员中心</a><span>></span>{$user_title}
+	</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_comment">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">{$user_title}</a></li>
+					</ul>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr style="font-size: 14px;">
+						<th width="120">品牌</th>
+						<td>{$feedbackFind[brand_name]}</td>
+					</tr>
+					<tr style="font-size: 14px;">
+						<th width="120">门店</th>
+						<td>{$feedbackFind[distributor_name]}</td>
+					</tr>
+					<tr style="font-size: 14px;">
+						<th width="120">内容</th>
+						<td>{$feedbackFind[content]}</td>
+					</tr>
+					<tr style="font-size: 14px;">
+						<th width="120">图片凭证</th>
+						<td>{$feedbackFind[pictures_list]}</td>
+					</tr>
+					<tr style="font-size: 14px;">
+						<th width="120">状态</th>
+						<td>{$feedbackFind[statusName]}</td>
+					</tr>
+					<tr style="font-size: 14px;">
+						<th width="120">添加时间</th>
+						<td>{$feedbackFind[inputtime]}</td>
+					</tr>
+				</table>
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">解答内容</a></li>
+					</ul>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<volist name="reply_list" id="vo">
+						<tr>
+							<td>{$vo[content]}</td>
+							<td width="200" align="center">{$vo[inputtime]}</td>
+						</tr>
+					</volist>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------建议投诉----->
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+<script>
+$(document).ready(function(){
+	$(".commentdel").click(function(){
+		var url = $(this).attr('href');
+		layer.open({
+			content: '确定删除吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(url, {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						window.location.reload();
+					}
+				}, 'json');
+				return false;
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+});
+</script>

@@ -1,0 +1,130 @@
+<div class="warp">
+	<style>
+		body{ background:#f3f3f3;}
+	</style>
+	<div class="release_topic mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<form action="{:U('')}">
+				<ul>
+					<li class="right-after"><span>话题模块</span>
+						<select name="type">
+							<option value="">请选择</option>
+							<option value="0">文章</option>
+							<option value="1">视频</option>
+						</select>
+					</li>
+					<li>
+						<p>上传封面</p>
+						<p>
+							<em></em>
+							<span><button class="uploaderPicture"></button></span>
+						</p>
+					</li>
+					<li>
+						<p><textarea name="content" cols="" rows="" placeholder="你想说些啥？"></textarea></p>
+						<p>
+							<em></em>
+							<span><button class="uploaderInput"></button></span>
+						</p>
+					</li>
+				</ul>
+				<div class="btn"><a class="mui-btn mui-btn-primary mui-btn-block" href="javascript:;">发布话题</a></div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+	
+	/*mui(".release_topic ul li").on("tap",".uploaderInput",function(){
+		wx.chooseImage({
+			count:1, // 默认9
+			sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+			sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+			success: function (res) {
+				var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+			}
+		});	
+	})*/
+		
+</script>
+
+<script language = "javascript" >
+$(function(){
+	mui(".release_topic ul li").on("tap",".uploaderPicture",function(){
+		var uploadObj = $(this);
+		wx.ready(function(){
+			//拍照或从手机相册中选图接口
+			wx.chooseImage({
+				count: 1, // 最多能选择多少张图片，默认9
+				isShowProgressTips: 1, // 默认为1，显示进度提示
+				success: function (res) {
+					var localId = res.localIds.toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					//上传图片接口
+					wx.uploadImage({
+						localId: localId,
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							uploadObj.parent().prev().html('<i><img src="'+localId+'" /><input type="hidden" name="picture" value="'+res.serverId+'" /></i>');
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+				}                    
+			});
+		});
+	})
+	
+	mui(".release_topic ul li").on("tap",".uploaderInput",function(){
+		var uploadObj = $(this);
+		wx.ready(function(){
+			//拍照或从手机相册中选图接口
+			wx.chooseImage({
+				count: 1, // 最多能选择多少张图片，默认9
+				isShowProgressTips: 1, // 默认为1，显示进度提示
+				success: function (res) {
+					var localId = res.localIds.toString(); // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					//上传图片接口
+					wx.uploadImage({
+						localId: localId,
+						isShowProgressTips: 1, // 默认为1，显示进度提示
+						success: function (res) {
+							uploadObj.parent().prev().append('<i><img src="'+localId+'" /><input type="hidden" name="images[]" value="'+res.serverId+'" /></i>');
+						},
+						fail: function (res) {
+							alert(JSON.stringify(res));
+						}
+					});
+				}                    
+			});
+		});
+	})
+});
+</script>
+
+<script>
+$(document).ready(function(){
+	$('.btn a').bind('click', function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			mui.toast(d.info);
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	})
+});
+</script>

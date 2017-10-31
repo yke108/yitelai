@@ -1,0 +1,15 @@
+<volist name="comment_list" id="vo">
+	<dl class="clearfix">
+		<dt><img src="__UPLOAD__/thumbs/b90/{$vo.user_img}"><p>{$vo.nick_name}</p></dt>
+		<dd>
+			<div class="name"><em class="five"></em></div>
+			<div class="info">{$vo.content}</div>
+			<div class="tasting_picture">
+				<volist name="vo.pictures" id="vo2">
+					<span><a href="__UPLOAD__/{$vo2}" rel="lightbox2[plants]"><img src="__UPLOAD__/thumbs/b90/{$vo2}"></a></span>
+				</volist>
+			</div>
+			<div class="time">{:date('Y-m-d H:i', $vo[add_time])}<!--<span>购买后5天评价</span>--></div>
+		</dd>
+	</dl>
+</volist>

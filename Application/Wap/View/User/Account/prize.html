@@ -1,0 +1,65 @@
+<script src="__PUBLIC__/wap/js/dropload/dropload.js"></script>
+<link href="__PUBLIC__/wap/js/dropload/dropload.css" rel="stylesheet" type="text/css" />
+<style>
+.integral_bd_bd dl::before{top:auto;bottom:0px;}
+.integral_bd_bd dl:first-child::before{left:10px;}
+.user_integral_hd em.exchange_goods{margin-left:10px;}
+.user_integral_hd em.exchange_goods a{background:#1BA201;}
+</style>
+<div class="warp">
+	<div class="user_integral">
+		
+		<div class="user_integral_bd">
+			
+			<div class="integral_bd_bd">
+				<notempty name='list'>
+				<div class="point_list">
+					<include file='User/Account/_prize' />
+				</div>
+				<else/>
+				<div style='text-align:center;padding:30px 0;font-size:16px;color:#acacac;'>您还未获得过奖品</div>
+				</notempty>
+			</div>
+		</div>
+	</div>
+</div>
+<notempty name='list'>
+<script>
+var page=2;
+var type="{$type}";
+var dropload = $('.integral_bd_bd').dropload({
+	scrollArea : window,
+	loadDownFn : function(me){
+			$.ajax({
+				type:'POST',
+				url:"{:U('')}",
+				data:{p:page,type:type},
+				dataType:"json",
+				success:function(res){
+					if(res.html!=''){
+						setTimeout(function(){
+							$(".point_list").append(res.html);
+							// 每次数据加载完，必须重置
+							me.resetload();
+						},1000);
+						page++;
+					}else{
+						
+						// 数据加载完
+						//tab1LoadEnd = true;
+						// 锁定
+						me.lock('down');
+						// 无数据
+						me.noData();
+						me.resetload();
+						//dropload.lock('down');
+						//dropload.noData();
+						
+					}
+				}
+			})
+		}
+	})
+</script>
+</notempty>
+

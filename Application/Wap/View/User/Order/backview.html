@@ -1,0 +1,210 @@
+<div class="warp">
+	<style>
+		body{ background:#eee;}
+		.application_bd ul li .weui-uploader__file a{position:static;}
+		.weui_input {
+			width: 100%;
+			border: 0;
+			outline: 0;
+			-webkit-appearance: none;
+			background-color: transparent;
+			font-size: inherit;
+			color: inherit;
+			height: 2em;
+			line-height: 2em;
+			font-size: 14px;
+		}
+		.application_bd ul li p{font-size:14px;}
+	</style>
+	<div class="user_orders_application">
+		<div class="application_hd">
+			<a href="{:U('mall/goods/info', array('id'=>$info[item][goods_id]))}" class="dl_box">
+				<dl>
+					<dt><img src="__UPLOAD__/{$info.item.goods_img}"></dt>
+					<dd>
+						<h2>{$info.item.goods_name}</h2>
+						<h3>
+							<p>￥{$info.item.goods_price}</p>
+							<p>数量：{$info.item.goods_number}</p>
+						</h3>
+					</dd>
+				</dl>
+			</a>
+		</div>
+		<form action="{:U('')}" method="post" enctype="multipart/form-data" onSubmit="">
+			<div class="application_bd">
+				<ul>
+					<li>
+						<label>售后类型</label>
+						<p><a href="javascript:;" class="on">申请退货</a></p>
+					</li>
+					<li>
+						<label>申请数量</label>
+						<div class="spinner">
+							<input class="Amount" name="number" value="{$info.amount}" autocomplete="off" maxlength="3" disabled="disabled">
+						</div>
+					</li>
+					<!--<li class="after"><select name=""><option>请选择退换原因</option></select></li>-->
+					<li>
+						<label>补充说明</label>
+						<p>{$info.reason}</p>
+					</li>
+					<li class="clearfix">
+											
+						<div class="weui-uploader__hd">
+							<p class="weui-uploader__title">上传图片</p>
+						</div>
+						<div class="weui-uploader__bd">
+							<notempty name="info.pictures" value="">
+								<ul class="weui-uploader__files upload_preview" id="preview">
+									<foreach name="info.pictures" item="vo" key="k">
+										<li id="uploadList_{$k}" class="weui-uploader__file">
+											<a href="__UPLOAD__/{$vo}"><img id="uploadImage_{$k}" src="__UPLOAD__/{$vo}" class="upload_image"></a>
+										</li>
+									</foreach>
+								</ul>
+							<else/>
+								<p style="text-align:center;color:#999999;padding:20px;">无上传图片</p>
+							</notempty>
+						</div>
+					</li>
+					<if condition="($info[status] eq 2)">
+						<li>
+							<label>审核不通过原因</label>
+							<p style="color:red">{$info.remark}</p>
+						</li>
+					</if>
+					<if condition="($info[status] eq 4)">
+						<li>
+							<label>审核不通过原因</label>
+							<p style="color:red">{$info.instruction}</p>
+						</li>
+					</if>
+				</ul>
+			</div>
+			<eq name="info.status" value="1">
+				<div class="application_bd">
+					<ul>
+						<li>
+							<label>收货地址</label>
+							<p>{$info.back_address}</p>
+						</li>
+						<li>
+							<label>快递公司</label>
+							<p>
+								<empty name="info.shipping_id">
+									<select name="shipping_id">
+										<option value="">选择快递公司</option>
+										<volist name="shipping_list" id="vo">
+											<option value="{$vo.id}">{$vo.name}</option>
+										</volist>
+									</select>
+								<else/>
+									{$info.shipping_name}
+								</empty>
+								
+							</p>
+						</li>
+						<li>
+							<label>快递单号</label>
+							<p>
+								<empty name="info.shipping_no">
+									<input name="shipping_no" value="" type="text" class="weui_input" placeholder="填写快递单号">
+								<else/>
+									<a href="{$info.ship_url}">{$info.shipping_no}</a>
+								</empty>
+							</p>
+						</li>
+					</ul>
+				</div>
+				<empty name="info.shipping_id">
+					<div class="application_btn btn">
+						<a href="javascript:;" class="weui-btn weui-btn_primary" id="btn_submit">提交</a>
+						<input type="hidden" name="id" value="{$info.id}" />					</div>
+
+				</empty>
+			</eq>
+		</form>
+	</div>
+	<script src="__PUBLIC__/wap/js/zxxFile.js"></script>
+	<script>
+		var params = {
+			fileInput: $("#fileImage").get(0),
+			dragDrop: $("#fileDragArea").get(0),
+			upButton: $("#fileSubmit").get(0),
+			filter: function(files){
+				var arrFiles = [];
+				for (var i = 0, file; file = files[i]; i++) {
+					if (file.type.indexOf("image") == 0) {
+						if (file.size >= 512000) {
+							alert('您这张"'+ file.name +'"图片大小过大，应小于500k');	
+						} else {
+							arrFiles.push(file);	
+						}
+					} else {
+						alert('文件"' + file.name + '"不是图片。');
+					}
+				}
+				return arrFiles;
+			},
+			onSelect: function(files) {
+				var html = '', i = 0;
+				$("#preview").html('<div class="upload_loading"></div>');
+				var funAppendImage = function() {
+					file = files[i];
+					if (file) {
+						var reader = new FileReader()
+						reader.onload = function(e){
+							html = html + '<li id="uploadList_'+ i +'" class="weui-uploader__file">'+ 
+								'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'"><img src="__PUBLIC__/wap/images/icon51.png"></a>' +
+								'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" />'+ 
+							'</li>';
+							i++;
+							funAppendImage();
+						}
+						reader.readAsDataURL(file);
+					} else {
+						$("#preview").html(html);
+						if (html) {
+							//删除方法
+							$(".upload_delete").click(function() {
+								ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+								return false;	
+							});
+							//提交按钮显示
+							$("#fileSubmit").show();	
+						} else {
+							//提交按钮隐藏
+							$("#fileSubmit").hide();	
+						}
+					}
+				};
+				funAppendImage();		
+			},
+			onDelete: function(file) {
+				$("#uploadList_" + file.index).remove();
+				$("#fileImage").val("")
+			}
+		};
+		ZXXFILE = $.extend(ZXXFILE, params);
+		ZXXFILE.init();
+	</script>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').click(function(){
+		var btn_submit = $(this);
+		btn_submit.attr('disabled',true);
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				btn_submit.attr('disabled',false);
+			}
+		}, 'json');
+	});
+});
+</script>

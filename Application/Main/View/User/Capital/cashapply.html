@@ -1,0 +1,71 @@
+<style>
+.red{color:#e60012;font-weight:bold;}
+.green{color:#7b9800;font-weight:bold;}
+</style>
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我的资产开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>提现记录</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="my_assets">
+				<div class="tabmenu">
+					<span><a href="{:U('user/capital/cash')}" class="ncm-btn ncm-btn-orange"><img src="__PUBLIC__/main/images/icon55.png">申请提现</a></span>
+					<ul class="tab pngFix">
+						<li><a href="{:U('user/capital/index')}">资金明细</a></li>
+						<eq name="user.user_type" value="2">
+							<li><a href="{:U('user/capital/comission')}">获得分利</a></li>
+						</eq>
+						<li class="on"><a href="{:U('user/capital/cashapply')}">提现记录</a></li>
+					</ul>
+				</div>
+				<div class="alert">
+					<span class="mr30">可用金额：<strong class="mr5 red" style="font-size: 18px;">{$user.user_money}</strong>元</span>
+					<span class="mr30">冻结金额：<strong class="mr5 red" style="font-size: 18px;">{$user.frozen_money|default=0}</strong>元</span>
+				</div>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<th>时间</th>
+						<th>提现金额(元)</th>
+						<th>提现状态</th>
+						<th>反馈</th>
+					</tr>
+					<volist name='list' id='val'>
+					<tr>
+						<td align="center">{$val.add_time|date="Y-m-d H:i",###}</td>
+						<td align="center"><em>{$val.money}</em></td>
+						<td align="center">
+							<if condition="$val.apply_status eq 0">
+								<font class='green'>提交审核中</font>
+							<elseif condition="$val.apply_status eq 1" />
+								<font class='red'>审核不通过</font>
+							<elseif condition="$val.apply_status eq 2" />
+								<font class='green'>审核已通过,等待打款</font>
+							<elseif condition="$val.apply_status eq 3" />
+								<font class='green'>打款成功</font>
+							</if>
+						</td>
+						<td align='center'>{$val.apply_remark}</td>
+					</tr>
+					</volist>
+				</table>
+				<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------我的资产结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

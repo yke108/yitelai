@@ -1,0 +1,97 @@
+<style>
+.red{color:#ff0000;}
+.self_label{display:inline-block;margin-right:17px;margin-bottom:11px;}
+</style>
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">菜单增加</h3>
+		<?php $action = $info['menu_id'] > 0 ? U('edit',array('id'=>$info['menu_id'])) : U('add'); ?>
+			<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+				<fieldset>
+					<php>$picls = $info['menu_id'] > 0 ? 'collapse' : '';</php>
+					<div class="form-group {$picls}" >
+						<label for="u_fname" class="control-label col-sm-2">顶级菜单</label>
+						<div class="col-sm-3">
+							<select name='parent_id' id="parent_id_select">
+								<option <if condition="$info['parent_id'] eq 0">selected='selected'</if> value='0'>顶级菜单</option>
+								<volist name='top_menu_list' id='val'>
+								<option <if condition="$info['parent_id'] eq $val[menu_id]">selected='selected'</if> value='{$val.menu_id}'>{$val.menu_name}</option>
+								</volist>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">菜单名称</label>
+						<div class="col-sm-3">
+							<input name="menu_name" class="input-xlarge form-control" type="text" value="{$info.menu_name}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">菜单编码</label>
+						<div class="col-sm-3">
+							<input name="menu_code" class="input-xlarge form-control" type="text"
+							value="{$info.menu_code}">
+						</div>
+						<div class=''>
+							顶级菜单编码的格式为:<font class='red'>action</font>
+							<br>
+							二级菜单编码的格式为:<font class='red'>action_index_index</font>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="u_fname" class="control-label col-sm-2">排序</label>
+						<div class="col-sm-3">
+							<input name="sort_order" class="input-xlarge form-control" type="text" value="{$info.sort_order|default=50}">
+						</div>
+					</div>
+					<div class="form-group parent_id_gt0">
+						<label for="u_fname" class="control-label col-sm-2">菜单url</label>
+						<div class="col-sm-3">
+							<input name="menu_url" class="input-xlarge form-control" type="text" value="{$info.menu_url}">
+						</div>
+						<div>
+							顶级菜单不需要填url。<br>
+							二级菜单url格式为:<font class='red'>action/index/index</font>
+						</div>
+					</div>
+					<div class="form-group parent_id_eq0">
+						<label for="u_fname" class="control-label col-sm-2">菜单图标</label>
+						<div class="col-sm-9" style='padding-top:5px;border:1px solid #dfdfdf;margin-left:16px;'>
+							<volist name='icon_list' id='val'>
+								<label class='self_label' for=''>
+									<input type='radio' name='menu_cls' <if condition="$info[menu_cls] eq $val">checked='checked='</if> value='{$val}' />
+									<i class='glyphicon {$val}'></i>
+								</label>
+							</volist>
+						</div>
+					</div>
+					
+
+					<div class="form-group">
+						<div class="col-sm-8 col-sm-offset-2">
+							<button href="" class="btn btn-default" type="submit">确认并保存</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+    </div>
+</div> 
+
+<script type="text/javascript">
+$(document).ready(function(){
+	function parent_id_select(){
+		if($('#parent_id_select').val() == 0){
+			$('.parent_id_eq0').show();
+			$('.parent_id_gt0').hide();
+		} else {
+			$('.parent_id_eq0').hide();
+			$('.parent_id_gt0').show();
+		}
+	}
+	$('#parent_id_select').bind('change', function(){
+		parent_id_select();
+	});
+	parent_id_select();
+});
+</script>
+	

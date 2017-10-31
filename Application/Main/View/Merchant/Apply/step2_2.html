@@ -1,0 +1,246 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">公司信息提交</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="on">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li>
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li>
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_2">
+	<div class="w1200">
+		<div class="alert-notice">
+			<a href="{:U('article/page/info', array('id'=>21))}" target="_blank" class="alert-notice-btn">审核通过秘诀 >></a>
+			<p>1、信息提交前。请务必了解<a href="{:U('article/page/info', array('id'=>19))}" target="_blank">谷安居开放平台招商资质标准细则；</a></p>
+			<p>2、公司类信息需填项较多，建议先查看<a href="{:U('article/page/info', array('id'=>20))}" target="_blank">公司信息注意事项</a>再进行填写；</p>
+			<p>3、公司信息请严格按照相关证件信息进行确认填写；</p>
+			<p>4、以下所需要上传电子版资质仅支持JPG、CIF、PNG格式 的图片，大小不超过1M。且必须加盖企业彩色公章。</p>
+		</div>
+		
+		<form action="{:U('')}">
+			<input type="hidden" name="id" value="{$info.merchant_id}" />
+			<div class="public_form">
+				<h2>税务登记证</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>纳税人类型</label>
+						<div class="public_form_r">
+							<select name="tax_type">
+								<volist name="merchant_config.tax_type" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[tax_type])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>税号</label>
+						<div class="public_form_r">
+							<input name="tax_no" value="{$info.tax_no}" type="text" class="text">
+							<p class="tip">三证合一的请填写统一社会信用代码</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>纳税类型税码</label>
+						<div class="public_form_r">
+							<select name="tax_code">
+								<volist name="merchant_config.tax_code" id="vo">
+									<option value="{$vo}" {:m_selected($vo, $info[tax_code])}>{$vo}</option>
+								</volist>
+							</select>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>纳税类型税码</label>
+						<div class="public_form_r">
+							<p><em>请同时上传国税、地税的税务登记证，两者缺一不可，复印件加盖公司红章，<a href="{:U('article/page/info', array('id'=>24))}" target="_blank">[国地税合一示例]</a><a href="{:U('article/page/info', array('id'=>25))}" target="_blank">[国地税非合一示例]</a>如贵公司所在地区已推行'三证合一'，此处请上传营业执照副本电子版。</em></p>
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="taxno_pic" type="file" class="hy_upload_single" hy_field="taxno_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="info.taxno_pic">{$info.taxno_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传2张。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span">一般纳税人资格证电子版</label>
+						<div class="public_form_r">
+							<p><em>三证合一地区请上传税务局网站上一般纳税人截图，复印件需加盖公司红章。</em></p>
+							<div class="upload_img clearfix">
+								<!--<ul>
+									<li><img src="__PUBLIC__/main/images/pic7.jpg"><i>X</i></li>
+								</ul>-->
+								<div class="upload_btn"><!--<img src="__PUBLIC__/main/images/icon135_1.png">--><input name="taxcert_pic" type="file" class="hy_upload_single" hy_field="taxcert_pic" style="width:133px; height:132px;" value="上传图片" src="<notempty name="info.taxcert_pic">{$info.taxcert_pic}</notempty>"></div>
+							</div>
+							<p class="tip">图片尺寸请确保800px*800px以上，文件大小1MB以内，支持JPG、GIF、PNG格式，最多可以上传2张。</p>
+						</div>
+					</li>
+				</ul>
+				<h2>开户银行信息</h2>
+				<ul>
+					<li class="clearfix">
+						<label class="span"><font>*</font>银行开户名</label>
+						<div class="public_form_r">
+							<input name="bank_accountname" value="{$info.bank_accountname}" type="text" class="text">
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>开户银行支行账号</label>
+						<div class="public_form_r">
+							<input name="bank_branch_no" value="{$info.bank_branch_no}" type="text" class="text">
+							<p class="tip">用于谷安居与开店公司账务结算。</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<label class="span"><font>*</font>开户银行支行所在地</label>
+						<div class="public_form_r">
+							<input type="hidden" value="0" class="region_sel"/>
+							<select name="" class="region_sel"><option>请选择</option></select>
+							<select name="" class="region_sel"><option>请选择</option></select>
+							<select name="bank_branch_region"><option>请选择</option></select>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="public_btn">
+				<a href="{:U('article/page/info', array('id'=>22))}" target="_blank">撤销申请？</a>
+				<span><a href="{:U('merchant/apply/step2_1')}" class="prev">上一步</a><a href="javascript:;" class="next">下一步，完善店铺信息</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<!----日期选择---->
+<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript">
+	$(".data").each(function(index, element) {
+		$(this).datetimepicker({
+			lang:'ch',
+			timepicker:false,
+			format:'Y/m/d',
+			formatDate:'Y/m/d',
+			timepicker:false,
+			scrollInput:false,
+		});
+	});
+</script>
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var region_list = {:json_encode($region_list)};
+	<php>$province = intval($info[bank_branch_region] / 10000) * 10000;</php>
+	var province = {$province};
+	<php>$city = intval($info[bank_branch_region] / 100) * 100;</php>
+	var city = {$city};
+	var district = {:intval($info[bank_branch_region])};
+	var cobj = $('.region_sel');
+	function build_sitem_select(thisobj){
+		var region_id = thisobj.val();
+		var obj = thisobj.next();
+		obj.html('<option value="">请选择</option>');
+		if(!(region_id == 0 && thisobj.attr('type') != 'hidden')){
+			for(var i in region_list){
+				var bbc = region_list[i];
+				test_region_id = parseInt(bbc.region_code);
+				if(region_id == test_region_id){
+					continue;
+				}
+				if(region_id == 0){
+					if(test_region_id % 10000 > 0) continue;
+				} else if(region_id % 10000 == 0) {
+					if(test_region_id % 100 > 0 || parseInt(test_region_id / 10000) != parseInt(region_id / 10000)) continue;
+				} else if(region_id % 100 == 0) {
+					if(parseInt(test_region_id / 100) != parseInt(region_id / 100)) continue;
+				} else {
+					break;
+				}
+				var opt = $('<option></option').html(bbc.region_name).val(test_region_id);
+				if(province == test_region_id || city == test_region_id || district == test_region_id) opt.attr('selected', true);
+				opt.appendTo(obj);
+			}
+		}
+		if(obj.hasClass('region_sel')) build_sitem_select(obj);
+	}
+	cobj.bind('change', function(){
+		build_sitem_select($(this));
+	});
+	$('input.region_sel').each(function(){
+		build_sitem_select($(this));
+	});
+	
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+});
+</script>
+
+<style type="text/css">
+.hy_upload_single:before,.hy_upload_single:after{content:" ";position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background-color:#d9d9d9;}
+.hy_upload_single:before{ width:2px; height:50%;}
+.hy_upload_single:after{ width:50%; height:2px;}
+.weui_uploader_input{opacity:1;}
+</style>
+<script charset="utf-8" src="__PUBLIC__/editor/kindeditor.js"></script>
+<script src="__PUBLIC__/main/js/singleupload.js"></script>
+<script src="__PUBLIC__/main/js/multiupload.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	$('.hy_upload_multi').hyMultiUpload("{:U('site/upload/index')}", '__UPLOAD__');
+});
+</script>

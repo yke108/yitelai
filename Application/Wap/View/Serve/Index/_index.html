@@ -1,0 +1,20 @@
+<volist name="list" id="vo">
+	<dl>
+		<dt>
+			<a href="<if condition='$vo.serve_url eq ""'>javascript:;<else/>{$vo.serve_url}</if>">
+				<img src="<if condition='$vo.serve_image eq ""'>__PUBLIC__/wap/images/pic29.jpg<else/>__UPLOAD__/thumbs/b150/{$vo.serve_image}</if>">
+			</a>
+		</dt>
+		<dd>
+			<h2><a val='{$vo.serve_id}' href="<if condition='$vo.serve_url eq ""'>javascript:;<else/>{$vo.serve_url}</if>">{$vo.serve_name}</a></h2>
+			<p><a href="<if condition='$vo.serve_url eq ""'>javascript:;<else/>{$vo.serve_url}</if>">{$vo.serve_content|msubstr=0,50,'utf-8',true}<span>【更多】</span></a></p>
+			<p style="margin-top:5px;">
+				<em><img src="__PUBLIC__/wap/images/icon66.png">{$vo.serve_tel}</em>
+				<b>
+					<i serve_id="{$vo.serve_id}" class="like"><img src="__PUBLIC__/wap/images/icon67.png"><font class='good_num'>{$vo.good_num|default=0}</font></i>
+					<i serve_id="{$vo.serve_id}" class="clap"><img src="__PUBLIC__/wap/images/icon68.png"><font class='bad_num'>{$vo.bad_num|default=0}</font></i>
+				</b>
+			</p>
+		</dd>
+	</dl>
+</volist>

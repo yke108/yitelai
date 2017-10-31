@@ -1,0 +1,78 @@
+<volist name="list" id="vo">
+	<if condition="$vo.type eq 0">
+		<switch name="vo.type_show">
+			<case value="1">
+				<li>
+					<i><em></em></i>
+					<div class="item_type_1">
+						<a href="{:U('index/index/info', array('id'=>$vo[news_id]))}">
+							<h2>{$vo.title}</h2>
+							<div class="img">
+								<notempty name="vo.pictures">
+									<volist name="vo.pictures" id="vo2" key="ko2">
+										<lt name="ko2" value="4">
+											<img src="__UPLOAD__/thumbs/w215h155/{$vo2}">
+										</lt>
+									</volist>
+								</notempty>
+							</div>
+						</a>
+						<p>
+							<span><img src="__UPLOAD__/thumbs/b90/{$vo.author_img}" style="width:30px; border-radius:50%; margin-right:10px;">{$vo.author_name} <eq name="vo.is_recommend" value="1"><time>推荐信息</time></eq><time>{$vo.date_time}</time><time>{$vo.comment_count}评论</time></span>
+						</p>
+					</div>
+				</li>
+			</case>
+			<case value="2">
+				<li>
+					<i><em></em></i>
+					<div class="item_type_2">
+						<dl>
+							<dt><a href="{:U('index/index/info', array('id'=>$vo[news_id]))}"><img src="__UPLOAD__/thumbs/w175h125/{$vo.picture}"></a></dt>
+							<dd>
+								<h2><a href="{:U('index/index/info', array('id'=>$vo[news_id]))}">{$vo.title}</a></h2>
+								<p>
+									<span><img src="__UPLOAD__/thumbs/b90/{$vo.author_img}" style="width:30px; border-radius:50%; margin-right:10px;">{$vo.author_name} <eq name="vo.is_recommend" value="1"><time>推荐信息</time></eq><time>{$vo.date_time}</time><time>{$vo.comment_count}评论</time></span>
+								</p>
+							</dd>
+						</dl>
+					</div>
+				</li>
+			</case>
+			<case value="3">
+				<li>
+					<i><em></em></i>
+					<div class="item_type_3">
+						<a href="{:U('index/index/info', array('id'=>$vo[news_id]))}">
+							<h2>{$vo.title}</h2>
+							<div class="img"><img src="__UPLOAD__/{$vo.picture}"></div>
+						</a>
+						<p><span>广告</span><time>{$vo.date_time}</time></p>
+					</div>
+				</li>
+			</case>
+		</switch>
+	<elseif condition="$vo.type eq 1"/>
+		<li>
+			<i><em></em></i>
+			<div class="item_type_4">
+				<video src="__UPLOAD__/{$vo.content}" controls width="100%" poster="__UPLOAD__/thumbs/w175h125/{$vo.picture}"></video>
+				<a href="{:U('video/index/info', array('id'=>$vo[news_id]))}">
+					<h2>{$vo.title}</h2>
+				</a>
+				<p>
+					<span><img src="__UPLOAD__/thumbs/b90/{$vo.author_img}">{$vo.author_name}</span>
+					<em><time>{$vo.read_count}播放</time><time>{$vo.comment_count}评论</time><time>···</time></em>
+				</p>
+			</div>
+		</li>
+	<elseif condition="$vo.type eq 2"/>
+		<!--<li>
+			<a href="{:U('info', array('id'=>$vo[news_id]))}">
+				<h2>专题活动</h2>
+				<img src="__UPLOAD__/thumbs/w666h330/{$vo.picture}">
+				<p>{$vo.title}</p>
+			</a>
+		</li>-->
+	</if>
+</volist>

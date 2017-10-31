@@ -1,0 +1,161 @@
+<style type="text/css">
+.my_orders_item_cd dl dd h3{line-height:18px;}
+</style>
+<div class="warp">
+	<div class="user_orders_detaild">
+		<div class="order_deta_item">
+			<p>状态：<span>{$info.status}</span></p>
+			<p>订单号：{$info.order_id}<eq name="info.order_type" value="2">（定制订单）</eq></p>
+			<p>下单时间：{$info.add_time|date="Y-m-d H:i:s",###}</p>
+		</div>
+		<div class="user_orders_detaild_1">
+			<p><b>收货人：{$info.consignee}</b><span>{$info.mobile}</span></p>
+			<p>收货地址：{$info.address}</p>
+		</div>
+		<notempty name="info.invoice_title">
+			<div class="user_orders_detaild_1">
+				<p>发票抬头：{$info.invoice_title}</p>
+			</div>
+		</notempty>
+		<notempty name="info.buyer_note">
+			<div class="user_orders_detaild_1">
+				<p>给卖家的留言：{$info.buyer_note}</p>
+			</div>
+		</notempty>
+		<div class="user_orders">
+			<div class="my_orders_item">
+				<a href="{:U('store/index/index', array('store_id'=>$info[distributor][distributor_id]))}">
+					<div class="my_orders_item_hd after"><b>{$info.distributor.distributor_name}</b></div>
+				</a>
+			</div>
+		</div>
+		<div class="my_orders_item_cd">
+			<volist name="info.order_goods" id="vo">
+				<a href="{:U('mall/goods/info', array('id'=>$vo[goods_id]))}" class="dl_box">
+					<dl>
+						<dt><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></dt>
+						<dd style="height:auto; min-height:100px;">
+							<h2>{$vo.goods_name}</h2>
+							<!--<h2>规格：{$vo.product_name}</h2>-->
+							<p style="font-size:14px; color:#999;">
+								<volist name="vo.extension_code.sku" id="vo2">
+									<em style="margin-right:15px; display:inline-block;"><!--{$vo2.sku_name}：-->{$vo2.sku_value}</em>
+								</volist>
+							</p>
+							<gt name="vo.service_id" value="0"><h2>【商品服务】{$vo.service_name} ￥{$vo.service_price}</h2></gt>
+							<h3 style="position:relative; left:0;">
+								<p>￥{$vo.goods_price}<notempty name="vo.ori_price"><del style="font-size:12px; color:#999; margin-left:10px;">¥{$vo.ori_price}</del></notempty>
+									<eq name="vo.is_seckill" value="1"><span style="color:red">（秒杀）</span></eq>
+									<if condition="($vo[is_seckill] eq 0) AND ($info[discount] gt 0)"><font color="red">（会员折扣：{$info[discount]/10}折）</font></if>
+								</p>
+								<p>数量：{$vo.goods_number}</p>
+							</h3>
+						</dd>
+					</dl>
+				</a>
+			</volist>
+			<div class="weui-cells">
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<p>{$info.total_goods_number}件商品</p>
+					</div>
+					<div class="weui-cell__ft">￥{$info.goods_amount}</div>
+				</div>
+				<gt name="info.service_money" value="0">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<p>商品服务费用</p>
+						</div>
+						<div class="weui-cell__ft">+￥{$info.service_money}</div>
+					</div>
+				</gt>
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<p>运费</p>
+					</div>
+					<div class="weui-cell__ft"><gt name="info.shipping_fee" value="0">+￥{$info.shipping_fee}<else/>免邮</gt></div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<p>积分抵扣</p>
+					</div>
+					<div class="weui-cell__ft">-￥{$info.points_money}</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<p>合计</p>
+					</div>
+					<div class="weui-cell__ft"><span>￥{$info.order_amount}<gt name="info.discount" value="0"><!--<font color="red">（享受会员折扣：{$info[discount]/10}折）</font>--></gt></span></div>
+				</div>
+			</div>
+		</div>
+		<if condition="($info[shipping_status] eq 2) AND ($info[order_status] eq 1)">
+			<div class="order_deta_item" style="border-bottom:none">
+				<b>物流信息</b>
+				<p>快递公司：{$info.shipping_name}</p>
+				<p>运单编号：{$info.shipping_no}</p>
+			</div>
+			<div class="order_deta_process" style="border-top:none">
+            	
+            </div>
+		</if>
+	</div>
+	<div class="order_deta_btn">
+		<if condition="($info[pay_status] eq 0) AND ($info[order_status] eq 0)">
+			<a class='weui-btn weui_btn_warn' href="javascript:;" onclick="can_order({$info.order_id})">取消订单</a>
+			<a class='weui-btn weui_btn_warn' href="{:U('pay',array('id'=>$info[order_id]))}">立即付款</a>
+		</if>
+		<if condition="($info[shipping_status] eq 2) AND ($info[order_status] eq 1)">
+			<a class='weui-btn weui_btn_warn' href="{$info.ship_url}">查看物流</a>
+			<a class='weui-btn weui_btn_warn' href="javascript:;" onclick="rece_order({$info.order_id})">确认收货</a>
+		</if>
+	</div>
+</div>
+
+<script type="text/javascript">
+function can_order(id){
+	if(id < 1) return;
+	layer.open({
+		content: '确定取消此订单吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('cancel')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					window.location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	}); 
+}
+
+function rece_order(id){
+	if(id < 1) return;
+	layer.open({
+		content: '确定收货此订单吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('receive')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					window.location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+$(function(){
+	if($(".order_deta_btn").children().length==0){
+		$(".order_deta_btn").css({'padding':'0'})
+	}
+	
+})
+</script>

@@ -1,0 +1,113 @@
+<div>
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">管理角色增加</h3>
+		<?php $action = $info['role_id'] > 0 ? U('edit',array('id'=>$info['role_id'])) : U('add'); ?>
+		<form class="form-horizontal cs_ajax_form" method="post" action="{$action}">
+			<fieldset>
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">角色名称</label>
+					<div class="col-sm-3">
+						<input name="role_name" class="input-xlarge form-control" type="text" value="{$info.role_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">角色简介</label>
+					<div class="col-sm-8">
+						<input name="role_describe" class="input-xlarge form-control" type="text"
+						value="{$info.role_describe}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">所属部门</label>
+					<div class="col-sm-8">
+						<select name="department_id" class="input-xlarge form-control">
+							<option value="">请先择</option>
+							<volist name="department_list" id="vo">
+								<option value="{$vo.department_id}" {:m_selected($vo['department_id'], $info['department_id'])}>{$vo.department_name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">后台权限</label>
+					<div class="col-sm-9">
+						<foreach name="purview_list" key="ko" item="vo">
+							<div class="col-sm-12 purviewwrap" style="padding:5px 0;">
+								<div class="col-sm-2">
+									<span style="display:inline-block;width:120px;">
+									<input class="purviewgroup" type="checkbox">{$vo.action_name}</span>
+								</div>
+								<div class="col-sm-10">
+									<foreach name="vo.children" key="kp" item="vp">
+										<neq name="kp" value="0">
+											<span style='display:inline-block;width:130px;'>
+												<input {:m_checked($kp, $info['action_list'])} class="purview" type="checkbox" name="purview[]" value="{$kp}">
+												{$vp.action_name}
+											</span>
+										</neq>
+									</foreach>
+								</div>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="u_fname" class="control-label col-sm-2">APP权限</label>
+					<div class="col-sm-9">
+						<foreach name="oa_purview_list" key="ko" item="vo">
+							<div class="col-sm-12 purviewwrap" style="padding:5px 0;">
+								<div class="col-sm-2">
+									<span style="display:inline-block;width:120px;">
+									<input class="purviewgroup" type="checkbox">{$vo.action_name}</span>
+								</div>
+								<div class="col-sm-10">
+									<foreach name="vo.children" key="kp" item="vp">
+										<neq name="kp" value="0">
+											<span style='display:inline-block;width:130px;'>
+												<input {:m_checked($kp, $info['oa_action_list'])} class="purview" type="checkbox" name="oa_purview[]" value="{$kp}">
+												{$vp.action_name}
+											</span>
+										</neq>
+									</foreach>
+								</div>
+							</div>
+						</foreach>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button href="" class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div> 
+
+<script type="text/javascript">
+function purviewgroupchk(obj){
+	var prt = $(obj).parents('.purviewwrap');
+	var chk = prt.find('input.purview').length == prt.find('input.purview:checked').length;
+	var grp = prt.find('.purviewgroup');
+	if(chk) grp.attr('checked', 'checked');
+	else grp.removeAttr('checked');
+}
+$('.purviewgroup').each(function(){
+	purviewgroupchk(this);
+	$(this).bind('click', function(){
+		var obj = $(this);
+		var pls = obj.parents('.purviewwrap').find('.purview');
+		if(obj.is(':checked')) pls.attr('checked', 'checked');
+		else pls.removeAttr('checked');
+	});
+});
+$('.purview').bind('click', function(){
+	purviewgroupchk(this);
+});
+</script>
+	

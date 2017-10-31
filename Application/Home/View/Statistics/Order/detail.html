@@ -1,0 +1,44 @@
+<div class="order_statistics_deta">
+    <div class="order_statistics_deta_hd">
+        <a href="#">
+            <dl>
+                <dt><img src="{$userInfo[user_img]}"></dt>
+                <dd>
+                    <h3>{$userInfo[user_name]}</h3>
+                    <p>订单号：{$order_id}</p>
+                </dd>
+                <dt>
+                    <h3>￥{$orderInfo[order_amount]}</h3>
+                    <p>{$orderInfo[add_time]}</p>
+                </dt>
+            </dl>
+        </a>
+    </div>
+    <div class="order_statistics_deta_cd">
+        <volist name="orderGoodsListService" id="vo">
+            <a href="#">
+                <dl>
+                    <dt><img src="{$vo[goods_img]}"></dt>
+                    <dd>
+                        <h3>品名：{$vo[goods_name]}</h3>
+                        <h3>品类：{$vo[cat_name]}</h3>
+                    </dd>
+                    <dt>
+                        <h3>￥{$vo[goods_price]}</h3>
+                        <p>x{$vo[goods_number]}</p>
+                    </dt>
+                </dl>
+            </a>
+        </volist>
+    </div>
+    <div class="order_statistics_deta_bd">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="#">品牌<em>{$brand_name}</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">所属店铺<em>{$distributorInfoFind[distributor_name]}</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">客服<em>null</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">业务员<em>null</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">设计师<em>null</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">安装工<em>null</em></a></li>
+        </ul>
+    </div>
+</div>

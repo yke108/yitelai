@@ -1,0 +1,65 @@
+<div class="warp">
+	<style>body{ background:#f19f00;position:relative;}
+		.fans_deta_canvas_text {font-size:14px; color: #333; line-height:26px; padding:10px;background: #FFF;margin: 10px;border-radius: 5px;}
+		.fans_deta_canvas_text  P:first-child{ font-size:16px; font-weight:800; margin-bottom:10px;}
+	</style>
+	<div class="fans_deta_canvas">
+		<div class="turntable-bg">
+			<div class="turnplate">
+				<canvas class="item" id="wheelcanvas" width="240" height="240"></canvas>
+				<img class="pointer" src="__PUBLIC__/wap/images/pointer.png">
+			</div>
+		</div>
+		<div class="shadow"><img src="__PUBLIC__/wap/images/icon70.png" width="100%"></div>
+		
+		<ul class="line">
+			<volist name='log_list' id='vo'>
+			<li>
+				<if condition='$vo.prize_type eq 100'>
+				<a href="javascript:;">恭喜{$user_list[$vo[user_id]]['nick_name']}获得<span>{$vo.prize_num}</span>个{$vo.prize_name}</a>
+				<elseif condition='$vo.prize_type eq 1'/>
+				<a href="javascript:;">恭喜{$user_list[$vo[user_id]]['nick_name']}获得<span>{$vo.prize_num}</span>积分</a>
+				<elseif condition='$vo.prize_type eq 2'/>
+				<a href="javascript:;">恭喜{$user_list[$vo[user_id]]['nick_name']}获得现金券<span>{$vo.prize_num}</span>元</a>
+				<else/>
+				<a href="javascript:;">恭喜{$user_list[$vo[user_id]]['nick_name']}获得{$vo.prize_name}</a>
+				</if>
+			</li>
+			</volist>
+		</ul>
+		<div class="fans_deta_canvas_text">
+			<p>抽奖规则说明</p>
+			<p>{:nl2br($lottery['lottery_brief'])}</p>
+		</div>
+	</div>
+	<script src="__PUBLIC__/main/js/awardRotate.js"></script>
+	<script>
+	
+		$.lottey={:json_encode($lottery['lottery_awards'])};
+		$.lottery_url ="{:U('lottery/index/log', array('lottery_id'=>$lottery['lottery_id']))}";
+	
+		$(document).ready(function(e) {
+			//滚动公告
+			var _wrap=$('ul.line');
+			var _interval=4000;
+			var _moving;
+			_wrap.hover(function(){
+				clearInterval(_moving);
+			},function(){
+			_moving=setInterval(function(){
+			  var field=_wrap.find('li:first');
+			  var _h=field.height();
+			  field.animate({marginTop:-_h+'px'},600,function(){
+				  field.css('marginTop',0).appendTo(_wrap);
+			  })
+			},_interval)
+			}).trigger('mouseleave');
+		});
+	</script>
+	<script src="__PUBLIC__/wap/js/canvas.js"></script>
+</div>
+
+<div style='position:absolute;bottom:5px;text-align:center;width:100%;max-width:720px;left:0;right:0;margin:auto;'>
+	<a style='color:#fff;text-decoration:underline;font-size:16px;' href='{:U("user/account/prize")}'>我的奖品记录</a>
+</div>
+

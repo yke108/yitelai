@@ -1,0 +1,55 @@
+<div class="customer_pool_detaild">
+	<ol>
+		<li><label>头像</label><span><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></span></li>
+		<li><label>来源地址</label><span><a href="{$info.form_url}">{$info.form_url}</a></span></li>
+	</ol>
+	<ul>
+		<li><label>客户名称</label><span>{$info.user_name}</span></li>
+		<li><label>客户电话</label><span>{$info.mobile}</span></li>
+		<li><label>城市</label><span>{$info.city}</span></li>
+		<li><label>微信昵称</label><span>{$info.nick_name}</span></li>
+		<li><label>客户来源</label><span>{$from_list[$info[from]]}</span></li>
+		<!--<li><label>来源页面</label><span>产品页面</span></li>-->
+		<li><label>来源时间</label><span>{:date('Y-m-d H:i', $info[reg_time])}</span></li>
+	</ul>
+	<gt name="info.distributor_id" value="0">
+		<div class="customer_pool_detaild_btn btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" style="background:#999">已抢</a></div>
+	<else/>
+		<div class="customer_pool_detaild_btn btn"><a href="{:U('grab', array('user_id'=>$info[user_id]))}" class="mui-btn mui-btn-block mui-btn-primary grab">抢客户</a></div>
+	</gt>
+</div>
+
+<!--<script>
+	$(function(){
+		$(".grab").click(function(){
+			var obj = $(this);
+			$.post(obj.attr('href'), {}, function(d){
+				mui.toast(d.info);
+				if(d.status == 1){
+					window.location.reload()
+				}
+			}, 'json');
+			return false;
+		})
+	})
+</script>-->
+
+<script>
+	$(function(){
+		$(".grab").click(function(){
+			var obj = $(this);
+			var btnArray = ['否', '是'];
+			mui.confirm('确认抢客户吗？', '抢客户', btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

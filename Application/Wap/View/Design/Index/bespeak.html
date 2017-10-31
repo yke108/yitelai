@@ -1,0 +1,149 @@
+
+<div class="warp">        
+	<div class="reservation">
+		<empty name='store_id'>
+		<h2>已有 <span>{$order_count|default=0}</span> 位业主提交设计需求</h2>
+		</empty>
+		<ul>
+			<li><input type="text" name="nick_name" id='nick_name' placeholder="您的称呼"></li>
+			<li><input type="number" name="mobile" id='mobile' pattern="[0-9]*" placeholder="您的手机号码"></li>
+			<li>
+				<!--<select name='' id='province'></select>
+				<select name='' id='city'></select>
+				<select name='' id='district'></select>-->			
+				<input type='text' id='region_name' placeholder="请选择所在地区" value=''>
+				<input type='hidden' id='region_code' value=''>
+			</li>
+			<li>
+				<select name="space_type" id='space_type'>
+					<option value=''>空间类型</option>
+					<volist name='filter.demand' id='val'>
+					<option value='{$val}'>{$val}</option>
+					</volist>
+				</select>
+			</li>
+			<li>
+				<select name="decorate_type" id='decorate_type'>
+					<option value=''>风格</option>
+					<volist name='filter.decorate_type' id='val'>
+					<option value='{$val}'>{$val}</option>
+					</volist>
+				</select>
+			</li>
+			<li>
+				<span style="-webkit-box-flex:1; -webkit-flex:1; -ms-flex:1; flex:1; margin-left:0; margin-right:10px; background:#FFF; border-radius:5px;">
+					<input name="area" class="" style='width:100%;' id='area' type="text" placeholder="项目面积"><i>㎡</i>
+				</span>
+				<span style="-webkit-box-flex:1; -webkit-flex:1; -ms-flex:1; flex:1; margin-left:0; background:#FFF; border-radius:5px;">
+					<input name="budget" class="" style='width:100%;' id='budget' type="text" placeholder="预算"><i>万</i>
+				</span>
+			</li>
+			<li><button type="button" id='add_design_msg'>立即提交</button></li>
+			<li><em class="weui-icon-warn"></em>我们承诺：为了您的利益以及我们的口碑，您的隐私将被严格保密，请放心填写</li>
+		</ul>
+	</div>	
+</div>
+<script src="__PUBLIC__/wap/js/picker.min.js"></script>
+<script src="__PUBLIC__/wap/js/city.min.js"></script>
+<script src="__PUBLIC__/wap/js/index_city.js"></script>
+<script src="__PUBLIC__/wap/js/index.js"></script>
+<script>
+$("#add_design_msg").click(function(){
+	var nick_name=$('#nick_name').val();
+	var mobile=$('#mobile').val();
+	var re=/^1[1|3|5|7|8]\d{9}$/i;
+	var province=$('#province').val();
+	var city=$('#city').val();
+	var district=$('#district').val();
+	var space_type=$('#space_type').val();
+	var decorate_type=$('#decorate_type').val();
+	var area=$('#area').val();
+	var budget=$('#budget').val();
+	var designer_id="{$_GET['id']}";
+	var region_code=$("#region_code").val()
+	var store_id="{$store_id}";
+	
+	if(nick_name==''){
+		layer.open({time:1,content:'请输入您的昵称'});
+		$('#nick_name').focus();
+		return;
+	}
+	
+	if(mobile==''){
+		layer.open({time:1,content:'请输入手机号码'});
+		$('#mobile').focus();
+		return;
+	}else{
+		if(re.test(mobile)==false){layer.open({time:1,content:'手机格式不正确'});return;}
+	}
+	if(nick_name==''){
+		layer.open({time:1,content:'请输入您的昵称'});
+		$('#nick_name').focus();
+		return;
+	}
+	
+	if(region_code==''){
+		layer.open({time:1,content:'请选择所在地区'});
+		return;
+	}
+	//if(city==0){
+//		layer.open({time:1,content:'请选择城市'});
+//		return;
+//	}
+//	if(district==0){
+//		layer.open({time:1,content:'请选择县/区'});
+//		return;
+//	}
+	
+	if(space_type==''){
+		layer.open({time:1,content:'请选择空间类型'});
+		return;
+	}
+	if(decorate_type==''){
+		layer.open({time:1,content:'请选择空间风格'});
+		return;
+	}
+	
+	if(area==''){
+		layer.open({time:1,content:'请填写项目面积'});
+		$('#area').focus();
+		return;
+	}
+	if(budget==''){
+		layer.open({time:1,content:'请填写预算'});
+		$('#budget').focus();
+		return;
+	}
+	
+	
+	
+	$.ajax({
+		type:'POST',
+		url:"{:U('order')}",
+		data:{
+				nick_name:nick_name,
+				mobile:mobile,
+				province:province,
+				city:city,
+				district:district,
+				space_type:space_type,
+				style:decorate_type,
+				area:area,
+				budget:budget,
+				designer_id:designer_id,
+				region_code:region_code,
+				store_id:store_id
+			},
+		dataType:"json",
+		success:function(res){
+			layer.open({time:1,content:res.msg});
+			if(res.error==0){
+				//$('#nick_name,#mobile,#area,#budget').val('');
+				window.location.href = document.referrer;
+			}else if(res.error==2){
+				window.location="{:U('Index/Site/login')}";
+			}
+		}
+	})
+})
+</script>

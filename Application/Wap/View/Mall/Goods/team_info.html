@@ -1,0 +1,73 @@
+<style>
+.uesr_group_deta .btn .weui-btn_can{background:#e52943;}
+.uesr_group_deta_list ul li font{color:#e52943;}
+</style>
+<div class="warp">
+    	<div class="uesr_group_deta">
+			<div class='team_detail' style='background:#fff;margin-bottom:10px;padding:10px;'>
+				<h3  style='display:inline-block;'>拼团详情</h3>
+				<span style='display:inline-block;color:#ff0000;'>(团号：{$team_post_info.post_sn})</span>
+			</div>
+        	<div class="my_orders_item_cd">
+                <a href="javascript:;" class="dl_box">
+                    <dl>
+                        <dt><img src="<if condition='$info.goods_image eq ""'>__PUBLIC__/main/images/pic6.jpg<else/>__UPLOAD__/thumbs/b200/{$info.goods_image}</if>"></dt>
+                        <dd>
+                            <h2>{$team_post_info.act_name}</h2>
+                            <h3>
+                                <p>{$team_post_info.member_num}-{$team_post_info.member_limit}人团：<span>￥{$team_post_info.price}</span><!--<em>销量：125件</em>--></p>
+                            </h3>
+                        </dd>
+                    </dl>
+                </a>
+            </div>
+            <div class="uesr_group_deta_tit">
+				<if condition="$team_post_info[member_num]-$team_post_info[joined_num] gt 0">	
+				<p>{$team_post_info.member_num}-{$team_post_info.member_limit}人团，还差<em>{$team_post_info[member_num]-$team_post_info[joined_num]}</em>人成团</p>
+				<elseif condition="$team_post_info[member_limit]-$team_post_info[joined_num] gt 0" />
+				<p>{$team_post_info.member_num}-{$team_post_info.member_limit}人团，还有<em>{$team_post_info[member_limit]-$team_post_info[joined_num]}</em>人可以参团</p>
+				<else/>
+				<p>{$team_post_info.member_num}-{$team_post_info.member_limit}人团，参团名额已满</p>
+				</if>
+                <p class="bt"><span>距结束<em class="yomibox" data="{$team_post_info[end_time]|date='Y-m-d H:i',###}"></em></span></p>
+            </div>
+            <div class="uesr_group_deta_list">
+            	<h2>参团成员</h2>
+                <ul>
+					<volist name='team_member_list' id='val'>
+                	<li>
+						<span><img src="<if condition='$val.user_img neq ""'>__UPLOAD__/thumbs/b200/{$val.user_img}<elseif condition='$val.headimgurl neq ""' />{$val.headimgurl}<else/>__PUBLIC__/wap/images/user_default_img.jpg</if>" width="50">{$val.nick_name}<if condition="$val[is_promoter] eq 1"><font>（团长）</font></if></span>
+						<time>{$val.add_time|date="Y-m-d H:i",###}</time>
+					</li>
+                    </volist>
+                </ul>
+            </div>
+            <div class="btn">
+				<?php if($team_post_info[start_time] < time() && $team_post_info[end_time] > time()){ ?>
+					<if condition="in_array($self_user_id,$team_member_id) eq false">
+						<empty name='order'>
+							<if condition="($team_post_info[member_limit]-$team_post_info[joined_num]) gt 0">
+							<a href="{:U('mall/cart/team_confirm',array('post_id'=>$team_post_info['post_id']))}" class='weui-btn weui-btn_can' id='join_team_post' >参加此团</a>
+							<else/>
+							<a href="javascript:;" class="weui-btn weui-btn_disabled">已成团</a>
+							</if>
+						<else/>
+							<if condition="$order.pay_status eq 0">
+							<!--<form action="{:U('mall/cart/team_confirm')}" method='post'>
+								<input type='hidden' name='id' value="$order['general_order_id']">
+								<button class='weui-btn weui-btn_can' type='submit'>已参团未支付</button>
+							</form>-->
+							<a class='weui-btn weui-btn_can' val='' href="{:U('mall/cart/team_confirm',array('order_sn'=>$order['general_order_id']))}">已参团未支付</a>
+							</if>
+						</empty>
+					<else/>
+						<a href="javascript:;" class="weui-btn weui-btn_disabled">已参团</a>
+					</if>
+				<?php }else{ ?>
+					<a href="javascript:;" class="weui-btn weui-btn_disabled">拼团已结束</a>
+				<?php }?>
+			</div>
+        </div>
+    </div>
+
+<script src="__PUBLIC__/wap/js/jquery.yomi.js"></script>

@@ -1,0 +1,42 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+<script>
+	$(function(){
+		//内页分类
+		$(".sort_list").hide()
+		$(".hd_menu_l").hover(function(){
+			$(this).find(".sort_list").toggle()	
+		})
+	})
+</script>
+
+
+
+<!-------帮助中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span>{$info.page_title}</div>
+	<div class="help clearfix">
+		<div class="help_r fr" style="width:100%;">
+			<div class="help_r_deta">
+				<h2>{$info.name}</h2>
+				<h3>{$info.name}</h3>
+				<div class="deta_text">
+					{:htmlspecialchars_decode($info[content])}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------帮助中心结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>

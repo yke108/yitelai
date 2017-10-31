@@ -1,0 +1,451 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------购物车开始----->
+<div class="main w1200">
+	<div class="shop_car_box">
+		<form action="{:U('')}" method="post">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th align="left" width="45"><label><input class="gselall" name="" type="checkbox" value="">全选</label></th>
+						<th width="120">商品</th>
+						<th width="325">&nbsp;</th>
+						<th width="150">&nbsp;</th>
+						<th width="150">赠送积分</th>
+						<th width="180">单价（元）</th>
+						<th width="150">数量</th>
+						<th width="150" align="left">小计（元）</th>
+						<th width="150" align="left">操作</th>
+					</tr>
+				</thead>
+				<volist name="list" id="vo">
+					<tbody>
+						<tr class="table_merge">
+							<td colspan="9" align="center">
+								<span class="fl">{$vo.distributor.distributor_name}</span>
+								<!--<span><img src="__PUBLIC__/main/images/icon90.png"></span>-->
+								<!--<span class="fr"><gt name="vo.shipping_fee" value="0">￥{$vo.shipping_fee}<else/>已免运费</gt></span>-->
+							</td>
+						</tr>
+						<tr class="blank">
+							 <td colspan="9" height="10"></td>
+						</tr>
+						<volist name="vo.goods_list" id="vo2">
+							<tr>
+								<td align="left"><label><input type="checkbox" class="gsel" id="s{$vo2.CartId}" {:m_checked($vo2[IsChecked],1)} name="gsel[]" value="{$vo2.CartId}" val="{$vo2.GoodsPrice}" service="{$vo2.GoodsService.price|default=0}"></label></td>
+								<td align="center" valign="top" class="p0"><a href="{:U('mall/goods/info', array('id'=>$vo2['GoodsId']))}"><img src="__UPLOAD__/thumbs/b200/{$vo2.GoodsImage}" width="100" height="100"></a></td>
+								<td align="left" valign="top" bgcolor="#FFFFFF">
+									<div class="pro_names">
+										<p><a href="{:U('mall/goods/info', array('id'=>$vo2['GoodsId']))}">{$vo2.GoodsName}</a></p>
+										<notempty name="vo2.DeliveryTime"><p><span>发货时间：付款后{$vo2.DeliveryTime}天内</span></p></notempty>
+										<notempty name="vo2.GoodsService"><span>【商品服务】{$vo2.GoodsService.name} ￥{$vo2.GoodsService.price}</span></notempty>
+									</div>
+								</td>
+								<td align="left" valign="top" bgcolor="#FFFFFF">
+									<p>规格：{$vo2.ProductName}</p>
+								</td>
+								<td align="center" valign="top" bgcolor="#FFFFFF">{$vo2.DistributionPoints}</td>
+								<td align="center" valign="top" bgcolor="#FFFFFF">
+									¥{$vo2.GoodsPrice}<del style="font-size:12px; color:#999; margin-left:10px;">¥{$vo2.OriginalPrice}</del>
+									<eq name="vo2.IsSeckill" value="1"><p style="color:red">（秒杀）</p></eq>
+									<if condition="($vo2[IsSeckill] eq 0) AND ($user[rank][discount] gt 0)"><p style="color:red">（会员折扣：{$user[rank][discount]/10}折）</p></if>
+								</td>
+								<td align="center" valign="top" bgcolor="#FFFFFF">
+									<div class="spinner" id="spinner{$vo2.CartId}"></div>
+									<script>
+										$(function(){
+											var name = "number[{$vo2.CartId}]";
+											var number = "{$vo2.CartNumber}";
+											var stock = "{$vo2.GoodsNumber}";
+											
+											//秒杀
+											var is_seckill = "{$vo2.IsSeckill}";
+											var seckill_num = "{$vo2.SeckillNumber}";
+											if(is_seckill == 1){
+												stock = seckill_num;
+											}
+											
+											$("#spinner{$vo2.CartId}").Spinner({name:name, value:number, min:1, len:3, max:stock})
+										})
+									</script>
+									<!--<p class="stock_hint"><gt name="vo2.CartNumber" value="vo2.GoodsNumber"><font color="red">库存不足</font><else/>有货</gt></p>-->
+								</td>
+								<td align="left" valign="top" bgcolor="#FFFFFF"><b class="subtotal">¥{:sprintf("%.2f", $vo2[GoodsPrice] * $vo2[CartNumber] + $vo2[GoodsService][price])}</b></td>
+								<td align="left" valign="top" bgcolor="#FFFFFF">
+									<p><a href="{:U('mall/cart/del', array('id'=>$vo2['CartId']))}" class="del">删除</a></p>
+									<p><a href="{:U('mall/goods/collect', array('id'=>$vo2['GoodsId']))}" class="ajaxlink">移到我的关注</a></p>
+								</td>
+							</tr>
+							<tr class="blank">
+								 <td colspan="9" height="10"></td>
+							</tr>
+						</volist>
+					</tbody>
+					<tr class="blank">
+						 <td colspan="9" height="10"></td>
+					</tr>
+				</volist>
+			</table>
+			<empty name="list">
+				<!---<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>---->
+                <dl class="no_data">
+                	<dt><img src="__PUBLIC__/main/images/icon135.png" /></dt>
+                    <dd>
+                    	<h2>您的购物车还是空的，赶紧行动吧！</h2>
+                        <p><a href="{:U('index/index/index')}">去购物</a></p>
+                    </dd>
+                </dl>
+                <style>
+					dl.no_data{ text-align:center; background:#FFF; padding:10px 0;}
+                	dl.no_data dt,dl.no_data dd{ display:inline-block; vertical-align:middle;}
+					dl.no_data dd{ text-align:left; line-height:26px; margin-left:20px;}
+					dl.no_data dd h2{ font-size:15px; margin-bottom:10px;}
+					dl.no_data dd p a{ display:inline-block; color:#FFF; border-radius:5px; background:#e3002b; height:28px; line-height:28px; padding:0 15px;}
+                </style>
+			<else/>
+				<div class="settlement_btn clearfix">
+					<div class="fl"><label><input class="gselall" name="" type="checkbox" value="">全选</label><a class="gdelall" href="{:U('mall/cart/delall')}">删除选中的商品</a><a class="gcollectall" href="{:U('mall/cart/collectall')}">移到我的关注</a><!--<a href="#">清除下柜商品</a>--></div>
+					<span class="fr">
+						<em>总价：<font id="total_amount"></font><gt name="user.rank.discount" value="0"><font style="color:red">（享受会员折扣：{$user[rank][discount]/10}折）</font></gt></em>
+						<a class="paycartnow" href="javascript:;">去结算</a>
+					</span>
+				</div>
+			</empty>
+		</form>
+		<script src="__PUBLIC__/main/js/jquery.Spinner.js"></script>
+		<!--<script>
+			$(function(){
+				$(".spinner").Spinner({value:1, min:1, len:3, max:99})
+			})
+		</script>-->
+	</div>
+	<div class="shop_car_box_bot">
+		<div class="box_bot_hd">
+			<ul class="clearfix">
+				<li><a href="javascript:;" name="#tab1">我的关注</a></li>
+				<li><a href="javascript:;" name="#tab2">最近浏览</a></li>
+			</ul>
+		</div>
+		<div class="box_bot_bd">
+			<div class="con" id="tab1">
+				<div class="scrolllist clearfix" id="s1">
+					<a class="abtn aleft" href="#left" title="左移"></a>
+					<div class="imglist_w">
+						<ul class="imglist">
+							<volist name="collect_list" id="vo">
+								<li>
+									<a href="{:U('mall/goods/info', array('id'=>$vo[id_value]))}"><img src="__UPLOAD__/thumbs/b150/{$vo.goods_image}" width="167"></a>
+									<p><a href="{:U('mall/goods/info', array('id'=>$vo[id_value]))}">{$vo.goods_name}</a></p>
+									<p><span>￥{$vo.goods_price}</span></p>
+									<!--<p><a href="#" class="slide_btn"><img src="__PUBLIC__/main/images/icon91.png">加入购物车</a></p>-->
+								</li>
+							</volist>
+						</ul>
+					</div>
+					<a class="abtn aright" href="#right" title="右移"></a>
+				</div>
+			</div>
+			<div class="con" id="tab2">
+				<div class="scrolllist clearfix" id="s2">
+					<a class="abtn aleft" href="#left" title="左移"></a>
+					<div class="imglist_w">
+						<ul class="imglist">
+							<volist name="history_list" id="vo">
+								<li>
+									<a href="{:U('mall/goods/info', array('id'=>$vo[id_value]))}"><img src="__UPLOAD__/thumbs/b150/{$vo.goods_image}" width="167"></a>
+									<p><a href="{:U('mall/goods/info', array('id'=>$vo[id_value]))}">{$vo.goods_name}</a></p>
+									<p><span>￥{$vo.goods_price}</span></p>
+									<!--<p><a href="#" class="slide_btn"><img src="__PUBLIC__/main/images/icon91.png">加入购物车</a></p>-->
+								</li>
+							</volist>
+						</ul>
+					</div>
+					<a class="abtn aright" href="#right" title="右移"></a>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="__PUBLIC__/main/js/slider.js"></script>
+		<script>
+			$(function(){
+				$("#s1").xslider({
+					unitdisplayed:6,
+					movelength:1,
+					unitlen:187,
+					autoscroll:5000
+				});
+				$("#s2").xslider({
+					unitdisplayed:6,
+					movelength:1,
+					unitlen:187,
+					autoscroll:5000
+				});
+			})
+			function resetTabs(){
+				$(".box_bot_bd > div.con").hide();
+				$(".box_bot_hd a").attr("class","");
+			}
+			
+			var myUrl = window.location.href;
+			var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+			var myUrlTabName = myUrlTab.substring(0,4);
+			
+			(function(){
+				$(".box_bot_bd > div.con").hide();
+				$(".box_bot_hd li:first a").attr("class","on");
+				$(".box_bot_bd > div.con:first").fadeIn();
+			
+				$(".box_bot_hd a").on("click",function(e) {
+					e.preventDefault();
+					if ($(this).attr("class") == "on"){
+						return       
+					}else{             
+						resetTabs();
+						$(this).attr("class","on");
+						$($(this).attr('name')).fadeIn();
+					}
+				});
+			
+				for (i = 1; i <= $(".box_bot_hd a").length; i++) {
+					if(myUrlTab == myUrlTabName + i){
+						resetTabs();
+						$("a[name='"+myUrlTab+"']").attr("class","on");
+						$(myUrlTab).fadeIn();
+					}
+				}
+			})()
+		</script>
+	</div>
+</div>
+<!-------购物车结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.shop_car_box table tbody td .pro_names span{color:#646464; margin-top:5px;}
+</style>
+
+<script>
+$(function(){
+	total();
+	
+	if($('.gsel:checked').length == $('.gsel').length){
+		$('.gselall').prop('checked', true);
+	}else{
+		$('.gselall').prop('checked', false);
+	}
+	
+	//全选
+	$('.gselall').click(function(){
+		if($(this).prop('checked') == true){
+			$('.gselall').prop('checked', true);
+			$('.gsel').prop('checked', true);
+		}else{
+			$('.gselall').prop('checked', false);
+			$('.gsel').prop('checked', false);
+		}
+		total();
+	});
+	
+	$('.gsel').click(function(){
+		if($('.gsel:checked').length == $('.gsel').length){
+			$('.gselall').prop('checked', true);
+		}else{
+			$('.gselall').prop('checked', false);
+		}
+		total();
+	});
+	
+	$('.DisDe').click(function(){
+		total();
+		
+		var money = 0;
+		var price = parseFloat($(this).parents('tr').find('.gsel').attr('val'));
+		var service_price = parseFloat($(this).parents('tr').find('.gsel').attr('service'));
+		var amount = $(this).parents('tr').find('.Amount').val();
+		money += parseFloat(amount*price) + parseFloat(service_price);
+		$(this).parents('tr').find('.subtotal').text('￥'+money.toFixed(2));
+	});
+	$('.Decrease').click(function(){
+		total();
+		
+		var money = 0;
+		var price = parseFloat($(this).parents('tr').find('.gsel').attr('val'));
+		var service_price = parseFloat($(this).parents('tr').find('.gsel').attr('service'));
+		var amount = $(this).parents('tr').find('.Amount').val();
+		money += parseFloat(amount*price) + parseFloat(service_price);
+		$(this).parents('tr').find('.subtotal').text('￥'+money.toFixed(2));
+	});
+	$('.Increase').click(function(){
+		total();
+		
+		var money = 0;
+		var price = parseFloat($(this).parents('tr').find('.gsel').attr('val'));
+		var service_price = parseFloat($(this).parents('tr').find('.gsel').attr('service'));
+		var amount = $(this).parents('tr').find('.Amount').val();
+		money += parseFloat(amount*price) + parseFloat(service_price);
+		$(this).parents('tr').find('.subtotal').text('￥'+money.toFixed(2));
+	});
+	$('.Amount').keyup(function(){
+		total();
+		
+		var money = 0;
+		var price = parseFloat($(this).parents('tr').find('.gsel').attr('val'));
+		var service_price = parseFloat($(this).parents('tr').find('.gsel').attr('service'));
+		var amount = $(this).parents('tr').find('.Amount').val();
+		money += parseFloat(amount*price) + parseFloat(service_price);
+		$(this).parents('tr').find('.subtotal').text('￥'+money.toFixed(2));
+	});
+	
+	$('.ajaxlink').bind('click',function(){
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+		return false;
+	});
+	
+	//删除购物车商品
+	$(".del").click(function(){
+		var del_node = $(this);
+		var href = $(this).attr('href');
+		layer.open({
+			content: '确认删除？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(href, {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						if(del_node.parents('tbody').find('.gsel').length == 1){
+							del_node.parents('tbody').next('tbody').remove();
+							del_node.parents('tbody').remove();
+						}else{
+							del_node.parents('tr').next('tr').remove();
+							del_node.parents('tr').remove();
+						}
+						total();
+					}
+				}, 'json');
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+	
+	//批量删除
+	$(".gdelall").click(function(){
+		if($('.gsel:checked').length < 1){
+			layer.open({time:1,content:'请选择要删除的购物车商品'});return false;
+		}
+		var cart_ids = [];
+		$('.gsel:checked').each(function(){
+			if($(this).prop('checked')){
+				cart_ids.push($(this).val());
+			}
+		});
+		var href = $(this).attr('href');
+		layer.open({
+			content: '确认删除？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(href, {cart_ids:cart_ids}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						$('.gsel:checked').each(function(){
+							if($(this).prop('checked')){
+								if($(this).parents('tbody').find('.gsel:checked').length == $(this).parents('tbody').find('.gsel').length){
+									$(this).parents('tbody').next().remove();
+									$(this).parents('tbody').remove();
+								}else{
+									$(this).parents('tr').next().remove();
+									$(this).parents('tr').remove();
+								}
+							}
+						});
+						total();
+					}
+				}, 'json');
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+	
+	//批量关注
+	$(".gcollectall").click(function(){
+		if($('.gsel:checked').length < 1){
+			layer.open({time:1,content:'请选择要关注的购物车商品'});return false;
+		}
+		var cart_ids = [];
+		$('.gsel:checked').each(function(){
+			if($(this).prop('checked')){
+				cart_ids.push($(this).val());
+			}
+		});
+		var href = $(this).attr('href');
+		layer.open({
+			content: '确认关注？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(href, {cart_ids:cart_ids}, function(d){
+					layer.open({time:1,content:d.info});
+				}, 'json');
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+	
+	//结算
+	$('.paycartnow').bind('click', function(){
+		if($('.gsel:checked').length < 1){
+			layer.open({time:1,content:'请选择需要购买的商品'});return false;
+		}
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				layer.open({time:1,content:d.info});
+			}
+		}, 'json');
+		return false;
+	})
+})
+
+function total(){
+	var money = 0;
+	$(".gsel:checked").each(function(){
+		var price = parseFloat($(this).attr('val'));
+		var service_price = parseFloat($(this).attr('service'));
+		var amount = $(this).parents('tr').find('.Amount').val();
+		money += parseFloat(amount*price) + service_price;
+	});
+	$('#total_amount').text('￥'+money.toFixed(2));
+}
+</script>

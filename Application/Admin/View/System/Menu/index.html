@@ -1,0 +1,80 @@
+<style type="text/css">
+.rowlink2{cursor: pointer;}
+#c_table_list tr td,#c_table_list tr th{border:1px solid #BBB;vertical-align: middle;}
+</style>
+<div class="row hy_page_content" href="{:U('', $get)}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">菜单管理
+			<a href="{:U('add')}" hy_w="800" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal {:CheckPurview('system_role_add')}">添加菜单</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered" id="c_table_list">
+                    <thead>
+                        <tr>
+                        	<th style="width:12px;"></th>
+							<th style="width:20%;">菜单名称</th>
+							<th style="width:20%;">菜单编码</th>
+							<th style="width:30%">菜单url</th>
+							<th>排序</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<foreach name="menu_list" key="ko" item="vo">
+							<tr class="rowlink2 top_action" id='{$ko}'>
+								<td><i class='glyphicon {$vo.cls}'></i></td>
+								<td>{$vo.txt}</td>
+								<td>{$ko}</td>
+								<td></td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<a href="{:U('edit', array('id'=>$vo[menu_id]))}" hy_w="800" class="cs_ajax_link hy_show_modal {:CheckPurview('admin_action_edit')}">编辑</a>
+									<a href="{:U('del', array('id'=>$vo[menu_id]))}" class="cs_del_confirm {:CheckPurview('admin_action_del')}"
+										 cs_tip="确定删除？">删除</a>
+									 
+								</td>
+							</tr>
+							<foreach name='vo.itm' key="ckey" item='child_val'>
+								<tr class="rowlink3 {$ko}" style="background:#DDD;">
+									<td><i class='glyphicon'></i></td>
+									<td>&nbsp;&nbsp;&nbsp;&nbsp;{$child_val.txt}</td>
+									<td>{$ckey}</td>
+									<td>{$child_val.url}</td>
+									<td>{$child_val.sort_order}</td>
+									<td>
+										<a href="{:U('edit', array('id'=>$child_val[menu_id]))}" hy_w="800" class="cs_ajax_link hy_show_modal {:CheckPurview('admin_action_edit')}">编辑</a>
+										<a href="{:U('del', array('id'=>$child_val[menu_id]))}" class="cs_del_confirm {:CheckPurview('admin_action_del')}"
+											 cs_tip="确定删除？">删除</a>
+									</td>
+								</tr>
+							</foreach>
+						</foreach>
+                    </tbody>
+                </table>
+				<div>{$page}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	var hors = function(obj){
+		var code=$(obj).attr('id');
+		if($(obj).hasClass('on')){
+			$("."+code).removeClass('collapse');
+			$(obj).removeClass('on')
+		}else{
+			$("."+code).addClass('collapse');
+			$(obj).addClass('on')
+		}
+	}
+	$(".top_action").each(function(){
+		hors(this);
+		$(this).bind('click', function(){hors(this);});
+	});
+});
+</script>

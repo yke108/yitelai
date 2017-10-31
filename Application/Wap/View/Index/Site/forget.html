@@ -1,0 +1,158 @@
+<style>
+#step2{display:none;}
+</style>
+<div class="warp">
+	<div class="reg">
+		<form action="">
+			<div class="weui-cells weui-cells_form" id='step1'>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">账 户</label></div>
+					<div class="weui-cell__bd">
+						<input id="phone" name="phone" class="weui-input" type="number" pattern="[0-11]*" placeholder="请输入手机号">
+					</div>
+				</div>
+				
+				<div class="weui-cell weui-cell_vcode">
+					<div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
+					<div class="weui-cell__bd">
+						<input id="vcode" name="code" class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码">
+					</div>
+					<div class="weui-cell__ft">
+						<button id="code_btn" class="weui-vcode-btn" type="button">获取验证码</button>
+					</div>
+				</div>
+				<div class="btn">
+					<button type="button" class="weui-btn weui-btn_primary" id="next">下一步</button>
+					<input type="hidden" name="sms_id" id="sms_id"/>
+				</div>
+			</div>
+			<div class="weui-cells weui-cells_form" id='step2'>
+				
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">密 码</label></div>
+					<div class="weui-cell__bd">
+						<input id="pwd1" name="password" class="weui-input" type="password" placeholder="请输入6-20位密码">
+					</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__hd"><label class="weui-label">确认密码</label></div>
+					<div class="weui-cell__bd">
+						<input id="pwd2" name="password2" class="weui-input" type="password" placeholder="请输入6-20位密码">
+					</div>
+				</div>
+				
+				<div class="btn">
+					<button type="button" class="weui-btn weui-btn_primary" id="forget_btn">完成</button>
+				</div>
+			</div>
+			
+			
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#next').click(function(){
+		var phone = $('#phone').val();
+		var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (!reg.test(phone)) {
+            layer.open({time:1,content:'请输入正确的手机号码'});
+            return false;
+        }
+		if($('#sms_id').val() == '' || $('#vcode').val() == ''){
+			layer.open({time:1,content:'请输入正确的验证码'});return false;
+		}
+		$('#step1').css('display', 'none');
+		$('#step2').css('display', 'block');
+	});
+});
+</script>
+
+<script type="text/javascript">
+var clock_id = 0;
+var clock_fun = function(){
+    var obj = $('#code_btn');
+    var sleft = obj.attr('sleft');
+    sleft -= 1;
+    if(sleft <= 0){
+        clearInterval(clock_id);
+        obj.css({'background':'#fff', 'border':'1px solid #e30029'}).attr('sleft','0').html('获取验证码');
+    } else {
+        obj.attr('sleft', sleft).html(sleft+'s后可重新获取');
+    }
+};
+
+$(document).ready(function(){
+    $('#forget_btn').bind('click',function(){
+        var pwd1 = $('#pwd1').val();
+        var pwd2 = $('#pwd2').val();
+        var phone = $('#phone').val();
+        var sms_id = $('#sms_id').val();
+        var vcode = $('#vcode').val();
+        
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (!reg.test(phone)) {
+            layer.open({time:1,content:'请输入正确的手机号码'});
+            return false;
+        }
+        if (vcode=='') {
+            layer.open({time:1,content:'请输入验证码'});
+            return false;
+        }
+        if (sms_id<=0) {
+            layer.open({time:1,content:'请输入正确的验证码'});
+            return false;
+        }
+                
+        if(pwd1.length < 6){
+            layer.open({time:1,content:'密码的长度应大于六个字符'});
+            return false;
+        }
+        if(pwd1 != pwd2){
+            layer.open({time:1,content:'两次输入的密码不一致'});
+            return false;
+        }
+        
+        $.post("{:U('')}",{username:phone,password:pwd1,password2:pwd2,sms_id:sms_id,code:vcode},function(d){
+			layer.open({time:1,content:d.info});
+            if(d.status == 1){    
+                window.location.href = d.url;
+            }
+        },'json');
+        
+        return false;
+
+    });
+        
+    $('#code_btn').bind('click',function(){
+        var obj = $(this);
+        if(obj.attr('sleft') > 0){
+            layer.open({time:1,content:'请稍后再试'});
+            return false;
+        }
+        var phone = $('#phone').val();
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (!reg.test(phone)) {
+            layer.open({time:1,content:'请输入正确的手机号码'});
+            return false;
+        }
+        
+        var sleft = 60;
+        obj.attr('sleft',sleft).css('background','gray').css('border','1px solid gray').html(sleft+'s后可重新获取');
+        clock_id=setInterval("clock_fun()",1000);
+        $.post('{:U("getForgetCode")}',{phone:phone},function(d){
+            if(d.status == 0){    
+                obj.attr('sleft', -1);
+                clearInterval(clock_id);
+                alert(d.info);
+                clock_fun();
+                return false;
+            }
+            $('#sms_id').val(d.sms_id);
+			console.log(d);
+        },'json');
+        return false;
+    });
+});
+</script>
+

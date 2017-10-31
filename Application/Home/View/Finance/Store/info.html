@@ -1,0 +1,65 @@
+<div class="shop_settlement_detaild_new">
+	<div class="shop_settlement_detaild_new_hd right-after">
+		<a href="{:U('list', array('store_id'=>$distributor[distributor_id]))}">
+			<dl>
+				<dt><img src="__UPLOAD__/thumbs/b90/{$distributor.distributor_image}"></dt>
+				<dd>
+					<h2>{$distributor.distributor_name}</h2>
+					<p>订单数：<span>{:count($order_list)}</span></p>
+					<p>结算金额：<em>{$info.money}元</em></p>
+				</dd>
+				<dt>
+					<time>{:date('Y-m-d', $info[add_time])}</time>
+					<span>{$info.status_label}</span>
+				</dt>
+			</dl>
+		</a>
+	</div>
+	<div class="shop_settlement_detaild_new_bd">
+		<ul>
+			<li><span>本月销售额</span><em>{$order_amount}元</em></li>
+			<li><span>进货成本</span><em>{$stock_amount}元</em></li>
+			<li><span>本月应付佣金</span><em>{$order_amount - $stock_amount}元</em></li>
+		</ul>
+	</div>
+	<div class="shop_settlement_detaild_new_bd">
+		<h2 class="right-after">详细订单</h2>
+		<ul>
+			<volist name="order_list" id="vo">
+				<li><span>订单号：{$vo.order_id}</span><em>{$vo.order_amount}元</em></li>
+			</volist>
+		</ul>
+	</div>
+	<eq name="info.status" value="2">
+		<div class="shop_settlement_detaild_new_btn btn"><a href="{:U('remit', array('apply_id'=>$info[apply_id]))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认结算吗？" title="店铺结算">结算</a></div>
+	</eq>
+</div>
+
+<script>
+	$(function(){
+		$(".shop_settlement_detaild_new_bd h2").on("tap",function(){
+			$(this).toggleClass("on")
+			$(this).siblings("ul").slideToggle()	
+		})	
+	})
+</script>
+
+<script>
+	$(function(){
+		$(".confirm").click(function(){
+			var obj = $(this);
+			var btnArray = ['取消', '确定'];
+			mui.confirm($(this).attr('message'), $(this).attr('title'), btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>

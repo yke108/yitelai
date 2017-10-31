@@ -1,0 +1,24 @@
+<div class="order_statistics_deta sales_deta">
+    <div class="order_statistics_deta_hd">
+        <a href="#">
+            <dl>
+                <dt><img src="{$distributorInfoFind[distributor_image]}"></dt>
+                <dd>
+                    <h3>{$distributorInfoFind[distributor_name]}</h3>
+                    <p>{$distributorInfoFind[region_name]}</p>
+                </dd>
+            </dl>
+        </a>
+    </div>
+    <div class="order_statistics_deta_bd">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="#">支付金额<em>￥{$orderSaleAmount}</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">支付订单数<em>{$orderSaleCount}</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">支付买家数<em>{$payBuyersAskSaleCount}</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">客单价<em>null</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">转化率<em>null%</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">退单数量<em>{$afterSalesToCount}</em></a></li>
+            <li class="mui-table-view-cell"><a href="#">退单金额<em>{$afterSalesToAmount}</em></a></li>
+        </ul>
+    </div>
+</div>

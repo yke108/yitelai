@@ -1,0 +1,25 @@
+<div class="store_decoration">
+	<empty name="list">
+		<p style="text-align:center;color:#999999;padding:20px;">暂无门店装修</p>
+	<else/>
+		<foreach name="list" item="vo" key="ko">
+			<foreach name="vo" item="vo2" key="ko2">
+				<h2>{$ko}年{$ko2}月<i></i></h2>
+				<volist name="vo2" id="vo3">
+					<a href="{:U('info', array('design_id'=>$vo3[design_id]))}">
+						<dl>
+							<dt>
+								<span>{$vo3.area}</span>
+								<p>负责人：{$vo3.manager}</p>
+							</dt>
+							<dd>
+								<p>发布时间：{:date('Y-m-d', $vo3[add_time])}</p>
+								<p>店长：{$vo3.shopkeeper}</p>
+							</dd>
+						</dl>
+					</a>
+				</volist>
+			</foreach>
+		</foreach>
+	</empty>
+</div>

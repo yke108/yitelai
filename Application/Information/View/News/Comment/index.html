@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">新闻评论列表
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				关键词：
+				<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="用户昵称/新闻标题" style="display:inline-block;width:auto;" type="text">
+				
+				<button class="btn btn-default btn-sm">搜索</button>
+			</form>
+			</div>
+		</div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                        	<th width="80">用户头像</th>
+							<th width="80">用户昵称</th>
+							<th>新闻标题</th>
+							<th width="80">是否显示</th>
+							<th width="150">添加时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td>
+									<if condition="$vo.user_img neq ''">
+										<img src="__UPLOAD__/thumbs/b90/{$vo.user_img}" height='32' />
+									<elseif condition="$vo.headimgurl neq ''" />
+										<img src="{$vo.headimgurl}" height='32' />
+									</if>
+								</td>
+								<td><a href="{:U('user/index/info', array('id'=>$vo[user_id]))}" class="cs_ajax_link hy_show_modal">{$vo.nick_name}</a></td>
+								<td><a href="{:U('news/index/info', array('id'=>$vo[news_id]))}" class="cs_ajax_link hy_show_modal">{$vo.title}</a></td>
+								<td class="center">
+									<eq name="vo.status" value="1">
+										<a class='cs_ajax_link label label-success' href="{:U('open',array('comment_id'=>$vo['comment_id']))}">是</a>
+									<else/>
+										<a class='cs_ajax_link label label-danger' href="{:U('open',array('comment_id'=>$vo['comment_id']))}">否</a>
+									</eq>
+								</td>
+								<td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

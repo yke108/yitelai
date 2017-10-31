@@ -1,0 +1,22 @@
+<div class="apply_management_audit_deta_form">
+	<form action="{:U('')}">
+		<input type="hidden" name="user_id" value="{$user.user_id}" />
+		<p><textarea name="remark" cols="" rows="5" placeholder="请输入留言内容">{$user.remark}</textarea></p>
+		<div class="btn"><a href="javascript:;" class="mui-btn mui-btn-primary mui-btn-block" id="btn_submit">保存</a></div>
+	</form>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		mui.post(form.attr('action'),form.serialize(),function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

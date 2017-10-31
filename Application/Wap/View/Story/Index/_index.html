@@ -1,0 +1,13 @@
+<volist name='list' id='vo'>
+<a href="{:U('info',array('id'=>$vo['story_id']))}" class="weui-media-box weui-media-box_appmsg">
+	<div class="weui-media-box__hd">
+		<img class="weui-media-box__thumb" src="<if condition='$vo.story_image eq ""'>__PUBLIC__/wap/images/pic2.jpg<else/>__UPLOAD__/thumbs/b200/{$vo.story_image}</if>" alt="">
+	</div>
+	<div class="weui-media-box__bd">
+		<h4 class="weui-media-box__title">{$vo.story_title}<!--<img src="__PUBLIC__/wap/images/icon26.png" width="15">--></h4>
+		<h5>{$vo.nick_name|default='平台'} <time>于{$vo.add_time|date="Y-m-d H:i",###}发表</time></h5>
+		<p class="weui-media-box__desc">{$vo.story_intro|msubstr=0,20,'utf-8',true}</p>
+		<div class="browse"><span><img src="__PUBLIC__/wap/images/icon27.png">{$vo.view_num}</span><span><img src="__PUBLIC__/wap/images/icon28.png">{$vo.good_num}</span></div>
+	</div>
+</a>
+</volist>

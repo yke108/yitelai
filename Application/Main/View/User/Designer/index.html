@@ -1,0 +1,162 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------我推荐的人开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>我推荐的人</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="vip_reservation">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">预约设计师</a></li>
+					</ul>
+				</div>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<th>设计师</th>
+							<th>预约时间</th>
+							<th>所在区域</th>
+							<th>联系电话</th>
+							<th>预约状态</th>
+						</tr>
+						<volist name="list" id="vo">
+							<tr>
+								<td align="left" class="tit"><img src="<if condition='$vo.designer_image eq ""'>__PUBLIC__/main/images/pic51.jpg<else/>__UPLOAD__/thumbs/b120/{$vo.designer_image}</if>">{$vo.designer_name}
+									<span>
+										设计师名字<br>
+										<i><em class="on"></em><em class="on"></em><em class="on"></em><em class="on"></em><em class="on"></em></i>
+									</span>
+								</td>
+								<td align="center">{$vo.add_time|date="Y-m-d H:i",###}</td>
+								<td align="center">{$vo.region_all}</td>
+								<td align="center">{$vo.designer_tel}</td>
+								<td align="center"><span><!--{$vo.status_lang}--></span><a href="javascript:;">去评价</a></td>
+							</tr>
+                            <tr>
+                                <td colspan="5" style="padding-top: 0;">
+                                    <form action="#">
+                                        <ul>
+                                            <li class="clearfix">
+                                                <span>评分：</span>
+                                                <div id="star" class="fl">
+                                                    <ul>
+                                                        <li><a href="javascript:;">1</a></li>
+                                                        <li><a href="javascript:;">2</a></li>
+                                                        <li><a href="javascript:;">3</a></li>
+                                                        <li><a href="javascript:;">4</a></li>
+                                                        <li><a href="javascript:;">5</a></li>
+                                                    </ul>
+                                                    <span></span>
+                                                    <p></p>
+                                                </div>
+                                            </li>
+                                            <li class="clearfix"><span>评价：</span><em><textarea name="content" cols="" rows=""></textarea></em></li>
+                                            <li style="text-align: center;"><button type="submit">提交评价</button></li>
+                                        </ul>
+                                    </form>
+                                </td>
+                            </tr>
+						</volist>
+					</table>
+					<div class="orders_list_deta_process">
+						<ul class="clearfix">
+							<li class="on">
+								<span>2017.08.08</span>
+								<p>建档成功</p>
+							</li>
+							<li>
+								<span>2017.08.08</span>
+								<p>量尺完毕</p>
+							</li>
+							<li>
+								<span>2017.08.08</span>
+								<p>方案确认</p>
+							</li>
+							<li>
+								<span>2017.08.08</span>
+								<p>用户评价</p>
+							</li>
+						</ul>
+						<div class="orders_list_deta_process_box step1"></div>
+					</div>
+                    <style>
+                        .orders_list_deta_process{ border:solid 1px #e5e5e5; position:relative; padding:25px 0; margin-bottom:10px;}
+                        .orders_list_deta_process ul li{ float:left; width:207px; text-align:center; display:none;}
+                        .orders_list_deta_process ul li.on{ display:inline-block;}
+                        .orders_list_deta_process ul li:first-child{ margin-left:55px;}
+                        .orders_list_deta_process ul li span{ color:#dc0d09;}
+                        .orders_list_deta_process ul li p{ margin-top:55px;}
+                        .orders_list_deta_process_box{ width:891px; height:30px; background:url(__PUBLIC__/main/images/icon148.png) no-repeat; position:absolute; left:50%; margin-left:-445px; top:55px;}
+                        .orders_list_deta_process_box.step1{ background-position:0 -30px;}
+                        .orders_list_deta_process_box.step2{ background-position:0 -60px;}
+                        .orders_list_deta_process_box.step3{ background-position:0 -90px;}
+                        .orders_list_deta_process_box.step4{ background-position:0 -120px;}
+                        .reservation_comment{ padding-top:20px; }
+                        .reservation_comment h2{ padding: 15px 30px; font-size: 14px; color: #666; font-weight: normal; background: #f5f5f5; border: solid 1px #DDD;}
+                        .reservation_comment dl{ padding: 15px 30px; border-bottom: solid 1px #ddd;}
+                        .reservation_comment dl dt{ float: left; text-align: center; font-size: 14px; margin-right: 20px;}
+                        .reservation_comment dl dt img{ width: 50px; height: 50px;}
+                        .reservation_comment dl dd{ float: left; width:790px; color: #666;  line-height: 22px;}
+                        .reservation_comment dl dd time{ display: block; margin-top: 20px;}
+                        .vip_reservation table td a{ display: inline-block; color: #FFF; border-radius: 5px; border: solid 1px #b3181c;background-image:-webkit-linear-gradient(to top, #d90702, #ec2f33); background-image:linear-gradient(to top, #d90702, #ec2f33); padding: 8px 13px;}
+                        .vip_reservation td{ border-bottom: none !important;}
+                        .vip_reservation td ul{ background: #f5f5f5; padding: 20px; position: relative;}
+                        .vip_reservation td ul:after{ position: absolute; content: ''; width: 19px; height: 23px; top: -23px; right: 70px; background: url(__PUBLIC__/main/images/icon149.png) no-repeat;}
+                        .vip_reservation td ul li{ margin-bottom:10px;}
+                        .vip_reservation td ul li span{ float:left; text-align:right; width:55px; color:#5e5e5e; line-height:20px;}
+                        .vip_reservation td ul li em{ float:left; width:830px;}
+                        .vip_reservation td ul li em textarea{ border:solid 1px #f1f1f1; padding:10px; line-height:24px; resize:none; overflow:hidden; width:808px; height:100px;}
+                        .vip_reservation td ul li em i{ display:inline-block; margin-right:10px; position:relative;}
+                        .vip_reservation td ul li em i input{ position:absolute; width:100%; height:100%; opacity:0; cursor:pointer; left:0; top:0;}
+                        .vip_reservation td ul li #star span{ width:auto;}
+
+                        .vip_reservation td.tit img,.vip_reservation td.tit span{ display: inline-block; vertical-align: middle;}
+                        .vip_reservation td.tit span i{ display: inline-block; margin-top: 5px;}
+                        .vip_reservation td.tit span i em{ display: inline-block; width:16px; height:16px; text-indent:-9999px; background:url(__PUBLIC__/main/images/start.png) -92px -16px no-repeat; }
+                        .vip_reservation td.tit span i em.on{ background:url(__PUBLIC__/main/images/start.png) 0 0 no-repeat;}
+                        .vip_reservation td button{ display: inline-block; color: #FFF; border-radius: 5px; border: solid 1px #b3181c;background-image:-webkit-linear-gradient(to top, #d90702, #ec2f33); background-image:linear-gradient(to top, #d90702, #ec2f33); padding: 8px 13px; cursor: pointer;}
+
+                        #star{position:relative; width:600px; height:24px;}
+                        #star ul,#star span{float:left;display:inline; height:16px; line-height:16px;}
+                        #star ul{ margin-right:10px; padding: 0;}
+                        #star ul:after{ display: none;}
+                        #star li{float:left; width:16px; height:16px; cursor:pointer;text-indent:-9999px; background:url(__PUBLIC__/main/images/start.png) -92px -16px no-repeat; margin:1px 3px 0 ;}
+                        #star strong{color:#e30129; padding-left:10px;}
+                        #star li.on{ background:url(__PUBLIC__/main/images/start.png) 0 0 no-repeat;}
+                        #star p{position:absolute;top:20px;width:159px;height:60px;display:none; background:#FFF; box-shadow:0 0 5px #ccc; padding:7px 10px 0;}
+                        #star p em{color:#e30129;display:block;font-style:normal;}
+                    </style>
+                    <div class="reservation_comment">
+                        <h2>用户评价</h2>
+                        <dl class="clearfix">
+                            <dt><img src="__PUBLIC__/main/images/pic45.jpg"><p>路人甲</p></dt>
+                            <dd>
+                                <p>设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！设计很好！</p>
+                                <time>2017-08-31</time>
+                            </dd>
+                        </dl>
+                    </div>
+					<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="__PUBLIC__/main/js/evaluation.js"></script>
+<!-------我推荐的人结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

@@ -1,0 +1,174 @@
+<!-------头部开始----->
+<include file='Public/header' />
+<!-------头部结束----->
+
+<!-------家装公司主页开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index')}">首页</a><span>></span><a href="{:U('index')}">家装公司</a><span>></span>{$distributor.distributor_name}</div>
+	<div class="home_page">
+		<div class="home_page_1 clearfix">
+			<div class="home_page_1_l fl">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b400/{$distributor.distributor_image}" width="212"></dt>
+					<dd>
+						<h2>{$distributor.distributor_name}</h2>
+						<p><span>案例<font>{$case_count}</font></span><a href="{:U('design/company/collect', array('id'=>$distributor[distributor_id]))}" class="collect"><img src="__PUBLIC__/main/images/icon89.png">关注 <span id="collect_count">{$collect_count}</span></a></p>
+					</dd>
+				</dl>
+				<h2><a href="{:U('bespeak',array('store_id'=>$distributor['distributor_id']))}">找TA设计</a></h2>
+			</div>
+			<div class="home_page_1_r fr">
+				<p>公司介绍</p>
+				<p>{:htmlspecialchars_decode($distributor[distributor_intro])}</p>
+			</div>
+		</div>
+		<div class="home_page_2 clearfix">
+			<div class="home_page_2_l fl">
+				<h2><span>活跃会员</span></h2>
+				<volist name='order_list' id='val'>
+					<dl class="clearfix">
+						<dt><a href="javascript:;"><img src="__UPLOAD__/thumbs/b120/{$val.user_img}"></a></dt>
+						<dd>
+							<p><span>【{$val.c_city}】</span><a href="javascript:;">{$val.user_nick_name|msubstr=0,5}</a></p>
+							<p><em>{$val.status_lang}</em></p>
+						</dd>
+					</dl>
+				</volist>
+			</div>
+			<div class="home_page_2_r fr">
+				<div class="home_page_2_designteam">
+					<h2>设计团队（{$designer_count}）<!--<a href="#" class="fr">更多<img src="__PUBLIC__/main/images/icon93.png" width="10"></a>--></h2>
+					<empty name="designer_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name="designer_list" id="vo">
+								<li>
+									<a href="{:U('design/index/index', array('id'=>$vo[designer_id]))}">
+										<img src="<if condition='$vo.designer_image eq ""'>__PUBLIC__/main/images/pic72.jpg<else/>__UPLOAD__/thumbs/b300/{$vo.designer_image}</if>">
+										<p>{$vo.designer_name}</p>
+										<p>{$level_list[$vo[level]][name]}</p>
+									</a>
+								</li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+				<div class="home_page_2_designcase">
+					<h2>家装设计案例<!--<a href="#" class="fr">更多<img src="__PUBLIC__/main/images/icon93.png" width="10"></a>--></h2>
+					<empty name="case_list">
+						<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+					<else/>
+						<ul class="clearfix">
+							<volist name='case_list' id='val'>
+								<li><a href="{:U('case_info',array('id'=>$val['case_id']))}"><img src="__UPLOAD__/thumbs/b400/{$val.picture}"><p>共 {:count($val[gallery_array])} 张</p></a><p>{$val.case_name}</p></li>
+							</volist>
+						</ul>
+					</empty>
+				</div>
+			</div>
+		</div>
+		<div class="home_page_3 clearfix">
+			<div class="home_page_3_l fl">
+				<h2>热门案例</h2>
+				<empty name="case_hot_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul>
+						<volist name='case_hot_list' id='val'>
+							<li><a href="{:U('case_info',array('id'=>$val['case_id']))}"><img src="__UPLOAD__/{$val.picture}"></a></li>
+						</volist>
+					</ul>
+				</empty>
+			</div>
+			<div class="home_page_3_r fr">
+				<h2>家装施工案例<!--<a href="#" class="fr">更多<img src="__PUBLIC__/main/images/icon93.png" width="10"></a>--></h2>
+				<empty name="case_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<ul>
+						<volist name='case_list' id='val'>
+							<li class="clearfix">
+								<div class="case_img fl"><img src="__UPLOAD__/thumbs/b400/{$val.picture}"></div>
+								<div class="case_process fl">
+									<h3>{$val.case_name}</h3>
+									<div class="case_tags">
+										<em>{$val.region_name}</em>
+										<em>{$type_key_list[$val[district]][name]}</em>
+										<em>{$type_key_list[$val[budget]][name]}</em>
+										<em>
+											<switch name="val.custom_type">
+												<case value="1">半包</case>
+												<case value="2">全包</case>
+												<case value="3">清包</case>
+											</switch>
+										</em>
+										<em>{$type_key_list[$val[area]][name]}</em>
+										<em>{$type_key_list[$val[decorate_type]][name]}</em>
+									</div>
+									<div class="case_process_box clearfix">
+										<span <gt name="val.progress" value="0">class="on"</gt>><i></i>准备开工</span>
+										<span <gt name="val.progress" value="1">class="on"</gt>><i></i>水电阶段</span>
+										<span <gt name="val.progress" value="2">class="on"</gt>><i></i>泥木阶段</span>
+										<span <gt name="val.progress" value="3">class="on"</gt>><i></i>油漆阶段</span>
+										<span <gt name="val.progress" value="4">class="on"</gt>><i></i>竣工阶段</span>
+									</div>
+									<div class="case_bt">
+										<span><p>设计图</p><p>{:count($val[gallery_array])}</p></span>
+									</div>
+								</div>
+								<!--<div class="case_btn fl"><a href="{:U('bespeak',array('store_id'=>$distributor['distributor_id']))}">免费预约安装</a></div>-->
+							</li>
+						</volist>
+					</ul>
+				</empty>
+			</div>
+		</div>
+		<div class="home_page_4">
+			<div class="guess_like">
+				<h2><a href="{:U('mall/category/like')}" class="change"><img src="__PUBLIC__/main/images/icon38.png">换一换</a>推荐品类</h2>
+				<ul class="clearfix recommend_list">
+					<include file="User/Index/recommend"/>
+				</ul>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				$(".guess_like .change").click(function(){
+					var change_obj = $(this);
+					$.post(change_obj.attr('href'),{},function(d){
+						$('.guess_like .recommend_list').html(d);
+					},'json');
+					return false;
+				})
+			})
+		</script>
+	</div>
+</div>
+<!-------家装公司主页结束----->
+
+<!-------尾部开始----->  
+<include file='Public/footer' />
+<!-------尾部结束----->
+
+<script>
+	$(".collect").click(function(){
+		var collect_obj = $(this);
+		$.post($(this).attr('href'), {}, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				if(d.is_collect == 1){
+					collect_obj.addClass("on");
+					$('#collect_count').html(d.collect_count);
+				}else{
+					collect_obj.removeClass("on");
+					$('#collect_count').attr(d.collect_count);
+				}
+			}
+			if(d.url){
+				window.location.href = d.url
+			}
+		}, 'json');
+		return false;
+	})
+</script>

@@ -1,0 +1,18 @@
+<div class="warp">
+        
+	<div class="pay_result">
+		<div class="pay_result_box">
+			<dl>
+				<dt><i class="weui-icon-warn weui-icon_msg"></i></dt>
+				<dd>
+					<h1>支付失败，请重新支付</h1>
+				</dd>
+			</dl>
+			<div class="btn">
+				<a href="{:U('User/Recharge/log')}" class="weui-btn weui-btn_plain-default">查看充值记录</a>
+				<a href="{:U('User/Recharge/pay',array('recharge_sn'=>$recharge_sn))}" class="weui-btn weui-btn_primary">重新支付</a>
+			</div>
+		</div>
+	</div>
+	
+</div>

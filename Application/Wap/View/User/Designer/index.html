@@ -1,0 +1,56 @@
+<style>
+.designer_box{padding:10px;}
+.designer_box .db_list{}
+.designer_box .db_list dl{font-size:14px;border-radius:8px;padding:10px;background:#fff;margin-bottom:10px;}
+.designer_box .db_list dl dt{border-bottom:1px solid #ebebeb;padding:0 5px 8px;}
+.designer_box .db_list dl dt span{}
+.designer_box .db_list dl dt span img{width:40px;height:40px;border-radius:50%;}
+.designer_box .db_list dl dt span b{margin-left:5px;font-weight:normal;}
+.designer_box .db_list dl dt font{position:relative;top:3px;color:#e60623; line-height: 40px;}
+.designer_box .db_list dl dd{padding:10px 10px 0;color:#414141;font-size:14px;}
+.designer_box .db_list dl dd p{margin-bottom:5px;}
+</style>
+<script src="__PUBLIC__/wap/js/dropload/dropload.min.js"></script>
+<link href='__PUBLIC__/wap/js/dropload/dropload.css' rel="stylesheet" type="text/css">
+<div class='warp'>
+	<div class='designer_box'>
+		<div class='db_list'>
+			<include file='User/Designer/_index' />
+		</div>
+	</div>
+</div>
+<script>
+	var page=2;
+	var dropload = $('.designer_box').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+			
+			$.ajax({
+				type: 'POST',
+				url: "{:U('')}",
+				data:{p:page},
+				dataType: 'json',
+				success: function(data){
+					
+					// 为了测试，延迟1秒加载
+					setTimeout(function(){
+						if(data.html!=''){
+							$('.db_list').append(data.html);
+							page++;
+						}else{
+							me.lock();
+							// 无数据
+							me.noData();
+						}
+						// 每次数据加载完，必须重置
+						me.resetload();
+					},1000);
+				},
+				error: function(xhr, type){
+					alert('Ajax error!');
+					// 即使加载出错，也得重置
+					me.resetload();
+				}
+			});
+		}})
+	</script>

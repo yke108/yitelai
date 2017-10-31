@@ -1,0 +1,89 @@
+<thead>
+	<tr>
+		<th>规格项</th>
+		<th>规格值</th>
+		<th>规格图片</th>
+		<th style="width:30px;"><a href="{:U('skuAdd', array('tmpid'=>$get[tmpid]))}" class="btn btn-info btn-sm cs_row_add_button" cs_id="tblc">添加</a></th>
+	</tr>
+</thead>
+<tbody id="tblc">
+	<volist name="sku_list" id="vo" key="k">
+		<tr>
+			<td width="20%"><input type="text" name="sku_name[]" class="form-control value_clear" value="{$vo.sku_name}" placeholder="规格项" readonly="readonly"></td>
+			<td width="30%"><input skuid="{$vo.sku_id}" tmpid="{$vo.tmp_id}" type="text" name="sku_value[]" class="form-control value_clear hy_select_id" value="{$vo.sku_value}" placeholder="规格值" readonly="readonly" style="cursor:pointer"></td>
+			<td>
+				<volist name="vo.sku_image_list" id="vo2">
+					<notempty name="vo2"><img src="__UPLOAD__/thumbs/b120/{$vo2}" width="40" height="40" style="margin:0 5px" /></notempty>
+				</volist>
+				<input type="hidden" name="sku_image[]" value="{$vo.sku_image}" />
+			</td>
+			<td><a href="{:U('skuDel', array('skuid'=>$vo[sku_id], 'tmpid'=>$vo[tmp_id]))}" class="btn btn-danger btn-sm btn_row_del">删除</a></td>
+		</tr>
+	</volist>
+</tbody>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.hy_upload_single').hySingleUpload("{:U('site/upload/index')}", '__UPLOAD__');
+	
+	$('.hy_select_id').bind('click', function(){
+		var w = $(this).attr('hyw');
+		var h = $(this).attr('hyh');
+		if(w == undefined) w = 700;
+		if(h == undefined) h = 530;
+		
+		var key = $(this).parents('tr').attr('key');
+		var val = $(this).val();
+		var skuid = $(this).attr('skuid');
+		var tmpid = $(this).attr('tmpid');
+		var url = "{:U('sku', array('key'=>'skey', 'skuid'=>'sskuid', 'tmpid'=>'stmpid'))}";
+		url = url.replace('skey', key);
+		url = url.replace('sskuid', skuid);
+		url = url.replace('stmpid', tmpid);
+		
+		layer.open({
+			type: 2,
+			title:'添加规格值',
+			area: [w+'px', h+'px'],
+			fix: false, //不固定
+			maxmin: true,
+			content:url
+		});
+		return false;
+	});
+	
+	$('.cs_row_add_button').unbind('click').bind('click', function(){
+		var w = $(this).attr('hyw');
+		var h = $(this).attr('hyh');
+		if(w == undefined) w = 700;
+		if(h == undefined) h = 530;
+		var url = $(this).attr('href');
+		layer.open({
+			type: 2,
+			title:'添加规格',
+			area: [w+'px', h+'px'],
+			fix: false, //不固定
+			maxmin: true,
+			content:url
+		});
+		return false;
+	});
+	
+	$('.btn_row_del').unbind('click').bind('click', function(){
+		var obj = $(this).parent().parent();
+		if(obj.parent().children().length > 1){
+			obj.remove();
+		}
+		
+		var href = $(this).attr('href');
+		$.post(href, {}, function(d){
+			if(d.status == 0){
+				layer.msg(d.info);
+			}
+			$('#product_list').html(d.product_list);
+		},'json');
+		
+		return false;	
+	});
+});
+</script>

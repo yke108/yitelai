@@ -1,0 +1,44 @@
+<div class="new_order_type_detaild">
+    <div class="new_order_type_detaild_hd">
+        <dl>
+            <dt><img src="{$visitorAskFind['user_img']}" style="width:50px; height:50px; border-radius:50%;"></dt>
+            <dd>
+                <p>{$visitorAskFind['name']}</p>
+                <time>会员等级：<font style="color:#FF0000;">{$visitorAskFind['rank_id']}</font></time>
+            </dd>
+            <dt>
+                <p>{$visitorAskFind['region_name']}</p>
+            </dt>
+        </dl>
+    </div>
+    <div class="new_order_type_detaild_bd">
+        <ul>
+            <li><span>关键字</span><em>null</em></li>
+            <li>
+                <span style="width: 30%">访问文章</span>
+                <em style="width: 70%">
+                    <volist name="articleList" id="vo">
+                        <span>{$vo[name]}</span>
+                    </volist>
+                </em>
+            </li>
+            <li>
+                <span style="width: 30%">访问产品</span>
+                <em style="width: 70%">
+                    <volist name="goodsList" id="vo">
+                        <span>{$vo[name]}</span>
+                    </volist>
+                </em>
+            </li>
+            <li><span>停留时间</span><em>null</em></li>
+            <li>
+                <span style="width: 30%">购物车产品</span>
+                <em style="width: 70%">
+                    <volist name="cartList" id="vo">
+                        <span style="padding-right: 10px;">{$vo[goods_name]}</span>
+                    </volist>
+                </em>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<volist name="list" id="vo">
+	<if condition="$vo[type] eq 0">
+	<a href="javascript:;" class="release_record_article">
+		<dl>
+			<dt class="article"><img src="__UPLOAD__/thumbs/b90/{$vo.story_image}"></dt>
+			<dd>
+				<h2>{$vo.story_title}</h2>
+				<p>{$vo.story_intro}</p>
+			</dd>
+			<dt>{:date('Y-m-d', $vo[add_time])}</dt>
+		</dl>
+	</a>
+	<elseif condition="$vo[type] eq 1"/>
+		<a href="javascript:;" class="release_record_article">
+			<dl>
+				<dt class="video"><img src="__UPLOAD__/thumbs/b90/{$vo.picture}"><span><img src="__PUBLIC__/home/images/icon51.png"></span></dt>
+				<dd>
+					<h2>{$vo.title}</h2>
+					<p>{$vo.description}</p>
+				</dd>
+				<dt>{:date('Y-m-d', $vo[add_time])}</dt>
+			</dl>
+		</a>
+	<elseif condition="$vo[type] eq 2"/>
+		<a href="javascript:;" class="release_record_article">
+			<dl>
+				<dt><img src="__UPLOAD__/thumbs/b90/{$vo.material_image}"></dt>
+				<dd>
+					<h2>{$vo.material_title}</h2>
+					<!--<p>蝴蝶效应、青蛙现象、鳄鱼法则、鲶鱼...</p>-->
+				</dd>
+				<dt>{:date('Y-m-d', $vo[add_time])}</dt>
+			</dl>
+		</a>
+	</if>
+</volist>

@@ -1,0 +1,204 @@
+<style>
+th.cur{cursor: pointer;}
+
+.mgr_divb {
+    background: #f2fafc none repeat scroll 0 0;
+    border-bottom: 1px solid #e3eff3;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+}
+.coolbg {
+    background: #eeeeee none repeat scroll 0 0;
+    border-bottom: 1px solid #acacac;
+    border-right: 1px solid #acacac;
+    color: #333333;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+</style>
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">商品列表<font color="red">（点击选择活动商品）</font>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form action="{:U('')}" method="get" class="cs_ajax_form" >
+					关键词:
+					<input type="text" class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="商品名称" style="display:inline-block;width:auto;" />
+					平台分类：
+					<select class="form-control input-sm" name="cat_id">
+						<option value="0">全部分类</option>
+						{$platform_categorys}
+					</select>
+					自定义分组：
+					<select class="form-control input-sm" name="self_cat_id">
+						<option value="0">全部分组</option>
+						{$distributor_categorys}
+					</select>
+					<button class="btn btn-default btn-sm">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 dataTables_wrapper">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>图片</th>
+							<th>商品编号</th>
+							<th>商品名称</th>
+							<th>商品价格</th>
+							<th>平台分类</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblc">
+						<include file="Activity/Team/_goods"/>
+                    </tbody>
+                </table>
+                
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//选择所有
+function CheckAll(value)
+{
+	$("input[type='checkbox'][name^='checkid'][disabled!='true']").attr("checked",value);
+}
+
+(function ($) {
+	$(document).ready(function(){
+		$.dthref = '';
+		$.dtholder = {};
+		function loadedc(){
+			$('.pager').children('a').each(
+				function(){$(this).bind('click',function(){
+					$.dthref = $(this).attr('href');
+					reAjaxLoad();
+					return false;
+				});
+			});
+		}
+		
+		$('#btn_search').bind('click',function(){
+			$.dtholder.keyword = $('#keyword').val();
+			$.dtholder.goods_sn = $('#goods_sn').val();
+			$.dtholder.cat_id = $('#cat_id').val();
+			$.dthref = $(this).attr('href');
+			reAjaxLoad();
+			return false;
+		});
+		
+		$('.click_a').bind('click',function(){
+			if(!confirm('你确定此操作吗？')) return;
+			 var checkedCustomer = [];
+			 
+			 $(".checkid:checked").each(function(){	
+				 checkedCustomer.push($(this).val());
+			 });
+			var record_ids = checkedCustomer.join(',');
+			$.ajax( {    
+		        url:$(this).attr('url'),
+		        data:{
+		        	record_ids:record_ids
+		        },
+		        type:'post',  
+		        cache:false,    
+		        dataType:'json',    
+		        success:function(data) {
+		            if(data.status == 1){	
+		            	//reAjaxLoad();
+						alert(data.info);
+						window.location.reload();
+		            }else{
+		            	 alert(data.info);
+		            }
+		         },    
+		         error : function() {
+		              //alert("系统错误！");
+		         }
+		    });
+			return false;
+		});
+		
+		$('.sort th.cur').addClass('sorting').bind('click',function(){
+			var fname = $(this).attr('attr');
+			var sort = $(this).attr('val');
+			if(sort.length < 1){
+				return;
+			}
+			$(this).parent().children('.cur').addClass('sorting')
+			.removeClass('sorting_asc').removeClass('sorting_desc');
+			
+			if(sort=='asc'){
+				$(this).addClass('sorting_asc').removeClass('sorting');
+				$(this).attr('val','desc');
+			}else{
+				$(this).addClass('sorting_desc').removeClass('sorting');
+				$(this).attr('val','asc');
+			}
+			if(fname){
+				$.dtholder.fname = fname;
+				$.dtholder.sort = sort;
+				$.dthref = $(this).attr('href');
+				reAjaxLoad();
+			}
+			return false;
+		});
+		
+		//根据各类参数，重新加载页面
+		function reAjaxLoad(){
+			var href = "{:U('')}";
+			$.post(href,$.dtholder,function(d){
+				if(d.error > 0){
+					alert(d.message);
+					return;
+				}
+				$.dtholder.page = 0;
+				if(d.overwrite > 0){
+					$('#tblc').html(d.clist);
+				} else {
+					var content = $('#tblc').html() + d.clist;
+					$('#tblc').html(content);
+				}
+				$("#pwrap").html(d.pager);
+				loadedc();
+				location.hash="listtop";
+			},'json');
+		}
+		
+		//页面加载后，绑定点击事件
+        loadedc();
+    });
+}(jQuery));
+
+</script>
+<script>
+$(function(){
+	$(".rowlink").live('click',function(){
+		var val=$(this).attr('val');
+		var goods_name=$(this).attr('goods_name');
+		var goods_img=$(this).attr('img');
+		$("#goods_name").val(goods_name)
+		$("#goods_id").val(val);
+		$("#goods_img").val(goods_img);
+		$.ajax({
+			type:'POST',
+			url:"{:U('product')}",
+			data:{record_id:val},
+			dataType:"json",
+			success:function(res){
+				$("#product").html(res.html)
+				$("#product_name").val($("#product").find('option:first').html());
+			}
+		})
+		$(".hy_tmp").remove();
+	})
+})
+</script>

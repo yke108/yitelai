@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+<script src="__PUBLIC__/v8/js/layer.min.js"></script>
+<style>
+.designer_hd .designer_hd_select{display:block;padding-bottom:0px;margin-bottom:10px;}
+.designer_hd_select .condition{display:none;margin-bottom:10px;}
+
+</style>
+<body>
+
+	<div class="warp">
+        <div class="pro_search">
+			<form action="{:U('')}" method="post"><input name="keyword" id='keyword' value="{$get.keyword}" placeholder="店铺搜索" type="search"><button onclick='get_design()' type="button"></button></form>
+		</div>
+        <div class="designer">
+        	<div class="designer_hd">
+				<div class='swiper-container'>
+					<ul class="clearfix designer_hd_nav swiper-wrapper">
+						<!--<li class='swiper-slide'><a href="javascript:;">所在店铺</a></li>-->
+						<li class='swiper-slide'><a href="javascript:;">所在城市</a></li>
+						<li class='swiper-slide'><a href="javascript:;">设计师收费</a></li>
+						<li class='swiper-slide'><a href="javascript:;">需求空间</a></li>
+					</ul>
+				</div>
+                <div class="designer_hd_select">					
+					<!--<div class='condition'>
+						<ul class="clearfix">
+							<li><a type='store' val='' href="javascript:;" class="on">不限</a></li>
+							<foreach name='store_list' item='val' key='key'>
+							<li><a type='store' val='{$key}' href="javascript:;">{$val.distributor_name}</a></li>
+							</foreach>
+						</ul>
+					</div>-->
+					<div class='condition'>
+						<ul class="clearfix">
+							<li><a type='city' val='' href="javascript:;" class="on">不限</a></li>
+							<foreach name='city_list' item='val' key='key'>
+							<li><a type='city' val='{$key}' href="javascript:;">{$val}</a></li>
+							</foreach>
+						</ul>
+					</div>
+					<foreach name='type_list' item='vo' key='key'>
+                	<div class='condition'>
+						<ul class="clearfix">
+							<li><a href="javascript:;" type='{$vo.key}' val='' class="on" >不限</a></li>
+							<volist name='vo.list' id='val'>
+							<li><a href="javascript:;" type='{$vo.key}' val='{$val.id}' >{$val.name}</a></li>
+							</volist>
+						</ul>
+					</div>
+					</foreach>
+                </div>
+            </div>
+            <div class="designer_bd">
+            	<div class="weui-cells designer_list">
+                    <include file='Design/Index/_index' />
+                </div>
+            </div>
+            <div class="designer_page">
+				<include file='Design/Index/_page' />
+			</div>
+        </div>
+        
+        <div class="mask"></div>
+        
+        <script>
+        	$(".designer_hd ul.designer_hd_nav li").click(function(){
+				var index=$(this).index();
+				$(".designer_hd_select .condition").eq(index).fadeIn().siblings('.condition').hide();
+				
+				$(".mask").show();
+			})
+			$(".designer_hd_select ul li a").click(function(){
+				$(this).addClass("on").parent().siblings().find("a").removeClass("on")
+				
+			})
+			
+        </script>
+        
+    </div>
+<script>
+function mark_hide(){
+	
+	$(".mask").hide();
+	$(".designer_hd_select .condition").hide();
+		
+}
+var swiper = new Swiper('.designer_hd .swiper-container', {
+					slidesPerView:3,
+					spaceBetween:0,
+					freeMode:true
+				});
+
+var filter_city='';
+var filter_charge='';
+var filter_space='';
+var filter_store='';
+$(".designer_hd_select .condition ul li a").click(function(){
+	var filter_type=$(this).attr('type');
+	var val=$(this).attr('val');
+	if(filter_type=='city'){
+		filter_city=val;
+	}else if(filter_type=='charge'){
+		filter_charge=val;
+	}else if(filter_type=='space'){
+		filter_space=val;
+	}else if(filter_type=='store'){
+		filter_store=val;
+	}
+	
+	$(this).addClass('on').siblings().removeClass('on')
+	get_design();
+})
+$(".designer_page a").live('click',function(e){
+	e.preventDefault();
+	var href=$(this).attr('href');
+	get_design(href);
+})
+
+function get_design(href){
+	var go_href='';
+	if(href!=undefined){go_href=href}
+	$.ajax({
+		type:'POST',
+		url:go_href,
+		data:{demand:filter_space,charge:filter_charge,city_code:filter_city,store_name:$("#keyword").val()},
+		dataType:"json",
+		success:function(res){
+			$(".designer_list").html(res.html);
+			$(".designer_page").html(res.page);
+			mark_hide()
+		}
+	})
+}
+$(".mask").click(function(){
+	mark_hide()
+})
+
+</script>
+</body>
+</html>

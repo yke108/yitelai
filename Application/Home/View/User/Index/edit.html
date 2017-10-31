@@ -1,0 +1,199 @@
+<div class="customer_pool_detaild">
+	<form action="{:U('')}">
+		<input type="hidden" name="user_id" value="{$info.user_id}" />
+		<!--<input type="hidden" name="sex" value="{$info.sex}" id="sex" />-->
+		<ol style="position:relative">
+			<li><label>头像</label>
+				<span id="preview" class="fileUploadContent mui-clearfix"><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></span>
+				<input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" onChange="previewImage(this)">
+			</li>
+		</ol>
+		<ul>
+			<li><label><font color="#FF0000">* </font>客户名称</label><span><input type="text" name="real_name" value="{$info.real_name}" /></span></li>
+			<li><label><font color="#FF0000">* </font>客户电话</label><span><input type="text" name="mobile" value="{$info.mobile}" /></span></li>
+			<li><label>城市</label><span>
+				<input value="{$info.region_name}" type="text" class="text" readonly placeholder="省/市/区" id="city">
+				<input name="province" type='hidden' id='province' value='{$info.province}'>
+				<input name="city" type='hidden' id='city2' value='{$info.city}'>
+				<input name="region_code" type='hidden' id='region_code' value='{$info.region_code}'>
+			</span></li>
+			<li><label>微信昵称</label><span><input type="text" name="nick_name" value="{$info.nick_name}" /></span></li>
+			<li><label>性别</label><span><!--<a href="#actionsheet" class="mui-btn" id="sex_text">{$sex[$info[sex]]}</a>-->
+				<select name="sex">
+					<option value="">请选择</option>
+					<option value="1" {:m_selected($info[sex], 1)}>男</option>
+					<option value="2" {:m_selected($info[sex], 2)}>女</option>
+				</select>
+			</span></li>
+		</ul>
+		<div class="customer_pool_detaild_btn btn"><a href="javascript:;" class="mui-btn mui-btn-block mui-btn-primary" id="btn_submit">提交</a></div>
+	</form>
+</div>
+
+<div id="actionsheet" class="mui-popover mui-popover-action mui-popover-bottom">
+	<ul class="mui-table-view">
+		<li class="mui-table-view-cell">
+			<a href="#" value="1">男</a>
+		</li>
+		<li class="mui-table-view-cell">
+			<a href="#" value="2">女</a>
+		</li>
+	</ul>
+	<ul class="mui-table-view">
+		<li class="mui-table-view-cell">
+			<a href="#actionsheet"><b>取消</b></a>
+		</li>
+	</ul>
+</div>
+
+<style type="text/css">
+.weui-uploader__input {
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+#preview {
+    background-position: center center;
+    background-size: cover;
+    border-radius: 50%;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+}
+</style>
+<script type="text/javascript">
+//图片上传预览    IE是用了滤镜。
+function previewImage(file)
+{
+  var MAXWIDTH  = 260; 
+  var MAXHEIGHT = 180;
+  var div = document.getElementById('preview');
+  if (file.files && file.files[0])
+  {
+	  div.innerHTML ='<img id=imghead src="__PUBLIC__/wap/images/icon8.png" />';
+	  var img = document.getElementById('imghead');
+	  img.onload = function(){
+		var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		//img.width  =  rect.width;
+		//img.height =  rect.height;
+		//img.style.marginLeft = rect.left+'px';
+		//img.style.marginTop = rect.top+'px';
+	  }
+	  var reader = new FileReader();
+	  reader.onload = function(evt){
+		  img.src = evt.target.result;
+	  	//$("#preview").css("background-image","url("+img.src+")")
+		
+	  }
+	  reader.readAsDataURL(file.files[0]);
+  }
+  else //兼容IE
+  {
+	var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+	file.select();
+	var src = document.selection.createRange().text;
+	div.innerHTML = '<img id=imghead>';
+	var img = document.getElementById('imghead');
+	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+	var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+	status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+	div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+  }
+}
+function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+	var param = {top:0, left:0, width:width, height:height};
+	if( width>maxWidth || height>maxHeight )
+	{
+		rateWidth = width / maxWidth;
+		rateHeight = height / maxHeight;
+		 
+		if( rateWidth > rateHeight )
+		{
+			param.width =  maxWidth;
+			param.height = Math.round(height / rateWidth);
+		}else
+		{
+			param.width = Math.round(width / rateHeight);
+			param.height = maxHeight;
+		}
+	}
+	 
+	param.left = Math.round((maxWidth - param.width) / 2);
+	param.top = Math.round((maxHeight - param.height) / 2);
+	return param;
+}
+</script>
+
+<script>
+	var sex = document.getElementById("sex");
+	var sex_text = document.getElementById("sex_text");
+	mui('body').on('tap', '.mui-popover-action li>a', function() {
+		var a = this,
+			parent;
+		//根据点击按钮，反推当前是哪个actionsheet
+		for (parent = a.parentNode; parent != document.body; parent = parent.parentNode) {
+			if (parent.classList.contains('mui-popover-action')) {
+				break;
+			}
+		}
+		//关闭actionsheet
+		mui('#' + parent.id).popover('toggle');
+		if(a.getAttribute('value')){
+			sex.value = a.getAttribute('value');
+			sex_text.innerHTML = a.innerHTML;
+		}
+	})
+</script>
+
+<!---选择--->
+<link rel="stylesheet" href="__PUBLIC__/home/css/mui.picker.min.css">
+<script src="__PUBLIC__/home/js/mui.picker.min.js"></script>
+<script src="__PUBLIC__/home/js/mui.poppicker.js"></script>
+<script src="__PUBLIC__/home/js/city.data-3.js"></script>
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($, doc) {
+		$.init();
+		$.ready(function() {
+			var cityPicker = new $.PopPicker({
+				layer: 3
+			});
+			
+			cityPicker.setData(cityData3);
+			var cityPickerButton = doc.getElementById('city');
+			cityPickerButton.addEventListener('tap', function(event) {
+				cityPicker.show(function(items) {
+					cityPickerButton.value = (items[0] || {}).text + " " + (items[1] || {}).text + " " + (items[2] || {}).text;
+					doc.getElementById('province').value = (items[0] || {}).text;
+					doc.getElementById('city2').value = (items[1] || {}).text;
+					doc.getElementById('region_code').value = (items[2] || {}).value;
+					//返回 false 可以阻止选择框的关闭
+					//return false;
+				});
+			}, false);
+		});
+	})(mui, document);
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').bind('click', function(){
+		var form = $(this).parents('form')
+		var data = form.serializeArray();
+		var user_img = $('#imghead').attr('src');
+		data[6] = {name:'user_img', value:user_img};
+		mui.post(form.attr('action'),data,function(data){
+				mui.toast(data.info);
+				if(data.url){
+					window.location.href = data.url
+				}
+			},'json'
+		);
+	})
+});
+</script>

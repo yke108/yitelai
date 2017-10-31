@@ -1,0 +1,12 @@
+<volist name="list" id="vo">
+	<a href="{:U('user/recommend/orders', array('user_id'=>$vo[user_id]))}" class="item">
+		<dl>
+			<dd><img src="<if condition='$vo.user_img neq ""'>__UPLOAD__/thumbs/b120/{$vo.user_img}<else/>__PUBLIC__/main/images/user_default_img.jpg</if>"></dd>
+			<dt>
+				<h2>{$vo.nick_name}</h2>
+				<p>{$vo.reg_time|date="Y-m-d H:i",###}</p>
+			</dt>
+			<dd class="weui-cell_access"><!--<font>已注册</font>--><span class="weui-cell__ft"></span></dd>
+		</dl>
+	</a>
+</volist>

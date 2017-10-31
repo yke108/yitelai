@@ -1,0 +1,57 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------标签列表开始----->
+<div class="cooking">
+	<div class="cooking_1">
+		<div id="focus" class="focus">
+			<ul>
+				<volist name="ad_list.pc_cook_lunbo" id="vo">
+					<li><a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}" width="100%"></a></li>
+				</volist>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				$('#focus').slideFocus();
+			});
+			$(".cooking #focus ul li").width($("#focus").width())
+			window.onresize=function(){
+				$(".cooking #focus ul li").width($("#focus").width())	
+			}
+		</script>
+	</div>
+	<div class="cooking_3 clearfix w1200">
+		<div class="release"><a href="{:U('add')}">我要<br>发布</a></div>
+		<div class="cooking_3_tit">今日最受欢迎菜谱</div>
+		<div class="cooking_3_l tag_list">
+			<ul class="clearfix">
+				<volist name="list" id="vo">
+					<li>
+						<a href="{:U('info', array('id'=>$vo[book_id]))}">
+							<img src="__UPLOAD__/thumbs/b660/{$vo.picture}" class="cooking_pic">
+							<h2><span>{$vo.name}</span></h2>
+							<p><b><em>{$vo.comment_count}评论</em><em>{$vo.read_count}人气</em></b></p>
+							<p><i>{$vo.nick_name}</i></p>
+						</a>
+					</li>
+				</volist>
+			</ul>
+			<div class="pages1">
+				{$pager}
+			</div>
+		</div>
+	</div>      
+</div>
+<!-------标签列表结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

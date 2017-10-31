@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<include file='Public/header' />
+<style>
+.fans_deta_info img{max-width:100%;}
+.fans_deta_btn a {
+    display: inline-block;
+    width: 30%;
+    margin: 0 1%;
+    border-radius: 5px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #FFF;
+	background: #109306;
+}
+</style>
+<body>
+
+	<div class="warp">
+        
+        <div class="fans_deta">
+            <div class="fans_deta_hd">
+            	<h1>{$info.story_title}</h1>
+                <time>{$info.nick_name} <span>于{$info.add_time|date="Y-m-d H:i",###}发表</span></time>
+                <p><em><img src="__PUBLIC__/wap/images/icon27.png">{$info.view_num}</em><em><img src="__PUBLIC__/wap/images/icon28.png"><b class='good_num' style='font-weight:normal;'>{$info.good_num}</b></em></p>
+            </div>
+            <div class="fans_deta_info" style="word-wrap:break-word;">
+            	{:htmlspecialchars_decode($info[story_content])}
+            </div>
+            <div class="fans_deta_btn">
+            	<a class='like' story_id='{$info.story_id}' href="javascript:;"><img src="__PUBLIC__/wap/images/icon30.png">点赞（<b class='good_num'>{$info.good_num}</b>）</a>
+				<a class='clap' story_id='{$info.story_id}' href="javascript:;"><img src="__PUBLIC__/wap/images/icon31.png">踩踏（<b class='bad_num'>{$info.bad_num}</b>）</a>
+				<notempty name="story_user">
+					<a href="{:U('reward', array('id'=>$info[story_id]))}"><img src="__PUBLIC__/main/images/icon31.png">打赏（<c class="reward_num">{$info.reward_num}</c>）</a>
+				</notempty>
+            </div>
+        </div>
+        
+    </div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('.like').click(function(){
+			var like = $(this);
+			var story_id = $(this).attr('story_id');
+			$.post("{:U('like')}",{story_id:story_id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					$('.good_num').html(data.good_num);
+				}
+				if(data.url){
+					window.location.href = data.url;
+				}
+			},'json');
+		});
+		$('.clap').click(function(){
+			var clap = $(this);
+			var story_id = $(this).attr('story_id');
+			$.post("{:U('clap')}",{story_id:story_id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					clap.find('.bad_num').html(data.bad_num);
+				}
+				if(data.url){
+					window.location.href = data.url;
+				}
+			},'json');
+		});
+	});
+	</script>
+</body>
+</html>

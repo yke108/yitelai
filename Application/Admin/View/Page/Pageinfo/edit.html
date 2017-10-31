@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.page_id" value="0">独立页面修改<else/>独立页面增加</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="{$info.page_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-1">标题</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="page_title" class="input-xlarge form-control" type="text" value="{$info.page_title}">
+					</div>
+				</div>
+				
+				<lt name="info.page_id" value="1">
+					<div class="form-group">
+						<label class="control-label col-sm-1">页面类型</label>
+						<div class="col-sm-8">
+							<label class="radio-inline">
+								<input value="1" name="page_type" {:m_checked($info[page_type], 1)} type="radio">
+								普通页面
+							</label>
+							<label class="radio-inline">
+								<input value="2" name="page_type" {:m_checked($info[page_type], 2)} type="radio">
+								系统页面
+							</label>
+							<label class="radio-inline">
+								<input value="3" name="page_type" {:m_checked($info[page_type], 3)} type="radio">
+								商家入驻
+							</label>
+						</div>
+					</div>
+				</lt>
+				
+				<!-- <div class="form-group">
+					<label class="control-label col-sm-1">分销商</label>
+					<div class="col-sm-6 col-md-6">
+						<select class="form-control" name="cat_id">
+							<volist name="catlist" id="vo">
+								<option  {:m_selected($info[cat_id], $vo[cat_id])} value="{$vo.cat_id}">
+										{$vo.cat_name}
+								</option>
+							</volist>
+						</select>
+					</div>
+				</div> -->
+				
+				<div class="form-group">
+					<label class="control-label col-sm-1">页面内容</label>
+					<div class="col-sm-9">
+						<textarea id="ueditor" name="page_content" style="width:100%;height:300px;">{$info.page_content}</textarea>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-1">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

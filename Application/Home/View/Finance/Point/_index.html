@@ -1,0 +1,19 @@
+<volist name="list" id="vo">
+	<a href="{:U('info', array('id'=>$vo[id]))}" class="exchange_review_bd_new_item right-after">
+		<dl>
+			<dt><img src="__UPLOAD__/thumbs/b90/{$vo.order_goods.picture}"></dt>
+			<dd>
+				<h2>订单号：{$vo.order_sn}</h2>
+				<time>{:date('Y-m-d', $vo[add_time])}</time>
+			</dd>
+			<dd>
+				<eq name="vo.status" value="0">
+					<span>{$vo.status_label}</span>
+				<else/>
+					<em>{$vo.status_label}</em>
+				</eq>
+				<i>消耗<font>{$vo.recommend_points}积分</font></i>
+			</dd>
+		</dl>
+	</a>
+</volist>

@@ -1,0 +1,25 @@
+<div class="warp">
+	<div class="integral_shop mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<h1>我的积分<span>{$user.pay_points}</span></h1>
+			<ul>
+				<include file="User/Pointgift/_index"/>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios?0.003:0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: true,
+			indicators: true, //是否显示滚动条
+			deceleration:deceleration
+		});
+	})(mui);
+		
+</script>

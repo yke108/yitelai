@@ -1,0 +1,141 @@
+<div class="customer_service_detaild">
+	<div class="speak_window" id="scroll">
+		<div class="speak_box">
+			<notempty name="goods">
+				<div class="answer">
+					<time>{:date('m月d日 H:i', $goods[add_time])}</time>
+					<div class="service_record_box">
+						<div class="heard_img"><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+						<div class="answer_text">
+							<dl>
+								<dt><img src="__UPLOAD__/thumbs/b90/{$goods.goods_image}"></dt>
+								<dd>
+									<h2>{$goods.goods_name}</h2>
+									<p><span>￥{$goods.min_product_price}-{$goods.max_product_price}</span></p>
+								</dd>
+							</dl>
+							<i></i>
+						</div>
+					</div>
+				</div>
+			</notempty>
+			<div class="answer">
+				<time>{:date('m月d日 H:i', $info[add_time])}</time>
+				<div class="service_record_box">
+					<div class="heard_img"><img src="{$info.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+					<div class="answer_text">
+						<p>{$info.content}</p>
+						<i></i>
+					</div>
+				</div>
+			</div>
+			<volist name="reply_list" id="vo">
+				<eq name="vo.ref_type" value="1">
+					<div class="answer">
+						<time>{:date('m月d日 H:i', $vo[add_time])}</time>
+						<div class="service_record_box">
+							<div class="heard_img"><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+							<div class="answer_text">
+								<p>{$vo.content}</p>
+								<i></i>
+							</div>
+						</div>
+					</div>
+				<else/>
+					<notempty name="vo.content">
+						<div class="question">
+							<time>{:date('m月d日 H:i', $vo[add_time])}</time>
+							<div class="service_record_box">
+								<div class="question_text"><p>{$vo.content}</p><i></i></div>
+								<div class="heard_img"><img src="{$vo.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}"></div>
+							</div>
+						</div>
+					</notempty>
+				</eq>
+			</volist>
+		</div>
+	</div>
+	<neq name="info.status" value="2">
+		<form action="{:U('')}">
+			<div class="service_bd write_box">
+				<input type="hidden" name="log_id" value="{$info.log_id}" />
+				<textarea name="content" cols="" rows="3" onKeyUp="keyup()" placeholder="请输入发送内容" ></textarea>
+				<button type="button" class="right">发送</button>
+			</div>
+		</form>
+	</neq>
+</div>
+
+<style type="text/css">
+.service_bd button{background:#ff3451; border-radius:5px; color:#FFF;}
+</style>
+
+<script>
+
+    function scroll(){
+        var Goscroll = document.getElementById('scroll');
+        Goscroll.scrollTop = Goscroll.scrollHeight;
+    }
+
+    mui(".service_bd").on('tap','button',function(){
+        $('.write_list').remove();
+        var text = $('.write_box textarea').val(),
+            str  = '<div class="question"><time>2017年03月21日 11:23</time><div class="service_record_box">';
+            str += '<div class="question_text"><p>'+text+'</p><i></i></div>';
+            str += '<div class="heard_img"><img src="{$admin.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">';
+            str += '</div></div>';
+        if(text == ''){
+            mui.alert('发送内容不能为空!请重新输入');
+            $('.write_box textarea').focus();
+        }else{
+			var form = $(this).parents('form')
+			mui.post(form.attr('action'),form.serialize(),function(data){
+					if(data.status == 1){
+						$('.speak_box').append(str);
+						$('.write_box textarea').val('');
+						$('.write_box textarea').focus();
+						scroll();
+					}else{
+						mui.toast(data.info);
+					}
+				},'json'
+			);
+        }
+    });
+
+    function keyup(){
+        var footer_height = $('.wenwen-footer').outerHeight(),
+            text = $('.service_bd textarea').val(),
+            str = '<div class="write_list">'+text+'</div>';
+        if (text == '' || text == undefined){
+            $('.write_list').remove();
+        }else{
+            $('.wenwen-footer').append(str);
+            $('.write_list').css('bottom',footer_height);
+        }
+    }
+    function for_bottom(){
+        var speak_height = $('.speak_box').height();
+        $('.speak_box,.speak_window').animate({scrollTop:speak_height},500);
+    }
+</script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	setInterval("ssay()", 10000);
+});
+
+var ssay = function(){
+	$.post("{:U('ssay')}", {}, function(d){
+		if(d.status == 2){
+			$('.speak_box').append(d.info);
+			scroll();
+		}
+	}, 'json');
+}
+
+function scrollToEnd(){
+	var h = $(document).height()-$(window).height();
+	$(document).scrollTop(h);
+}
+</script>

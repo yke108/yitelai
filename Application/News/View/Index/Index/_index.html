@@ -1,0 +1,47 @@
+<volist name="news_list" id="vo">
+	<switch name="vo.type_show">
+		<case value="1">
+			<div class="item_type_1 item_type">
+				<a href="{:U('info', array('id'=>$vo[news_id]))}">
+					<h2>{$vo.title}</h2>
+					<div class="img">
+						<notempty name="vo.pictures">
+							<volist name="vo.pictures" id="vo2" key="ko2">
+								<lt name="ko2" value="4">
+									<img src="__UPLOAD__/thumbs/w215h155/{$vo2}">
+								</lt>
+							</volist>
+						</notempty>
+					</div>
+				</a>
+				<p>
+					<span><img src="__UPLOAD__/thumbs/b90/{$vo.author_img}" style="width:30px; border-radius:50%; margin-right:10px;">{$vo.author_name} <eq name="vo.is_recommend" value="1"><time>推荐信息</time></eq><time>{$vo.date_time}</time><time>{$vo.comment_count}评论</time></span>
+					<em class="mui-icon mui-icon-closeempty" url="{:U('forbid', array('id'=>$vo[news_id]))}"></em>
+				</p>
+			</div>
+		</case>
+		<case value="2">
+			<div class="item_type_2 item_type">
+				<dl>
+					<dt><a href="{:U('info', array('id'=>$vo[news_id]))}"><img src="__UPLOAD__/thumbs/w175h125/{$vo.picture}"></a></dt>
+					<dd>
+						<h2><a href="{:U('info', array('id'=>$vo[news_id]))}">{$vo.title}</a></h2>
+						<p>
+							<span><!--<img src="__UPLOAD__/thumbs/b90/{$vo.author_img}" style="width:30px; border-radius:50%; margin-right:10px;">{$vo.author_name} --><eq name="vo.is_recommend" value="1"><time>推荐信息</time></eq><time>{$vo.date_time}</time><time>{$vo.comment_count}评论</time></span>
+							<em class="mui-icon mui-icon-closeempty" url="{:U('forbid', array('id'=>$vo[news_id]))}"></em>
+						</p>
+					</dd>
+				</dl>
+			</div>
+		</case>
+		<case value="3">
+			<div class="item_type_3 item_type">
+				<a href="{$vo.link}">
+					<h2>{$vo.title}</h2>
+					<div class="img"><img src="__UPLOAD__/{$vo.picture}"></div>
+				</a>
+				<p><span>广告</span><time>{$vo.date_time}</time><em class="mui-icon mui-icon-closeempty" url="{:U('forbid', array('id'=>$vo[news_id]))}"></em></p>
+			</div>
+		</case>
+	</switch>
+</volist>

@@ -1,0 +1,233 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------产品列表开始----->
+<div class="main w1200">
+	<div class="pro">
+		<div class="pro_sort">
+			<div class="pro_sort_selected clearfix">
+				<div class="fl">
+					首页<em> > </em>
+					团购
+				</div>
+			</div>
+			<neq name="pc_goods_list_top" value="close">
+				<notempty name="ad_list.pc_goods_list_top">
+					<div class="pro_banner">
+						<a href="{$ad_list.pc_goods_list_top.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_goods_list_top.0.ad_picture}" width="100%"></a>
+						<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_goods_list_top')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+					</div>
+				</notempty>
+			</neq>
+			<div class="pro_sort_list">
+				
+				<script>
+					function resetTabs(){
+						$(".filter > div.con").hide();
+						$(".slide_down a").attr("class","");
+					}
+					var myUrl = window.location.href;
+					var myUrlTab = myUrl.substring(myUrl.indexOf("#")); 
+					var myUrlTabName = myUrlTab.substring(0,4);
+					(function(){
+						$(".filter > div.con").hide();
+						$(".slide_down a:first").attr("class","on");
+						$(".filter > div.con:first").fadeIn();
+					
+						$(".slide_down a").on("click",function(e) {
+							e.preventDefault();
+							if ($(this).attr("class") == "on"){
+								return       
+							}else{             
+								resetTabs();
+								$(this).attr("class","on");
+								$($(this).attr('name')).fadeIn();
+							}
+						});
+					
+						for (i = 1; i <= $(".slide_down a").length; i++) {
+							if(myUrlTab == myUrlTabName + i){
+								resetTabs();
+								$("a[name='"+myUrlTab+"']").attr("class","on");
+								$(myUrlTab).fadeIn();
+							}
+						}
+					})()
+					$(function(){
+						$(".pro_sort_list ul li a.more").click(function(){
+							if($(this).hasClass("on")){
+								$(this).parent().siblings("em").height("30px")
+								$(this).removeClass("on")
+								$(this).html("更多<i></i>")
+							}else{
+								$(this).parent().siblings("em").height("auto")
+								$(this).addClass("on")
+								$(this).html("收起<i></i>")
+							}
+						})
+						$(".pro_sort_list ul li a.more_choice").click(function(){
+							$(this).parent().siblings("em").height("auto").addClass("check")
+							$(this).parent().hide()
+							$(this).parent().siblings(".sort_btn").show()
+							$(".pro_sort_list ul li em.check a").click(function(){
+								$(this).addClass("on")
+								return false;
+							})
+						})
+						$(".pro_sort_list ul li .sort_btn a").click(function(){
+							$(this).parent().siblings("em").height("30px").removeClass("check")
+							$(this).parent().siblings(".pro_sort_btn").show()
+							$(this).parent().hide()
+							$(this).parent().siblings(".pro_sort_btn").find("a.more").html("更多<i></i>")
+							$(this).parent().siblings(".pro_sort_btn").find("a.more").removeClass("on")
+						})
+					})
+				</script>
+			</div>
+		</div>
+		
+		<div class="pro_list clearfix">
+			<div class="pro_list_l fl">
+				<div class="pro_list_l_pro">
+					<ul>
+						<foreach name="ad_list.pc_category_left" item="vo" key="k">
+							<lt name="k" value="6">
+								<li>
+									<div class="pro_list_l_item_pic">
+										<a href="{$vo.ad_value}">
+											<img src="__UPLOAD__/{$vo.ad_picture}">
+										</a>
+									</div>
+								</li>
+							</lt>
+						</foreach>
+					</ul>
+				</div>
+                <style>
+                	.pro_list_l_pro ul li .pro_list_l_item_pic a img{ width:100%; height:auto;}
+                </style>
+				<div class="pro_list_l_shop">
+					<h2>商家精选<span>广告</span></h2>
+					<ul>
+						<foreach name="ad_list.pc_category_left_choiceness" item="vo" key="k">
+							<lt name="k" value="2">
+								<li>
+									<a href="{$vo.ad_value}"><img src="__UPLOAD__/{$vo.ad_picture}"></a>
+								</li>
+							</lt>
+						</foreach>
+					</ul>
+				</div>
+			</div>
+			<div class="pro_list_r fr">
+				<empty name="team_list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<div class="pro_list_box">
+						<ul class="clearfix">
+							<volist name="team_list" id="vo">
+								<li>
+									<div class="pro_pic">
+                                    	<a href="{:U('mall/goods/groupbuy', array('act_id'=>$vo[act_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b512/{$vo.act_img}" width="212" height="212"></a>
+                                        <div class="time_down yomibox" data="{$vo[end_time]|date='Y-m-d H:i',###}"></div>
+                                    </div>
+									<div class="pro_price">
+										<span>￥<font>{$vo[min_price]}</font>
+										</span>
+									<!--<em class="fr">销量：{$vo.total_sale_count}</em>-->
+									</div>
+									<div class="pro_name">
+										<a href="{:U('mall/goods/groupbuy', array('act_id'=>$vo[act_id]))}" target="_blank">{$vo.act_name|msubstr=0,28,'utf-8',true}</a></div>
+									<div class="pro_position">
+										<a href="{:U('store/index/index', array('store_id'=>$vo[distributor_id]))}" target="_blank">{$vo.distributor_name}</a>
+										<em><a href="{:U('mall/goods/groupbuy', array('act_id'=>$vo[act_id]))}">去开团</a></em>
+									</div>
+									<div class="pro_offers" style="display:none"><i><img src="__PUBLIC__/main/images/icon74.png"></i><span>券 1000-3000</span><em>可选用优惠券</em></div>
+								</li>
+							</volist>
+						</ul>
+					</div>
+					<div class="pages1">{$team_page}</div>
+				</empty>
+			</div>
+			<style type="text/css">
+				.pro_list_box ul li .pro_pic{ position:relative;}
+				.pro_list_box ul li .pro_pic i{ position:absolute; left:0; top:0;}
+				.pro_list_box ul li .pro_pic .time_down{ position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5) url(__PUBLIC__/main/images/icon131.png) 10px center no-repeat; padding:5px 0; text-indent:35px; color:#FFF; font-size:14px;}
+				.pro_list_box ul li .pro_position{ line-height:26px;}
+				.pro_list_box ul li .pro_position em{ float:right;}
+				.pro_list_box ul li .pro_position em a{ display:inline-block; color:#FFF; border-radius:5px; padding:5px 15px; background:#ff3451; line-height:normal;}
+				.pro_list_box ul li .pro_name a{height:37px; display:block; overflow:hidden;}
+			</style>
+            <script src="__PUBLIC__/main/js/jquery.yomi.js"></script>
+			<script>
+				$(function(){
+					$(".pro_list_l_pro ul li").hover(function(){
+						$(this).toggleClass("on")	
+					})
+					$(".pro_list_l_shop ul li").hover(function(){
+						$(this).toggleClass("on")	
+					})
+					$(".pro_list_box ul li").hover(function(){
+						$(this).toggleClass("on")	
+					})
+					$(".pro_list_l_shop ul li .shop_name p span.sc").click(function(){
+						$(this).toggleClass("on")	
+					})
+				})
+			</script>
+		</div>
+		
+		<neq name="pc_goods_list_bottom" value="close">
+			<notempty name="ad_list.pc_goods_list_bottom">
+				<div class="pro_banner">
+					<a href="{$ad_list.pc_goods_list_bottom.0.ad_value}"><img src="__UPLOAD__/{$ad_list.pc_goods_list_bottom.0.ad_picture}" width="100%"></a>
+					<div class="close w1200"><a href="javascript:;" onclick="close_ad('pc_goods_list_bottom')"><img src="__PUBLIC__/main/images/icon4.png"></a></div>
+				</div>
+			</notempty>
+		</neq>
+		<script>
+			$(function(){
+				$(".pro_banner .close a").click(function(){
+					$(this).parent().parent().slideUp()
+				})
+			})
+		</script>
+		
+		<div class="guess_like">
+			<h2><a href="{:U('like')}" class="change"><img src="__PUBLIC__/main/images/icon38.png">换一换</a><i></i>我猜你喜欢</h2>
+			<ul class="clearfix like_list">
+				<include file="Mall/Category/guess_like"/>
+			</ul>
+		</div>
+		<script>
+			$(function(){
+				$(".guess_like .change").click(function(){
+					var change_obj = $(this);
+					$.post(change_obj.attr('href'),{},function(d){
+						$('.guess_like .like_list').html(d);
+					},'json');
+					return false;
+				})
+			})
+		</script>
+		
+	</div>
+</div>
+<!-------产品列表结束----->
+
+
+<!-------右侧快速导航栏开始------->
+<include file="Public/vip_nav"/>
+<!-------右侧快速导航栏结束------->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->

@@ -1,0 +1,94 @@
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">发货消息
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加消息</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+			<form class="cs_ajax_form form-inline" action="{:U('')}" method="get">
+				关键词：
+				<input type="text" class="form-control input-sm" name="keyword" value="{$get.keyword}" style="display:inline-block;width:auto;" placeholder="消息主题" />
+				发送时间：
+				<input type='text' name='start_time' value="{$get.start_time}" class='form-control input-sm hy_dp' style='width:100px;display:inline;' placeholder="开始时间" /> - 
+				<input type='text' name='end_time' value="{$get.end_time}" class='form-control input-sm hy_dp' style='width:100px;display:inline;' placeholder="结束时间" />
+				<button class="btn btn-default btn-sm" style='margin-left:20px;'>搜索</button>
+			</form>
+			</div>
+		</div>
+		<div class="row sepH_c">
+			<div class="dataTables_wrapper col-sm-12 col-md-12">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th width="80">消息类型</th>
+							<th>消息主题</th>
+							<!--<th width="80">分类</th>-->
+							<th width="150" style="text-align:center">店铺</th>
+							<th width="80">发送人</th>
+							<th width="80">阅览次数</th>
+							<th width="150">发送时间</th>
+							<th width="80">操作</th>
+                        </tr>
+                    </thead>
+                      <tbody id="tblc">
+						<include file="Distributor/Message/_index"/>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+(function ($) {
+	$(document).ready(function(){
+		$.dthref = '';
+		$.dtholder = {};
+		function loadedc(){
+			$('.pager').children('a').each(
+				function(){$(this).bind('click',function(){
+					$.dthref = $(this).attr('href');
+					reAjaxLoad();
+					return false;
+				});
+			});
+		}
+		
+		$('#btn_search').bind('click',function(){
+			$.dtholder.keyword = $('#keyword').val();
+			$.dtholder.cat_id = $('#cat_id').val();
+			$.dthref = $(this).attr('href');
+			reAjaxLoad();
+			return false;
+		});
+		
+		//根据各类参数，重新加载页面
+		function reAjaxLoad(){
+			var href = $.dthref == '' ? location.href : $.dthref;
+			$.post(href,$.dtholder,function(d){
+				if(d.error > 0){
+					alert(d.message);
+					return;
+				}
+				$.dtholder.page = 0;
+				if(d.overwrite > 0){
+					$('#tblc').html(d.clist);
+				} else {
+					var content = $('#tblc').html() + d.clist;
+					$('#tblc').html(content);
+				}
+				$("#pwrap").html(d.pager);
+				loadedc();
+				location.hash="listtop";
+			},'json');
+		}
+		
+		//页面加载后，绑定点击事件
+        loadedc();
+    });
+}(jQuery));
+
+</script>
+

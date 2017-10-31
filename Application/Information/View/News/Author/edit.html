@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading"><gt name="info.author_id" value="0">编辑作者<else/>添加作者</gt></h3>
+		<form class="form-horizontal cs_ajax_form" action="{:U('')}" method="post">
+			<input type="hidden" name="author_id" value="{$info.author_id}" />
+			<fieldset>
+				<div class="form-group">
+					<label class="control-label col-sm-2">头像</label>
+					<div class="col-sm-8">
+						<input class="hy_upload_single" hy_field="author_img" value="上传头像" style="width:200px;height:150px;" src="<notempty name="info.author_img">{$info.author_img}</notempty>"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2">姓名</label>
+					<div class="col-sm-6 col-md-6">
+						<input name="author_name" class="input-xlarge form-control" type="text" value="{$info.author_name}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-2">
+						<button class="btn btn-default" type="submit">确认并保存</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+    </div>
+</div>

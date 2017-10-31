@@ -1,0 +1,85 @@
+<volist name="list" id="vo">
+	<div class="my_orders_item item">
+		<div class="my_orders_item_hd after">
+			<span>
+				<switch name="vo.status" >
+					<case value="0">
+						待审核
+					</case>
+					<case value="1">
+						审核成功
+					</case>
+					<case value="2">
+						审核失败
+					</case>
+					<case value="3">
+						店铺待收货
+					</case>
+					<case value="4">
+						退货不通过
+					</case>
+					<case value="5">
+						店铺已收货，待退款
+					</case>
+					<case value="6">
+						已退款
+					</case>
+				</switch>
+			</span>
+			<b>订单号 {$vo.order_id}</b>
+		</div>
+		<div class="my_orders_item_cd">
+			<a href="{:U('backview',array('id'=>$vo[id]))}" class="dl_box">
+				<dl>
+					<dt><img src="__UPLOAD__/thumbs/b120/{$vo[item][goods_img]}"></dt>
+					<dd>
+						<h2>{$vo.item.goods_name}</h2>
+						<h2>规格：{$vo.item.product_name}</h2>
+						<h3>
+							<p>￥{$vo.item.goods_price}</p>
+							<p>退货数量：{$vo.amount}</p>
+						</h3>
+					</dd>
+				</dl>
+			</a>
+			<div class="my_orders_item_cd_price">申请时间：<span>{$vo.add_time|date="Y-m-d H:i:s",###}</span></div>
+		</div>
+		<switch name="vo.status" >
+			<case value="0">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">查看详情</a>
+				</div>
+			</case>
+			<case value="1">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">填写运单号</a>
+				</div>
+			</case>
+			<case value="2">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">查看详情</a>
+				</div>
+			</case>
+			<case value="3">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">查看详情</a>
+				</div>
+			</case>
+			<case value="4">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">查看详情</a>
+				</div>
+			</case>
+			<case value="5">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">查看详情</a>
+				</div>
+			</case>
+			<case value="6">
+				<div class="my_orders_item_bd">
+					<a href="{:U('backview',array('id'=>$vo[id]))}" class="payorder_btn">查看详情</a>
+				</div>
+			</case>
+		</switch>
+	</div>
+</volist>

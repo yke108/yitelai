@@ -1,0 +1,166 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------谷安居商家入驻开始----->
+<div class="business_settled_process">
+	<div class="w1200 clearfix">
+		<div class="settled_process_tit fl">审核日志</div>
+		<div class="settled_process_bar fr">
+			<ul class="clearfix">
+				<li class="pass">
+					<span><i>1</i></span>
+					<p>入驻须知</p>
+				</li>
+				<li class="pass">
+					<span><i>2</i></span>
+					<p>公司信息</p>
+				</li>
+				<li class="pass">
+					<span><i>3</i></span>
+					<p>店铺信息</p>
+				</li>
+				<li class="on">
+					<span><i>4</i></span>
+					<p>入驻审核</p>
+				</li>
+				<li>
+					<span><i>5</i></span>
+					<p>开店任务</p>
+				</li>
+				<li class="last">
+					<span><i>6</i></span>
+					<p>店铺上线</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="business_settled_4">
+	<div class="w1200">
+	
+		<div class="alert-notice">
+			<a href="{:U('article/page/info', array('id'=>21))}" target="_blank" class="alert-notice-btn">审核通过秘诀 >></a>
+			<p>1、当资质出于审核认领时，您可对本次已提交的信息进行修改，点击<a href="{:U('step2_1')}">修改公司信息</a>，<a href="{:U('step3_1')}">修改店铺信息</a>。</p>
+			<p>2、审核时效，资质初审7个工作日，复审15个工作日，店铺授权1~3个工作日。</p>
+			<p>3、您可登录查看审核，也可通过商务联系人邮箱了解入驻进度。</p>
+			<p>4、店铺开通后，登录商家管理后台的用户和密码会发送到您入驻时填写的联系人邮箱中。入驻投诉邮箱：<a href="mailto:{$merchant_config.email.0}">{$merchant_config.email.0}</a></p>
+		</div>
+		
+		<div class="public_form">
+			<form action="{:U('')}">
+				<input type="hidden" name="id" value="{$info.merchant_id}" />
+				<h2>入驻状态</h2>
+				<ul>
+					<li class="clearfix">
+						<div class="public_form_r">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<if condition="$info[status] eq 3">
+									<tr>
+										<td>申请已撤销</td>
+										<td>您已撤销此次入驻申请。</td>
+										<td><a href="javascript:;" class="cx_btn">已撤销申请</a></td>
+									</tr>
+								<elseif condition="$info[status] eq 0"/>
+									<tr>
+										<td>资质待审核</td>
+										<td>请等待审核人员进行审核，如对已提交信息有疑问，您可以自主撤销此次入驻申请。</td>
+										<td><a href="{:U('cancel', array('id'=>$info[merchant_id]))}" class="cx_btn cancel">撤销申请</a></td>
+									</tr>
+								<elseif condition="$info[status] eq 1"/>
+									<tr>
+										<td>资质审核通过</td>
+										<td>资质审核已通过，如对已提交信息有疑问，缴纳保证金和技术服务费后1~3个工作日内收到店铺管理账号和密码。</td>
+										<td><a href="javascript:;" class="cx_btn next" style="color:#48a7e7">去开店</a></td>
+									</tr>
+								<elseif condition="$info[status] eq 2"/>
+									<tr>
+										<td>资质待审核不通过</td>
+										<td>资质待审核不通过，原因：{$info.remark}</td>
+										<td><a href="{:U('merchant/apply/step2_1')}" class="cx_btn" style="color:#F00">审核不通过，重新申请</a></td>
+									</tr>
+								</if>
+							</table>
+						</div>
+					</li>
+				</ul>
+				<h2>审核日志</h2>
+				<ul>
+					<li class="clearfix">
+						<div class="public_form_r">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<th>入驻审核</th>
+									<th>操作时间</th>
+									<th>结果</th>
+								</tr>
+								<volist name="log_list" id="vo">
+									<tr>
+										<td>{$vo.content}</td>
+										<td>{$vo.add_time|date="Y-m-d H:i",###}</td>
+										<td>{$vo.result_content}</td>
+									</tr>
+								</volist>
+							</table>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+		
+	</div>
+</div>
+
+<!-------谷安居商家入驻结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.deta_text{word-wrap:break-word !important;}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	//提交咨询
+	$('.next').click(function(){
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), form.serialize(), function(d){
+			//layer.open({time:1,content:d.info});
+			if(d.url){
+				window.location.href = d.url;
+			}
+		}, 'json');
+	});
+	
+	//撤消申请
+	$('.cancel').click(function(){
+		var cancelobj = $(this);
+		layer.open({
+			content: '确认取消吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(cancelobj.attr('href'), {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						window.location.reload();
+					}
+				}, 'json');
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	});
+});
+</script>

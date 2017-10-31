@@ -1,0 +1,108 @@
+<style>
+.login_box_r ul li input{border-radius:0;padding:7px 0 7px 15px;}
+.login_box_r ul li select{margin-left:-4px;}
+</style>
+<!-------底部开始----->
+<div class="header_small">
+	<div class="w1200 clearfix">
+		<div class="logo fl"><a href="{:U('index/index/index')}"><img src="__PUBLIC__/main/images/logo_2.jpg"></a></div>
+		<!--<div class="header_small_r fr"><img src="__PUBLIC__/main/images/icon25.png">已注册用户？<a href="{:U('index/site/login')}">立即登陆</a></div>-->
+	</div>
+</div>
+<!-------底部结束----->
+
+<!-------登陆内容开始----->
+<div class="login_box w1200 clearfix">
+	<div class="login_box_l fl"><img src="__PUBLIC__/main/images/pic52.png" width="780" height="395"></div>
+	<div class="login_box_r fr">
+		<h2>申请合作</h2>
+		<form action="{:U('')}" method="post" onSubmit="">
+			<ul>
+				<li><span>品牌</span><input id="brand" name="brand" type="text" placeholder="请输入品牌"></li>
+				<li><span>网址</span><input id="web_url" name="web_url" type="text" placeholder="请输入网址"></li>
+				<li>
+					<span>地区</span>
+					<select id='province' style='width:280px;padding:8px 0;border:1px solid #e8e8e8;margin-bottom:10px;'></select>
+					<select id='city' style='margin-left:80px;width:280px;padding:8px 0;border:1px solid #e8e8e8;margin-bottom:10px;'></select>
+					<select id='district' style='margin-left:80px;width:280px;padding:8px 0;border:1px solid #e8e8e8;'></select>
+				</li>
+				<li>
+					<span>合作方式</span>
+					<select name='type' id='type' style='width:280px;padding:8px 0;border:1px solid #e8e8e8;'>
+						<option value='品牌入驻'>品牌入驻</option>
+						<option value='供应商'>供应商</option>
+						<option value='代运营'>代运营</option>
+						<option value='城市代理'>城市代理</option>
+					</select>
+				</li>
+				<li><span>联系人</span><input id="consignee" name="consignee" type="text" placeholder="请输入联系人姓名"></li>
+				<li><span>联系电话</span><input id="tel" name="tel" type="text" placeholder="请输入联系人手机号码"></li>
+				<li><button type="button" id="reg_btn">立即提交</button></li>
+			</ul>
+		</form>
+	</div>
+</div>
+<script src="__PUBLIC__/wap/js/city.min.js"></script>
+<script src="__PUBLIC__/wap/js/picker.min.js"></script>
+<script src="__PUBLIC__/wap/js/index_city.js"></script>
+<!-------登陆内容结束----->
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script>
+$(function(){
+	$('#reg_btn').bind('click',function(){
+        var brand = $('#brand').val();
+        var web_url = $('#web_url').val();
+        var district = $('#district').val();
+        var type = $('#type').val();
+        var consignee = $('#consignee').val();
+        var tel = $('#tel').val();
+
+        //$invite
+        
+        var reg = /^0?1[1-9][0-9]\d{8}$/;
+        if (brand=='') {
+            layer.open({time:1,content:'请输入品牌'});
+            return false;
+        }
+        if (web_url=='') {
+            layer.open({time:1,content:'请输入网址'});
+            return false;
+        }
+                
+        if(district==''){
+            layer.open({time:1,content:'请选择地区'});
+            return false;
+        }
+        if(consignee==''){
+            layer.open({time:1,content:'请填写联系人'});
+            return false;
+        }
+        
+        if (reg.test(tel)==false) {
+            layer.open({time:1,content:'请填写正确的手机号'});
+            return false;
+        }
+                
+        $.post("{:U('')}",{brand:brand,web_url:web_url,region_code:district,consignee:consignee,tel:tel,type:type},function(d){
+			layer.open({time:2,content:d.info});
+            if(d.status == 1){  
+				$('input').val('');
+				$("select").each(function(){
+					$(this).find("option:first").attr("selected",true)
+				})
+            }
+        },'json');
+        
+        return false;
+
+    });
+})
+$(function(){
+	//$("select option:last").attr('selected',true)
+})
+</script>

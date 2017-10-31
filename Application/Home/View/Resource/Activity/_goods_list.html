@@ -1,0 +1,8 @@
+<volist name="list" id="vo">
+	<a href="{:U('add', array('record_id'=>$vo[record_id], 'record_ids'=>$get[record_ids]))}">
+		<dl>
+			<dt><img src="__UPLOAD__/thumbs/b120/{$vo.goods_image}"></dt>
+			<dd>{$vo.goods_name}</dd>
+		</dl>
+	</a>
+</volist>

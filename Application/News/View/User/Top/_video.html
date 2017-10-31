@@ -1,0 +1,13 @@
+<volist name="video_list" id="vo" key="k">
+	<div class="item_type_2">
+		<dl>
+			<dt><a href="{:U('video/index/info', array('id'=>$vo[news_id]))}"><img src="__UPLOAD__/thumbs/w175h125/{$vo.picture}"></a></dt>
+			<dd>
+				<h2><a href="{:U('video/index/info', array('id'=>$vo[news_id]))}"><em>{$vo.key}</em>{$vo.title}</a></h2>
+				<p>
+					<span><eq name="vo.is_recommend" value="1"><time>推荐信息</time></eq><time>{$vo.date_time}</time><time>{$vo.comment_count}评论</time></span>
+				</p>
+			</dd>
+		</dl>
+	</div>
+</volist>

@@ -1,0 +1,39 @@
+<volist name="list" id="vo">
+	<tr class="rowlink">
+		<td><input type="checkbox" value="{$vo.goods_id}" class="checkid" name="checkid[]"></td>
+		<td><notempty name="vo.goods_image"><a href="__UPLOAD__/{$vo.goods_image}" target="_blank"><img src="__UPLOAD__/thumbs/b90/{$vo.goods_image}" height="32" /></a></notempty></td>
+		<td>{$vo.goods_sn}</td>
+		<td>{$vo.product_sn}</td>
+		<td>{$vo.goods_name}</td>
+		<td>{$vo.cat_name}</td>
+		<td>{$vo.brand_name}</td>
+		<td>{$vo.sort_order}</td>
+		<td>
+			<eq name="vo.is_on_sale" value="1">
+				<font color="green">上架</font>
+			<else/>
+				<font color="red">下架</font>
+			</eq>
+		</td>
+		<td>
+			<eq name="vo.is_self_sale" value="1">
+				<font color="red">不允许</font>
+			<else/>
+				<font color="green">允许</font>
+			</eq>
+		</td>
+		<td>
+			<eq name="vo.is_custom" value="1">
+				<font color="red">是</font>
+			<else/>
+				<font color="green">否</font>
+			</eq>
+		</td>
+		<td>{:date('Y-m-d', $vo[add_time])}</td>
+		<td><a href='{$vo.url}' target="_blank">点击查看</a></td>
+		<td>
+			<a href="{:U('edit', array('goods_id'=>$vo[goods_id]))}">编辑</a>   
+			<a href="{:U('del', array('goods_id'=>$vo[goods_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+		</td>
+	</tr>
+</volist>

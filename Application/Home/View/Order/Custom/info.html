@@ -1,0 +1,179 @@
+<div class="order_produce_detaild">
+	<form action="{:U('')}">
+		<input type="hidden" name="id" value="{$info.order_id}" />
+		<div class="order_produce_detaild_hd">
+			<p>
+				<span><img src="{$user.avatar|default='__PUBLIC__/main/images/user_default_img.jpg'}">{$user.nick_name}</span>
+				<em><b>{$info.status}
+					<switch name="info.delay_pay" >
+						<case value="1">（申请特批）</case>
+						<case value="2">（不同意特批）</case>
+						<case value="3">（同意特批）</case>
+					</switch>
+				</b></em>
+			</p>
+			<p>订单号:{$info.order_id}</p>
+			<p>所属店铺：{$info.distributor.distributor_name|default='无'}</p>
+			<time>{$info.add_time|date="Y-m-d H:i:s",###}</time>
+		</div>
+		<div class="order_produce_detaild_cd">
+			<a href="javascript:;">
+				<volist name="info.order_goods" id="vo">
+					<dl>
+						<dt><img src="__UPLOAD__/thumbs/b200/{$vo.goods_img}"></dt>
+						<dd>
+							<h3>{$vo.goods_name}</h3>
+							<p>￥{$vo.goods_price}</p>
+							<p>数量：{$vo.goods_number}</p>
+						</dd>
+					</dl>
+				</volist>
+				<ol>
+					<volist name="file_list" id="vo">
+						<li><span><img src="__UPLOAD__/thumbs/b90/{$vo.upload_path}" data-preview-src="__UPLOAD__/{$vo.upload_path}" data-preview-group="1">{$vo.file_name}</span><em>x{$vo.file_size}</em></li>
+					</volist>
+                </ol>
+				<ol>
+					<volist name="detail_list" id="vo">
+						<li><span>{$vo.goods_name}</span><em>￥{$vo.goods_price} x{$vo.goods_number}</em></li>
+						<input type="hidden" name="goods[{$vo.detail_id}][goods_name]" value="{$vo.goods_name}" />
+						<input type="hidden" name="goods[{$vo.detail_id}][goods_price]" value="{$vo.goods_price}" />
+						<input type="hidden" name="goods[{$vo.detail_id}][goods_number]" value="{$vo.goods_number}" />
+					</volist>
+				</ol>
+				<h4><span>共{$info.total_goods_number}件商品，合计：<font>￥{$info.custom_amount}</font></span></h4>
+			</a>
+		</div>
+		<eq name="sys_id" value="1">
+			<switch name="info.custom_order_status" >
+				<case value="1">
+					<div class="order_produce_detaild_btn btn">
+						<a href="{:U('check_drawing', array('id'=>$info[order_id], 'custom_order_status'=>3))}" class="mui-btn mui-btn-block mui-btn-primary link">审核资料</a>
+					</div>
+				</case>
+				<case value="3">
+					<div class="order_produce_detaild_btn btn">
+						<a href="{:U('offer', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary confirm_submit" message="确认价格审核通过吗？" title="价格审核">提交</a>
+						<a href="{:U('edit_price', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-warning link">修改价格</a>
+					</div>
+				</case>
+				<case value="5">
+					<div class="order_produce_detaild_btn btn">
+						<a href="{:U('confirm_produce', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认生产吗？" title="确认生产">确认生产</a>
+					</div>
+				</case>
+				<case value="6">
+					<div class="order_produce_detaild_btn btn">
+						<a href="{:U('confirm_produce', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认生产吗？" title="确认生产">确认生产</a>
+					</div>
+				</case>
+				<case value="7">
+					<div class="order_produce_detaild_btn btn">
+						<a href="{:U('confirm_storage', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认入库吗？" title="确认入库">入库</a>
+					</div>
+				</case>
+				<case value="8">
+					<div class="order_produce_detaild_btn btn">
+					<notempty name="info.shipping_no">
+						<a href="{$info.ship_url}" class="mui-btn mui-btn-block mui-btn-primary link" target="_blank">查看物流</a>
+						<a href="{:U('platform_shipped', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-warning link">修改发货信息</a>
+					<else/>
+						<a href="{:U('platform_shipped', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">确认发货</a>
+					</notempty>
+					</div>
+				</case>
+			</switch>
+			<eq name="info.delay_pay" value="1">
+				<div class="order_produce_detaild_btn btn">
+					<a href="{:U('confirm_delay_pay', array('id'=>$info[order_id], 'delay_pay'=>3))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认审核吗？" title="同意特批">同意</a>
+					<a href="{:U('confirm_delay_pay', array('id'=>$info[order_id], 'delay_pay'=>2))}" class="mui-btn mui-btn-block mui-btn-warning confirm" message="确认审核吗？" title="不同意特批">不同意</a>
+				</div>
+			</eq>
+		</eq>
+		<eq name="sys_id" value="2">
+			<switch name="info.custom_order_status" >
+				<case value="4">
+					<in name="info.delay_pay" value="0,2">
+						<div class="order_produce_detaild_btn btn">
+							<a href="{:U('delay_pay', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-warning link">申请特批</a>
+						</div>
+					</in>
+				</case>
+				<case value="8">
+					<div class="order_produce_detaild_btn btn">
+						<notempty name="info.shipping_no">
+							<a href="{$info.ship_url}" class="mui-btn mui-btn-block mui-btn-primary" target="_blank">查看物流</a>
+						</notempty>
+						<a href="{:U('confirm_shipped', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary confirm" message="确认发货吗？" title="确认发货">确认发货</a>
+					</div>
+				</case>
+				<case value="10">
+					<div class="order_produce_detaild_btn btn">
+						<empty name="info.admin_ids">
+							<a href="{:U('confirm_installer', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">指派安装</a>
+						<else/>
+							<in name="admin_id" value="$info[admin_ids]">
+								<a href="{:U('confirm_installed', array('id'=>$info[order_id]))}" class="mui-btn mui-btn-block mui-btn-primary link">提交安装凭证</a>
+							</in>
+						</empty>
+					</div>
+				</case>
+			</switch>
+		</eq>
+	</form>
+</div>
+
+<script src="__PUBLIC__/home/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/home/js/mui.previewimage.js"></script>
+<script>
+	mui.previewImage();	
+</script>
+
+<script>
+	$(function(){
+		$(".confirm").click(function(){
+			var obj = $(this);
+			var btnArray = ['取消', '确认'];
+			mui.confirm($(this).attr('message'), $(this).attr('title'), btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(obj.attr('href'), {}, function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+		
+		$(".confirm_submit").click(function(){
+			var form = $(this).parents('form');
+			var href = $(this).attr('href');
+			
+			var obj = $(this);
+			var btnArray = ['取消', '确认'];
+			mui.confirm($(this).attr('message'), $(this).attr('title'), btnArray, function(e) {
+				if (e.index == 1) {
+					$.post(href, form.serialize(), function(d){
+						mui.toast(d.info);
+						if(d.status == 1){
+							window.location.reload()
+						}
+					}, 'json');
+				}
+			})
+			return false;
+		})
+	})
+</script>
+
+<script>
+mui('body').on('tap', 'a.link', function() {
+	var href = this.getAttribute('href');
+	if(!mui.os.plus){
+		location.href = href;
+		return;
+	}
+});
+</script>

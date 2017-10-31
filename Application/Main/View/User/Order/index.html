@@ -1,0 +1,241 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------订单中心开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>订单中心</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="orders_list">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">订单列表</a></li>
+					</ul>
+				</div>
+				<form action="{:U('')}" method="get">
+					<table class="ncm-search-table">
+						<tbody>
+							<tr>
+								<td align="right">
+									<span>订单状态</span>
+									<select name="type">
+										<option value="">所有订单</option>
+										<option {:m_selected($get[type], 1)} value="1">待付款</option>
+										<option {:m_selected($get[type], 2)} value="2">待发货</option>
+										<option {:m_selected($get[type], 3)} value="3">待收货</option>
+										<option {:m_selected($get[type], 4)} value="4">已完成</option>
+										<option {:m_selected($get[type], 5)} value="5">待评价</option>
+										<option {:m_selected($get[type], 6)} value="6">已取消</option>
+									</select>
+									<span>下单时间</span>
+									<input type="text" name="start_time" value="{$get.start_time}" readonly class="w70" id="datetimepicker1"><label class="add-on"><i><img src="__PUBLIC__/main/images/icon54.png"></i></label>
+									<span>–</span>
+									<input type="text" name="end_time" value="{$get.end_time}" readonly class="w70" id="datetimepicker2"><label class="add-on"><i><img src="__PUBLIC__/main/images/icon54.png"></i></label>
+									<span>订单号</span>
+									<input type="text" class="text w150" name="order_id" value="{$get.order_id}">
+									<button type="submit">搜索</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+				<!----日期选择---->
+				<link href="__PUBLIC__/main/css/jquery.datetimepicker.css" rel="stylesheet" type="text/css">
+				<script type="text/javascript" src="__PUBLIC__/main/js/jquery.datetimepicker.js"></script>
+				<script type="text/javascript">
+					$('#datetimepicker1').datetimepicker({
+						lang:'ch',
+						timepicker:false,
+						format:'Y-m-d',
+						formatDate:'Y-m-d',
+						timepicker:false
+					});
+					$('#datetimepicker2').datetimepicker({
+						lang:'ch',
+						timepicker:false,
+						format:'Y-m-d',
+						formatDate:'Y-m-d',
+						timepicker:false
+					});
+				</script>
+				<empty name="list">
+					<p style="text-align:center;color:#999999;padding:20px;">暂无相关记录</p>
+				<else/>
+					<table class="ncm-default-table order">
+						<thead>
+							<tr>
+								<th class="w10"></th>
+								<th colspan="2">商品</th>
+								<th class="w100">单价（元）</th>
+								<th class="w40">数量</th>
+								<th class="w100">售后</th>
+								<th class="w120">订单金额</th>
+								<th class="w100">交易状态</th>
+								<th class="w150">交易操作</th>
+							</tr>
+						</thead>
+						<volist name="list" id="vo">
+							<tbody class="pay" >
+								<tr>
+									<td colspan="19" class="sep-row"></td>
+								</tr>
+								<if condition="($vo[pay_status] eq 0) AND ($vo[order_status] eq 0)">
+									<tr>
+										<td colspan="19" class="pay-td">
+											<span class="ml15">在线支付金额：<em>￥{$vo.order_amount}</em></span>
+											<a class="ncm-btn ncm-btn-orange fr mr15" href="{:U('pay',array('id'=>$vo[order_id]))}"><img src="__PUBLIC__/main/images/icon55.png">订单支付</a>
+										</td>
+									</tr>
+								</if>
+								<if condition="($vo[custom_order_status] eq 4)">
+									<tr>
+										<td colspan="19" class="pay-td">
+											<span class="ml15">在线支付金额：<em>￥{$vo.custom_amount}</em></span>
+											<a class="ncm-btn ncm-btn-orange fr mr15" href="{:U('info',array('id'=>$vo[order_id]))}"><img src="__PUBLIC__/main/images/icon55.png">支付尾款</a>
+										</td>
+									</tr>
+								</if>
+								<tr>
+									<th colspan="19" align="left">
+										<span class="ml10">订单号：{$vo.order_id}<eq name="vo.order_type" value="2">（定制订单）</eq></span>
+										<span>下单时间：{$vo.add_time|date="Y-m-d H:i:s",###}</span>
+										<span>
+											<a href="{:U('store/index/index', array('store_id'=>$vo[distributor][distributor_id]))}" title="{$vo.distributor.distributor_name}">{$vo.distributor_name}</a>
+											<notempty name="vo.distributor_config.qq">
+											<a href="http://wpa.qq.com/msgrd?v=3&uin={$vo.distributor_config.qq}&site={$vo.distributor_config.qq}&menu=yes" target="_blank" style="margin-left:10px; color:#D40000;"><img src="__PUBLIC__/main/images/icon123.png" width="20" style="margin:-2px 5px 0 0;">在线客服</a>
+											</notempty>
+											<notempty name="vo.distributor"><a href="{:U('feedback', array('store_id'=>$vo[distributor][distributor_id]))}">投诉</a></notempty>
+										</span>
+									</th>
+								</tr>
+								<php>$rowspan = count($vo[order_goods]);</php>
+								<foreach name="vo.order_goods" item="vo2" key="k2">
+									<tr>
+										<td class="bdl"></td>
+										<td class="w70">
+											<div class="ncm-goods-thumb"><a href="{:U('mall/goods/info',array('id'=>$vo2[goods_id]))}" target="_blank"><img src="__UPLOAD__/thumbs/b120/{$vo2[goods_img]}"></a></div>
+										</td>
+										<td class="tl">
+											<dl class="goods-name">
+												<dt><a href="{:U('mall/goods/info',array('id'=>$vo2[goods_id]))}" target="_blank">{$vo2.goods_name}</a></dt>
+												<volist name="vo2.extension_code.sku" id="vo3">
+													<dd>{$vo3.sku_name}：{$vo3.sku_value}</dd>
+												</volist>
+												<gt name="vo2.service_id" value="0"><dd>【商品服务】{$vo2.service_name} ￥{$vo2.service_price}</dd></gt>
+												<gt name="vo2.delivery_time" value="0"><dd>【发货时间】付款后{$vo2.delivery_time}天内发货</dd></gt>
+												<gt name="vo2.repair_time" value="0"><dd>【维修时间】收货后{$vo2.repair_time}天内可申请维修</dd></gt>
+											</dl>
+										</td>
+										<td align="center">¥{$vo2.goods_price}<notempty name="vo2.ori_price"><del style="font-size:12px; color:#999; margin-left:5px;">¥{$vo2.ori_price}</del></notempty>
+											<eq name="vo2.is_seckill" value="1"><p style="color:red">秒杀</p></eq>
+											<if condition="($vo2[is_seckill] eq 0) AND ($vo[discount] gt 0)"><p class="goods-freight" style='color:#ff0000;'>(会员折扣{$vo[discount]/10}折)</p></if>
+										</td>
+										<td align="center">{$vo2.goods_number}</td>
+										<td align="center" width="135">
+											<if condition="($vo[order_status] egt 2) AND ($vo2[back_status] eq 0) AND ($vo[can_back] eq 1)">
+												<a href="{:U('user/order/back', array('id'=>$vo2[id]))}">申请退货</a><br>
+											</if>
+											<if condition="($vo2[can_repair] eq 1)">
+												<p><a href="{:U('user/order/repair',array('id'=>$vo2[id]))}">申请维修</a></p>
+											</if>
+											<if condition="($vo[order_status] egt 2) AND ($vo[order_status] neq 3) AND ($vo2[comment_status] eq 0)">
+												<a href="{:U('user/order/comment', array('id'=>$vo2[id]))}" class="ncm-btn ncm-btn-blue" style="margin-top:10px;"><img src="__PUBLIC__/main/images/icon39.png" width="11" >我要评价</a>
+											</if>
+										</td>
+										<eq name="k2" value="0">
+											<td class="bdl" rowspan="{$rowspan}" align="center">
+												<p class=""><strong>{$vo.order_amount}</strong></p>
+												<p class="goods-freight">(含运费{$vo.shipping_fee})</p>
+												<notempty name="vo.pay_name"><p title="支付方式：{$vo.pay_name}">{$vo.pay_name}</p></notempty>
+											</td>
+											<td class="bdl" rowspan="{$rowspan}" align="center">
+												<p><span style="color:#36C">{$vo.status}</span></p>
+												<p><a href="{:U('user/order/info',array('id'=>$vo[order_id]))}">订单详情</a></p>
+											</td>
+											<td class="bdl bdr" rowspan="{$rowspan}" align="center">
+												<if condition="($vo[pay_status] eq 0) AND ($vo[order_status] eq 0)">
+													<p><a href="{:U('cancel', array('id'=>$vo[order_id]))}" class="ncm-btn ncm-btn-red cancel"><img src="__PUBLIC__/main/images/icon56.png">取消订单</a></p>
+												</if>
+												<if condition="($vo[shipping_status] eq 2)">
+													<p><a href="{$vo.pc_ship_url}" target="_blank" class="ncm-btn">查看物流</a></p>
+													<p><a href="javascript:;" onclick="rece_order({$vo.order_id})" class="ncm-btn">确认收货</a></p>
+												</if>
+												<!--<if condition="($vo[custom_order_status] eq 9)">
+													<p><a href="javascript:;" onclick="rece_order({$vo.order_id})" class="ncm-btn">确认收货</a></p>
+												</if>-->
+											</td>
+										</eq>
+									</tr>
+								</foreach>
+							</tbody>
+						</volist>
+					</table>
+					<notempty name="pages"><div class="pages1">{$pages}</div></notempty>
+				</empty>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------订单中心结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<style type="text/css">
+.orders_list table tbody td p{padding:5px;}
+</style>
+
+<script>
+$(document).ready(function(){
+	$(".cancel").click(function(){
+		var cancelobj = $(this);
+		layer.open({
+			content: '确认取消吗？',
+			btn: ['确认', '取消'],
+			shadeClose: false,
+			yes: function(index){
+				$.post(cancelobj.attr('href'), {}, function(d){
+					layer.open({time:1,content:d.info});
+					if(d.status == 1){
+						window.location.reload();
+					}
+				}, 'json');
+				return false;
+				layer.close(index)
+			}, no: function(index){
+				layer.close(index)
+			}
+		});
+		return false;
+	})
+});
+
+function rece_order(id){
+	if(id < 1) return;
+	layer.open({
+		content: '确定收货吗？',
+		btn: ['确认', '取消'],
+		shadeClose: true,
+		yes: function(index){					
+			$.post("{:U('receive')}",{id:id},function(data){
+				layer.open({time:1,content:data.info});
+				if(data.status == 1){
+					window.location.reload();
+				}
+			},'json');
+			layer.close(index);
+		}, no: function(index){
+			layer.close(index);
+		}
+	});
+}
+</script>

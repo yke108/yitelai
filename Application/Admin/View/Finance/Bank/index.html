@@ -1,0 +1,36 @@
+<div class="row hy_page_content" href="{:U('', $get)}">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">银行列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r cs_ajax_link hy_show_modal">添加银行</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>银行名称</th>
+							<th>排序</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td>{$vo.bank_name}</td>
+								<td>{$vo.sort_order}</td>
+								<td>
+									<a class='cs_ajax_link hy_show_modal' href="{:U('edit', array('id'=>$vo[bank_id]))}">编辑</a>
+									<a href="{:U('del', array('id'=>$vo[bank_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>							
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</div>

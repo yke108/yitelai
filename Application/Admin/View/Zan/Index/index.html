@@ -1,0 +1,152 @@
+<style>
+th.cur{cursor: pointer;}
+
+.mgr_divb {
+    background: #f2fafc none repeat scroll 0 0;
+    border-bottom: 1px solid #e3eff3;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+}
+.coolbg {
+    background: #eeeeee none repeat scroll 0 0;
+    border-bottom: 1px solid #acacac;
+    border-right: 1px solid #acacac;
+    color: #333333;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+</style>
+<div class="row search_page">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">点赞列表
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form action="{:U('')}" method="get" class="cs_ajax_form">
+					关键词:
+					<input name="keyword" value="{$get.keyword}" type="text" class="form-control input-sm" placeholder="标题" style="display:inline-block;width:auto;" />
+					<!--<span class="sepV_c">类型：
+						<select class="form-control input-sm" name="ref_type">
+							<option value="0">全部</option>
+							<foreach name="ref_types" key="key" item="item">
+								<option {:m_selected($key, $get[ref_type])} value="{$key}">{$item}</option>
+							</foreach>
+						</select>
+					</span>-->
+					<button class="btn btn-default btn-sm">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12 dataTables_wrapper">
+				<table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+							<th>用户名</th>
+							<th>类型</th>
+							<th>点赞/拍砖</th>
+							<th><!--关联商品/案例/新闻/-->粉丝故事会</th>
+							<th class="cur" attr="add_time" val="desc">添加时间</th>
+							<!--<th>操作</th>-->
+                        </tr>
+                    </thead>
+                    <tbody id="tblc">
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+								<td>{$vo.user_name|default='<font color="red">用户不存在</font>'}</td>
+								<td>{$ref_types[$vo[ref_type]]}</td>
+								<td><eq name="vo.ref_value" value="1"><font color="green">点赞</font><else/><font color="red">拍砖</font></eq></td>
+								<td>{$vo.name}</td>
+								<td>{:date('Y-m-d H:i:s', $vo[add_time])}</td>
+								<!--<td>
+									<a class="cs_ajax_link" href="{:U('view', array('log_id'=>$vo[log_id]))}">查看</a>
+								</td>-->
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+(function ($) {
+	$(document).ready(function(){
+		$.dthref = '';
+		$.dtholder = {};
+		function loadedc(){
+			$('.pager').children('a').each(
+				function(){$(this).bind('click',function(){
+					$.dthref = $(this).attr('href');
+					reAjaxLoad();
+					return false;
+				});
+			});
+		}
+		
+		$('#btn_search').bind('click',function(){
+			$.dtholder.keyword = $('#keyword').val();
+			$.dtholder.goods_sn = $('#goods_sn').val();
+			$.dtholder.cat_id = $('#cat_id').val();
+			$.dthref = $(this).attr('href');
+			reAjaxLoad();
+			return false;
+		});
+		
+		$('.sort th.cur').addClass('sorting').bind('click',function(){
+			var fname = $(this).attr('attr');
+			var sort = $(this).attr('val');
+			if(sort.length < 1){
+				return;
+			}
+			$(this).parent().children('.cur').addClass('sorting')
+			.removeClass('sorting_asc').removeClass('sorting_desc');
+			
+			if(sort=='asc'){
+				$(this).addClass('sorting_asc').removeClass('sorting');
+				$(this).attr('val','desc');
+			}else{
+				$(this).addClass('sorting_desc').removeClass('sorting');
+				$(this).attr('val','asc');
+			}
+			if(fname){
+				$.dtholder.fname = fname;
+				$.dtholder.sort = sort;
+				$.dthref = $(this).attr('href');
+				reAjaxLoad();
+			}
+			return false;
+		});
+		
+		//根据各类参数，重新加载页面
+		function reAjaxLoad(){
+			var href = "{:U('Goods/sort')}";
+			$.post(href,$.dtholder,function(d){
+				if(d.error > 0){
+					alert(d.message);
+					return;
+				}
+				$.dtholder.page = 0;
+				if(d.overwrite > 0){
+					$('#tblc').html(d.clist);
+				} else {
+					var content = $('#tblc').html() + d.clist;
+					$('#tblc').html(content);
+				}
+				$("#pwrap").html(d.pager);
+				loadedc();
+				location.hash="listtop";
+			},'json');
+		}
+		
+		//页面加载后，绑定点击事件
+        loadedc();
+    });
+}(jQuery));
+
+</script>

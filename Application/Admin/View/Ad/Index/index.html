@@ -1,0 +1,89 @@
+<link href="__PUBLIC__/css/fsgallery.css" rel="stylesheet" />
+<script src="__PUBLIC__/js/fs_forse.js"></script>
+<style type="text/css">
+#gallery a {border:none; border-radius:inherit; padding:0; margin:0 5% 5% 0;}
+.user_wap_home_3 ul.process_list li p img{width:100%;}
+.user_wap_home_3 ul.process_list li p img{margin:0;}
+</style>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <h3 class="heading">广告列表
+			<a id="rec_add" href="{:U('add')}" class="btn btn-info btn-sm alink_r">添加广告</a>
+			<div style="clear:both"></div>
+		</h3>
+		<div class="well clearfix">
+			<div class="pull-left">
+				<form action="{:U('')}" method="get" class="cs_ajax_form">
+					关键词：
+					<input class="form-control input-sm" name="keyword" value="{$get.keyword}" placeholder="广告位" style="display:inline-block;width:auto;" type="text">
+					广告位：
+					<span class="sepV_c" style="display:inline-block">
+						<select class="form-control input-sm" name="position_code">
+							<option value="">全部广告</option>
+							<foreach name="p_list" key="key" item="vo">
+								<option {:m_selected($key, $get[position_code])} value="{$key}">{$vo}</option>
+							</foreach>
+						</select>
+					</span>
+					状态：
+					<span class="sepV_c" style="display:inline-block">
+						<select class="form-control input-sm" name="status">
+							<option value="">全部</option>
+							<option {:m_selected(1, $get[status])} value="1">正常</option>
+							<option {:m_selected(2, $get[status])} value="2">已过期</option>
+							<option {:m_selected(3, $get[status])} value="3">无效</option>
+						</select>
+					</span>
+					时间：
+					<input type='text' style='width:100px;display:inline;' placeholder="开始时间" value="{$get.start_time}" name='start_time' class='form-control input-sm hy_dp' /> - <input value="{$get.end_time}" placeholder="结束时间" style='width:100px;display:inline;' class='form-control input-sm hy_dp' type='text' name='end_time' />
+					<button class="btn btn-default btn-sm">搜索</button>
+				</form>
+			</div>
+        </div>
+		<div class="row sepH_c">
+			<div class="col-sm-12 col-md-12">
+				<table class="table_vam table table-striped table-bordered dTableR" id="dt_a">
+                    <thead>
+                        <tr>
+							<th>图片</th>
+							<th>广告位</th>
+							<th>广告标题</th>
+							<th>广告描述</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th>状态</th>
+							<th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="gallery">
+						<volist name="list" id="vo">
+							<tr class="rowlink">
+							    <td><a href="__UPLOAD__/{$vo.ad_picture}" target="_blank"><img src="__UPLOAD__/thumbs/b90/{$vo.ad_picture}" height="32"></a></td>
+								<td>{$p_list[$vo[position_code]]}</td>
+								<td>{$vo.ad_name}</td>
+								<td>{$vo.ad_desc}</td>
+								<td>{:date('Y-m-d', $vo[start_time])}</td>
+								<td>{:date('Y-m-d', $vo[end_time])}</td>
+								<td>
+									<if condition="($vo.enabled eq 1) AND ($vo.start_time lt $vo.end_time) AND ($vo.end_time gt $t_now)">
+										<span class="label label-success">正常</span>
+									<elseif condition="$vo.end_time lt $t_now"/>
+										<span class="label label-warning">已过期</span>
+									<else/>
+										<span class="label label-danger">无效</span>
+									</if>
+								</td>
+								<td>
+									<a href="{:U('edit', array('ad_id'=>$vo[ad_id]))}">编辑</a>
+									<a href="{:U('del', array('ad_id'=>$vo[ad_id]))}" class="cs_del_confirm" cs_tip="确定删除？">删除</a>
+								</td>
+							</tr>
+						</volist>
+                    </tbody>
+                </table>
+				<div id="pwrap">{$pager}</div>
+			</div>
+		</div>
+	</div>
+</div>

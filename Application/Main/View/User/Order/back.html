@@ -1,0 +1,196 @@
+<!-------头部开始----->
+<include file="Public/header"/>
+<!-------头部结束----->
+
+
+
+
+
+<!-------申请售后开始----->
+<div class="main w1200">
+	<div class="site_position"><a href="{:U('index/index/index')}">首页</a><span>></span><a href="{:U('user/index/index')}">会员中心</a><span>></span>申请售后</div>
+	<div class="vip clearfix">
+		<include file="Public/user_sidebar"/>
+		<div class="vip_r fr">
+			<div class="apply_aftermarket">
+				<div class="tabmenu">
+					<ul class="tab pngFix">
+						<li class="on"><a href="javascript:;">申请售后</a></li>
+					</ul>
+				</div>
+				<div class="apply_aftermarket_box">
+					<form action="{:U('')}" method="post" enctype="multipart/form-data" onSubmit="">
+						<div class="apply_aftermarket_box_hd">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<th width="190">商品信息</th>
+									<th width="450">订单号：{$info.order_id}</th>
+									<th align="left">购买时间：{$order.add_time|date="Y-m-d H:i:s", ###}</th>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<dl class="clearfix">
+											<dt><a href="{:U('mall/goods/info', array('id'=>$info[goods_id]))}"><img src="__UPLOAD__/{$info.goods_img}" width="100" height="100"></a></dt>
+											<dd><a href="{:U('mall/goods/info', array('id'=>$info[goods_id]))}">{$info.goods_name}</a></dd>
+										</dl>
+									</td>
+									<td style="padding-left:0;">
+										<p>规格：{$info.product_name}</p>
+										<p>数量：{$info.goods_number}件</p>
+										<p>单价：{$info.goods_price}元</p>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="apply_aftermarket_box_bd">
+							<ul>
+								<li><span>服务类型：</span><!--<a href="javascript:;">换货</a>--><a href="javascript:;" class="on">退货</a></li>
+								<li><span>提交数量：</span><div class="spinner"></div></li>
+								<li>
+									<span>问题描述：</span><textarea name="content" cols="" rows="" placeholder="请输入描述内容"></textarea>
+									<label class="tips">1-300字</label>
+								</li>
+								<li>
+									<span>图片信息：</span>
+									<em>上传图片<input id="fileImage" name="fileselect[]" class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple></em>
+									<div id="preview" class="upload_preview clearfix"></div>
+									<p>为了帮助我们更好的解决问题，请您上传图片</p>
+									<p>最多可上传5张图片，每张图片大小不超过5M，支持bmp,gif,jpg,png,jpeg格式文件</p>
+								</li>
+								<style>
+									.upload_preview{ margin:10px 0 0 55px;}
+									.upload_append_list{ float:left; margin-right:10px; text-align:center; border:solid 1px #ECECEC;}
+									.upload_append_list p{ display:table-cell; vertical-align: middle; position:relative; width:100px; height:100px;}
+									.upload_append_list p img{ max-width:100%; max-height:100%;}
+									.upload_append_list p a{ position:absolute; top:0; right:0; width:auto !important; height:auto !important; border:none !important;}
+								</style>
+								<li><span>有无发票：</span><label><input name="invoice" type="checkbox" value="1">有发票</label></li>
+								<li>
+									<button type="button" id="btn_submit">提交申请</button>
+									<input type="hidden" name="id" value="{$info.id}" />
+								</li>
+							</ul>
+							<script src="__PUBLIC__/main/js/jquery.Spinner.js"></script>
+							<script>
+								$(function(){
+									$(".apply_aftermarket_box_bd ul li a").click(function(){
+										$(this).addClass("on").siblings().removeClass("on")	
+									})
+									var number = "{$info.goods_number}";
+									$(".spinner").Spinner({name:'number', value:1, min:1, len:3, max:number})
+								})
+							</script>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-------申请售后结束----->
+
+
+
+<!-------底部开始----->
+<include file="Public/footer"/>
+<!-------底部结束----->
+
+<script src="__PUBLIC__/v8/js/zxxFile.js"></script>
+<script>
+	var params = {
+		fileInput: $("#fileImage").get(0),
+		dragDrop: $("#fileDragArea").get(0),
+		upButton: $("#fileSubmit").get(0),
+		url: $("#uploadForm").attr("action"),
+		filter: function(files) {
+			var arrFiles = [];
+			for (var i = 0, file; file = files[i]; i++) {
+				arrFiles.push(file);
+			}
+			return arrFiles;
+		},
+		onSelect: function(files) {
+			var html = '', i = 0;
+			$("#preview").html('<div class="upload_loading"></div>');
+			var funAppendImage = function() {
+				file = files[i];
+				if (file) {
+					var reader = new FileReader()
+					reader.onload = function(e) {
+						html = html + '<div id="uploadList_'+ i +'" class="upload_append_list"><p>'+ 
+							'<a href="javascript:" class="upload_delete" title="删除" data-index="'+ i +'"><img src="__PUBLIC__/main/images/icon4.png"></a>' +
+							'<img id="uploadImage_' + i + '" src="' + e.target.result + '" class="upload_image" /></p>'+ 
+						'</div>';
+						
+						i++;
+						funAppendImage();
+					}
+					reader.readAsDataURL(file);
+				} else {
+					$("#preview").html(html);
+					if (html) {
+						//删除方法
+						$(".upload_delete").click(function() {
+							ZXXFILE.funDeleteFile(files[parseInt($(this).attr("data-index"))]);
+							return false;
+						});
+						//提交按钮显示
+						$("#fileSubmit").show();	
+					} else {
+						//提交按钮隐藏
+						$("#fileSubmit").hide();
+					}
+				}
+			};
+			funAppendImage();		
+		},
+		onDelete: function(file) {
+			$("#uploadList_" + file.index).remove();
+			$("#fileImage").val("")
+		}
+	};
+	ZXXFILE = $.extend(ZXXFILE, params);
+	ZXXFILE.init();
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#btn_submit').click(function(){
+		var number = $("input[name='number']").val();
+		var content = $(":input[name='content']").val();
+		var invoice = $("input[name='invoice']:checked").val();
+		var id = $("input[name='id']").val();
+		var _image_datas = new Array();
+		$('.upload_image').each(function(){
+			_image_datas.push($(this).attr('src'));
+		});
+		
+		if(!content){
+			layer.open({time:1,content:'问题描述不能为空'});return false;
+		}
+		if(_image_datas.length > 5){
+			layer.open({time:1,content:'最多可上传5张图片'});return false;
+		}
+		
+		var data = {
+			number:number,
+			content:content,
+			invoice:invoice,
+			image_datas:_image_datas,
+			id:id,
+		};
+		
+		var btn_submit = $(this);
+		btn_submit.attr('disabled',true);
+		var form = $(this).parents('form');
+		$.post(form.attr('action'), data, function(d){
+			layer.open({time:1,content:d.info});
+			if(d.status == 1){
+				window.location.href = d.url;
+			}else{
+				btn_submit.attr('disabled',false);
+			}
+		}, 'json');
+	});
+});
+</script>

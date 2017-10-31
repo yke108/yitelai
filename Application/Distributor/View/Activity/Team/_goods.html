@@ -1,0 +1,9 @@
+<volist name="list" id="vo">
+	<tr class="rowlink" val='{$vo.record_id}' img='{$vo.goods_image}' goods_name='{$vo.goods_name}'>
+		<td><notempty name="vo.goods_image"><img height="37" src="__UPLOAD__/{$vo.goods_image}"/></notempty></td>
+		<td>{$vo.goods_sn}</td>
+		<td>{$vo.goods_name}</td>
+		<td>{$vo.product.product_price}</td>
+		<td>{$vo.cat_name}</td>
+	</tr>
+</volist>

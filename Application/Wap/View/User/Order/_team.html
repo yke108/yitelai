@@ -1,0 +1,53 @@
+<volist name='list' id='val'>
+	<div class="my_orders_item">
+		<div class="my_orders_item_hd after">
+			<span>
+				<if condition="($val[team_info][end_time] lt time()) and ($val[pay_status] eq 4)" >
+				拼团失败，已退款
+				<elseif condition="$val[team_info][end_time] lt time()" />
+				拼团已结束
+				<elseif condition="$val[team_info][joined_num] egt $val[team_info][member_limit]" />
+				拼团名额已满
+				<elseif condition="$val.pay_status eq 0" />
+				待支付
+				<elseif condition="$val[team_info][joined_num] egt $val[team_info][member_num]" />
+				拼团成功
+				<else/>
+				拼团中
+				</if>
+			</span>
+			<b>团号 {$val.team_info.post_sn}</b>
+		</div>
+		<div class="my_orders_item_cd">
+			<a href="{:U('mall/goods/team_info',array('post_id'=>$val[team_info][post_id]))}" class="dl_box">
+				<dl>
+					<dt><img src="<if condition='$val[order_goods][0][goods_img] eq ""'>__PUBLIC__/wap/images/pic6.jpg<else/>__UPLOAD__/{$val[order_goods][0]['goods_img']}</if>"></dt>
+					<dd>
+						<h2>{$val[order_goods][0][goods_name]|msubstr=0,10}</h2>
+						<h3>
+							<p><span>￥{$val.goods_amount}</span></p>
+						</h3>
+					</dd>
+				</dl>
+			</a>
+		</div>
+		<div class="my_orders_item_bd">
+			<span>{$val.team_info.member_num}-{$val.team_info.member_limit}人团/
+				<em>
+					<if condition='($val[team_info][member_num]-$val[team_info][joined_num]) gt 0'>
+					还差{$val[team_info][member_num]-$val['team_info']['joined_num']}人成团
+					<else/>
+					已成团,参团人数{$val['team_info']['joined_num']}人
+					</if>
+				</em>
+			</span>
+			<!--<a href="{:U('mall/goods/team_info',array('post_id'=>$val[team_info][post_id]))}" class="payorder_btn">查看详情</a>-->
+			<if condition="($val.pay_status eq 0) and ($val[team_info][joined_num] lt $val[team_info][member_limit]) and ($val[team_info][end_time] gt time())">
+			<p><a href="{:U('mall/cart/pay',array('id'=>$val['general_order_id']))}" class="payorder_btn">去支付</a></p>
+			</if>
+			<if condition="$val.pay_status eq 1">	
+			<p><a href="{:U('mall/goods/team_info',array('post_id'=>$val[team_info][post_id]))}" class="payorder_btn">查看详情</a></p>
+			</if>
+		</div>
+	</div>
+</volist>
